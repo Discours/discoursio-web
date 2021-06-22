@@ -17,7 +17,7 @@ const options = {
   outfile: dir + '/bundle.js',
   plugins: [
     svelte({
-      compileOptions: { dev, css: false},
+      compileOptions: { dev, css: false, generate: 'dom' },
       preprocess
     })
   ]

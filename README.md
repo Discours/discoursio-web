@@ -13,7 +13,3 @@ No runtime dependencies was used in package.json
 pnpm i
 pnpm dev
 ```
-
-# Server
-
-A simple websocket server with RocksDB for tiptap.

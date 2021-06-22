@@ -6,3 +6,5 @@ database
 storybook-static
 gen
 temp
+.vercel
+.env

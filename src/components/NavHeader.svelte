@@ -6,6 +6,7 @@
   import Edit20 from 'carbon-icons-svelte/lib/Edit20'
   import Search20 from 'carbon-icons-svelte/lib/Search20'
   import Email20 from 'carbon-icons-svelte/lib/Email20'
+  import Userpic from './Userpic.svelte'
 
   interface Route {
     component: SvelteComponent
@@ -57,7 +58,11 @@
                 on:click={() => handle(p)}
               >
                 {#if caption in icons}
-                  <svelte:component this={icon(caption)} />
+                  {#if caption === 'login'}
+                    <Userpic />
+                  {:else}
+                    <svelte:component this={icon(caption)} />
+                  {/if}
                 {:else}
                   {$t(caption)}
                 {/if}

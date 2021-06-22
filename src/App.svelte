@@ -30,7 +30,7 @@
     '/messages': { component: Messages, caption: 'messages', auth: true },
     '/search': { component: Search, caption: 'search' },
     '/login': { component: Login, caption: 'login' },
-    '/id/:id': { component: Article },
+    '/a/:id': { component: Article },
   }
 
   $: component = routes[$path].component || NotFound

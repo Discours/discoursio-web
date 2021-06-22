@@ -1,0 +1,17 @@
+overwrite: true
+schema:
+    - 'https://https://studio.apollographql.com/graph/discoursio/schema/reference?variant=current'
+documents:
+    - 'api/schema.graphql'
+generates:
+    src/codegen.ts:
+        plugins:
+            - 'typescript'
+            - 'typescript-operations'
+            - 'graphql-codegen-svelte-apollo'
+        config:
+          clientPath: 'src/apollo-client'
+          asyncQuery: true
+hooks:
+    afterAllFileWrite:
+        - prettier --write
