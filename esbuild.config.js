@@ -9,18 +9,19 @@ const dev = process.env.NODE_ENV == 'development'
 const port = 5000
 const dir = 'public'
 
+const compileOptions = { 
+  dev, 
+  css: false, 
+  generate: process.env.SSR ? 'ssr' : 'dom' 
+}
+
 const options = {
   entryPoints: ["src/index.ts"],
   bundle: true,
   color: true,
   incremental: dev,
   outfile: dir + '/bundle.js',
-  plugins: [
-    svelte({
-      compileOptions: { dev, css: false, generate: 'dom' },
-      preprocess
-    })
-  ]
+  plugins: [ svelte({ compileOptions, preprocess }) ]
 }
 
 if(!dev) {

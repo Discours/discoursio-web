@@ -7,21 +7,13 @@ import {
 import { WebSocketLink } from '@apollo/client/link/ws'
 import { getOperationAST } from 'graphql'
 
-const cache = new InMemoryCache({
-  addTypename: true,
-})
-
+const url = 'localhost:8546'
+const cache = new InMemoryCache({ addTypename: true })
 const wsLink = new WebSocketLink({
-  uri: 'wss://' + process.env.GRAPHQL_URL,
-  options: {
-    lazy: true,
-    reconnect: true,
-  },
+  uri: 'ws://',
+  options: { lazy: true, reconnect: true },
 })
-
-const httpLink = new HttpLink({
-  uri: 'https://' + process.env.GRAPHQL_URL,
-})
+const httpLink = new HttpLink({ uri: 'http://' + url })
 
 const link = ApolloLink.split(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

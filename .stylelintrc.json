@@ -15,5 +15,5 @@
       }],
       "block-no-empty": null
     },
-    "ignoreFiles": ["**/*.cjs"]
+    "ignoreFiles": ["*.cjs"]
   }

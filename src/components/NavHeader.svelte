@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SvelteComponent } from 'svelte'
+  import { pages } from '../stores/router'
   import { getLocalization } from '../i18n'
   import { click, path } from 'svelte-pathfinder'
   import Login20 from 'carbon-icons-svelte/lib/Login20'
@@ -7,13 +7,6 @@
   import Search20 from 'carbon-icons-svelte/lib/Search20'
   import Email20 from 'carbon-icons-svelte/lib/Email20'
   import Userpic from './Userpic.svelte'
-
-  interface Route {
-    component: SvelteComponent
-    caption?: string
-  }
-
-  export let routes: Route[]
 
   const { t } = getLocalization()
 
@@ -47,7 +40,7 @@
   <h1>Дискурc</h1>
   <div style="width: 195px;" />
   <div class="route">
-    {#each Object.entries(routes) as [p, { caption }]}
+    {#each Object.entries($pages) as [p, { caption }]}
       {#if caption}
         <div>
           <div class="routewrap">

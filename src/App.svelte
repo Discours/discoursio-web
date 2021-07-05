@@ -1,8 +1,11 @@
 <script>
-  import { onDestroy, onMount } from 'svelte'
+  import { onMount } from 'svelte'
   import { path, click } from 'svelte-pathfinder'
-  import NavHeader from './components/NavHeader.svelte'
   import { initLocalizationContext } from './i18n'
+  import { pages } from './stores/router'
+  import { token } from './stores/auth'
+  import apollo from './apollo-client'
+  import NavHeader from './components/NavHeader.svelte'
   import Home from './pages/Home.svelte'
   import NotFound from './pages/NotFound.svelte'
   import Forum from './pages/Forum.svelte'
@@ -11,43 +14,41 @@
   import Create from './pages/Create.svelte'
   import Search from './pages/Search.svelte'
   import Login from './pages/Login.svelte'
-  import Messages from './pages/Messages.svelte'
-  // import Forbidden from './pages/Forbidden.svelte'
-  import Article from './pages/Article.svelte'
-
-  let component
-  let props = {}
-  // let isAuthorized = false
+  import Inbox from './pages/Inbox.svelte'
+  import Forbidden from './pages/Forbidden.svelte'
+  import Shout from './pages/Shout.svelte'
 
   initLocalizationContext()
-
-  const routes = {
-    '/': { component: Home, caption: 'zine' },
-    '/feed': { component: Feed, caption: 'feed' },
-    '/community': { component: Community, caption: 'community' }, // shout id
-    '/forum': { component: Forum, caption: 'forum' }, // your messages
-    '/create': { component: Create, caption: 'create', auth: true },
-    '/messages': { component: Messages, caption: 'messages', auth: true },
-    '/search': { component: Search, caption: 'search' },
-    '/login': { component: Login, caption: 'login' },
-    '/a/:id': { component: Article },
-  }
-
-  $: component = routes[$path].component || NotFound
-
-  // TODO: auth ui
-
+  let component
+  let props = {}
+  $: component =
+    $pages[$path] && $pages[$path].public
+      ? $pages[$path].component
+      : ($token ? $pages[$path].component : Forbidden) || NotFound
   onMount(() => {
+    // TODO: auth
+    // 1. try to get the cookie
+    // 2a. no cookie => not logged in view
+    // 2b. add token from cookie to the all requests
+    const tokenFromCookie = window.getCoo
+    $token = tokenFromCookie
+    $pages = {
+      '/': { component: Home, caption: 'zine', public: true },
+      '/feed': { component: Feed, caption: 'feed', public: true },
+      '/search': { component: Search, caption: 'search', public: true },
+      '/login': { component: Login, caption: 'login', public: true },
+      '/a/:id': { component: Shout, public: true },
+      '/create': { component: Create, caption: 'create' },
+      '/inbox': { component: Inbox, caption: 'inbox' },
+      '/community': { component: Community, caption: 'community' },
+      '/forum': { component: Forum, caption: 'forum' },
+    }
     console.log('started!')
-  })
-
-  onDestroy(() => {
-    console.log('bye!')
   })
 </script>
 
 <svelte:window on:click={click} />
-<header><NavHeader {routes} /></header>
+<header><NavHeader {$pages} /></header>
 <main><svelte:component this={component} {...props} /></main>
 
 <style lang="scss" global>

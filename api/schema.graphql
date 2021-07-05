@@ -1,5 +1,22 @@
 scalar DateTime
 
+input registerUserInput {
+	email: String!
+	username: String!
+	password: String!
+}
+
+type signInPayload {
+	status: Boolean!
+	error: String
+	token: String
+}
+
+type ResultPayload {
+	status: Boolean!
+	error: String
+}
+
 type Like {
   author: Int!
   id: Int!
@@ -12,11 +29,6 @@ type createMessagePayload {
 	status: Boolean!
 	error: String
 	message: Message
-}
-
-type deleteMessagePayload {
-	status: Boolean!
-	error: String
 }
 
 input MessageInput {
@@ -43,7 +55,7 @@ type Mutation {
   # message
 	createMessage(input: MessageInput!): createMessagePayload!
 	updateMessage(input: updateMessageInput!): createMessagePayload!
-	deleteMessage(messageId: Int!): deleteMessagePayload!
+	deleteMessage(messageId: Int!): ResultPayload!
 
   # auth
   confirmEmail(token: String!): Token!
@@ -53,7 +65,8 @@ type Mutation {
   requestPasswordReset(email: String!): Boolean!
   resetPassword(password: String!, token: String!): Token!
   signIn(email: String!, password: String!): Token!
-  signUp(email: String!, password: String!, username: String): User!
+  # signUp(email: String!, password: String!, username: String): User!
+  registerUser(input: registerUserInput!): User!
 
   # shout
   createShout(body: String!, replyTo: [Int], title: String, versionOf: [Int], visibleForRoles: [Int], visibleForUsers: [Int]): Message!
@@ -67,14 +80,21 @@ type Mutation {
 }
 
 type Query {
+  # auth / user
+	signIn(id: Int!, password: String!): signInPayload!
+	signOut: ResultPayload!
   getCurrentUser: User!
-  getMessages(count: Int = 100, page: Int = 1): [Message!]!
-  getOnline: [User!]!
-  getShoutRating(shout: Int): Int!
   getTokens: [Token!]!
+  isUsernameFree(username: String!): Boolean!
+  getOnline: [User!]!
   getUserById(id: Int!): User!
   getUserRating(shout: Int): Int!
-  isUsernameFree(username: String!): Boolean!
+
+  # messages
+  getMessages(count: Int = 100, page: Int = 1): [Message!]!
+
+  # shouts
+  getShoutRating(shout: Int): Int!
   shoutsByAuthor(author: Int): [Shout]!
   shoutsByReplyTo(shout: Int): [Shout]!
   shoutsByTags(tags: [String]): [Shout]!
