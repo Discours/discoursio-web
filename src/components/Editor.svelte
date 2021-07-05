@@ -30,6 +30,7 @@
     })
     // Store the Y document in the browser
     new IndexeddbPersistence(DEFAULT_ROOM, ydoc)
+    provider.connect()
   })
 </script>
 

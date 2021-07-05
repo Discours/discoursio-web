@@ -9,6 +9,24 @@ No runtime dependencies was used in package.json
 
 # How to develop
 
+
+Start GraphQL server
+
+```sh
+cd discours-backend-next
+pipenv shell
+python server.py
+```
+
+Start Yjs server
+
+```sh
+cd discoursio-web
+pnpm serve
+```
+
+Compile and run web frontend 
+
 ```sh
 pnpm i
 pnpm dev
