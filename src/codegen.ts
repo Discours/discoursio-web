@@ -1,7 +1,3 @@
-import type {} from '@apollo/client'
-import { readable } from 'svelte/store'
-import type { Readable } from 'svelte/store'
-
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -17,7 +13,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: any
+  DateTime: Date
 }
 
 export type Like = {
