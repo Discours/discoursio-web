@@ -7,23 +7,37 @@
 
 No runtime dependencies was used in package.json
 
-# How to develop
+# 1 Run servers
 
+Start Redis
+
+```sh
+brew install redis
+redis-server
+```
 
 Start GraphQL server
 
 ```sh
-cd discours-backend-next
-pipenv shell
-python server.py
+cd ../discours-backend-next
+pipenv run python server.py
 ```
 
 Start Yjs server
 
 ```sh
-cd discoursio-web
+cd ../discoursio-web
 pnpm serve
 ```
+
+# 2 Run GraphQL code generation
+
+Run and get src/codegen.ts
+```sh
+pnpm graphql-codegen
+```
+
+# 3 Start frontend
 
 Compile and run web frontend 
 
