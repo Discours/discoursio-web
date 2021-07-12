@@ -10,7 +10,7 @@ import { getOperationAST } from 'graphql'
 const url = 'localhost:8546'
 const cache = new InMemoryCache({ addTypename: true })
 const wsLink = new WebSocketLink({
-  uri: 'ws://',
+  uri: 'ws://' + url,
   options: { lazy: true, reconnect: true },
 })
 const httpLink = new HttpLink({ uri: 'http://' + url })
