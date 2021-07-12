@@ -5,16 +5,23 @@
   import Collaboration from '@tiptap/extension-collaboration'
   import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
   import * as Y from 'yjs'
-  import { WebsocketProvider } from 'y-websocket'
+  import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
 
   const DEFAULT_ROOM = 'discours.io/test'
-  const SERVER_URL = 'ws://127.0.0.1:1234' // "ws://publicws.discours.io"
-
+  const options = {
+    signaling: [
+      'wss://signaling.yjs.dev',
+      'wss://y-webrtc-signaling-eu.herokuapp.com',
+      // 'wss://tracker.openwebtorrent.com',
+      // 'wss://tracker.novage.com.ua:443/announce',
+      // "wss://signaling.discours.io"
+    ],
+  }
   let element
   let editor
   const ydoc = new Y.Doc()
-  const provider = new WebsocketProvider(SERVER_URL, DEFAULT_ROOM, ydoc)
+  const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc, options)
 
   onDestroy(() => editor && editor.destroy())
 

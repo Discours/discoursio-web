@@ -7,7 +7,7 @@
 
 No runtime dependencies was used in package.json
 
-# 1 Run servers
+# First start backend
 
 Start Redis
 
@@ -23,21 +23,14 @@ cd ../discours-backend-next
 pipenv run python server.py
 ```
 
-Start Yjs server
-
-```sh
-cd ../discoursio-web
-pnpm serve
-```
-
-# 2 Run GraphQL code generation
+# Then update types
 
 Run and get src/codegen.ts
 ```sh
 pnpm graphql-codegen
 ```
 
-# 3 Start frontend
+# Start hacking
 
 Compile and run web frontend 
 
