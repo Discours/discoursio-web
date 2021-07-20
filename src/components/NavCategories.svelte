@@ -1,14 +1,24 @@
 <script>
-  import data from '../data.en.json'
+  import { onMount } from 'svelte'
+  import { lang, Language } from '../stores/common'
+
+  let data
+  onMount(() => {
+    // TODO: get system lang
+    const lng = $lang === Language.RU ? '' : $lang + '.'
+    data = import(`/data.${lng}json`)
+  })
 </script>
 
 <section>
   <div style="height: 60px;" />
   <div class="cats">
-    {#each Object.entries(data.projects) as [project, data]}
-      <a href={'/p/' + project}>{data.name}</a>
-      <div class="space" />
-    {/each}
+    {#if data}
+      {#each Object.entries(data.projects) as [project, data]}
+        <a href={'/p/' + project}>{data.name}</a>
+        <div class="space" />
+      {/each}
+    {/if}
   </div>
 </section>
 

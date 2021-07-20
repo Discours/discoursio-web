@@ -1,9 +1,9 @@
 <script>
   import { onMount } from 'svelte'
-  import { Query } from './graphql/codegen'
+  // import { Query } from './graphql/codegen'
   import { client } from './graphql/client.ts'
   import { initLocalizationContext } from './i18n'
-  import { ApolloLink } from 'apollo'
+  import { ApolloLink } from '@apollo/client'
   import NavHeader from './components/NavHeader.svelte'
   import Home from './pages/Home.svelte'
   import NotFound from './pages/NotFound.svelte'
@@ -54,7 +54,7 @@
     if (token) {
       console.log('app: auth token found, trying to restore session')
       console.debug(token)
-      $session = Query.getCurrentUser()
+      // TODO: $session = Query.getCurrentUser()
     } else {
       console.log('app: no auth token')
     }
