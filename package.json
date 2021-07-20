@@ -1,11 +1,13 @@
 {
   "name": "discoursio-web",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "devDependencies": {
     "@apollo/client": "^3.3.21",
     "@graphql-codegen/cli": "^1.21.6",
     "@graphql-codegen/typescript": "^1.22.4",
     "@graphql-codegen/typescript-operations": "^1.18.3",
+    "@prerenderer/prerenderer": "^0.7.2",
+    "@prerenderer/renderer-puppeteer": "^0.2.0",
     "@storybook/svelte": "^6.4.0-alpha.14",
     "@tiptap/core": "^2.0.0-beta.86",
     "@tiptap/extension-collaboration": "^2.0.0-beta.19",
@@ -15,7 +17,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.82",
     "@tsconfig/svelte": "^2.0.1",
     "@types/marked": "^2.0.4",
-    "@types/node": "^16.3.1",
+    "@types/node": "^16.3.3",
     "@types/spark-md5": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
@@ -32,6 +34,7 @@
     "graphql": "15.5.0",
     "graphql-codegen-svelte-apollo": "^1.0.0",
     "graphql-scalars": "^1.10.0",
+    "gray-matter": "^4.0.3",
     "husky": "^6.0.0",
     "i18next": "^20.3.2",
     "jest": "^27.0.6",
@@ -53,19 +56,23 @@
     "stylelint-order": "^4.1.0",
     "stylelint-scss": "^3.19.0",
     "svelte": "^3.38.3",
+    "svelte-apollo-client": "^0.1.0",
     "svelte-check": "^2.2.2",
     "svelte-loader": "^3.1.2",
-    "svelte-pathfinder": "^3.2.3",
     "svelte-preprocess": "^4.7.4",
     "svelte-preprocess-esbuild": "^2.0.0",
+    "svelte-store-router": "^1.0.24",
+    "ts-node": "^10.1.0",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5",
+    "walk": "^2.3.14",
     "y-indexeddb": "^9.0.6",
     "y-protocols": "^1.0.5",
     "y-webrtc": "^10.2.0",
     "yjs": "^13.5.11"
   },
   "scripts": {
+    "gen": "node precompiler.js",
     "format": "prettier --plugin=./node_modules/prettier-plugin-svelte --write src",
     "validate": "tsc --noEmit && svelte-check",
     "fix": "eslint --fix src/**/*.{ts,svelte}",
@@ -74,11 +81,16 @@
     "prepare": "npx husky install",
     "stylelint-check": "stylelint-config-prettier-check",
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
+    "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
+    "build": "run-p gen prod",
     "sb:start": "start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },
   "resolutions": {
     "graphql": "15.5.0"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "esbuild-mdx": "^0.2.0"
+  }
 }

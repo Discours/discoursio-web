@@ -1,0 +1,22 @@
+[0.0.3]
+
+[~] prerender with puppeteer
+[+] precompiled data.json
+[~] international content support
+[+] auth graphql client
+[-] removed ws yjs-server
+[-] pathfinder replaced
+[+] mdsvex support
+
+[0.0.2]
+
+[+] apollo client with codegen
+[+] ci basics
+[+] code organized
+
+
+[0.0.1]
+
+[+] 3rd party deps: tiptap, apollo, 
+[+] boiilerplate with esbuild
+[+] simple structure

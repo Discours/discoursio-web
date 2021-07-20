@@ -1,14 +1,18 @@
-import { Writable, writable } from 'svelte/store'
+import { writable, Writable } from 'svelte/store'
 import type { SvelteComponent } from 'svelte'
+import { createRouteStore } from 'svelte-store-router'
+
+export const route = createRouteStore({
+  delay: 100,
+  queryClean: true,
+  fragmentClean: true,
+})
 
 export interface Route {
   component: SvelteComponent
-  caption?: string
+  caption: string
+  icon: SvelteComponent
   public?: boolean
 }
 
-type Routes = {
-  [key: string]: Route
-}
-
-export const pages: Writable<Routes> = writable({})
+export const pages: Writable<Array<Route>> = writable([])

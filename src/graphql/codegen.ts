@@ -91,11 +91,6 @@ export type MutationResetPasswordArgs = {
   token: Scalars['String']
 }
 
-export type MutationSignInArgs = {
-  email: Scalars['String']
-  password: Scalars['String']
-}
-
 export type MutationRegisterUserArgs = {
   input: RegisterUserInput
 }

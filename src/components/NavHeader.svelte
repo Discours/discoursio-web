@@ -1,69 +1,53 @@
 <script lang="ts">
-  import { pages } from '../stores/router'
+  import { route } from '../stores/router'
   import { getLocalization } from '../i18n'
-  import { click, path } from 'svelte-pathfinder'
+
   import Login20 from 'carbon-icons-svelte/lib/Login20'
   import Edit20 from 'carbon-icons-svelte/lib/Edit20'
   import Search20 from 'carbon-icons-svelte/lib/Search20'
   import Email20 from 'carbon-icons-svelte/lib/Email20'
+  import Dashboard20 from 'carbon-icons-svelte/lib/Dashboard20'
+  import Collaborate20 from 'carbon-icons-svelte/lib/Collaborate20'
+
   import Userpic from './Userpic.svelte'
+  import { token } from '../stores/auth'
 
   const { t } = getLocalization()
 
-  const handle = (action: string) => {
-    switch (action) {
-      case 'login':
-        // TODO: implement login
-        break
-      case 'create':
-        // TODO: implement create
-        break
-      case 'search':
-      default:
-      // TODO: implement search
-    }
-  }
+  const publicRoutes = [
+    { path: '/', caption: 'home' },
+    { path: '/search', caption: 'search', icon: Search20 },
+    { path: '/create', caption: 'create', icon: Edit20 },
+    { path: '/login', caption: 'login', icon: Login20 },
+  ]
 
-  const icons = {
-    login: Login20,
-    create: Edit20,
-    search: Search20,
-    messages: Email20,
-  }
+  const privateRoutes = [
+    { path: '/profile', caption: 'profile', icon: Userpic },
+    { path: '/editor', caption: 'editor', icon: Collaborate20 },
+    { path: '/inbox', caption: 'inbox', icon: Email20 },
+    { parg: '/community', caption: 'community', icon: Dashboard20 },
+  ]
 
-  const icon = (i: string) => icons[i]
+  let visibleRoutes
+
+  $: visibleRoutes = [...publicRoutes, ...($token && privateRoutes)]
 </script>
 
-<svelte:window on:click={click} />
 <!-- svelte-ignore a11y-missing-attribute -->
 <nav>
   <h1>Дискурc</h1>
   <div style="width: 195px;" />
   <div class="route">
-    {#each Object.entries($pages) as [p, { caption }]}
-      {#if caption}
-        <div>
-          <div class="routewrap">
-            <div class="routecell">
-              <a
-                class:selected={$path.toString() === p}
-                href={p}
-                on:click={() => handle(p)}
-              >
-                {#if caption in icons}
-                  {#if caption === 'login'}
-                    <Userpic />
-                  {:else}
-                    <svelte:component this={icon(caption)} />
-                  {/if}
-                {:else}
-                  {$t(caption)}
-                {/if}
-              </a>
-            </div>
+    {#each visibleRoutes as { path, caption, icon }}
+      <div>
+        <div class="routewrap">
+          <div class="routecell">
+            <a class:selected={path == $route.path} href={path}>
+              <svelte:component this={icon} title={$t(caption)} />
+            </a>
           </div>
         </div>
-      {/if}
+      </div>
       <div style="width: 4vw;" />
     {/each}
   </div>

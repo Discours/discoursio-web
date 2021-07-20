@@ -2,12 +2,12 @@ overwrite: true
 schema:
     - 'http://localhost:24579/graphql'
 generates:
-    src/codegen.ts:
+    src/graphql/codegen.ts:
         plugins:
             - 'typescript'
             - 'typescript-operations'
             - 'graphql-codegen-svelte-apollo'
-        clientPath: 'src/apollo-client'
+        clientPath: 'src/graphql/client'
         asyncQuery: true
         scalars:
             DateTime: string

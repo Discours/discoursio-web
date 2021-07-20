@@ -41,6 +41,9 @@
   })
 </script>
 
+<div class="connected-counter">
+  {Object.keys(provider.room.doc)}
+</div>
 {#if editor}
   <button
     on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}

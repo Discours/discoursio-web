@@ -1,8 +1,6 @@
+<!-- svelte-ignore a11y-missing-attribute -->
 <div class="loginpage">
-  <!-- svelte-ignore a11y-missing-attribute -->
-  <div
-    style="width: 1028px; height: 640px; background-color: white; box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.10); position: relative;"
-  >
+  <div class="loginwrap">
     <div
       style="left: 582px; top: 120px; position: absolute; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;"
     >
@@ -75,7 +73,7 @@
           style="flex: 1 1 0%; height: 100%; display: flex; flex-direction: row; align-items: flex-start; justify-content: center;"
         >
           <div
-            style="flex: 1 1 0%; height: 100%; padding-left: 12px; padding-right: 12px; padding-top: 8px; padding-bottom: 8px; background-color: white; border-radius: 2px; border-style: solid; border-width: 2px; border-color: rgba(232.05, 232.05, 232.05, 1); display: flex; flex-direction: row; align-items: center; justify-content: flex-end;"
+            style="flex: 1 1 0%; height: 100%; padding-left: 12px; padding-right: 12px; padding-top: 8px; padding-bottom: 8px; background-color: white; border-radius: 2px; border-style: solid; border-width: 2px; border-style: solid; border-color: rgba(232.05, 232.05, 232.05, 1); display: flex; flex-direction: row; align-items: center; justify-content: flex-end;"
           >
             <div
               style="flex: 1 1 0%; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;"
@@ -192,128 +190,29 @@
         </div>
       </div>
     </div>
-    <div
-      style="width: 514px; height: 642px; padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 44px; left: 0px; top: 0px; position: absolute; background-color: rgba(20.40, 20.40, 20.40, 0.80); display: inline-flex; flex-direction: column; align-items: center; justify-content: flex-end;"
-    >
-      <div
-        style="width: 180px; height: 80px; padding-left: 8px; padding-right: 8px; padding-top: 16px; padding-bottom: 16px; display: inline-flex; flex-direction: row; align-items: center; justify-content: center;"
-      >
-        <p
-          style="font-size: 36px; font-weight: 700; line-height: 44px; text-align: center; color: white; text-transform: uppercase;"
-        >
-          Дискурс
-        </p>
-      </div>
-    </div>
     <img
-      style="width: 24px; height: 24px; left: 988px; top: 16px; position: absolute; border-radius: 8px;"
-      src="https://via.placeholder.com/24x24"
+      style="width: 514px; height: 642px; padding-left: 40px; padding-right: 40px; padding-top: 40px; padding-bottom: 44px; left: 0px; top: -2px; position: absolute; display: inline-flex; flex-direction: column; align-items: center; justify-content: flex-end;"
+      src="https://via.placeholder.com/514x642"
     />
   </div>
 </div>
 
-<style lang="scss">
+<style>
   .loginpage {
-    width: 60%;
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-    display: flexbox;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-size: 14px;
-  }
-  .v3826_131604 {
     width: 100%;
-    height: 640px;
-    background: rgba(255, 255, 255, 1);
-    opacity: 1;
+    height: 100%;
+    padding: 14.3% 13.2%;
+    background-color: rgba(246.5, 246.5, 246.5, 1);
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  .loginwrap {
+    width: 72%;
+    height: 62%;
+    background-color: white;
+    box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.1);
     position: relative;
-    top: 0px;
-    left: 0px;
-    box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.10000000149011612);
-    overflow: hidden;
-  }
-  .v3826_131620 {
-    width: 514px;
-    height: 642px;
-    background: url('../images/v3826_131620.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    padding: 48px 32px;
-    opacity: 1;
-    position: relative;
-    top: 0px;
-    left: 0px;
-    overflow: hidden;
-  }
-  .v3826_131621 {
-    width: 434px;
-    color: rgba(255, 255, 255, 1);
-    position: absolute;
-    top: 229px;
-    left: 40px;
-    opacity: 1;
-    text-align: left;
-  }
-  .name {
-    color: #fff;
-  }
-  .v3826_131758 {
-    width: 379px;
-    height: 514px;
-    background: url('../images/v3826_131758.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    margin: 16px;
-    opacity: 1;
-    position: absolute;
-    top: 67px;
-    left: 582px;
-    overflow: hidden;
-  }
-  .v3839_2401 {
-    width: 379px;
-    color: rgba(20, 20, 20, 1);
-    position: absolute;
-    top: 338px;
-    left: 0px;
-    font-family: Arial, Helvetica, sans-serif; /* Muller; */
-    font-weight: Medium;
-    font-size: 15px;
-    opacity: 1;
-    text-align: left;
-  }
-  .v3839_2402 {
-    width: 379px;
-    height: 56px;
-    background: url('../images/v3839_2402.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    margin: 10px;
-    opacity: 1;
-    position: absolute;
-    top: 378px;
-    left: 0px;
-    overflow: hidden;
-  }
-  .v3839_2400 {
-    width: 379px;
-    color: url('../images/v3839_2400.png');
-    position: absolute;
-    top: 450px;
-    left: 0px;
-    font-family: Arial, Helvetica, sans-serif; /* Muller; */
-    font-weight: Regular;
-    font-size: 12px;
-    opacity: 1;
-    text-align: left;
   }
 </style>

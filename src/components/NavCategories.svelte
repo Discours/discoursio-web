@@ -1,23 +1,12 @@
 <script>
-  let links = [
-    ['статьи', 'articles'],
-    ['литература', 'books'],
-    ['галерея', 'gallery'],
-    ['музыка', 'music'],
-    ['видео', 'video'],
-    ['общество', 'society'],
-    ['культура', 'culture'],
-    ['теории', 'theories'],
-    ['спецпроекты', 'special'],
-    ['обсуждения', 'discussions'],
-  ]
+  import data from '../data.en.json'
 </script>
 
 <section>
   <div style="height: 60px;" />
   <div class="cats">
-    {#each links as link}
-      <a href={'#' + link[1]}>{link[0]}</a>
+    {#each Object.entries(data.projects) as [project, data]}
+      <a href={'/p/' + project}>{data.name}</a>
       <div class="space" />
     {/each}
   </div>

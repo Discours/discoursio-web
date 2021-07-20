@@ -1,3 +1,7 @@
+<script lang="ts">
+  // TODO: getMessages graphql query
+</script>
+
 <!-- svelte-ignore a11y-missing-attribute -->
 <div>
   <div
