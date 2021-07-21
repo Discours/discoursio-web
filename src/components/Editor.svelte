@@ -11,6 +11,7 @@
   const DEFAULT_ROOM = 'discours.io/test'
   const options = {
     signaling: [
+      'wss://signaling.discours.io',
       'wss://signaling.yjs.dev',
       'wss://y-webrtc-signaling-eu.herokuapp.com',
       // 'wss://tracker.openwebtorrent.com',
