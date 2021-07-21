@@ -18,7 +18,7 @@ const process = async () => {
 
   // NOTE! File structure convention
   // content/<org>/<project>/<article-slug>.md
-  console.log('\n [ generating data.json from `content` folder ]\n')
+  console.log('precompiler: generate data.json from `content` folder')
   walk(contentPath)
     .on('file', async (root, stats, next) => {
 
@@ -39,7 +39,7 @@ const process = async () => {
         if(name === 'index') {
           if(project) projects[project] = { org, name: project, content, data }
           else orgs[org] = { name: org, content, data }
-          console.log(`* ${project || org} *`)
+          console.log(`* ${project || org} ${lng?('('+lng+') '):''}*`)
         } else {
           shouts[name] = { name, project, org, content, data }
           console.log(`* ${name}`)
@@ -58,19 +58,19 @@ const process = async () => {
       let project = ''
       if(!org) {
         org = stats.name
-        console.log(`> ${org}`)
+        console.log(`[${org}]`)
         orgs[org] = { name: org }
       } else {
         project = stats.name
-        console.log(`# ${project}`)
+        console.log(`/${project}`)
         projects[project] = { org, name: project }
       }
       next()
     })
     .on('end', () => {
-      console.log('\n [ data.json stored ]\n')
+      console.log('precompiler: data.json stored')
       // console.log(' [ generating indexes for static routing ]')
-      console.log('\nTODO: generate static routing indexes with Svelte compiler\n')
+      // TODO: generate static routing indexes
       
       // 
       // const indexPath = resolve(cwd, 'public/index.html')

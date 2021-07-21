@@ -19,7 +19,7 @@
   import { Matcher, Match } from 'svelte-store-router'
   import { route, pages } from './stores/router'
   import { token, session } from './stores/auth'
-  import { getTitleFromProps } from './utils/common'
+  import { getTitleFromProps } from './lib/common'
 
   export const router = {
     // visible static
