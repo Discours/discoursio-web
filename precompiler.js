@@ -1,66 +1,41 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { walk } from 'walk'
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import matter from 'gray-matter'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { createRequire } from "module"
+// import { prerender } from './prerender.js'
 
 const require = createRequire(import.meta.url)
-const shouts = require('./public/shouts.json')
-let shoutRoutes =  [ ...Object.keys(shouts) ]
-shoutRoutes = shoutRoutes.map(s => {
-  // console.log(s)
-  const p = s? '/a/' + s : ''
-  return p
-})
-const routes = [ ...[
-  //'/', // home
-  '/login', // auth
-  '/create', // edit
-  //'/o/:org', // TODO: each org index page
-  //'/a/:shout',  // /a/<shout>/index.html 
-  '/search',
-  '/forum'
-], ...shoutRoutes]
-console.debug(routes)
 
-require('svelte/register')
-console.log('prerender: svelte compiler is registered')
+const ORG = 'discours.io' // default org
+let lang = 'ru'         // default language
+
+// require('svelte/register') // FIXME: cannot use import inside anyway
+// console.log('prerender: svelte compiler is registered')
 // const App = require('./src/App.svelte')
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const run = process && process.argv[1] === fileURLToPath(import.meta.url)
 
 const handle = async () => {
   const shouts = {}
-  const cwd = resolve('..')
+  const cwd = resolve('.')
   const contentPath = resolve(cwd, 'content')
   const publicPath = resolve(cwd, 'public')
-  // const indexContent = fs.readFileSync(resolve(publicPath, 'index.html'))
-/*
-  const prerenderShout = (path, shout={}, org='discours.io') => {
-    const { css, head, html } = App.render({ shout, org })
-    fs.writeFileSync(
-      resolve(publicPath, path + '/index.html'),
-      indexContent
-        .replace('</head', `${head}</head>`)
-        .replace('<body></body>', `<body>${html}<style>${css}</style></body>`)
-    )
-  }
-*/
+  
+  let indexContent = fs.readFileSync(resolve(publicPath, 'index.html')).toString()
+
   // NOTE! File structure convention
   // content/<org>/<any-folders>/<article-slug>.md
-  console.log('precompiler: generate data.json from `content` folder\n')
+  console.log('precompiler: generate json from `content` folder')
 
   walk(contentPath)
     .on('file', async (root, stats, next) => {
       // process parts of name
-      let name, ext, lng = ''
+      let ext, lng = ''
       const nameparts = stats.name.split('.')
-      if (nameparts.length === 3) [name, lng, ext] = nameparts
-      if (nameparts.length === 2) [name, ext] = nameparts
-
+      if (nameparts.length === 3) [ , lng, ext] = nameparts
+      if (nameparts.length === 2) [ , ext] = nameparts
+      if (lng === '') lng = lang // if no lang suffix then language is default
       if (ext === 'md') {
         // process path
         const pathparts = root.replace(contentPath, '').split('/')
@@ -70,51 +45,72 @@ const handle = async () => {
         // split frontmatter
         const { content, data } = matter(fs.readFileSync(`${root}/${stats.name}`))
         let shout = { org, ...data, slug, body: content, language: lng}
-        shouts[slug] = shout
-        console.log(`* ${org}/${slug||name} (${!lng?'ru':lng})`)
+        !shouts[lng] && (shouts[lng] = {})
+        shouts[lng][slug] = shout
+        // console.log(`* ${org}/${slug||name} (${!lng?'ru':lng})`)
         fs.writeFileSync(
-          resolve(publicPath, `shouts${lng && ('.' + lng)}.json`),
-          JSON.stringify(shouts, false, 2)
+          resolve(publicPath, `shouts${lng==='ru'?'':'.'+lng}.json`),
+          JSON.stringify(shouts[lng], false, 2)
         )
-
-        // ----- prerender with svelte ------ (doesn't work yet)
-        // FIXME
-        // if(org === process.env.ORG) prerenderShout('/a/' + slug)
+        // FIXME: prerender with svelte App.render
       }
       next()
     })
-    /*
-    .on('directory', async (root, stats, next) => {
-      const pathparts = root.replace(contentPath, '').split('/')
-      pathparts.shift() // removes first empty
-      let org = pathparts.shift()
-      const slug = pathparts.join('')
-      !org && (org = stats.name)
-      console.log(`.. ${org}${slug?'/'+slug:''}`)
-      // orgs[org] = { org, slug }
-      next()
-    })
-    */
-    .on('end', () => {
-      console.log('\nprecompiler: data json stored')
+    .on('end', async () => {
+      const shouts = require('./public/shouts'+(lang==='ru'?'':'.'+lang)+'.json')
+      console.log('precompiler: data stored')
+      console.log('precompiler: org ' + ORG)
+      console.log('precompiler: lang ' + lang)
+      Object.keys(shouts).forEach((skey) => {
+        const apath = join(publicPath, '/a/' + skey)
+        const shout = shouts[skey]
+        if (shout.org === ORG) {
+          console.log('precompiler: /a/'+skey)
+          try { 
+            fs.mkdir(apath, {recursive: true}, () => {
+              try {
+                fs.writeFileSync(
+                  apath + '/index.html',
+                  indexContent
+                    .replace('lang="en">', `lang="${lang}">`)
+                    .replace('<title>discours.io', `<title>discours.io${(shout && shout.title)?(' : ' +shout.title):''}`)
+                    .replace('</head>', `\t<script>window.SHOUT = ${JSON.stringify(shout)}</script>\n\t</head>`)
+                )
+              } catch(e) { console.error(e) }
+            })
+        }
+        catch(e) { console.error(e) }
+        }
+      })
 
-      // import('svelte/register')
-      // const App = import('./src/App.svelte')
-      console.log('precompiler: [todo] indexes for static routing')
-      // TODO: generate static routing indexes
-
-      //
-      // const indexPath = resolve(cwd, 'public/index.html')
-      // const indexContent = fs.readFileSync(indexPath)
-      // projects.values()
-      // orgs.values()
-      shouts.values().forEach()
+      const routes = [
+        //'/',            // index.html
+        //'/a/:shout',    // /a/<shout-slug>/index.html 
+        '/login',
+        '/create',
+        '/search',
+        '/forum'
+      ]
+      //await prerender({ staticDir: publicPath, routes }) // FIXME: loosing titles
+      
+      routes.forEach((sroute) => {
+        const apath = join(publicPath, sroute)
+        console.log('precompiler: ' + sroute)
+        try { 
+          fs.mkdir(apath, {recursive: true}, () => {
+            try {
+              fs.writeFileSync(
+                apath + '/index.html',
+                indexContent.replace('<title>discours.io', `<title>discours.io${sroute?sroute:''}`)
+              )
+            } catch(e) { console.error(e) }
+          })
+        } catch(e) { console.error(e) }
+      })
+      
     })
 }
 
 export default handle
 
-if (run) {
-  handle()
-
-}
+process && process.argv[1] === fileURLToPath(import.meta.url) && handle()

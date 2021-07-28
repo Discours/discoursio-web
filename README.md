@@ -37,3 +37,7 @@ Compile and run web frontend
 pnpm i
 pnpm dev
 ```
+
+### To change default organization and language
+
+Edit `precompiler.js` for your needs

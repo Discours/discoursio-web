@@ -89,7 +89,7 @@
     "stylelint-check": "stylelint-config-prettier-check",
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
     "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
-    "build": "run-p ssr prod",
+    "build": "run-s gen ssr",
     "sb:start": "start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },

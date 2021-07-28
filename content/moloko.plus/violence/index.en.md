@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Violence
-name: violence
+slug: violence
 ---
 
 # {title}

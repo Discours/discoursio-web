@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { getLocalization } from '../i18n'
 
   const { t } = getLocalization()

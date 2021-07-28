@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Единороги
-name: единороги
+slug: unicorns
 ---
 
 # {title}

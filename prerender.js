@@ -39,7 +39,7 @@ export async function prerender(options) {
       const file = normalize(`${outDir}/index.html`)
       const dirExists = await existsAsync(outDir)
       if (!dirExists) await mkdirAsync(outDir)
-      console.info(`prerender: rendering route "${route}"...`)
+      console.info(`prerender: ${route}`)
       await writeFileAsync(file, html)
     } catch (e) {
       console.error(e)

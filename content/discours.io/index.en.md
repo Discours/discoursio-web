@@ -1,7 +1,6 @@
 ---
 layout: org
 title: Versioned human reads
-name: discours.io
 ---
 
 # {title}

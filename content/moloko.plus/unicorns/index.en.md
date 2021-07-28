@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Unicorns
-name: unicorns
+slug: unicorns
 ---
 
 # {title}

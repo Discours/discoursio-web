@@ -12,7 +12,8 @@ const port = 5000
 const dir = 'public'
 
 const compileOptions = process.env.SSR==='ssr' ? {
-  dev, 
+  dev,
+  css: () => null,
   hydratable: true,
   immutable: true,
   generate: 'ssr'
@@ -22,7 +23,7 @@ const compileOptions = process.env.SSR==='ssr' ? {
 }
 
 const options = {
-  entryPoints: [`src/index${process.env.SSR==='ssr'?'.ssr':''}.ts`],
+  entryPoints: [`src/index.ts`],
   bundle: true,
   color: true,
   incremental: dev,
@@ -37,9 +38,8 @@ if(!dev) {
   options.treeShaking = true
 }
 
-const make = (callback = null) => {
-  build(options)
-  .then(builder => {
+const make = async (callback = null) => {
+  return build(options).then(builder => {
     if (builder.warnings && builder.warnings.length) {
       builder.warnings.forEach(w => console.warn(w))
       return
@@ -61,7 +61,7 @@ const make = (callback = null) => {
           if (item == 'content') {
             lr.prevent()
             try {
-              // await precompile()
+              await precompile()
             } catch(err) { lr.error(err.message, 'esbuild: content precompiler error')}
           }
         }
@@ -78,10 +78,9 @@ const make = (callback = null) => {
 }
 
 if(process.env.SSR) { 
-  make()
   console.log('esbuild: precompiling with SSR')
-  precompile()
+  make().then(precompile)
 }
 else {
-  make()
+  precompile().then(make)
 }
