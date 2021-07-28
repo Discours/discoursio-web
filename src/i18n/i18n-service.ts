@@ -6,6 +6,7 @@ const INITIAL_LANGUAGE = 'ru'
 export class I18nService {
   // expose i18next
   i18n: i18n
+
   constructor() {
     this.i18n = i18next
     this.initialize()
