@@ -1,9 +1,8 @@
 <script lang="ts">
-  import type { Shout } from '../graphql/codegen'
+  import MD from 'marked'
 
   export let shout
-
-  // TODO:
+  // TODO: ShoutCard layout, logix
 </script>
 
 <div class="shout">
@@ -11,10 +10,10 @@
     <div class="shout-title">{shout.title}</div>
   </div>
   <div class="shout-body">
-    <img alt="" src={shout.id} />
+    <div>{@html MD(shout.content)}</div>
   </div>
   <div class="shout-controls">
-    <div class="shout-author">{shout.author}</div>
+    <div class="shout-author">{shout && shout.author || 'anonymous'}</div>
     <div class="shout-rating" />
   </div>
 </div>

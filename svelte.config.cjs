@@ -6,7 +6,7 @@ const { mdsvex } = require('mdsvex')
 const { scss, globalStyle } = sveltePre
 
 module.exports = {
-    extensions: [".svelte", ".md", ".svx"],
+    extensions: [".svelte", ".md"],
     preprocess: [
         mdsvex(),
         typescript(),

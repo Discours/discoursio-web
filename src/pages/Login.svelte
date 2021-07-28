@@ -73,7 +73,7 @@
           style="flex: 1 1 0%; height: 100%; display: flex; flex-direction: row; align-items: flex-start; justify-content: center;"
         >
           <div
-            style="flex: 1 1 0%; height: 100%; padding-left: 12px; padding-right: 12px; padding-top: 8px; padding-bottom: 8px; background-color: white; border-radius: 2px; border-style: solid; border-width: 2px; border-style: solid; border-color: rgba(232.05, 232.05, 232.05, 1); display: flex; flex-direction: row; align-items: center; justify-content: flex-end;"
+            style="flex: 1 1 0%; height: 100%; padding-left: 12px; padding-right: 12px; padding-top: 8px; padding-bottom: 8px; background-color: white; border-radius: 2px; border-style: solid; border-width: 2px; border-color: rgba(232.05, 232.05, 232.05, 1); display: flex; flex-direction: row; align-items: center; justify-content: flex-end;"
           >
             <div
               style="flex: 1 1 0%; display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;"

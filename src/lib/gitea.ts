@@ -11,14 +11,14 @@ const {
   GITEA_URL,
   GITEA_COOKIE_NAME,
   TEMPLATE_OWNER_GITEA_USERNAME,
-  GITEA_MACHINE_USER,
-  GITEA_MACHINE_PASSWORD,
+  GITEA_ACCOUNT,
+  GITEA_PASSWORD,
 } = process.env
 
 const base64 = (str) => Buffer.from(str).toString('base64')
 const b64d = (data) => Buffer.from(data, 'base64').toString()
 
-const TOKEN = base64(`${GITEA_MACHINE_USER}:${GITEA_MACHINE_PASSWORD}`)
+const TOKEN = base64(`${GITEA_ACCOUNT}:${GITEA_PASSWORD}`)
 const giteaFetch = (endpoint, opts = {}, asUser = null) => {
   const conf = {
     headers: {

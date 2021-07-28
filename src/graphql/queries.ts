@@ -1,16 +1,12 @@
 import type { Shout } from './codegen'
 
-interface Filters {
-  category?: string // optional tag to filter
-  project?: string
-  author?: string // optional username filter
-  org?: string
-}
+// UI/UX semantic needs
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const getShoutsFiltered = (filters: Filters): Array<Shout> => {
-  console.log('gql: get shouts filtered by ')
-  console.debug(filters)
-  // TODO: filtered query logix
-  return []
+export const editorAccept = (shoutId: number): boolean => {
+  console.log(
+    'gql: editor`s acception of the all proposals for shout ' +
+      shoutId.toString()
+  )
+  
+  return true
 }

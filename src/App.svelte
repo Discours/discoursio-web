@@ -1,15 +1,15 @@
 <script>
   import { onMount } from 'svelte'
   // import { Query } from './graphql/codegen'
-  import { client } from './graphql/client.ts'
-  import { initLocalizationContext } from './i18n'
-  import { ApolloLink } from '@apollo/client'
+  // import { client } from './graphql/client.ts'
+  // import { initLocalizationContext } from './i18n/index'
+  // import { ApolloLink } from '@apollo/client'
   import NavHeader from './components/NavHeader.svelte'
   import Home from './pages/Home.svelte'
   import NotFound from './pages/NotFound.svelte'
   import Forum from './pages/Forum.svelte'
   import Community from './pages/Community.svelte'
-  import Editor from './pages/Editor.svelte'
+  import Editor from './components/Editor.svelte'
   import Feed from './pages/Feed.svelte'
   import Create from './pages/Create.svelte'
   import Search from './pages/Search.svelte'
@@ -19,7 +19,8 @@
   import { Matcher, Match } from 'svelte-store-router'
   import { route, pages } from './stores/router'
   import { token, session } from './stores/auth'
-  import { getTitleFromProps } from './lib/common'
+  import { getPageTitle } from './lib/common'
+  import { org } from './stores/common'
 
   export const router = {
     // visible static
@@ -40,13 +41,11 @@
     '/community': { component: Community, caption: 'community' }, // TODO: myCommunity publications stats / insights
   }
 
-  export let org
-  export let project = ''
   export let shout = ''
 
   $: $pages = $pages || router
 
-  initLocalizationContext()
+  // initLocalizationContext()
 
   let title
 
@@ -66,13 +65,12 @@
 
     // get org name from subdomain
     const tld = window.location.hostname.split('.')[0]
-    org = tld == 'discours' ? 'discours.io' : tld
-    title = getTitleFromProps({ org, project, shout })
+    $org = (tld === 'discours' || tld === 'localhost') ? 'discours.io' : tld
+    title = getPageTitle({ org: $org, shout })
     console.log('app: got org from domain name')
+    console.log($org)
   })
-
-  $: $token = document.cookie
-
+/*
   $: if (checkAuth($token)) {
     console.log('app: authorize api connection')
     const al = new ApolloLink((operation, forward) => {
@@ -90,6 +88,7 @@
       console.log('app: api connection renewed')
     }
   }
+  */
 </script>
 
 <svelte:head>

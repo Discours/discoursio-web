@@ -199,26 +199,28 @@ export type ResultPayload = {
 
 export type Role = {
   __typename?: 'Role'
-  id: Scalars['Int']
   name: Scalars['String']
+  desc: Maybe<Scalars['String']>
 }
 
 export type Shout = {
   __typename?: 'Shout'
+  id: Scalars['Int']
+  slug: Maybe<Scalars['String']>
   author: Scalars['Int']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
+  updatedAt: Scalars['DateTime']
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
-  id: Scalars['Int']
   rating?: Maybe<Scalars['Int']>
-  published: Scalars['DateTime']
+  published?: Scalars['DateTime']
   replyTo?: Maybe<Scalars['Int']>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
+  topics?: Maybe<Array<Maybe<Scalars['String']>>>
   title?: Maybe<Scalars['String']>
-  updatedAt: Scalars['DateTime']
   versionOf?: Maybe<Scalars['Int']>
-  visibleForRoles: Array<Maybe<Role>>
+  visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
 }
 

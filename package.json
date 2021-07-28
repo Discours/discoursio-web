@@ -28,7 +28,7 @@
     "cross-env": "^7.0.3",
     "derver": "^0.4.17",
     "dotenv": "^10.0.0",
-    "esbuild": "^0.12.15",
+    "esbuild": "^0.12.16",
     "esbuild-svelte": "^0.5.3",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
@@ -78,6 +78,8 @@
   },
   "scripts": {
     "gen": "node precompiler.js",
+    "ssr": "cross-env NODE_ENV=\"production\" SSR=\"ssr\" node esbuild.config.js",
+    "ssr-dev": "cross-env NODE_ENV=\"development\" SSR=\"ssr\" node esbuild.config.js",
     "format": "prettier --plugin=./node_modules/prettier-plugin-svelte --write src",
     "validate": "tsc --noEmit && svelte-check",
     "fix": "eslint --fix src/**/*.{ts,svelte}",
@@ -87,7 +89,7 @@
     "stylelint-check": "stylelint-config-prettier-check",
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
     "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
-    "build": "run-p gen prod",
+    "build": "run-p ssr prod",
     "sb:start": "start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },
@@ -95,9 +97,7 @@
     "graphql": "15.5.0"
   },
   "type": "module",
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm test"
-    }
+  "dependencies": {
+    "marked": "^2.1.3"
   }
 }

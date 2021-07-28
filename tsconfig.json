@@ -10,6 +10,6 @@
     "types": ["svelte", "node"]
   },
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*", "precompiler.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules/*", "public/*"]
 }

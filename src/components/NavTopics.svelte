@@ -1,21 +1,33 @@
 <script>
   import { onMount } from 'svelte'
-  import { lang, Language } from '../stores/common'
+  import { lang, Locale } from '../stores/common'
+  import { shouts } from '../stores/zine'
+  import { org } from '../stores/common'
+  
+  import shoutsDataEn from '../../public/shouts.en.json'
+  import shoutsDataRu from '../../public/shouts.json'
 
-  let data
+  let topics = new Set() // FIXME: now we use all the topics
+  
   onMount(() => {
     // TODO: get system lang
-    const lng = $lang === Language.RU ? '' : $lang + '.'
-    data = import(`/data.${lng}json`)
+    $shouts = ($lang === Locale.RU? shoutsDataRu : shoutsDataEn)[$org]
+    console.log(shoutsDataRu)
   })
+
+  $: if($shouts) {
+    Object.keys($shouts).forEach(sid => $shouts[sid].topics.forEach(topic => topics.add(topic)))
+  }
+
+  
 </script>
 
 <section>
   <div style="height: 60px;" />
-  <div class="cats">
-    {#if data}
-      {#each Object.entries(data.projects) as [project, data]}
-        <a href={'/p/' + project}>{data.name}</a>
+  <div class="topics">
+    {#if shouts}
+      {#each Array.from(topics) as topic}
+        <a href={'/p/' + topic.slug}>{topic.name}</a>
         <div class="space" />
       {/each}
     {/if}
@@ -35,7 +47,7 @@
     width: 29px;
   }
 
-  .cats {
+  .topics {
     height: 20px;
     left: 30px;
     position: relative;

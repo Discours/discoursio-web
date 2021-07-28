@@ -2,7 +2,7 @@ node_modules
 *.DS_Store
 pnpm-lock.yaml
 public/bundle.*
-public/data*
+public/*.json
 database
 storybook-static
 gen

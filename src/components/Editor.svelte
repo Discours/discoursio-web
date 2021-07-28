@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import { Editor } from '@tiptap/core'
   import StarterKit from '@tiptap/starter-kit'
@@ -7,22 +7,24 @@
   import * as Y from 'yjs'
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
+  import type { Shout } from '../graphql/codegen'
+  import { editorAccept } from '../graphql/queries'
 
-  const DEFAULT_ROOM = 'discours.io/test'
-  const options = {
-    signaling: [
-      'wss://signaling.discours.io',
-      'wss://signaling.yjs.dev',
-      'wss://y-webrtc-signaling-eu.herokuapp.com',
-      // 'wss://tracker.openwebtorrent.com',
-      // 'wss://tracker.novage.com.ua:443/announce',
-      // "wss://signaling.discours.io"
-    ],
-  }
+  const DEFAULT_ROOM = 'discours.io/demo'
+  const ydoc = new Y.Doc()
+  const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc)
+  provider.signalingUrls.push('wss://signaling.discours.io')
+  
   let element
   let editor
-  const ydoc = new Y.Doc()
-  const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc, options)
+  export let shout: Shout = {
+    id: 0,
+    slug: '',
+    author: 0,
+    body: '',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
 
   onDestroy(() => editor && editor.destroy())
 
@@ -30,7 +32,7 @@
     editor = new Editor({
       element,
       extensions: [Collaboration, CollaborationCursor, StarterKit],
-      content: '<p>Hello World! 🌍️ </p>',
+      content: shout.body,
       onTransaction: () => {
         // force re-render so `editor.isActive` works as expected
         editor = editor

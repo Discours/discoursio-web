@@ -2,7 +2,7 @@
   import { route } from '../stores/router'
   import { getLocalization } from '../i18n'
 
-  import Login20 from 'carbon-icons-svelte/lib/Login20'
+  import User20 from 'carbon-icons-svelte/lib/User20'
   import Edit20 from 'carbon-icons-svelte/lib/Edit20'
   import Search20 from 'carbon-icons-svelte/lib/Search20'
   import Email20 from 'carbon-icons-svelte/lib/Email20'
@@ -18,7 +18,7 @@
     { path: '/', caption: 'home' },
     { path: '/search', caption: 'search', icon: Search20 },
     { path: '/create', caption: 'create', icon: Edit20 },
-    { path: '/login', caption: 'login', icon: Login20 },
+    { path: '/login', caption: 'login', icon: User20 },
   ]
 
   const privateRoutes = [
@@ -35,9 +35,9 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <nav>
-  <h1>Дискурc</h1>
+  <a href="/"><h1>Дискурc</h1></a>
   <div style="width: 195px;" />
-  <div class="route">
+  <div class="router">
     {#each visibleRoutes as { path, caption, icon }}
       <div>
         <div class="routewrap">
@@ -79,12 +79,13 @@
       text-transform: uppercase;
     }
 
-    .route {
+    .router {
       height: 28px;
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
-      justify-content: flex-start;
+      align-items: flex-end;
+      justify-content: flex-end;
+      width: 100%;
 
       .routewrap {
         display: inline-flex;
@@ -97,7 +98,6 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: flex-start;
 
           a {
             font-size: 15px;

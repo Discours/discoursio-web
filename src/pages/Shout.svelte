@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let content
+  export let shout
 </script>
 
-<div>{content}</div>
+<div>{@html shout.body}</div>

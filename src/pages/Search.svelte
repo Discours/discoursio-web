@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { getShoutsFiltered } from '../graphql/queries'
+  import { shouts } from '../stores/zine'
+  import ShoutCard from '../components/ShoutCard.svelte'
 
   // TODO: topAuthors query
-
-  export let category // as TAG
-  let entries = []
-  onMount(() => {
-    entries = getShoutsFiltered({ category })
-  })
 </script>
+
+{#each Object.keys($shouts) as shid }
+  <ShoutCard shout={$shouts[shid]} />
+{/each}
