@@ -5,6 +5,9 @@
 [+] topic entity added
 [-] i18n switched off
 [+] own signaling server connected
+[-] store-based routing removed
+[+] reset password page
+[+] login/register form
 
 [0.0.3]
 

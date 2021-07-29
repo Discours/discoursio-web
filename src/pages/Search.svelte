@@ -1,10 +1,22 @@
 <script lang="ts">
-  import { shouts } from '../stores/zine'
-  import ShoutTeaser from '../components/ShoutTeaser.svelte'
+import { shouts } from '../stores/zine'
+import ShoutTeaser from '../components/ShoutTeaser.svelte'
 
-  // TODO: topAuthors query
+let teasers = []
+$: if($shouts) teasers = Object.keys($shouts)
+
+// TODO: topAuthors query
 </script>
 
-{#each Object.keys($shouts) as shid }
+<div class="results">
+{#each teasers as shid }
   <ShoutTeaser shout={$shouts[shid]} />
 {/each}
+</div>
+
+<style>
+.results {
+  width: 100%;
+  overflow-y: scroll;
+}
+</style>

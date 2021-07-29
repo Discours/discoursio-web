@@ -87,6 +87,7 @@ const handle = async () => {
         //'/',            // index.html
         //'/a/:shout',    // /a/<shout-slug>/index.html 
         '/login',
+        '/resetpassword',
         '/create',
         '/search',
         '/forum'
