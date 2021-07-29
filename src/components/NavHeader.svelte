@@ -1,5 +1,5 @@
-<script lang="ts">
-import { route } from '../stores/router'
+<script>
+import { links } from 'svelte-routing'
 
 import UserAvatar20 from 'carbon-icons-svelte/lib/UserAvatar20'
 import UserAvatarFilledAlt20 from 'carbon-icons-svelte/lib/UserAvatarFilledAlt20'
@@ -9,32 +9,33 @@ import Search20 from 'carbon-icons-svelte/lib/Search20'
 import Query20 from 'carbon-icons-svelte/lib/Query20'
 import Email20 from 'carbon-icons-svelte/lib/Email20'
 import Dashboard20 from 'carbon-icons-svelte/lib/Dashboard20'
+import DashboardReference20 from 'carbon-icons-svelte/lib/DashboardReference20'
 import EditOff20 from 'carbon-icons-svelte/lib/EditOff20'
 import EmailNew20 from 'carbon-icons-svelte/lib/EmailNew20'
 import MailAll20 from 'carbon-icons-svelte/lib/MailAll20'
 import Userpic from './Userpic.svelte'
+
 import { token } from '../stores/auth'
 
 //import { getLocalization } from '../i18n'
 // const { t } = getLocalization()
 
-let newMessages = true // FIXME
+let newMessages = true // FIXME: get with query
 
-$: console.log($route)
-
+const here = where => window && window.location === where
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<nav>
-  <a on:click={() => $route.path = '/'}><h1>Дискурc</h1></a>
+<nav use:links>
+  <a href='/'><h1>Дискурc</h1></a>
   <div style="width: 195px;" />
   <div class="router">
 
     <!-- public routes -->
     <div class="routewrap">
       <div class="routecell">
-        <a on:click={() => $route.path = '/search'} >
-          <svelte:component this={ $route.path==='/search'? Query20 : Search20} title='search' />
+        <a href='/search' >
+          <svelte:component this={ here('/search')? Query20 : Search20} title='search' />
         </a>
       </div>
     </div>
@@ -42,8 +43,8 @@ $: console.log($route)
 
     <div class="routewrap">
       <div class="routecell">
-        <a on:click={() => $route.path = '/login'} >
-          <svelte:component this={$route.path==='/login'? UserAvatarFilledAlt20 : UserAvatar20 } title='login' />
+        <a href='/login' >
+          <svelte:component this={ here('/login')? UserAvatarFilledAlt20 : UserAvatar20 } title='login' />
         </a>
       </div>
     </div>
@@ -53,8 +54,8 @@ $: console.log($route)
       <!-- private routes -->
       <div class="routewrap">
         <div class="routecell">
-          <a on:click={() => $route.path = '/profile'} >
-            <svelte:component this={$route.path==='/profile'? Userpic : UserAvatarFilled20} title='profile' />
+          <a href='/profile' >
+            <svelte:component this={ here('/profile')? Userpic : UserAvatarFilled20} title='profile' />
           </a>
         </div>
       </div>
@@ -62,8 +63,8 @@ $: console.log($route)
 
       <div class="routewrap">
         <div class="routecell">
-          <a on:click={() => $route.path = '/editor'} >
-            <svelte:component this={$route.path==='/editor'? Edit20 : EditOff20} title='editor' />
+          <a href='/editor' >
+            <svelte:component this={ here('/editor')? Edit20 : EditOff20} title='editor' />
           </a>
         </div>
       </div>
@@ -71,8 +72,8 @@ $: console.log($route)
 
       <div class="routewrap">
         <div class="routecell">
-          <a on:click={() => $route.path = '/inbox'} >
-            <svelte:component this={$route.path==='/inbox'? (newMessages?EmailNew20:Email20) : MailAll20 } title='inbox' />
+          <a href='/inbox'>
+            <svelte:component this={ here('/inbox')? (newMessages?EmailNew20:Email20) : MailAll20 } title='inbox' />
           </a>
         </div>
       </div>
@@ -80,8 +81,8 @@ $: console.log($route)
 
       <div class="routewrap">
         <div class="routecell">
-          <a on:click={() => $route.path = '/community'} >
-            <svelte:component this={Dashboard20} title='community' />
+          <a href='/community' >
+            <svelte:component this={here('/inbox')? DashboardReference20:Dashboard20} title='community' />
           </a>
         </div>
       </div>
