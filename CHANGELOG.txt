@@ -1,3 +1,11 @@
+[0.0.4]
+
+[+] precompiler generated static indexes
+[-] puppeteer switched off
+[+] topic entity added
+[-] i18n switched off
+[+] own signaling server connected
+
 [0.0.3]
 
 [~] prerender with puppeteer

@@ -139,8 +139,9 @@ export type Query = {
   getOnline: Array<User>
   getUserById: User
   getUserRating: Scalars['Int']
-  getMessages: Array<Message>
   getShoutRating: Scalars['Int']
+  getMessages: Array<Message>
+  getAllTopics: Array<Topic>
   shoutsByAuthor: Array<Maybe<Shout>>
   shoutsByReplyTo: Array<Maybe<Shout>>
   shoutsByTags: Array<Maybe<Shout>>
@@ -241,6 +242,16 @@ export type Token = {
   ownerId: Scalars['Int']
   usedAt?: Maybe<Scalars['DateTime']>
   value: Scalars['String']
+}
+
+export type Topic = {
+  __typename?: 'Topic'
+  slug: Scalars['String']
+  value: Scalars['String']
+  parents?: Maybe<Array<Maybe<Scalars['String']>>>
+  children?: Maybe<Array<Maybe<Scalars['String']>>>
+  createdAt: Scalars['DateTime']
+  createdBy: Scalars['Int']
 }
 
 export type User = {

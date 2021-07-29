@@ -13,10 +13,15 @@
   const DEFAULT_ROOM = 'discours.io/demo'
   const ydoc = new Y.Doc()
   const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc)
-  provider.signalingUrls.push('wss://signaling.discours.io')
-  
+  provider.signalingUrls = [
+    'wss://signaling.discours.io',
+    'wss://y-webrtc-signaling-eu.herokuapp.com'
+  ]
+  console.log(provider)
+  console.log(ydoc)
   let element
   let editor
+
   export let shout: Shout = {
     id: 0,
     slug: '',
@@ -41,11 +46,13 @@
     // Store the Y document in the browser
     new IndexeddbPersistence(DEFAULT_ROOM, ydoc)
     provider.connect()
+    console.log(provider)
+    // Object.keys(provider.room.doc)
   })
 </script>
 
 <div class="connected-counter">
-  {Object.keys(provider.room.doc)}
+  {'0'}
 </div>
 {#if editor}
   <button

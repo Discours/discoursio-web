@@ -11,7 +11,7 @@
   import Community from './pages/Community.svelte'
   import Editor from './components/Editor.svelte'
   import Feed from './pages/Feed.svelte'
-  import Create from './pages/Create.svelte'
+  // import Create from './pages/Create.svelte'
   import Search from './pages/Search.svelte'
   import Login from './pages/Login.svelte'
   import Inbox from './pages/Inbox.svelte'
@@ -26,7 +26,7 @@
     // visible static
     '/search': { component: Search, caption: 'search', public: true },
     '/login': { component: Login, caption: 'login', public: true },
-    '/create': { component: Create, caption: 'create', public: true },
+    // '/create': { component: Create, caption: 'create', public: true },
     // needs precompiler / prerender
     '/': { component: Home, caption: 'home', public: true }, // topShouts
     '/feed': { component: Feed, caption: 'feed' }, // TODO: myShouts by stored subscriptions on categories and authors
@@ -106,9 +106,9 @@
     <Match path={$route.path} pattern="/c/:category" let:params={{ category }}>
       <Search {category} />
     </Match>
-    <Match path={$route.path} pattern="/create" loose>
+    <!-- Match path={$route.path} pattern="/create" loose>
       <Create />
-    </Match>
+    </Match -->
     <Match path={$route.path} pattern="/a/:shout" let:params={{ shout }}>
       <Shout {shout} {org} />
     </Match>

@@ -1,13 +1,17 @@
 <script lang="ts">
   import NavTopics from '../components/NavTopics.svelte'
   import ShoutCard from '../components/ShoutCard.svelte'
-  import Editor from '../components/Editor.svelte'
+  // import Editor from '../components/Editor.svelte'
   import { shouts } from '../stores/zine'
   import { session } from '../stores/auth'
-  import { getLocalization } from '../i18n'
   import type { Shout, Role } from '../graphql/codegen'
 
-  const { t } = getLocalization()
+  // import { getLocalization } from '../i18n'
+  // const { t } = getLocalization()
+
+  // {#if false && isEditor && editingShout}
+  //  <Editor shout={editingShout} />
+  // {:else}
 
   export let topShouts = [] // TODO: topShouts -> shouts ids
 
@@ -31,14 +35,12 @@
   }
 </script>
 
-<NavTopics />
+<div class="home">
+  <NavTopics />
 
-{#if isEditor && editingShout}
-  <Editor shout={editingShout} />
-{:else}
   <!-- svelte-ignore a11y-missing-attribute -->
   {#each topShouts as shid }
       <ShoutCard shout={$shouts[shid]} />
-    {#if isEditor}<a href="#edit" on:click={() => editShout(shid)}>{$t('Edit')}</a>{/if}
+    {#if isEditor}<a href="#edit" on:click={() => editShout(shid)}>{'Edit'}</a>{/if}
   {/each}
-{/if}
+</div>

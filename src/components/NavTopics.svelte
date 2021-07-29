@@ -1,13 +1,12 @@
 <script>
   import { onMount } from 'svelte'
-  import { lang, Locale } from '../stores/common'
+  import { org, lang, Locale } from '../stores/common'
   import { shouts } from '../stores/zine'
-  import { org } from '../stores/common'
   
   import shoutsDataEn from '../../public/shouts.en.json'
   import shoutsDataRu from '../../public/shouts.json'
 
-  let topics = new Set() // FIXME: now we use all the topics
+  let topics = new Set() 
   
   onMount(() => {
     // TODO: get system lang
@@ -16,10 +15,15 @@
   })
 
   $: if($shouts) {
-    Object.keys($shouts).forEach(sid => $shouts[sid].topics.forEach(topic => topics.add(topic)))
+    Object.keys($shouts)
+      .forEach(
+        sid => ($shouts[sid] && $shouts[sid].topics)
+          .forEach(
+            topic => topics.add(topic)
+          )
+        )
   }
 
-  
 </script>
 
 <section>
@@ -27,7 +31,7 @@
   <div class="topics">
     {#if shouts}
       {#each Array.from(topics) as topic}
-        <a href={'/p/' + topic.slug}>{topic.name}</a>
+        <a href={'/search/?t=' + topic}>{topic}</a>
         <div class="space" />
       {/each}
     {/if}
