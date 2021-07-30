@@ -25,7 +25,7 @@
   import LogoFacebook32 from 'carbon-icons-svelte/lib/LogoFacebook32'
   const dispatch = createEventDispatcher()
 
-  const version = 'v3.2'
+  const version = 'v11.0'
 
   let disabled = true
   export let appId
@@ -40,12 +40,13 @@
   })
 
   function initialise () {
+    console.log('auth: fb async init')
     const FB = window['FB']
     FB.init({
-      appId      : appId,
+      appId,
       cookie     : true,
       xfbml      : false,
-      version    : version
+      version
     })
     disabled = false
   }

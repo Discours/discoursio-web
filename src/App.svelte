@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { ApolloLink } from '@apollo/client'
-  import { Router, Route  } from 'svelte-routing'
+  import { Router, Route } from 'svelte-routing'
 
   // import { Query } from './graphql/codegen'
   import { client } from './graphql/client.ts'

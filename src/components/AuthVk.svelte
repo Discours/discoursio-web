@@ -43,7 +43,7 @@
     })
   
     function initialise () {
-      console.log('auth-vk: async init')
+      console.log('auth: vk async init')
       const VK = window['VK']
       apiId && VK.init({ apiId })
       disabled = false
