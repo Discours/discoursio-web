@@ -8,6 +8,7 @@
 [-] store-based routing removed
 [+] reset password page
 [+] login/register form
+[+] social auth fb, ggl, vk
 
 [0.0.3]
 

@@ -17,8 +17,8 @@ import Userpic from './Userpic.svelte'
 
 import { token } from '../stores/auth'
 
-//import { getLocalization } from '../i18n'
-// const { t } = getLocalization()
+import { getLocalization } from '../i18n'
+const { t } = getLocalization()
 
 let newMessages = true // FIXME: get with query
 
@@ -35,7 +35,7 @@ const here = where => window && window.location === where
     <div class="routewrap">
       <div class="routecell">
         <a href='/search' >
-          <svelte:component this={ here('/search')? Query20 : Search20} title='search' />
+          <svelte:component this={ here('/search')? Query20 : Search20} title={$t('Search')} />
         </a>
       </div>
     </div>
@@ -44,7 +44,7 @@ const here = where => window && window.location === where
     <div class="routewrap">
       <div class="routecell">
         <a href='/login' >
-          <svelte:component this={ here('/login')? UserAvatarFilledAlt20 : UserAvatar20 } title='login' />
+          <svelte:component this={ here('/login')? UserAvatarFilledAlt20 : UserAvatar20 } title={$t('Edit')} />
         </a>
       </div>
     </div>

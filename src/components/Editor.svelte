@@ -8,6 +8,7 @@
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
   import type { Shout } from '../graphql/codegen'
+  import { org } from '../stores/common'
   import { editorAccept } from '../graphql/queries'
 
   const DEFAULT_ROOM = 'discours.io/demo'
@@ -24,6 +25,7 @@
 
   export let shout: Shout = {
     id: 0,
+    org: $org,
     slug: '',
     author: 0,
     body: '',

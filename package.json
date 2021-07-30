@@ -3,10 +3,10 @@
   "version": "0.0.4",
   "devDependencies": {
     "@apollo/client": "^3.3.21",
+    "@beyonk/async-script-loader": "^2.0.0",
     "@graphql-codegen/cli": "^1.21.8",
     "@graphql-codegen/typescript": "^1.23.0",
     "@graphql-codegen/typescript-operations": "^1.18.4",
-    "@roxi/routify": "^2.18.2",
     "@storybook/addon-essentials": "^6.3.6",
     "@storybook/addon-links": "^6.3.6",
     "@storybook/addon-svelte-csf": "^1.1.0",

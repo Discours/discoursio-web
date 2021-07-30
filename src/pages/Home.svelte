@@ -3,11 +3,12 @@
   import ShoutCard from '../components/ShoutCard.svelte'
   // import Editor from '../components/Editor.svelte'
   import { shouts } from '../stores/zine'
-  import { session } from '../stores/auth'
-  import type { Shout, Role } from '../graphql/codegen'
+  import { orgRole, AS } from '../stores/auth'
+  import { org } from '../stores/common'
+  import type { Shout } from '../graphql/codegen'
 
-  // import { getLocalization } from '../i18n'
-  // const { t } = getLocalization()
+  import { getLocalization } from '../i18n'
+  const { t } = getLocalization()
 
   // {#if false && isEditor && editingShout}
   //  <Editor shout={editingShout} />
@@ -16,19 +17,8 @@
   export let topShouts = [] // TODO: topShouts -> shouts ids
 
   let editingShout: Shout
-  let isEditor: boolean
-
 
   $: if($shouts) topShouts = Object.keys($shouts) // FIXME: with query
-
-  $: if($session) {
-    isEditor = false
-    $session.roles.forEach( (role: Role) => {
-      if (role.name in ['admin', 'owner', 'editor']) {
-        isEditor = true
-      }
-    })
-  }
 
   const editShout = (slug:string) => {
     editingShout = $shouts[slug]
@@ -41,6 +31,10 @@
   <!-- svelte-ignore a11y-missing-attribute -->
   {#each topShouts as shid }
       <ShoutCard shout={$shouts[shid]} />
-    {#if isEditor}<a href="#edit" on:click={() => editShout(shid)}>{'Edit'}</a>{/if}
+    {#if $orgRole >= AS.EDITOR}
+      <a href="#edit" on:click={() => editShout(shid)}>
+        {'Edit'}
+      </a>
+    {/if}
   {/each}
 </div>

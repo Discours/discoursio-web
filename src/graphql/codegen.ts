@@ -20,9 +20,9 @@ export type Like = {
   __typename?: 'Like'
   author: Scalars['Int']
   id: Scalars['Int']
+  value: Scalars['Int']
   shout?: Maybe<Scalars['Int']>
   user?: Maybe<Scalars['Int']>
-  value: Scalars['Int']
 }
 
 export type Message = {
@@ -33,45 +33,46 @@ export type Message = {
   id: Scalars['Int']
   replyTo?: Maybe<Scalars['Int']>
   updatedAt: Scalars['DateTime']
-  visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
-}
-
-export type MessageInput = {
-  body: Scalars['String']
-  replyTo?: Maybe<Scalars['Int']>
+  visibleForUsers: Array<Maybe<Scalars['Int']>>
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
-  createMessage: CreateMessagePayload
-  updateMessage: CreateMessagePayload
+  createMessage: ResultPayload
+  updateMessage: ResultPayload
   deleteMessage: ResultPayload
+  resetPassword: Token
   confirmEmail: Token
   invalidateAllTokens: Scalars['Boolean']
   invalidateTokenById: Scalars['Boolean']
   requestEmailConfirmation: User
   requestPasswordReset: Scalars['Boolean']
-  resetPassword: Token
-  signIn: Token
-  registerUser: User
-  createShout: Message
-  deleteShout: Message
-  rateShout: Scalars['Boolean']
-  rateUser: Scalars['Boolean']
-  updateOnlineStatus: Scalars['Boolean']
-  updateUsername: User
+  registerUser: ResultPayload
+  createShout: ResultPayload
+  deleteShout: ResultPayload
+  rateShout: ResultPayload
+  rateUser: ResultPayload
+  updateOnlineStatus: ResultPayload
+  updateUsername: ResultPayload
 }
 
 export type MutationCreateMessageArgs = {
-  input: MessageInput
+  body: Scalars['String']
+  replyTo?: Maybe<Scalars['Int']>
 }
 
 export type MutationUpdateMessageArgs = {
-  input: UpdateMessageInput
+  id: Scalars['Int']
+  body: Scalars['String']
 }
 
 export type MutationDeleteMessageArgs = {
   messageId: Scalars['Int']
+}
+
+export type MutationResetPasswordArgs = {
+  password: Scalars['String']
+  token: Scalars['String']
 }
 
 export type MutationConfirmEmailArgs = {
@@ -86,22 +87,9 @@ export type MutationRequestPasswordResetArgs = {
   email: Scalars['String']
 }
 
-export type MutationResetPasswordArgs = {
-  password: Scalars['String']
-  token: Scalars['String']
-}
-
 export type MutationRegisterUserArgs = {
-  input: RegisterUserInput
-}
-
-export type MutationCreateShoutArgs = {
-  body: Scalars['String']
-  replyTo?: Maybe<Array<Maybe<Scalars['Int']>>>
-  title?: Maybe<Scalars['String']>
-  versionOf?: Maybe<Array<Maybe<Scalars['Int']>>>
-  visibleForRoles?: Maybe<Array<Maybe<Scalars['Int']>>>
-  visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
+  email: Scalars['String']
+  password: Scalars['String']
 }
 
 export type MutationDeleteShoutArgs = {
@@ -131,32 +119,30 @@ export type Proposal = {
 
 export type Query = {
   __typename?: 'Query'
-  signIn: SignInPayload
+  isEmailFree: ResultPayload
+  signIn: ResultPayload
   signOut: ResultPayload
-  getCurrentUser: User
-  getTokens: Array<Token>
-  isUsernameFree: Scalars['Boolean']
-  getOnline: Array<User>
-  getUserById: User
+  getCurrentUser: ResultPayload
+  getUserById: ResultPayload
   getUserRating: Scalars['Int']
-  getShoutRating: Scalars['Int']
   getMessages: Array<Message>
-  getAllTopics: Array<Topic>
+  getShoutRating: Scalars['Int']
   shoutsByAuthor: Array<Maybe<Shout>>
   shoutsByReplyTo: Array<Maybe<Shout>>
   shoutsByTags: Array<Maybe<Shout>>
   shoutsByTime: Array<Maybe<Shout>>
+  getOnlineUsers: Array<User>
   topAuthors: Array<Maybe<User>>
   topShouts: Array<Maybe<Shout>>
 }
 
-export type QuerySignInArgs = {
-  id: Scalars['Int']
-  password: Scalars['String']
+export type QueryIsEmailFreeArgs = {
+  email: Scalars['String']
 }
 
-export type QueryIsUsernameFreeArgs = {
-  username: Scalars['String']
+export type QuerySignInArgs = {
+  email: Scalars['String']
+  password: Scalars['String']
 }
 
 export type QueryGetUserByIdArgs = {
@@ -196,18 +182,26 @@ export type ResultPayload = {
   __typename?: 'ResultPayload'
   status: Scalars['Boolean']
   error?: Maybe<Scalars['String']>
+  token?: Maybe<Scalars['String']>
+  user?: Maybe<User>
+  message?: Maybe<Message>
+  shout?: Maybe<Shout>
 }
 
 export type Role = {
   __typename?: 'Role'
+  id: Scalars['Int']
   name: Scalars['String']
-  desc: Maybe<Scalars['String']>
+  org: Scalars['String']
+  level: Scalars['Int']
+  desc?: Maybe<Scalars['String']>
 }
 
 export type Shout = {
   __typename?: 'Shout'
   id: Scalars['Int']
-  slug: Maybe<Scalars['String']>
+  org: Scalars['String']
+  slug: Scalars['String']
   author: Scalars['Int']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
@@ -215,7 +209,7 @@ export type Shout = {
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
   rating?: Maybe<Scalars['Int']>
-  published?: Scalars['DateTime']
+  published?: Maybe<Scalars['DateTime']>
   replyTo?: Maybe<Scalars['Int']>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
   topics?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -228,6 +222,7 @@ export type Shout = {
 export type Subscription = {
   __typename?: 'Subscription'
   messageCreated: Message
+  messageUpdated: Message
   messageDeleted: Message
   onlineUpdated: Array<User>
   shoutUpdated: Shout
@@ -247,11 +242,11 @@ export type Token = {
 export type Topic = {
   __typename?: 'Topic'
   slug: Scalars['String']
-  value: Scalars['String']
+  createdBy: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  value?: Maybe<Scalars['String']>
   parents?: Maybe<Array<Maybe<Scalars['String']>>>
   children?: Maybe<Array<Maybe<Scalars['String']>>>
-  createdAt: Scalars['DateTime']
-  createdBy: Scalars['Int']
 }
 
 export type User = {
@@ -268,29 +263,4 @@ export type User = {
   userpic?: Maybe<Scalars['String']>
   userpicId?: Maybe<Scalars['String']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
-}
-
-export type CreateMessagePayload = {
-  __typename?: 'createMessagePayload'
-  status: Scalars['Boolean']
-  error?: Maybe<Scalars['String']>
-  message?: Maybe<Message>
-}
-
-export type RegisterUserInput = {
-  email: Scalars['String']
-  username: Scalars['String']
-  password: Scalars['String']
-}
-
-export type SignInPayload = {
-  __typename?: 'signInPayload'
-  status: Scalars['Boolean']
-  error?: Maybe<Scalars['String']>
-  token?: Maybe<Scalars['String']>
-}
-
-export type UpdateMessageInput = {
-  id: Scalars['Int']
-  body: Scalars['String']
 }

@@ -1,31 +1,36 @@
 <script>
 import { Link } from 'svelte-routing'
-import LogoFacebook20 from 'carbon-icons-svelte/lib/LogoFacebook20'
+import { signUp, signIn } from '../graphql/queries'
+import AuthFacebook from '../components/AuthFacebook.svelte'
+import AuthVk from '../components/AuthVk.svelte'
+import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
 
-let create = false
+let create = false, useSocial = false
 let loginInput, passwordInput, rememberCheck
 
-const login = (provider) => {
-  if(provider) {
-    console.log('auth: signing in in with ' + provider + ' account')
-  } else {
-    console.log('auth: signin in with discours.io account')
-  }
+const login = () => {
+  console.log('auth: signing in with discours.io account')
+  const result = signIn(emailInput.value, passwordInput.value)
+  console.debug(result)
 }
 
-const register = (provider) => {
-  if(provider) {
-    console.log('auth: signing up in with ' + provider + ' account')
-    // TODO: implement all of this stuff
-  } else {
-    console.log('auth: signin up with discours.io account')
-  }
+const register = () => {
+  console.log('auth: signing up with discours.io account')
+  signUp(emailInput.value, passwordInput.value)
+}
+
+const providerSuccess = (e) => {
+  console.dir(e.detail.user)
+}
+
+const providerFailure = (e) => {
+  console.error(e)
 }
 
 </script>
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
-    <div class="cell">
+    <div class="auth">
 
       <div class="tabs" style="width: 100%; height: 54px; margin-top: 16px;">
         <div class="login-tab-title half" class:active={!create} on:click={() => create?(create=false):loginInput.focus()}>
@@ -64,12 +69,28 @@ const register = (provider) => {
 
       <div style="width: 100%; height: 33px; margin-top: 16px;">
         <div class="submitbtn" on:click={() => (create?register:login)()}>
-          {#if create}Создать аккаунт{:else}Войти{/if}
+          {create? 'Создать аккаунт' : 'Войти'}
         </div>
       </div>
-      <div style="width: 100%; height: 33px; margin-top: 16px;" class="social-provider">
-        <span>Используя соцсеть: <LogoFacebook20 on:click={() => (create?register:login)('facebook')}/></span>
+      <Link to="/login" on:click={() => useSocial = !useSocial}>
+        <div style="width: 100%; margin-top: 16px; color: black;" class:huge={useSocial} >
+          {useSocial?'х':'Используя учётную запись в соцсети'}
+        </div>
+      </Link>
+      {#if useSocial}
+      <div style="width: 100%; height: 330px; margin-top: 16px;" class="social-provider">
+        <div class="social">
+          <AuthVk
+            apiId={VK_APP_ID}
+            on:auth-success={providerSuccess}
+            on:auth-failure={providerFailure} />
+          <AuthFacebook
+            appId={FACEBOOK_APP_ID}
+            on:auth-success={providerSuccess}
+            on:auth-failure={providerFailure} />
+        </div>
       </div>
+      {/if}
     </div>
 </div>
 
@@ -82,6 +103,7 @@ const register = (provider) => {
     justify-content: center;
     min-width: 10%;
   }
+  .huge { font-size: xx-large; }
   .view {
     width: 100%;
     height: 100%;
@@ -91,7 +113,7 @@ const register = (provider) => {
     justify-content: center;
   }
   .tabs {
-    font-size: large;
+    font-size: xx-large;
   }
   .rowflex {
     flex: 1 1 0%;
@@ -120,9 +142,10 @@ const register = (provider) => {
   
   .active { color: black; }
 
-  .cell {
+  .auth {
     display: inline-flex; 
     flex-direction: column;
+    min-width: 45%;
   }
   .submitbtn {
     cursor: pointer;
@@ -136,11 +159,11 @@ const register = (provider) => {
     font-weight: 700;
     color: rgba(158.93, 161.32, 167.47, 1);
   }
-  .social-provider span {
-    display: none;
-    color: rgba(20.40, 20.40, 20.40, 1);
-  }
   input[type="text"], input[type="password"] {
     border-bottom: 1px solid rgb(162, 162, 162);
+  }
+  .social {
+    background-color: white !important;
+    padding: 1em;
   }
 </style>
