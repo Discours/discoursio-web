@@ -13,7 +13,7 @@ export enum AS {
   OWNER = 7, // can edit org settings
   ADMIN = 8, // can manage all orgs
 }
-export const FACEBOOK_APP_ID = ''
+export const FACEBOOK_APP_ID = '1809443122683615'
 export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable()
