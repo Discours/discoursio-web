@@ -13,7 +13,16 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: Date
+  DateTime: any
+}
+
+export type ApiError = ErrorInterface & {
+  __typename?: 'ApiError'
+  message: Scalars['String']
+}
+
+export type ErrorInterface = {
+  message: Scalars['String']
 }
 
 export type Like = {
@@ -41,19 +50,11 @@ export type Mutation = {
   createMessage: ResultPayload
   updateMessage: ResultPayload
   deleteMessage: ResultPayload
-  resetPassword: Token
-  confirmEmail: Token
-  invalidateAllTokens: Scalars['Boolean']
-  invalidateTokenById: Scalars['Boolean']
-  requestEmailConfirmation: User
-  requestPasswordReset: Scalars['Boolean']
-  registerUser: ResultPayload
+  confirmEmail: ResultPayload
+  registerUser: RegisterUserResult
   createShout: ResultPayload
   deleteShout: ResultPayload
   rateShout: ResultPayload
-  rateUser: ResultPayload
-  updateOnlineStatus: ResultPayload
-  updateUsername: ResultPayload
 }
 
 export type MutationCreateMessageArgs = {
@@ -70,21 +71,8 @@ export type MutationDeleteMessageArgs = {
   messageId: Scalars['Int']
 }
 
-export type MutationResetPasswordArgs = {
-  password: Scalars['String']
-  token: Scalars['String']
-}
-
 export type MutationConfirmEmailArgs = {
   token: Scalars['String']
-}
-
-export type MutationInvalidateTokenByIdArgs = {
-  id: Scalars['Int']
-}
-
-export type MutationRequestPasswordResetArgs = {
-  email: Scalars['String']
 }
 
 export type MutationRegisterUserArgs = {
@@ -100,14 +88,6 @@ export type MutationRateShoutArgs = {
   value: Scalars['Int']
 }
 
-export type MutationRateUserArgs = {
-  value: Scalars['Int']
-}
-
-export type MutationUpdateUsernameArgs = {
-  username: Scalars['String']
-}
-
 export type Proposal = {
   __typename?: 'Proposal'
   body: Scalars['String']
@@ -120,20 +100,10 @@ export type Proposal = {
 export type Query = {
   __typename?: 'Query'
   isEmailFree: ResultPayload
-  signIn: ResultPayload
+  signIn: SignInResult
   signOut: ResultPayload
   getCurrentUser: ResultPayload
-  getUserById: ResultPayload
-  getUserRating: Scalars['Int']
   getMessages: Array<Message>
-  getShoutRating: Scalars['Int']
-  shoutsByAuthor: Array<Maybe<Shout>>
-  shoutsByReplyTo: Array<Maybe<Shout>>
-  shoutsByTags: Array<Maybe<Shout>>
-  shoutsByTime: Array<Maybe<Shout>>
-  getOnlineUsers: Array<User>
-  topAuthors: Array<Maybe<User>>
-  topShouts: Array<Maybe<Shout>>
 }
 
 export type QueryIsEmailFreeArgs = {
@@ -145,38 +115,18 @@ export type QuerySignInArgs = {
   password: Scalars['String']
 }
 
-export type QueryGetUserByIdArgs = {
-  id: Scalars['Int']
-}
-
-export type QueryGetUserRatingArgs = {
-  shout?: Maybe<Scalars['Int']>
-}
-
 export type QueryGetMessagesArgs = {
   count?: Maybe<Scalars['Int']>
   page?: Maybe<Scalars['Int']>
 }
 
-export type QueryGetShoutRatingArgs = {
-  shout?: Maybe<Scalars['Int']>
+export type RegisterUserOk = {
+  __typename?: 'RegisterUserOk'
+  token?: Maybe<Scalars['String']>
+  user: User
 }
 
-export type QueryShoutsByAuthorArgs = {
-  author?: Maybe<Scalars['Int']>
-}
-
-export type QueryShoutsByReplyToArgs = {
-  shout?: Maybe<Scalars['Int']>
-}
-
-export type QueryShoutsByTagsArgs = {
-  tags?: Maybe<Array<Maybe<Scalars['String']>>>
-}
-
-export type QueryShoutsByTimeArgs = {
-  time?: Maybe<Scalars['DateTime']>
-}
+export type RegisterUserResult = ApiError | RegisterUserOk
 
 export type ResultPayload = {
   __typename?: 'ResultPayload'
@@ -218,6 +168,14 @@ export type Shout = {
   visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
 }
+
+export type SignInOk = {
+  __typename?: 'SignInOk'
+  token: Scalars['String']
+  user: User
+}
+
+export type SignInResult = ApiError | SignInOk
 
 export type Subscription = {
   __typename?: 'Subscription'
@@ -261,6 +219,5 @@ export type User = {
   updatedAt: Scalars['DateTime']
   username?: Maybe<Scalars['String']>
   userpic?: Maybe<Scalars['String']>
-  userpicId?: Maybe<Scalars['String']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
 }

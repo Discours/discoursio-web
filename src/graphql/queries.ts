@@ -21,13 +21,37 @@ export const editorAccept = (shoutId: number): boolean => {
   return true
 }
 
+export const isEmailFree = (email: string): void => {
+  console.log('gql: check if email is already taken')
+  const res = client.query(
+    gql`
+    query isEmailFreeQuery(email: $email) {
+      isEmailFree(email: "anton.rewin@gmail.com") {
+        status
+        error
+      }
+    }
+  `,
+    {
+      variables: { email },
+    }
+  )
+  console.log(res)
+}
+
 export const signIn = (email: string, password: string): void => {
   console.log('gql: user is attempting to sign in')
   const res = client.query(
     gql`
-      mutation SignInQuery($email: String!, $password: String!) {
+      query SignInQuery($email: String!, $password: String!) {
         signIn(email: $email, password: $password) {
-          result
+          status
+          error
+          token
+          user {
+            username
+            userpic
+          }
         }
       }
     `,
@@ -43,7 +67,12 @@ export const signUp = (email: string, password: string): void => {
       gql`
         mutation RegisterMutation($email: String!, $password: String!) {
           registerUser(email: $email, password: $password) {
-            result
+            status
+            error
+            token
+            user {
+              username
+            }
           }
         }
       `,
