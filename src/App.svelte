@@ -3,7 +3,7 @@
   import { ApolloLink } from '@apollo/client'
   import { Router, Route } from 'svelte-routing'
 
-  // import { Query } from './graphql/codegen'
+  import { getSession } from './graphql/queries'
   import { client } from './graphql/client.ts'
   import { initLocalizationContext } from './i18n/index'
   import { token, session } from './stores/auth'
@@ -31,15 +31,7 @@
   initLocalizationContext()
 
   const checkAuth = (token) => {
-    if (token) {
-      console.log('app: auth token found, trying to restore session')
-      console.debug(token)
-      // TODO: $session = Query.getCurrentUser()
-    } else {
-      console.log('app: no auth token')
-      // TODO: set inbox new message icon
-    }
-    return $session
+    
   }
 
   onMount(() => {
@@ -53,7 +45,7 @@
     console.log($org)
   })
 
-  $: if (checkAuth($token)) {
+  $: if ($token) {
     console.log('app: authorize api connection')
     const al = new ApolloLink((operation, forward) => {
       operation.setContext(({ headers }) => ({
@@ -69,6 +61,12 @@
       client.setLink(al)
       console.log('app: api connection renewed')
     }
+    console.log('app: auth token found, trying to restore a session')
+    console.debug(token)
+    $session = getSession(token)
+  } else {
+    console.log('app: no auth token')
+    // TODO: set inbox new message icon
   }
 </script>
 

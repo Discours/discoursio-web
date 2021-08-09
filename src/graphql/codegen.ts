@@ -13,16 +13,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: any
-}
-
-export type ApiError = ErrorInterface & {
-  __typename?: 'ApiError'
-  message: Scalars['String']
-}
-
-export type ErrorInterface = {
-  message: Scalars['String']
+  DateTime: Date
 }
 
 export type Like = {
@@ -45,16 +36,22 @@ export type Message = {
   visibleForUsers: Array<Maybe<Scalars['Int']>>
 }
 
+export type MessageResult = {
+  __typename?: 'MessageResult'
+  error?: Maybe<Scalars['String']>
+  message?: Maybe<Message>
+}
+
 export type Mutation = {
   __typename?: 'Mutation'
-  createMessage: ResultPayload
-  updateMessage: ResultPayload
-  deleteMessage: ResultPayload
-  confirmEmail: ResultPayload
-  registerUser: RegisterUserResult
-  createShout: ResultPayload
-  deleteShout: ResultPayload
-  rateShout: ResultPayload
+  createMessage: MessageResult
+  updateMessage: MessageResult
+  deleteMessage: Result
+  confirmEmail: SignInResult
+  registerUser: SignInResult
+  createShout: ShoutResult
+  deleteShout: Result
+  rateShout: Result
 }
 
 export type MutationCreateMessageArgs = {
@@ -80,11 +77,16 @@ export type MutationRegisterUserArgs = {
   password: Scalars['String']
 }
 
+export type MutationCreateShoutArgs = {
+  input: ShoutInput
+}
+
 export type MutationDeleteShoutArgs = {
-  shoutId: Scalars['Int']
+  slug: Scalars['String']
 }
 
 export type MutationRateShoutArgs = {
+  slug: Scalars['String']
   value: Scalars['Int']
 }
 
@@ -99,11 +101,13 @@ export type Proposal = {
 
 export type Query = {
   __typename?: 'Query'
-  isEmailFree: ResultPayload
+  isEmailFree: Scalars['Boolean']
   signIn: SignInResult
-  signOut: ResultPayload
-  getCurrentUser: ResultPayload
+  signOut: Result
+  getCurrentUser: UserResult
   getMessages: Array<Message>
+  topAuthors: Array<Maybe<User>>
+  topShouts: Array<Maybe<Shout>>
 }
 
 export type QueryIsEmailFreeArgs = {
@@ -120,22 +124,9 @@ export type QueryGetMessagesArgs = {
   page?: Maybe<Scalars['Int']>
 }
 
-export type RegisterUserOk = {
-  __typename?: 'RegisterUserOk'
-  token?: Maybe<Scalars['String']>
-  user: User
-}
-
-export type RegisterUserResult = ApiError | RegisterUserOk
-
-export type ResultPayload = {
-  __typename?: 'ResultPayload'
-  status: Scalars['Boolean']
+export type Result = {
+  __typename?: 'Result'
   error?: Maybe<Scalars['String']>
-  token?: Maybe<Scalars['String']>
-  user?: Maybe<User>
-  message?: Maybe<Message>
-  shout?: Maybe<Shout>
 }
 
 export type Role = {
@@ -149,7 +140,6 @@ export type Role = {
 
 export type Shout = {
   __typename?: 'Shout'
-  id: Scalars['Int']
   org: Scalars['String']
   slug: Scalars['String']
   author: Scalars['Int']
@@ -160,22 +150,40 @@ export type Shout = {
   deletedBy?: Maybe<Scalars['Int']>
   rating?: Maybe<Scalars['Int']>
   published?: Maybe<Scalars['DateTime']>
-  replyTo?: Maybe<Scalars['Int']>
+  replyTo?: Maybe<Scalars['String']>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
   topics?: Maybe<Array<Maybe<Scalars['String']>>>
   title?: Maybe<Scalars['String']>
-  versionOf?: Maybe<Scalars['Int']>
+  versionOf?: Maybe<Scalars['String']>
   visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
 }
 
-export type SignInOk = {
-  __typename?: 'SignInOk'
-  token: Scalars['String']
-  user: User
+export type ShoutInput = {
+  org: Scalars['String']
+  slug: Scalars['String']
+  body: Scalars['String']
+  replyTo?: Maybe<Scalars['String']>
+  tags?: Maybe<Array<Maybe<Scalars['String']>>>
+  topics?: Maybe<Array<Maybe<Scalars['String']>>>
+  title?: Maybe<Scalars['String']>
+  versionOf?: Maybe<Scalars['String']>
+  visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
+  visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
 }
 
-export type SignInResult = ApiError | SignInOk
+export type ShoutResult = {
+  __typename?: 'ShoutResult'
+  error?: Maybe<Scalars['String']>
+  shout?: Maybe<Shout>
+}
+
+export type SignInResult = {
+  __typename?: 'SignInResult'
+  error?: Maybe<Scalars['String']>
+  token?: Maybe<Scalars['String']>
+  user?: Maybe<User>
+}
 
 export type Subscription = {
   __typename?: 'Subscription'
@@ -220,4 +228,10 @@ export type User = {
   username?: Maybe<Scalars['String']>
   userpic?: Maybe<Scalars['String']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
+}
+
+export type UserResult = {
+  __typename?: 'UserResult'
+  error?: Maybe<Scalars['String']>
+  user?: Maybe<User>
 }

@@ -6,17 +6,17 @@ import AuthVk from '../components/AuthVk.svelte'
 import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
 
 let create = false, useSocial = false
-let loginInput, passwordInput, rememberCheck
-
+let emailInput, passwordInput, rememberCheck
+let auth
 const login = () => {
   console.log('auth: signing in with discours.io account')
-  const result = signIn(emailInput.value, passwordInput.value)
-  console.debug(result)
+  auth = signIn(emailInput.value, passwordInput.value)
+  console.debug(auth.result())
 }
 
 const register = () => {
   console.log('auth: signing up with discours.io account')
-  signUp(emailInput.value, passwordInput.value)
+  auth = signUp(emailInput.value, passwordInput.value)
 }
 
 const providerSuccess = (e) => {
@@ -30,13 +30,25 @@ const providerFailure = (e) => {
 </script>
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
-    <div class="auth">
-
+    <form class="auth">
+      {#if auth}
+        {#if auth.loading}
+          Loading...
+        {:else if auth.error}
+          Error: {auth.error.message}
+        {:else}
+          {#if auth.data}
+            <p>
+              {auth.data}
+            </p>
+          {/if}
+        {/if}
+      {/if}
       <div class="tabs" style="width: 100%; height: 54px; margin-top: 16px;">
-        <div class="login-tab-title half" class:active={!create} on:click={() => create?(create=false):loginInput.focus()}>
+        <div class="login-tab-title half" class:active={!create} on:click={() => create?(create=false):emailInput.focus()}>
           Вход
         </div>
-        <div class="register-tab-title half" class:active={create} on:click={() => create?loginInput.focus():(create=true)}>
+        <div class="register-tab-title half" class:active={create} on:click={() => create?emailInput.focus():(create=true)}>
           Регистрация
         </div>
       </div>
@@ -44,7 +56,7 @@ const providerFailure = (e) => {
       <div style="width: 100%; height: 33px; margin-top: 16px;">
         <div class="rowflex" style="justify-content: center;">
           <div style="width: 100%;">
-            <input class="login-input" bind:this={loginInput} type="text" placeholder="Ваша почта"/>
+            <input autocomplete="username" class="login-input" bind:this={emailInput} type="text" placeholder="Ваша почта"/>
           </div>
         </div>
       </div>
@@ -52,7 +64,7 @@ const providerFailure = (e) => {
       <div style="width: 100%; height: 33px; margin-top: 16px;">
         <div class="rowflex" style="justify-content: center;">
           <div style="width: 100%;">
-            <input class="password-input" bind:this={passwordInput} type="password" placeholder="Пароль"/>
+            <input autocomplete="current-password" class="password-input" bind:this={passwordInput} type="password" placeholder="Пароль"/>
           </div>
         </div>
       </div>
@@ -74,7 +86,7 @@ const providerFailure = (e) => {
       </div>
       <Link to="/login" on:click={() => useSocial = !useSocial}>
         <div style="width: 100%; margin-top: 16px; color: black;" class:huge={useSocial} >
-          {useSocial?'х':'Используя учётную запись в соцсети'}
+          {'Использовать учётную запись в соцсети'}
         </div>
       </Link>
       {#if useSocial}
@@ -91,7 +103,7 @@ const providerFailure = (e) => {
         </div>
       </div>
       {/if}
-    </div>
+    </form>
 </div>
 
 <style>  

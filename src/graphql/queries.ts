@@ -1,8 +1,10 @@
-import type { Proposal } from './codegen'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Proposal, SignInResult, UserResult } from './codegen'
 import { get } from 'svelte/store'
 import { proposals } from '../stores/editor'
 // import { session } from '../stores/auth'
 import { gql } from '@apollo/client'
+import type { ReadableQuery } from 'svelte-apollo-client'
 import { client } from './client'
 
 // UI/UX semantic needs
@@ -21,66 +23,100 @@ export const editorAccept = (shoutId: number): boolean => {
   return true
 }
 
-export const isEmailFree = (email: string): void => {
+export const isEmailFree = (email: string): ReadableQuery<unknown> => {
   console.log('gql: check if email is already taken')
-  const res = client.query(
+  const q = client.query(
     gql`
-    query isEmailFreeQuery(email: $email) {
-      isEmailFree(email: "anton.rewin@gmail.com") {
-        status
-        error
+      query isEmailFreeQuery(email: $email) {
+        isEmailFree(email: $email)
       }
-    }
-  `,
+    `,
     {
       variables: { email },
     }
   )
-  console.log(res)
+  console.debug(q)
+  return q
 }
 
-export const signIn = (email: string, password: string): void => {
+export const signIn = (
+  email: string,
+  password: string
+): ReadableQuery<SignInResult> => {
   console.log('gql: user is attempting to sign in')
-  const res = client.query(
+  // console.debug(client)
+  const q = client.query(
     gql`
       query SignInQuery($email: String!, $password: String!) {
         signIn(email: $email, password: $password) {
-          status
           error
           token
           user {
             username
-            userpic
           }
         }
       }
     `,
     { variables: { email, password } }
   )
-  console.debug(res)
+  console.debug(q)
+  return q
 }
 
-export const signUp = (email: string, password: string): void => {
+export const signUp = (email: string, password: string): Promise<any> => {
   console.log('gql: user is attempting to sign up')
-  client
-    .mutate(
-      gql`
-        mutation RegisterMutation($email: String!, $password: String!) {
-          registerUser(email: $email, password: $password) {
-            status
-            error
-            token
-            user {
-              username
-            }
+  const q = client.mutate(
+    gql`
+      mutation RegisterMutation($email: String!, $password: String!) {
+        registerUser(email: $email, password: $password) {
+          error
+          token
+          user {
+            username
           }
         }
-      `,
-      { variables: { email, password } }
-    )
-    .then((res) => {
-      console.debug(res)
-      // TODO: set token and session
-    })
-    .catch(console.error)
+      }
+    `,
+    { variables: { email, password } }
+  )
+
+  console.debug(q)
+  return q
+}
+
+export const signOut = (): ReadableQuery<boolean> => {
+  console.log('gql: signing out the current user')
+  const q = client.query(
+    gql`
+      query SignOut {
+        signOut {
+          error
+          user {
+            username
+          }
+        }
+      }
+    `
+  )
+
+  console.debug(q)
+  return q
+}
+
+export const getSession = (): ReadableQuery<UserResult> => {
+  console.log('gql: getting the current user')
+  const q = client.query(
+    gql`
+      query GetCurrentUser {
+        getCurrentUser {
+          error
+          user {
+            username
+          }
+        }
+      }
+    `
+  )
+  console.debug(q)
+  return q
 }
