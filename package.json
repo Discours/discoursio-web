@@ -7,7 +7,6 @@
     "@graphql-codegen/cli": "^1.21.8",
     "@graphql-codegen/typescript": "^1.23.0",
     "@graphql-codegen/typescript-operations": "^1.18.4",
-    "@storybook/svelte": "^6.4.0-alpha.22",
     "@tiptap/core": "^2.0.0-beta.93",
     "@tiptap/extension-collaboration": "^2.0.0-beta.20",
     "@tiptap/extension-collaboration-cursor": "^2.0.0-beta.21",
