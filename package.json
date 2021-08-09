@@ -1,6 +1,7 @@
 {
   "name": "discoursio-web",
   "version": "0.0.4",
+  "license": "MIT",
   "devDependencies": {
     "@apollo/client": "^3.4.3",
     "@beyonk/async-script-loader": "^2.0.0",
@@ -86,6 +87,7 @@
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
     "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
     "build": "run-s gen prod",
+    "sb:install": "npm i storybook @storybook/svelte svelte-preprocess",
     "sb:start": "start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },
