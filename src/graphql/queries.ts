@@ -84,7 +84,7 @@ export const signUp = (email: string, password: string): Promise<any> => {
   return q
 }
 
-export const signOut = (): ReadableQuery<boolean> => {
+export const signOut = (): ReadableQuery<unknown> => {
   console.log('gql: signing out the current user')
   const q = client.query(
     gql`
