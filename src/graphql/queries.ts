@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Proposal, SignInResult, UserResult } from './codegen'
+import type { Proposal } from './codegen'
 import { get } from 'svelte/store'
 import { proposals } from '../stores/editor'
 // import { session } from '../stores/auth'

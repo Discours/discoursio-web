@@ -16,6 +16,13 @@ export type Scalars = {
   DateTime: Date
 }
 
+export type AuthResult = {
+  __typename?: 'AuthResult'
+  error?: Maybe<Scalars['String']>
+  token?: Maybe<Scalars['String']>
+  user?: Maybe<User>
+}
+
 export type Like = {
   __typename?: 'Like'
   author: Scalars['Int']
@@ -47,11 +54,12 @@ export type Mutation = {
   createMessage: MessageResult
   updateMessage: MessageResult
   deleteMessage: Result
-  confirmEmail: SignInResult
-  registerUser: SignInResult
+  confirmEmail: AuthResult
+  registerUser: AuthResult
   createShout: ShoutResult
   deleteShout: Result
   rateShout: Result
+  updateProfile: Result
 }
 
 export type MutationCreateMessageArgs = {
@@ -90,6 +98,16 @@ export type MutationRateShoutArgs = {
   value: Scalars['Int']
 }
 
+export type MutationUpdateProfileArgs = {
+  profile: ProfileInput
+}
+
+export type ProfileInput = {
+  email?: Maybe<Scalars['String']>
+  username?: Maybe<Scalars['String']>
+  userpic?: Maybe<Scalars['String']>
+}
+
 export type Proposal = {
   __typename?: 'Proposal'
   body: Scalars['String']
@@ -101,10 +119,11 @@ export type Proposal = {
 
 export type Query = {
   __typename?: 'Query'
-  isEmailFree: Scalars['Boolean']
-  signIn: SignInResult
+  isEmailFree: Result
+  signIn: AuthResult
   signOut: Result
   getCurrentUser: UserResult
+  getUserById: UserResult
   getMessages: Array<Message>
   topAuthors: Array<Maybe<User>>
   topShouts: Array<Maybe<Shout>>
@@ -117,6 +136,10 @@ export type QueryIsEmailFreeArgs = {
 export type QuerySignInArgs = {
   email: Scalars['String']
   password: Scalars['String']
+}
+
+export type QueryGetUserByIdArgs = {
+  id: Scalars['Int']
 }
 
 export type QueryGetMessagesArgs = {
@@ -176,13 +199,6 @@ export type ShoutResult = {
   __typename?: 'ShoutResult'
   error?: Maybe<Scalars['String']>
   shout?: Maybe<Shout>
-}
-
-export type SignInResult = {
-  __typename?: 'SignInResult'
-  error?: Maybe<Scalars['String']>
-  token?: Maybe<Scalars['String']>
-  user?: Maybe<User>
 }
 
 export type Subscription = {
