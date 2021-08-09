@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-    - 'http://test-api.discours.io/graphql'
+    - 'https://test-api.discours.io/graphql'
 generates:
     src/graphql/codegen.ts:
         plugins:
