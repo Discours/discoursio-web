@@ -4,8 +4,7 @@ import { get } from 'svelte/store'
 import { proposals } from '../stores/editor'
 // import { session } from '../stores/auth'
 import { gql } from '@apollo/client'
-import type { ReadableQuery } from 'svelte-apollo-client'
-import { client } from './client'
+import { query, mutation } from 'svelte-apollo'
 
 // UI/UX semantic needs
 
@@ -23,9 +22,9 @@ export const editorAccept = (shoutId: number): boolean => {
   return true
 }
 
-export const isEmailFree = (email: string): ReadableQuery<unknown> => {
+export const isEmailFree = (email: string) => {
   console.log('gql: check if email is already taken')
-  const q = client.query(
+  const q = query(
     gql`
       query isEmailFreeQuery(email: $email) {
         isEmailFree(email: $email)
@@ -39,13 +38,10 @@ export const isEmailFree = (email: string): ReadableQuery<unknown> => {
   return q
 }
 
-export const signIn = (
-  email: string,
-  password: string
-): ReadableQuery<SignInResult> => {
+export const signIn = (email: string, password: string) => {
   console.log('gql: user is attempting to sign in')
   // console.debug(client)
-  const q = client.query(
+  const q = query(
     gql`
       query SignInQuery($email: String!, $password: String!) {
         signIn(email: $email, password: $password) {
@@ -63,9 +59,9 @@ export const signIn = (
   return q
 }
 
-export const signUp = (email: string, password: string): Promise<any> => {
+export const signUp = (email: string, password: string) => {
   console.log('gql: user is attempting to sign up')
-  const q = client.mutate(
+  return mutation(
     gql`
       mutation RegisterMutation($email: String!, $password: String!) {
         registerUser(email: $email, password: $password) {
@@ -76,17 +72,13 @@ export const signUp = (email: string, password: string): Promise<any> => {
           }
         }
       }
-    `,
-    { variables: { email, password } }
+    `
   )
-
-  console.debug(q)
-  return q
 }
 
-export const signOut = (): ReadableQuery<unknown> => {
+export const signOut = () => {
   console.log('gql: signing out the current user')
-  const q = client.query(
+  const q = query(
     gql`
       query SignOut {
         signOut {
@@ -103,9 +95,9 @@ export const signOut = (): ReadableQuery<unknown> => {
   return q
 }
 
-export const getSession = (): ReadableQuery<UserResult> => {
+export const getSession = () => {
   console.log('gql: getting the current user')
-  const q = client.query(
+  const q = query(
     gql`
       query GetCurrentUser {
         getCurrentUser {

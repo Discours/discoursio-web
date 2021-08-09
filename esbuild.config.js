@@ -24,6 +24,7 @@ const compileOptions = process.env.SSR==='ssr' ? {
 
 const options = {
   entryPoints: [`src/index.ts`],
+  external: ['react'],
   bundle: true,
   color: true,
   incremental: dev,
