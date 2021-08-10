@@ -4,4 +4,4 @@ copy ./ /usr/app
 run npm i
 run npm sb:install
 expose 6006
-cmd ['npm', 'sb:start']
+cmd ['npm', 'run sb:start']
