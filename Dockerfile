@@ -4,4 +4,4 @@ copy ./ /usr/app
 run yarn
 run yarn sb:install
 expose 6006
-run yarn sb:start
+cmd ["yarn", "sb:start"]
