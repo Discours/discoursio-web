@@ -1,8 +1,7 @@
-from node:latest
-run 'npm i'
-run 'npm sb:install'
-expose 80
+from node:lts
+run 'yarn'
+run 'yarn sb:install'
 expose 6006
 workdir /app
 copy ./* /.
-cmd ['npm', 'run', 'sb:start']
+cmd ['yarn', 'sb:start']
