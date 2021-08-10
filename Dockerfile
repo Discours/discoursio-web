@@ -2,6 +2,6 @@ from node:alpine
 workdir /usr/app
 copy ./ /usr/app
 run npm i
-run npm sb:install
+run npm run sb:install
 expose 6006
-cmd ['npm', 'run sb:start']
+run npm run sb:start
