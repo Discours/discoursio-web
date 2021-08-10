@@ -1,9 +1,8 @@
-const { preprocess } = require('../svelte.config.cjs')
+const preprocess = require('svelte-preprocess')
 
 module.exports = {
   "stories": [
-    "./stories/**/*.stories.mdx",
-    "./stories/**/*.stories.@(js|jsx|ts|tsx|svelte)"
+    "./stories/**/*.stories.@(js|ts|svelte)"
   ],
   "addons": [
     "@storybook/addon-links",
@@ -11,6 +10,6 @@ module.exports = {
     "@storybook/addon-svelte-csf"
   ],
   "svelteOptions": {
-    "preprocess": preprocess
+    preprocess
   }
 }

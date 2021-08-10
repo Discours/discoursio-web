@@ -8,6 +8,9 @@
     "@graphql-codegen/cli": "^1.21.8",
     "@graphql-codegen/typescript": "^1.23.0",
     "@graphql-codegen/typescript-operations": "^1.18.4",
+    "@storybook/addon-essentials": "^6.3.7",
+    "@storybook/addon-links": "^6.3.7",
+    "@storybook/addon-svelte-csf": "^1.1.0",
     "@storybook/svelte": "^6.3.7",
     "@tiptap/core": "^2.0.0-beta.93",
     "@tiptap/extension-collaboration": "^2.0.0-beta.20",
@@ -90,8 +93,8 @@
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
     "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
     "build": "npm run prod",
-    "sb:install": "npm i -D storybook @storybook/svelte @storybook/addon-links @storybook/addon-essentials @storybook/addon-svelte-csf svelte-loader && npm i",
-    "sb:start": "start-storybook -p 6006 -s public",
+    "sb:install": "npm i -D storybook @storybook/svelte @storybook/addon-links @storybook/addon-essentials storybook-addon-turbo-build @storybook/addon-svelte-csf svelte-loader && npm i",
+    "sb:start": "rm storybook-static/* && start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },
   "resolutions": {
