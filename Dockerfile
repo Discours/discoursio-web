@@ -1,7 +1,7 @@
 from node:alpine
 workdir /usr/app
 copy ./ /usr/app
-run npm i
-run npm run sb:install
+run yarn
+run yarn sb:install
 expose 6006
-run npm run sb:start
+run yarn sb:start
