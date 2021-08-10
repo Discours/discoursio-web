@@ -1,4 +1,4 @@
-from node:alpines
+from node:alpine
 workdir /usr/app
 copy ./ /usr/app
 run npm i
