@@ -45,7 +45,6 @@ Edit `precompiler.js` for your needs
 ### Storybook
 
 ```sh
-pnpm i storybook @storybook/svelte svelte-preprocess
-pnpm run sb:build
-pnpm run sb:start
+pnpm sb:install
+pnpm sb:start
 ```

@@ -91,7 +91,7 @@
     "dev": "cross-env NODE_ENV=\"development\" node esbuild.config.js",
     "prod": "cross-env NODE_ENV=\"production\" node esbuild.config.js",
     "build": "npm run prod",
-    "sb:install": "npm i -D storybook @storybook/svelte @storybook/addon-links @storybook/addon-essentials storybook-addon-turbo-build @storybook/addon-svelte-csf svelte-loader && npm i",
+    "sb:install": "npm i && npm i -D storybook @storybook/svelte @storybook/addon-links @storybook/addon-essentials storybook-addon-turbo-build @storybook/addon-svelte-csf svelte-loader",
     "sb:start": "rm storybook-static/* && start-storybook -p 6006 -s public",
     "sb:build": "build-storybook -s public"
   },
