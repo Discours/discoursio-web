@@ -1,3 +1,8 @@
+import client from 'undefined'
+import type {} from '@apollo/client'
+import { readable } from 'svelte/store'
+import type { Readable } from 'svelte/store'
+import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -13,7 +18,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: Date
+  DateTime: any
 }
 
 export type AuthResult = {

@@ -3,7 +3,7 @@ node_modules
 pnpm-lock.yaml
 public/bundle*
 public/*.json
-public/**
+public/*/
 database
 storybook-static
 gen

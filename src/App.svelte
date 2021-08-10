@@ -30,16 +30,19 @@
 
   initLocalizationContext()
 
-  const checkAuth = (token) => {
-    
-  }
+  let noauth = false
 
   onMount(() => {
     $token = document.cookie
 
     // get org name from subdomain
-    const tld = window.location.hostname.split('.')[0]
-    $org = (tld === 'discours' || tld === 'localhost') ? 'discours.io' : tld
+    const tld = window.location.hostname
+    // console.log(tld)
+    $org = (
+      tld.replace('discours','') !== tld || 
+      tld.replace('localhost','') !== tld ||
+      tld.replace('jsdom','') !== tld ) ? 
+      'discours.io' : window.location.hostname.replace('discours.io')
     title = getPageTitle({ org: $org, shout })
     console.log('app: got org from domain name')
     console.log($org)
@@ -64,9 +67,11 @@
     console.log('app: auth token found, trying to restore a session')
     console.debug(token)
     $session = getSession(token)
-  } else {
-    console.log('app: no auth token')
-    // TODO: set inbox new message icon
+  }
+
+  $: if((!$token) && (noauth === false)) { 
+    noauth = true
+    console.log('\napp: no auth token')
   }
 </script>
 

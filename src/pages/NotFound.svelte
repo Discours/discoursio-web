@@ -1,1 +1,4 @@
-<h3>404</h3>
+<script>
+    export let props
+</script>
+<h3>404: {props.location}</h3>
