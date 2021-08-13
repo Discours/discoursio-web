@@ -13,14 +13,19 @@ let emailInput, passwordInput, rememberCheck
 let auth
 const login = async () => {
   console.log('auth: signing in with discours.io account')
-  let q = client.query(SIGN_IN, { variables: { email: emailInput.value, password: passwordInput.value }})
-  console.debug(q)
+  let q = client.query(SIGN_IN, 
+    { variables: { email: emailInput.value, password: passwordInput.value }}
+  )
+  console.debug(await q.result())
 }
 
 const register = async () => {
   console.log('auth: signing up with discours.io account')
-  let q = client.mutation(SIGN_UP, { variables: { email: emailInput.value, password: passwordInput.value }})
-  console.log(q)
+  console.debug(client)
+  let q = await client.mutate(SIGN_UP, 
+    { variables: { email: emailInput.value, password: passwordInput.value }}
+  )
+  console.debug(q)
 }
 
 const providerSuccess = (e) => {
