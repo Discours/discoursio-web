@@ -1,27 +1,17 @@
 <script>
-  import { onMount } from 'svelte'
-  import { org, lang, Locale } from '../stores/common'
   import { shouts } from '../stores/zine'
-  
-  import shoutsDataEn from '../../public/shouts.en.json'
-  import shoutsDataRu from '../../public/shouts.json'
 
   let topics = new Set() 
-  
-  onMount(() => {
-    // TODO: get system lang
-    $shouts = ($lang === Locale.RU? shoutsDataRu : shoutsDataEn)[$org]
-    console.log(shoutsDataRu)
-  })
 
   $: if($shouts) {
-    Object.keys($shouts)
-      .forEach(
-        sid => ($shouts[sid] && $shouts[sid].topics)
-          .forEach(
-            topic => topics.add(topic)
-          )
-        )
+    const keys = Object.keys($shouts)
+    keys && keys.forEach(
+      sid => {
+        if($shouts[sid] && $shouts[sid].topics) {
+          $shouts[sid].topics.forEach(topic => topics.add(topic))
+        }
+      })
+    // console.log(topics)
   }
 
 </script>

@@ -1,22 +1,26 @@
 <script>
 import { Link } from 'svelte-routing'
-import { signUp, signIn } from '../graphql/queries'
+import { SIGN_IN, SIGN_UP } from '../graphql/queries'
+import client from '../graphql/client'
 import AuthFacebook from '../components/AuthFacebook.svelte'
 import AuthVk from '../components/AuthVk.svelte'
 import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
 
+export let location
+
 let create = false, useSocial = false
 let emailInput, passwordInput, rememberCheck
 let auth
-const login = () => {
+const login = async () => {
   console.log('auth: signing in with discours.io account')
-  auth = signIn(emailInput.value, passwordInput.value)
-  console.debug(auth.result())
+  let q = client.query(SIGN_IN, { variables: { email: emailInput.value, password: passwordInput.value }})
+  console.debug(q)
 }
 
-const register = () => {
+const register = async () => {
   console.log('auth: signing up with discours.io account')
-  auth = signUp(emailInput.value, passwordInput.value)
+  let q = client.mutation(SIGN_UP, { variables: { email: emailInput.value, password: passwordInput.value }})
+  console.log(q)
 }
 
 const providerSuccess = (e) => {
@@ -31,7 +35,7 @@ const providerFailure = (e) => {
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
     <form class="auth">
-      {#if auth}
+      {#if location && auth}
         {#if auth.loading}
           Loading...
         {:else if auth.error}
@@ -80,7 +84,7 @@ const providerFailure = (e) => {
       </div>
 
       <div style="width: 100%; height: 33px; margin-top: 16px;">
-        <div class="submitbtn" on:click={() => (create?register:login)()}>
+        <div class="submitbtn" on:click={create?register:login}>
           {create? 'Создать аккаунт' : 'Войти'}
         </div>
       </div>

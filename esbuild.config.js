@@ -11,16 +11,7 @@ const dev = process.env.NODE_ENV == 'development'
 const port = 5000
 const dir = 'public'
 
-const compileOptions = process.env.SSR==='ssr' ? {
-  dev,
-  css: () => null,
-  hydratable: true,
-  immutable: true,
-  generate: 'ssr'
-} : {
-  dev,
-  css: false
-}
+const compileOptions = { dev, css: false }
 
 const options = {
   entryPoints: [`src/index.ts`],
@@ -28,7 +19,7 @@ const options = {
   bundle: true,
   color: true,
   incremental: dev,
-  outfile: dir + `/bundle${process.env.SSR==='ssr'?'.ssr':''}.js`,
+  outfile: dir + `/bundle.js`,
   plugins: [ 
     svelte({ compileOptions, preprocess })
   ]
@@ -78,10 +69,5 @@ const make = async (callback = null) => {
   })
 }
 
-if(process.env.SSR) { 
-  console.log('esbuild: precompiling with SSR')
-  make().then(precompile)
-}
-else {
-  precompile().then(make)
-}
+precompile().then(make)
+

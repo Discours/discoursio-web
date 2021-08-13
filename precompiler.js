@@ -21,12 +21,12 @@ const handle = async () => {
   const cwd = resolve('.')
   const contentPath = resolve(cwd, 'content')
   const publicPath = resolve(cwd, 'public')
-  
-  let indexContent = fs.readFileSync(resolve(publicPath, 'index.html')).toString()
+  const srcPath = resolve(cwd, 'src')
+  let indexContent = fs.readFileSync(resolve(srcPath, 'index.html')).toString()
 
   // NOTE! File structure convention
   // content/<org>/<any-folders>/<article-slug>.md
-  console.log('precompiler: generate json from `content` folder')
+  console.log('precompiler: [src: `content`] [lang: '+ lang + '] [org: ' + ORG + ']')
 
   walk(contentPath)
     .on('file', async (root, stats, next) => {
@@ -44,36 +44,38 @@ const handle = async () => {
         const slug = pathparts.join('/').replace(ext, '')
         // split frontmatter
         const { content, data } = matter(fs.readFileSync(`${root}/${stats.name}`))
-        let shout = { org, ...data, slug, body: content, language: lng}
+        let shout = { ...data, slug, body: content, language: lng }
         !shouts[lng] && (shouts[lng] = {})
-        shouts[lng][slug] = shout
-        // console.log(`* ${org}/${slug||name} (${!lng?'ru':lng})`)
-        fs.writeFileSync(
-          resolve(publicPath, `shouts${lng==='ru'?'':'.'+lng}.json`),
-          JSON.stringify(shouts[lng], false, 2)
-        )
-        // FIXME: prerender with svelte App.render
+        if(org === ORG) {
+          
+          // NOTE: save only current org shouts
+
+          shouts[lng][slug] = shout
+          // console.log(`* ${org}/${slug||name} (${!lng?'ru':lng})`)
+          fs.writeFileSync(
+            resolve(publicPath, `shouts${lng==='ru'?'':'.'+lng}.json`),
+            JSON.stringify(shouts[lng], false, 2)
+          )
+          // FIXME: prerender with svelte App.render
+        }
       }
       next()
     })
     .on('end', async () => {
       const shouts = require('./public/shouts'+(lang==='ru'?'':'.'+lang)+'.json')
-      console.log('precompiler: data stored')
-      console.log('precompiler: org ' + ORG)
-      console.log('precompiler: lang ' + lang)
       Object.keys(shouts).forEach((skey) => {
-        const apath = join(publicPath, '/a/' + skey)
+        const apath = skey === '' ? publicPath : join(publicPath, '/a/' + skey)
         const shout = shouts[skey]
-        if (shout.org === ORG) {
-          console.log('precompiler: /a/'+skey)
-          try { 
+        if (ORG) {
+          console.log('precompiler: /' + (skey ? ('a/' + skey) : ''))
+          try {
             fs.mkdir(apath, {recursive: true}, () => {
               try {
                 fs.writeFileSync(
                   apath + '/index.html',
                   indexContent
                     .replace('lang="en">', `lang="${lang}">`)
-                    .replace('<title>discours.io', `<title>discours.io${(shout && shout.title)?(' : ' +shout.title):''}`)
+                    .replace('<title>discours.io', `<title>Дискурс${(shout && shout.title)?(' : ' +shout.title):''}`)
                     .replace('</head>', `\t<script>window.SHOUT = ${JSON.stringify(shout)}</script>\n\t</head>`)
                 )
               } catch(e) { console.error(e) }

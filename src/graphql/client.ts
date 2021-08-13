@@ -1,6 +1,9 @@
-import { InMemoryCache, ApolloClient } from '@apollo/client/core'
+import { InMemoryCache } from '@apollo/client/core'
+import { SvelteApolloClient } from 'svelte-apollo-client'
 
-export const client = new ApolloClient({
-  uri: `https://test-api.discours.io/graphql`,
+const client = SvelteApolloClient({
+  uri: `https://localhost:8080/graphql`, // test-api.discours.io
   cache: new InMemoryCache(),
 })
+
+export default client

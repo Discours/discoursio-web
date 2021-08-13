@@ -8,7 +8,9 @@
   import type { Shout } from '../graphql/codegen'
 
   import { getLocalization } from '../i18n'
+
   const { t } = getLocalization()
+  export let location
 
   // {#if false && isEditor && editingShout}
   //  <Editor shout={editingShout} />
@@ -22,6 +24,7 @@
 
   const editShout = (slug:string) => {
     editingShout = $shouts[slug]
+    console.log(location)
   }
 </script>
 
@@ -32,9 +35,17 @@
   {#each topShouts as shid }
       <ShoutCard shout={$shouts[shid]} />
     {#if $orgRole >= AS.EDITOR}
-      <a href="#edit" on:click={() => editShout(shid)}>
+      <a class="editlink" href="#edit" on:click={() => editShout(shid)}>
         {'Edit'}
       </a>
     {/if}
   {/each}
 </div>
+
+<style>
+  .editlink {
+    padding-left: 3vw;
+    float: left;
+    font-size: 2vh;
+  }
+</style>

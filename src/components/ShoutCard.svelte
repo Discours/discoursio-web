@@ -6,14 +6,28 @@
 </script>
 
 <div class="shout">
-  <div class="shout-header">
-    <div class="shout-title">{shout.title}</div>
-  </div>
+  {#if shout.body}
   <div class="shout-body">
-    <div>{@html MD(shout.content)}</div>
+    {@html MD(shout.body)}
   </div>
+  {/if}
   <div class="shout-controls">
     <div class="shout-author">{shout && shout.author || 'anonymous'}</div>
-    <div class="shout-rating" />
+    <div class="shout-rating">+22</div>
   </div>
 </div>
+
+<style>
+  .shout-body {
+    font-family: Georgia;
+    font-size: 2h;
+    padding: 3vw;
+  }
+  .shout-author, .shout-rating {
+    display: flex;
+    float: right;
+    width: 30vw;
+    height: 3vh;
+    font-size: 2vh;
+  }
+</style>

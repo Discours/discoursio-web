@@ -1,8 +1,3 @@
-import client from 'undefined'
-import type {} from '@apollo/client'
-import { readable } from 'svelte/store'
-import type { Readable } from 'svelte/store'
-import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K]
@@ -18,7 +13,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: any
+  DateTime: Date
 }
 
 export type AuthResult = {
@@ -159,7 +154,6 @@ export type Result = {
 
 export type Role = {
   __typename?: 'Role'
-  id: Scalars['Int']
   name: Scalars['String']
   org: Scalars['String']
   level: Scalars['Int']
@@ -238,16 +232,19 @@ export type Topic = {
 
 export type User = {
   __typename?: 'User'
-  createdAt: Scalars['DateTime']
+  username: Scalars['String']
   email?: Maybe<Scalars['String']>
+  password?: Maybe<Scalars['String']>
+  viewname?: Maybe<Scalars['String']>
+  userpic?: Maybe<Scalars['String']>
+  links?: Maybe<Array<Maybe<Scalars['String']>>>
   emailConfirmed?: Maybe<Scalars['Boolean']>
   id: Scalars['Int']
   muted?: Maybe<Scalars['Boolean']>
   rating?: Maybe<Scalars['Int']>
   roles: Array<Role>
+  createdAt: Scalars['DateTime']
   updatedAt: Scalars['DateTime']
-  username?: Maybe<Scalars['String']>
-  userpic?: Maybe<Scalars['String']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
 }
 

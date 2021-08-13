@@ -2,13 +2,13 @@
   import { onMount } from 'svelte'
   import { ApolloLink } from '@apollo/client'
   import { Router, Route } from 'svelte-routing'
-
-  import { getSession } from './graphql/queries'
-  import { client } from './graphql/client.ts'
+  import { setClient } from 'svelte-apollo'
+  import client from './graphql/client.ts'
+  import { GET_ME } from './graphql/queries'
   import { initLocalizationContext } from './i18n/index'
   import { token, session } from './stores/auth'
   import { getPageTitle } from './lib/common'
-  import { org } from './stores/common'
+  import { org, lang } from './stores/common'
 
   import NavHeader from './components/NavHeader.svelte'
   import Home from './pages/Home.svelte'
@@ -23,18 +23,22 @@
   import Inbox from './pages/Inbox.svelte'
   import Shout from './pages/Shout.svelte'
   import Reset from './pages/Reset.svelte'
-
+  import { shouts } from './stores/zine'
+  import shoutsData from '../public/shouts.json'
+  
   export let shout = ''
   export let url = ''
   export let title = 'discours.io'
 
+  setClient(client)
   initLocalizationContext()
 
   let noauth = false
 
   onMount(() => {
+    // TODO: get system lang
+    $shouts = shoutsData
     $token = document.cookie
-
     // get org name from subdomain
     const tld = window.location.hostname
     // console.log(tld)
@@ -43,9 +47,9 @@
       tld.replace('localhost','') !== tld ||
       tld.replace('jsdom','') !== tld ) ? 
       'discours.io' : window.location.hostname.replace('discours.io')
+    console.log($org)
     title = getPageTitle({ org: $org, shout })
     console.log('app: got org from domain name')
-    console.log($org)
   })
 
   $: if ($token) {

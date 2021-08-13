@@ -9,7 +9,7 @@
   import { IndexeddbPersistence } from 'y-indexeddb'
   import type { Shout } from '../graphql/codegen'
   import { org } from '../stores/common'
-  import { editorAccept } from '../graphql/queries'
+  // import { editorAccept } from '../graphql/queries'
 
   const DEFAULT_ROOM = 'discours.io/demo'
   const ydoc = new Y.Doc()
@@ -24,7 +24,6 @@
   let editor
 
   export let shout: Shout = {
-    id: 0,
     org: $org,
     slug: '',
     author: 0,

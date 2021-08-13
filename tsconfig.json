@@ -4,12 +4,15 @@
     "checkJs": false,
     "resolveJsonModule": true,
     "lib": ["dom", "esnext", "webworker"],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "target": "esnext",
     "moduleResolution": "node",
+    "target": "esnext",
     "types": ["svelte", "node"]
   },
-  "extends": "@tsconfig/svelte/tsconfig.json",
+  "extends": "./node_modules/@tsconfig/svelte/tsconfig.json",
   "include": ["src/**/*"],
   "exclude": ["node_modules/*", "public/*"]
 }

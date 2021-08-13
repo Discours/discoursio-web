@@ -32,61 +32,55 @@ const here = where => window && window.location === where
   <div class="router">
 
     <!-- public routes -->
-    <div class="routewrap">
+    <div class="routerow">
       <div class="routecell">
         <a href='/search' >
           <svelte:component this={ here('/search')? Query20 : Search20} title={$t('Search')} />
         </a>
       </div>
     </div>
-    <div style="width: 4vw;" />
 
-    <div class="routewrap">
+    <div class="routerow">
       <div class="routecell">
         <a href='/login' >
           <svelte:component this={ here('/login')? UserAvatarFilledAlt20 : UserAvatar20 } title={$t('Edit')} />
         </a>
       </div>
     </div>
-    <div style="width: 4vw;" />
 
     {#if $token}
       <!-- private routes -->
-      <div class="routewrap">
+      <div class="routerow">
         <div class="routecell">
           <a href='/profile' >
             <svelte:component this={ here('/profile')? Userpic : UserAvatarFilled20} title='profile' />
           </a>
         </div>
       </div>
-      <div style="width: 4vw;" />
 
-      <div class="routewrap">
+      <div class="routerow">
         <div class="routecell">
           <a href='/editor' >
             <svelte:component this={ here('/editor')? Edit20 : EditOff20} title='editor' />
           </a>
         </div>
       </div>
-      <div style="width: 4vw;" />
 
-      <div class="routewrap">
+      <div class="routerow">
         <div class="routecell">
           <a href='/inbox'>
             <svelte:component this={ here('/inbox')? (newMessages?EmailNew20:Email20) : MailAll20 } title='inbox' />
           </a>
         </div>
       </div>
-      <div style="width: 4vw;" />
 
-      <div class="routewrap">
+      <div class="routerow">
         <div class="routecell">
           <a href='/community' >
             <svelte:component this={here('/inbox')? DashboardReference20:Dashboard20} title='community' />
           </a>
         </div>
       </div>
-      <div style="width: 4vw;" />
     {/if}
     
   </div>
@@ -126,7 +120,7 @@ const here = where => window && window.location === where
       justify-content: flex-end;
       width: 100%;
 
-      .routewrap {
+      .routerow {
         display: inline-flex;
         flex-direction: row;
         align-items: flex-start;
