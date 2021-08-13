@@ -1,4 +1,5 @@
 <script>
-    export let props
+  export let props
 </script>
+
 <h3>404: {props.location}</h3>

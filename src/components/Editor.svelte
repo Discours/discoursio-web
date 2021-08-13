@@ -16,7 +16,7 @@
   const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc)
   provider.signalingUrls = [
     'wss://signaling.discours.io',
-    'wss://y-webrtc-signaling-eu.herokuapp.com'
+    'wss://y-webrtc-signaling-eu.herokuapp.com',
   ]
   console.log(provider)
   console.log(ydoc)
@@ -29,7 +29,7 @@
     author: 0,
     body: '',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   }
 
   onDestroy(() => editor && editor.destroy())

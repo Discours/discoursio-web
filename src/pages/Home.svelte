@@ -20,9 +20,9 @@
 
   let editingShout: Shout
 
-  $: if($shouts) topShouts = Object.keys($shouts) // FIXME: with query
+  $: if ($shouts) topShouts = Object.keys($shouts) // FIXME: with query
 
-  const editShout = (slug:string) => {
+  const editShout = (slug: string) => {
     editingShout = $shouts[slug]
     console.log(location)
   }
@@ -32,8 +32,8 @@
   <NavTopics />
 
   <!-- svelte-ignore a11y-missing-attribute -->
-  {#each topShouts as shid }
-      <ShoutCard shout={$shouts[shid]} />
+  {#each topShouts as shid}
+    <ShoutCard shout={$shouts[shid]} />
     {#if $orgRole >= AS.EDITOR}
       <a class="editlink" href="#edit" on:click={() => editShout(shid)}>
         {'Edit'}

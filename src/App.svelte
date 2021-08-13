@@ -25,7 +25,7 @@
   import Reset from './pages/Reset.svelte'
   import { shouts } from './stores/zine'
   import shoutsData from '../public/shouts.json'
-  
+
   export let shout = ''
   export let url = ''
   export let title = 'discours.io'
@@ -42,11 +42,12 @@
     // get org name from subdomain
     const tld = window.location.hostname
     // console.log(tld)
-    $org = (
-      tld.replace('discours','') !== tld || 
-      tld.replace('localhost','') !== tld ||
-      tld.replace('jsdom','') !== tld ) ? 
-      'discours.io' : window.location.hostname.replace('discours.io')
+    $org =
+      tld.replace('discours', '') !== tld ||
+      tld.replace('localhost', '') !== tld ||
+      tld.replace('jsdom', '') !== tld
+        ? 'discours.io'
+        : window.location.hostname.replace('discours.io')
     console.log($org)
     title = getPageTitle({ org: $org, shout })
     console.log('app: got org from domain name')
@@ -73,7 +74,7 @@
     $session = getSession(token)
   }
 
-  $: if((!$token) && (noauth === false)) { 
+  $: if (!$token && noauth === false) {
     noauth = true
     console.log('\napp: no auth token')
   }

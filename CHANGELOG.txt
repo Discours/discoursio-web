@@ -1,3 +1,8 @@
+[0.0.5]
+[-] svelte-apollo due bug
+[-] custom prerender code
+[-] husky pre-push hook
+
 [0.0.4]
 
 [+] precompiler generated static indexes

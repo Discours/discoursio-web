@@ -1,19 +1,18 @@
 <script>
   import { shouts } from '../stores/zine'
 
-  let topics = new Set() 
+  let topics = new Set()
 
-  $: if($shouts) {
+  $: if ($shouts) {
     const keys = Object.keys($shouts)
-    keys && keys.forEach(
-      sid => {
-        if($shouts[sid] && $shouts[sid].topics) {
-          $shouts[sid].topics.forEach(topic => topics.add(topic))
+    keys &&
+      keys.forEach((sid) => {
+        if ($shouts[sid] && $shouts[sid].topics) {
+          $shouts[sid].topics.forEach((topic) => topics.add(topic))
         }
       })
     // console.log(topics)
   }
-
 </script>
 
 <section>
