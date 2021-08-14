@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { walk } from 'walk'
-import { resolve, join } from 'path'
+import { resolve, join, sep } from 'path'
 import matter from 'gray-matter'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { createRequire } from "module"
-// import { prerender } from './prerender.js'
+import { tossr } from 'tossr'
 
 const require = createRequire(import.meta.url)
 
@@ -22,7 +22,9 @@ const handle = async () => {
   const contentPath = resolve(cwd, 'content')
   const publicPath = resolve(cwd, 'public')
   const srcPath = resolve(cwd, 'src')
-  let indexContent = fs.readFileSync(resolve(srcPath, 'index.html')).toString()
+  const indexPath = resolve(srcPath, 'index.html')
+  const bundlePath = resolve(publicPath, 'bundle.js')
+  let indexContent = fs.readFileSync(indexPath).toString()
 
   // NOTE! File structure convention
   // content/<org>/<any-folders>/<article-slug>.md
@@ -41,9 +43,9 @@ const handle = async () => {
         const pathparts = root.replace(contentPath, '').split('/')
         pathparts.shift() // removes first empty
         const org = pathparts.shift()
-        const slug = pathparts.join('/').replace(ext, '')
+        const slug = pathparts.join(sep).replace(ext, '')
         // split frontmatter
-        const { content, data } = matter(fs.readFileSync(`${root}/${stats.name}`))
+        const { content, data } = matter(fs.readFileSync(`${root}${sep}${stats.name}`))
         let shout = { ...data, slug, body: content, language: lng }
         !shouts[lng] && (shouts[lng] = {})
         if(org === ORG) {
@@ -63,17 +65,17 @@ const handle = async () => {
     })
     .on('end', async () => {
       console.log('precompiler: shouts.json created')
-      const shouts = require('./public/shouts'+(lang==='ru'?'':'.'+lang)+'.json')
+      const shouts = require(cwd + sep +'public' + sep + 'shouts'+(lang==='ru'?'':'.'+lang)+'.json')
       Object.keys(shouts).forEach((skey) => {
-        const apath = skey === '' ? publicPath : join(publicPath, '/a/' + skey)
+        const apath = skey === '' ? publicPath : join(publicPath, sep + 'a' + sep + skey)
         const shout = shouts[skey]
         if (ORG) {
-          console.log('precompiler: /' + (skey ? ('a/' + skey) : ''))
+          console.log('precompiler: ' + sep + (skey ? ('a' + sep + skey) : ''))
           try {
             fs.mkdir(apath, {recursive: true}, () => {
               try {
                 fs.writeFileSync(
-                  apath + '/index.html',
+                  apath + sep + 'index.html',
                   indexContent
                     .replace('lang="en">', `lang="${lang}">`)
                     .replace('<title>discours.io', `<title>Дискурс${(shout && shout.title)?(' : ' +shout.title):''}`)
@@ -89,27 +91,30 @@ const handle = async () => {
       const routes = [
         //'/',            // index.html
         //'/a/:shout',    // /a/<shout-slug>/index.html 
-        '/login',
-        '/resetpassword',
-        '/create',
-        '/search',
-        '/forum'
+        sep + 'login',
+        sep + 'resetpassword',
+        sep + 'create',
+        sep + 'search',
+        sep + 'forum'
       ]
       //await prerender({ staticDir: publicPath, routes }) // FIXME: loosing titles
       
-      routes.forEach((sroute) => {
-        const apath = join(publicPath, sroute)
-        console.log('precompiler: ' + sroute)
-        try { 
-          fs.mkdir(apath, {recursive: true}, () => {
-            try {
-              fs.writeFileSync(
-                apath + '/index.html',
-                indexContent.replace('<title>discours.io', `<title>discours.io${sroute?sroute:''}`)
-              )
-            } catch(e) { console.error(e) }
-          })
-        } catch(e) { console.error(e) }
+      routes.forEach(async (sroute) => {
+        if(fs.existsSync(bundlePath)) {
+          const html = await tossr(indexContent, bundlePath, sroute)
+          const apath = join(publicPath, sroute)
+          console.log('precompiler: ' + sroute)
+          try { 
+            fs.mkdir(apath, {recursive: true}, () => {
+              try {
+                fs.writeFileSync(
+                  apath + sep + 'index.html',
+                  html
+                )
+              } catch(e) { console.error(e) }
+            })
+          } catch(e) { console.error(e) }
+        }
       })
       
     })
