@@ -40,7 +40,7 @@ const handle = async () => {
       if (lng === '') lng = lang // if no lang suffix then language is default
       if (ext === 'md') {
         // process path
-        const pathparts = root.replace(contentPath, '').split('/')
+        const pathparts = root.replace(contentPath, '').split(sep)
         pathparts.shift() // removes first empty
         const org = pathparts.shift()
         const slug = pathparts.join(sep).replace(ext, '')

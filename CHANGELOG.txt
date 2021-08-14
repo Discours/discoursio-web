@@ -3,6 +3,8 @@
 [-] removed custom prerender code
 [-] removed husky pre-push hook
 [+] stylelint enabled
+[+] tossr based static pages generator
+[+] precompiler windows support
 
 [0.0.4]
 
