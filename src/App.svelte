@@ -2,7 +2,6 @@
   import { onMount } from 'svelte'
   import { ApolloLink } from '@apollo/client'
   import { Router, Route } from 'svelte-routing'
-  import { setClient } from 'svelte-apollo'
   import client from './graphql/client.ts'
   import { GET_ME } from './graphql/queries'
   import { initLocalizationContext } from './i18n/index'
@@ -30,7 +29,6 @@
   export let url = ''
   export let title = 'discours.io'
 
-  setClient(client)
   initLocalizationContext()
 
   let noauth = false
@@ -71,7 +69,7 @@
     }
     console.log('app: auth token found, trying to restore a session')
     console.debug(token)
-    $session = getSession(token)
+    $session = client.query(GET_ME)
   }
 
   $: if (!$token && noauth === false) {

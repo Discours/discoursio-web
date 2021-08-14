@@ -19,8 +19,8 @@
 
 <style>
   .shout-body {
-    font-family: Georgia;
-    font-size: 2h;
+    font-family: var(--font);
+    font-size: 2vh;
     padding: 3vw;
   }
   .shout-author,

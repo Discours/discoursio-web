@@ -62,6 +62,7 @@ const handle = async () => {
       next()
     })
     .on('end', async () => {
+      console.log('precompiler: shouts.json created')
       const shouts = require('./public/shouts'+(lang==='ru'?'':'.'+lang)+'.json')
       Object.keys(shouts).forEach((skey) => {
         const apath = skey === '' ? publicPath : join(publicPath, '/a/' + skey)
