@@ -4,6 +4,11 @@ import { tossr } from 'tossr'
 import { resolve, join, sep } from 'path'
 import fs from 'fs'
 import { createRequire } from 'module'
+import { build } from 'esbuild'
+import svelte from 'esbuild-svelte'
+import svelteCfg from './svelte.config.cjs'
+
+const { preprocess } = svelteCfg
 
 const require = createRequire(import.meta.url)
 
@@ -14,8 +19,40 @@ const cwd = resolve('.')
 const publicPath = resolve(cwd, 'public')
 const srcPath = resolve(cwd, 'src')
 const indexPath = resolve(srcPath, 'index.html')
-const bundlePath = resolve(publicPath, 'bundle.js')
+const bundlePath = resolve(publicPath, 'bundle.ssr.js')
 let indexContent = fs.readFileSync(indexPath).toString()
+
+const options = {
+  logLevel: 'warning',
+  entryPoints: [resolve(`src`, `index.ts`), ],
+  external: ['react'],
+  bundle: true,
+  color: true,
+  incremental: false,
+  outfile: bundlePath,
+  plugins: [ 
+    svelte({ compileOptions: { css: false, generate: 'ssr' }, preprocess })
+  ]
+}
+
+const make = () => {
+  console.log('ssr: building...')
+  build(options)
+    .then(builder => {
+      console.log('ssr: build finished')
+      if (builder.warnings && builder.warnings.length) {
+        builder.warnings.forEach(w => console.warn(w))
+        return
+      }
+      console.log('ssr: bundle is ready')
+      process.exit(0)
+    })
+    .catch((err) => {
+      console.error(err)
+      process.exit(1)
+    })
+}
+
 
 
 // require('svelte/register') // FIXME: cannot use import inside anyway
@@ -59,11 +96,11 @@ const render = async (skey) => {
 }
 
 export const ssr = () => {
-    if(fs.existsSync(bundlePath)) {
-      console.lo
-      routes.forEach((sroute) => render(sroute))
-      Object.keys(shouts).forEach((sroute) => renderShout(sroute))
-    } else console.log('ssr: sorry, no bundle yet')
+  make()
+  if(fs.existsSync(bundlePath)) {
+    routes.forEach((sroute) => render(sroute))
+    Object.keys(shouts).forEach((sroute) => renderShout(sroute))
+  } else console.log('ssr: sorry, no bundle yet')
 }
 
 process && process.argv[1] === fileURLToPath(import.meta.url) && ssr()

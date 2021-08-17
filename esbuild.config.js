@@ -5,6 +5,7 @@ import derverPkg from 'derver'
 import svelteCfg from './svelte.config.cjs'
 import precompile from './precompiler.js'
 import fs from 'fs'
+import { resolve } from 'path'
 
 const { preprocess } = svelteCfg
 const { derver } = derverPkg
@@ -12,16 +13,16 @@ const dev = process.env.NODE_ENV == 'development'
 const port = 5000
 const dir = 'public'
 
-const compileOptions = { dev, css: false }
+const compileOptions = { dev, css: false, hydratable: true }
 
 const options = {
   logLevel: 'warning',
-  entryPoints: [`src/index.ts`],
+  entryPoints: [resolve(`src`, `index.ts`), ],
   external: ['react'],
   bundle: true,
   color: true,
   incremental: dev,
-  outfile: dir + `/bundle.js`,
+  outfile: resolve(dir, `bundle.js`),
   plugins: [ 
     svelte({ compileOptions, preprocess })
   ]

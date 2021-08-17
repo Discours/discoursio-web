@@ -102,7 +102,7 @@
     "test": "run-s lint-staged validate"
   },
   "resolutions": {
-    "esbuild": "0.12.20",
+    "esbuild": "0.12.19",
     "graphql": "15.5.0"
   },
   "type": "module",
