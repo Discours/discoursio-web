@@ -1,12 +1,12 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte'
-  import loader from '@beyonk/async-script-loader'
+  import loader from '../lib/asyncloader'
   const dispatch = createEventDispatcher()
 
   let disabled = true
   export let apiId
-  export let authUrl
-  export let width
+  export let authUrl = null
+  export let width = 32
   export let text = ''
   let VK
 
