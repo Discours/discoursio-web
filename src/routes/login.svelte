@@ -34,7 +34,6 @@
   const providerFailure = (e) => {
     console.error(e)
   }
-
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->

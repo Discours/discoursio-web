@@ -1,5 +1,5 @@
 <script lang="ts">
-import { session } from '../stores/auth'
+  import { session } from '../stores/auth'
 </script>
 
 <img src={$session.userpic} alt="userpic" />

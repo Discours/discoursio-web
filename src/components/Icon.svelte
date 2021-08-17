@@ -4,7 +4,12 @@
   export let counter: number = 0
 </script>
 
-<img src={'icons/' + name + '.svg'} alt={title ?? name} class:counter data-counter={counter} />
+<img
+  src={'icons/' + name + '.svg'}
+  alt={title ?? name}
+  class:counter
+  data-counter={counter}
+/>
 
 <style>
   img {

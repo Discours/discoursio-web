@@ -1,6 +1,6 @@
 import type { Writable, Readable } from 'svelte/store'
 import { writable, derived } from 'svelte/store'
-import type { GraphQLClient } from 'graphql-request' 
+import type { GraphQLClient } from 'graphql-request'
 import type { User } from '../graphql/codegen'
 import { org } from './common'
 

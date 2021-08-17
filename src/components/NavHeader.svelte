@@ -14,15 +14,15 @@
     $graphql = new GraphQLClient(endpoint, { headers: { Auth: $token } })
     console.log('app: graphql connection is autorized')
     console.debug(token)
-    $graphql.request(GET_ME).then(user => $session = user)
+    $graphql.request(GET_ME).then((user) => ($session = user))
   }
 
   let res = ''
   let newMessages = 0 // FIXME: get with query
 
-onMount(() => {
-  res = window.location.pathname
-})
+  onMount(() => {
+    res = window.location.pathname
+  })
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -45,13 +45,11 @@ onMount(() => {
     <div class="routerow">
       <div class="routecell">
         {#if $token}
-        <a href="/inbox">
-          <Icon name="bell" counter={newMessages} />
-        </a>
+          <a href="/inbox">
+            <Icon name="bell" counter={newMessages} />
+          </a>
         {:else}
-        <a href="/login">
-          Войти
-        </a>
+          <a href="/login"> Войти </a>
         {/if}
       </div>
     </div>

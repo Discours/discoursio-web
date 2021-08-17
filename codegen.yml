@@ -1,16 +1,16 @@
 overwrite: true
 schema:
-    - 'http://test-api.discours.io/graphql'
+  - 'http://test-api.discours.io/graphql'
 generates:
-    src/graphql/codegen.ts:
-        plugins:
-            - 'typescript'
-            - 'typescript-operations'
-            - 'graphql-codegen-svelte-apollo'
-        clientPath: 'src/graphql/client'
-        asyncQuery: true
-        scalars:
-            DateTime: string
+  src/graphql/codegen.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'graphql-codegen-svelte-apollo'
+    clientPath: 'src/graphql/client'
+    asyncQuery: true
+    scalars:
+      DateTime: string
 hooks:
-    afterAllFileWrite:
-        - prettier --write
+  afterAllFileWrite:
+    - prettier --write
