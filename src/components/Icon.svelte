@@ -1,6 +1,6 @@
 <script lang="ts">
   export let name: string
-  export let title: string
+  export let title: string = ''
   export let counter: number = 0
 </script>
 

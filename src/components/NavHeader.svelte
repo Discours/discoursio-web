@@ -1,21 +1,32 @@
 <script>
-  import { links } from 'svelte-navigator'
-
   import Icon from './Icon.svelte'
   import Userpic from './Userpic.svelte'
-
-  import { token } from '../stores/auth'
-
+  import { token, session, graphql } from '../stores/auth'
+  import { GraphQLClient } from 'graphql-request'
+  import { GET_ME } from '../graphql/queries'
   import { getLocalization } from '../i18n'
+  import { onMount } from 'svelte'
+
+  const endpoint = 'test-api.discours.io/graphql'
   const { t } = getLocalization()
 
+  $: if ($token) {
+    $graphql = new GraphQLClient(endpoint, { headers: { Auth: $token } })
+    console.log('app: graphql connection is autorized')
+    console.debug(token)
+    $graphql.request(GET_ME).then(user => $session = user)
+  }
+
+  let res = ''
   let newMessages = 0 // FIXME: get with query
 
-  const here = (where) => window && window.location === where
+onMount(() => {
+  res = window.location.pathname
+})
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<nav use:links>
+<nav>
   <a href="/"><h1>Дискурc</h1></a>
   <div style="width: 195px;" />
   <div class="router">
@@ -24,7 +35,7 @@
       <div class="routecell">
         <a href="/search">
           <Icon
-            name={here('/search') ? 'searching' : 'search'}
+            name={res === '/search' ? 'searching' : 'search'}
             title={$t('Search')}
           />
         </a>
@@ -50,7 +61,7 @@
       <div class="routerow">
         <div class="routecell">
           <a href="/profile">
-            <div class:entered={here('/profile')}>
+            <div class:entered={res === '/profile'}>
               <Userpic />
             </div>
           </a>
@@ -61,7 +72,7 @@
         <div class="routecell">
           <a href="/editor">
             <Icon
-              name={here('/editor') ? 'editing' : 'editor'}
+              name={res === '/editor' ? 'editing' : 'editor'}
               title="editor"
             />
           </a>
@@ -72,7 +83,7 @@
         <div class="routecell">
           <a href="/community">
             <Icon
-              name={here('/comunity') ? 'community-entered' : 'commmunity'}
+              name={res === '/comunity' ? 'community-entered' : 'commmunity'}
               title="community"
             />
           </a>

@@ -1,12 +1,10 @@
 [0.0.5]
-[-] removed svelte-apollo due bug
+[+] migrate to sveltekit
+[-] removed apollo due bug
 [-] removed custom prerender code
-[-] replaced husky pre-push hook with pre-git
 [+] stylelint enabled
-[+] tossr based static pages generator
 [+] precompiler windows support
-[-] from svelte-routing to svelte-navigator
-[+] precompiler and ssr separated
+[+] precompiler separated
 
 [0.0.4]
 

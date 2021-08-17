@@ -9,7 +9,8 @@ const ORG = 'discours.io' // default org
 let lang = 'ru'         // default language
 const cwd = resolve('.')
 const contentPath = resolve(cwd, 'content')
-const publicPath = resolve(cwd, 'public')
+// const srcPath = resolve(cwd, 'src')
+const staticPath = resolve(cwd, 'static')
 const shouts = {}
 
 const handle = async (callback) => {
@@ -45,7 +46,7 @@ const handle = async (callback) => {
 
           shouts[lng][slug] = shout
           fs.writeFileSync(
-            resolve(publicPath, `shouts${lng==='ru'?'':'.'+lng}.json`),
+            resolve(staticPath, `shouts${lng==='ru'?'':'.'+lng}.json`),
             JSON.stringify(shouts[lng], false, 2)
           )
         }

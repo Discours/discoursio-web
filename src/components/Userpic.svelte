@@ -1,8 +1,8 @@
 <script lang="ts">
-  export let user
+import { session } from '../stores/auth'
 </script>
 
-<img src={user.userpic} alt="userpic" />
+<img src={$session.userpic} alt="userpic" />
 
 <style>
   img {

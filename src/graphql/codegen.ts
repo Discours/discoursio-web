@@ -164,10 +164,10 @@ export type Shout = {
   __typename?: 'Shout'
   org: Scalars['String']
   slug: Scalars['String']
-  author: Scalars['Int']
+  author?: Scalars['Int']
   body: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
+  createdAt?: Scalars['DateTime']
+  updatedAt?: Scalars['DateTime']
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
   rating?: Maybe<Scalars['Int']>

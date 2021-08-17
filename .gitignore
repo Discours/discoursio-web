@@ -1,12 +1,8 @@
 node_modules
 *.DS_Store
-pnpm-lock.yaml
-public/bundle*
-public/*.json
-public/*/
-database
-storybook-static
-gen
-temp
 .vercel
 .env
+build
+.svelte-kit
+pnpm*
+static/*.json

@@ -1,7 +1,6 @@
 <script>
-  import { Link } from 'svelte-navigator'
-  // import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-  // import client from '../graphql/client'
+  import { SIGN_IN, SIGN_UP } from '../graphql/queries'
+  import { graphql } from '../stores/auth'
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
   import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
@@ -14,16 +13,15 @@
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
-    let q = client.query(SIGN_IN, {
+    let q = await $graphql.request(SIGN_IN, {
       variables: { email: emailInput.value, password: passwordInput.value },
     })
-    console.debug(await q.result())
+    console.debug(q)
   }
 
   const register = async () => {
     console.log('auth: register with discours.io account ')
-    console.debug(client)
-    let q = await client.mutate(SIGN_UP, {
+    let q = await $graphql.request(SIGN_UP, {
       variables: { email: emailInput.value, password: passwordInput.value },
     })
     console.debug(q)
@@ -36,10 +34,6 @@
   const providerFailure = (e) => {
     console.error(e)
   }
-
-let ssr
-
-$: ssr = window?.__ssrRendered
 
 </script>
 
@@ -108,7 +102,7 @@ $: ssr = window?.__ssrRendered
         <span style="line-height: 20px;">Запомнить</span>
       </div>
       <div class="half" style="color: rgba(158.93, 161.32, 167.47, 1);">
-        <Link to="/resetpassword">Сброс пароля</Link>
+        <a href="/resetpassword">Сброс пароля</a>
       </div>
     </div>
 
@@ -117,11 +111,11 @@ $: ssr = window?.__ssrRendered
         {create ? 'Создать аккаунт' : 'Войти'}
       </div>
     </div>
-    <Link to="/login" on:click={() => (useSocial = !useSocial)}>
+    <a href="/login" on:click={() => (useSocial = !useSocial)}>
       <div>
         {'Использовать учётную запись в соцсети'}
       </div>
-    </Link>
+    </a>
     {#if useSocial}
       <div
         style="width: 100%; height: 330px; margin-top: 16px;"

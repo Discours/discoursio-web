@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from 'graphql-request'
 // email
 export const IS_EMAIL_FREE = gql`
   query isEmailFreeQuery($email: String!) {
