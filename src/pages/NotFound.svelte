@@ -1,5 +1,5 @@
 <script>
-  export let props
+  export let location
 </script>
 
-<h3>404: {props.location}</h3>
+<h3>404: {location.pathname}</h3>

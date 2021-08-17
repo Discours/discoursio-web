@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
   import loader from '@beyonk/async-script-loader'
-  import LogoGoogle32 from 'carbon-icons-svelte/lib/LogoGoogle32'
+  import Icon from './Icon.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -9,12 +9,16 @@
   export let clientId
   export let text = ''
   let disabled = true
+  let gapi
 
   onMount(() => {
     clientId &&
       loader(
         [{ type: 'script', url: '//apis.google.com/js/api:client.js' }],
-        () => window['gapi'],
+        () => {
+          gapi = window && window['gapi']
+          return gapi
+        },
         () => initialise()
       )
   })
@@ -45,7 +49,7 @@
 </script>
 
 <div bind:this={signinCta} {disabled} class="google-auth">
-  <LogoGoogle32 /><span>{text}</span>
+  <Icon name="google" /><span>{text}</span>
 </div>
 
 <style>

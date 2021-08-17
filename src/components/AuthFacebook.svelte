@@ -1,7 +1,7 @@
 <script>
+  import Icon from './Icon.svelte'
   import { onMount, createEventDispatcher } from 'svelte'
   import loader from '@beyonk/async-script-loader'
-  import LogoFacebook32 from 'carbon-icons-svelte/lib/LogoFacebook32'
   const dispatch = createEventDispatcher()
 
   const version = 'v11.0'
@@ -9,19 +9,22 @@
   let disabled = true
   export let appId
   export let text = ''
+  let FB
 
   onMount(() => {
     appId &&
       loader(
         [{ type: 'script', url: '//connect.facebook.net/ru_RU/sdk.js' }],
-        () => window['FB'],
+        () => {
+          FB = window['FB']
+          return FB
+        },
         () => initialise()
       )
   })
 
   function initialise() {
     console.log('auth: fb async init')
-    const FB = window['FB']
     FB.init({
       appId,
       cookie: true,
@@ -32,7 +35,6 @@
   }
 
   function login() {
-    const FB = window['FB']
     FB.login(
       function (response) {
         if (response.status === 'connected') {
@@ -54,7 +56,7 @@
 </script>
 
 <div on:click={login} {disabled} class="facebook-auth">
-  <LogoFacebook32 /><span>{text}</span>
+  <Icon name="facebook" /><span>{text}</span>
 </div>
 
 <style>

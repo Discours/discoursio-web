@@ -1,18 +1,7 @@
 <script>
-  import { links } from 'svelte-routing'
+  import { links } from 'svelte-navigator'
 
-  import UserAvatar20 from 'carbon-icons-svelte/lib/UserAvatar20'
-  import UserAvatarFilledAlt20 from 'carbon-icons-svelte/lib/UserAvatarFilledAlt20'
-  import UserAvatarFilled20 from 'carbon-icons-svelte/lib/UserAvatarFilled20'
-  import Edit20 from 'carbon-icons-svelte/lib/Edit20'
-  import Search20 from 'carbon-icons-svelte/lib/Search20'
-  import Query20 from 'carbon-icons-svelte/lib/Query20'
-  import Email20 from 'carbon-icons-svelte/lib/Email20'
-  import Dashboard20 from 'carbon-icons-svelte/lib/Dashboard20'
-  import DashboardReference20 from 'carbon-icons-svelte/lib/DashboardReference20'
-  import EditOff20 from 'carbon-icons-svelte/lib/EditOff20'
-  import EmailNew20 from 'carbon-icons-svelte/lib/EmailNew20'
-  import MailAll20 from 'carbon-icons-svelte/lib/MailAll20'
+  import Icon from './Icon.svelte'
   import Userpic from './Userpic.svelte'
 
   import { token } from '../stores/auth'
@@ -20,7 +9,7 @@
   import { getLocalization } from '../i18n'
   const { t } = getLocalization()
 
-  let newMessages = true // FIXME: get with query
+  let newMessages = 0 // FIXME: get with query
 
   const here = (where) => window && window.location === where
 </script>
@@ -34,8 +23,8 @@
     <div class="routerow">
       <div class="routecell">
         <a href="/search">
-          <svelte:component
-            this={here('/search') ? Query20 : Search20}
+          <Icon
+            name={here('/search') ? 'searching' : 'search'}
             title={$t('Search')}
           />
         </a>
@@ -44,12 +33,15 @@
 
     <div class="routerow">
       <div class="routecell">
-        <a href="/login">
-          <svelte:component
-            this={here('/login') ? UserAvatarFilledAlt20 : UserAvatar20}
-            title={$t('Edit')}
-          />
+        {#if $token}
+        <a href="/inbox">
+          <Icon name="bell" counter={newMessages} />
         </a>
+        {:else}
+        <a href="/login">
+          Войти
+        </a>
+        {/if}
       </div>
     </div>
 
@@ -58,10 +50,9 @@
       <div class="routerow">
         <div class="routecell">
           <a href="/profile">
-            <svelte:component
-              this={here('/profile') ? Userpic : UserAvatarFilled20}
-              title="profile"
-            />
+            <div class:entered={here('/profile')}>
+              <Userpic />
+            </div>
           </a>
         </div>
       </div>
@@ -69,8 +60,8 @@
       <div class="routerow">
         <div class="routecell">
           <a href="/editor">
-            <svelte:component
-              this={here('/editor') ? Edit20 : EditOff20}
+            <Icon
+              name={here('/editor') ? 'editing' : 'editor'}
               title="editor"
             />
           </a>
@@ -79,24 +70,9 @@
 
       <div class="routerow">
         <div class="routecell">
-          <a href="/inbox">
-            <svelte:component
-              this={here('/inbox')
-                ? newMessages
-                  ? EmailNew20
-                  : Email20
-                : MailAll20}
-              title="inbox"
-            />
-          </a>
-        </div>
-      </div>
-
-      <div class="routerow">
-        <div class="routecell">
           <a href="/community">
-            <svelte:component
-              this={here('/inbox') ? DashboardReference20 : Dashboard20}
+            <Icon
+              name={here('/comunity') ? 'community-entered' : 'commmunity'}
               title="community"
             />
           </a>

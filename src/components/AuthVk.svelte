@@ -8,28 +8,30 @@
   export let authUrl
   export let width
   export let text = ''
+  let VK
 
   onMount(() => {
     apiId &&
       loader(
         [{ type: 'script', url: '//vk.com/js/api/openapi.js?169' }],
-        () => window['VK'],
+        () => {
+          VK = window['VK']
+          return VK
+        },
         () => initialise()
       )
   })
 
   function initialise() {
     console.log('auth: vk async init')
-    const VK = window['VK']
     apiId && VK.init({ apiId })
     disabled = false
   }
 
   function login() {
-    const VK = window['VK']
     VK.Widgets.Auth('vk-auth', {
       onAuth: (res) => {
-        const { uid, first_name, last_name, photo, photo_rec, hash } = res
+        const { uid, first_name, last_name, hash } = res
         if (uid) {
           /* docs.vk.com: Для проверки авторизации Вы можете 
             использовать полученный параметр hash, сравнив его 
@@ -50,7 +52,7 @@
 
 <div on:click={login} {disabled} id="vk-auth">
   <div id="vk_api_transport" />
-  <img src="vk-square.svg" alt="vk" /><span>{text}</span>
+  <img src="/icons/vk-square.svg" alt="vk" /><span>{text}</span>
 </div>
 
 <style>

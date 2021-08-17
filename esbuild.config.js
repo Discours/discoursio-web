@@ -4,6 +4,7 @@ import svelte from 'esbuild-svelte'
 import derverPkg from 'derver'
 import svelteCfg from './svelte.config.cjs'
 import precompile from './precompiler.js'
+import fs from 'fs'
 
 const { preprocess } = svelteCfg
 const { derver } = derverPkg
@@ -14,6 +15,7 @@ const dir = 'public'
 const compileOptions = { dev, css: false }
 
 const options = {
+  logLevel: 'warning',
   entryPoints: [`src/index.ts`],
   external: ['react'],
   bundle: true,
@@ -30,8 +32,10 @@ if(!dev) {
   options.treeShaking = true
 }
 
-const make = async (callback = null) => {
-  return build(options).then(builder => {
+console.log('build: making...')
+build(options)
+  .then(builder => {
+    console.log('build: finished')
     if (builder.warnings && builder.warnings.length) {
       builder.warnings.forEach(w => console.warn(w))
       return
@@ -54,20 +58,18 @@ const make = async (callback = null) => {
             lr.prevent()
             try {
               await precompile()
-            } catch(err) { lr.error(err.message, 'esbuild: content precompiler error')}
+            } catch(err) { lr.error(err.message, 'build: content precompiler error')}
           }
         }
       })
+      console.log('build: serving for development')
     } else {
-      console.log('esbuild: successfully built for production')
+      console.log('build: production is ready')
       process.exit(0)
     }
-    if (callback) callback()
-  }).catch((err) => {
+  })
+  .catch((err) => {
     console.error(err)
     process.exit(1)
   })
-}
-
-precompile().then(make)
 

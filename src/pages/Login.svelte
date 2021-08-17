@@ -1,17 +1,17 @@
 <script>
-  import { Link } from 'svelte-routing'
-  import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-  import client from '../graphql/client'
+  import { Link } from 'svelte-navigator'
+  // import { SIGN_IN, SIGN_UP } from '../graphql/queries'
+  // import client from '../graphql/client'
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
   import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
-
-  export let location
+  // import { onMount } from 'svelte'
 
   let create = false,
     useSocial = false
   let emailInput, passwordInput, rememberCheck
   let auth
+
   const login = async () => {
     console.log('auth: signing in with discours.io account')
     let q = client.query(SIGN_IN, {
@@ -21,7 +21,7 @@
   }
 
   const register = async () => {
-    console.log('auth: signing up with discours.io account')
+    console.log('auth: register with discours.io account ')
     console.debug(client)
     let q = await client.mutate(SIGN_UP, {
       variables: { email: emailInput.value, password: passwordInput.value },
@@ -36,12 +36,17 @@
   const providerFailure = (e) => {
     console.error(e)
   }
+
+let ssr
+
+$: ssr = window?.__ssrRendered
+
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
   <form class="auth">
-    {#if location && auth}
+    {#if auth}
       {#if auth.loading}
         Loading...
       {:else if auth.error}
@@ -113,10 +118,7 @@
       </div>
     </div>
     <Link to="/login" on:click={() => (useSocial = !useSocial)}>
-      <div
-        style="width: 100%; margin-top: 16px; color: black;"
-        class:huge={useSocial}
-      >
+      <div>
         {'Использовать учётную запись в соцсети'}
       </div>
     </Link>
@@ -149,9 +151,6 @@
     align-items: center;
     justify-content: center;
     min-width: 10%;
-  }
-  .huge {
-    font-size: xx-large;
   }
   .view {
     width: 100%;

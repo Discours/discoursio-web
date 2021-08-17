@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte'
   import { ApolloLink } from '@apollo/client'
-  import { Router, Route } from 'svelte-routing'
+  import { Router, Route } from 'svelte-navigator'
   import client from './graphql/client.ts'
   import { GET_ME } from './graphql/queries'
   import { initLocalizationContext } from './i18n/index'
@@ -34,21 +34,22 @@
   let noauth = false
 
   onMount(() => {
+    dispatchEvent(new CustomEvent('app-loaded')) // tossr requirement
     // TODO: get system lang
     $shouts = shoutsData
-    $token = document.cookie
+    $token = document?.cookie
     // get org name from subdomain
-    const tld = window.location.hostname
-    // console.log(tld)
+    const tld = window?.location.hostname
+    console.log('app: language is ' + $lang)
     $org =
       tld.replace('discours', '') !== tld ||
       tld.replace('localhost', '') !== tld ||
       tld.replace('jsdom', '') !== tld
         ? 'discours.io'
         : window.location.hostname.replace('discours.io')
-    console.log($org)
+    // console.log($org)
     title = getPageTitle({ org: $org, shout })
-    console.log('app: got org from domain name')
+    // console.log('app: got org from domain name')
   })
 
   $: if ($token) {
@@ -74,7 +75,7 @@
 
   $: if (!$token && noauth === false) {
     noauth = true
-    console.log('\napp: no auth token')
+    // console.log('app: no auth token')
   }
 </script>
 

@@ -1,5 +1,7 @@
 <script>
-  export let token
+  export let token = null
+  export let location = ''
+
   let emailInput,
     confirmed = false
 
@@ -13,6 +15,8 @@
     // TODO: send reset api request
   }
 </script>
+
+<svelte:head><title>Дискурс {location.pathname}</title></svelte:head>
 
 <div class="resetwrap">
   <h4>Сброс пароля</h4>
