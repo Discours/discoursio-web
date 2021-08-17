@@ -4,6 +4,7 @@ import { cwd } from 'process'
 import sveltePre from 'svelte-preprocess'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
+import vercel from '@sveltejs/adapter-vercel'
 
 const { scss, globalStyle } = sveltePre
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
@@ -15,6 +16,7 @@ const config = {
   preprocess: [mdsvex(), typescript(), scss(), globalStyle()],
 
   kit: {
+	  adapter: vercel(),
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
     vite: {
