@@ -98,7 +98,8 @@
     "sb:clean": "rm storybook-static/*",
     "sb:start": "start-storybook -p 6006 -s public",
     "sb:build": "rm storybook-static/* && build-storybook -s public",
-    "ssr": "node ssr.js"
+    "ssr": "node ssr.js",
+    "test": "run-s lint-staged validate"
   },
   "resolutions": {
     "esbuild": "0.12.20",
@@ -107,9 +108,5 @@
   "type": "module",
   "dependencies": {
     "marked": "^3.0.0"
-  },
-  "pre-commit": [
-    "lint-staged",
-    "validate"
-  ]
+  }
 }
