@@ -36,6 +36,8 @@
   }
 </script>
 
+<svelte:head><title>Дискурс : Авторизация</title></svelte:head>
+
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
   <form class="auth">

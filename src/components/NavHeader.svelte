@@ -11,7 +11,7 @@
   const { t } = getLocalization()
 
   $: if ($token) {
-    $graphql = new GraphQLClient('/graphql', { headers: { Auth: $token } })
+    $graphql = new GraphQLClient('test2.discours.io/graphql', { headers: { Auth: $token } })
     console.log('app: graphql connection is autorized')
     console.debug(token)
     $graphql.request(GET_ME).then((user) => ($session = user))

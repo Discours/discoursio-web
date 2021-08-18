@@ -1,6 +1,5 @@
 <script lang="ts">
   // Reincarnation
-  export let location
 </script>
 
-<svelte:head><title>Дискурс {location.pathname}</title></svelte:head>
+<svelte:head><title>Дискурс : Форум</title></svelte:head>

@@ -20,5 +20,6 @@
   })
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Room: {provider && provider.roomName}</p>
+<svelte:head><title>Дискурс : Редакция</title></svelte:head>
+
+<p>Connected to {provider && provider.roomName}</p>

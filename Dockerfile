@@ -3,6 +3,10 @@ workdir /usr/app
 copy ./ /usr/app
 run yarn install
 run yarn build
+run apk update
+run apk --no-cache add -q git nginx python pip
+run git clone git@github.com:Discours/discours-backend-next.git api
+run adduser -g 'Nginx www user' -h /home/www/ wwwcbz
+copy nginx.conf /etc/nginx/conf.d/default.conf
 expose 80
-expose 8080
-cmd ["yarn start --host"]
+cmd ["service nginx start"]

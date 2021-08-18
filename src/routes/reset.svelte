@@ -1,6 +1,5 @@
 <script>
   export let token = null
-  export let location = ''
 
   let emailInput,
     confirmed = false
@@ -16,7 +15,7 @@
   }
 </script>
 
-<svelte:head><title>Дискурс {location.pathname}</title></svelte:head>
+<svelte:head><title>Дискурс : Сброс пароля</title></svelte:head>
 
 <div class="resetwrap">
   <h4>Сброс пароля</h4>

@@ -2,7 +2,6 @@
   import { shouts } from '../stores/zine'
   import ShoutTeaser from '../components/ShoutTeaser.svelte'
 
-  export let location
   let teasers = []
   $: if ($shouts) teasers = Object.keys($shouts)
 
@@ -10,7 +9,7 @@
 </script>
 
 <div class="results">
-  {#await location && $shouts}
+  {#await $shouts}
     Загрузка...
   {:then}
     {#each teasers as shid}

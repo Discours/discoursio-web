@@ -2,6 +2,8 @@
   // TODO: getMessages graphql query
 </script>
 
+<svelte:head><title>Дискурс : Чаты</title></svelte:head>
+
 <!-- svelte-ignore a11y-missing-attribute -->
 <div>
   <div

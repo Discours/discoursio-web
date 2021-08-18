@@ -1,26 +1,7 @@
 <script context="module">
-  export const load = async ({ fetch }) => {
-    try {
-      const response = await fetch('../../public/shouts.json', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ limit: 8 }),
-      })
-      const result = await response.json()
-      return {
-        props: { data: result.data },
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
+  import data from '../../static/shouts.json'
 </script>
 
-<script>
-  export let data
-</script>
+<svelte:head><title>Дискурс : Лента</title></svelte:head>
 
 <pre>{JSON.stringify(data, null, 2)}</pre>
