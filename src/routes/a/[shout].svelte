@@ -1,18 +1,22 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import type { Shout } from '../../graphql/codegen'
+import { org } from '../../stores/common'
+import { shouts } from '../../stores/zine'
+import type { Shout } from '../../graphql/codegen'
 
-  export let data: Shout
-  export let shout: string
-  export let org = 'discours.io'
+export let params
 
-  onMount(() => {
-    if (!data) data = <Shout>(window as any).SHOUT
-  })
+let data: Shout
+let slug: string = ''
+
+$: if($shouts && params?.shout) {
+  slug = params?.shout
+  data = <Shout>$shouts[slug]
+  }
+
 </script>
 
 <svelte:head>
-  <title>Дискурс {org === 'discours.io' ? '' : ': ' + org + ' '}: {shout}</title
+  <title>Дискурс {$org === 'discours.io' ? '' : ': ' + $org + ' '}: {data.title}</title
   >
 </svelte:head>
 <div>{@html data.body}</div>
