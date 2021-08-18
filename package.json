@@ -23,7 +23,7 @@
     "api:enter": "cd api",
     "api:clone": "git clone https://github.com/Discours/discours-backend-next api",
     "api:setup": "pipenv install -r requirements.txt",
-    "api:start": "pm2 start 'pipenv run python api/server.py'"
+    "api:start": "pipenv run python api/server.py"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "latest",
@@ -60,7 +60,6 @@
     "mdsvex": "^0.9.8",
     "node-fetch": "^2.6.1",
     "npm-run-all": "^4.1.5",
-    "pm2": "^5.1.0",
     "prettier": "^2.2.1",
     "prettier-eslint": "^13.0.0",
     "prettier-plugin-svelte": "^2.3.1",
