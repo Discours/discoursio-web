@@ -6,3 +6,4 @@ build
 .svelte-kit
 pnpm*
 static/*.json
+.verce*

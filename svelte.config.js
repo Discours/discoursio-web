@@ -23,9 +23,9 @@ const config = {
       optimizeDeps: {
         include: ['yjs', 'y-indexeddb', 'y-webrtc'],
         exclude: [],
-        esbuildOptions: {
-          external: [],
-        },
+      },
+      esbuildOptions: {
+        external: [],
       },
       ssr: {
         noExternal: Object.keys(pkg.dependencies || {}),
