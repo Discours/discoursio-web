@@ -1,5 +1,6 @@
 import type { I18nService } from './i18n-service'
-import { derived, Readable, Writable, writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
+import type { Readable, Writable } from 'svelte/store'
 
 export type TType = (
   text: string,

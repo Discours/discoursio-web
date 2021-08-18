@@ -1,4 +1,5 @@
-import i18next, { i18n, Resource } from 'i18next'
+import i18next from 'i18next'
+import type { Resource, i18n } from 'i18next'
 import translations from './translations'
 
 const INITIAL_LANGUAGE = 'ru'

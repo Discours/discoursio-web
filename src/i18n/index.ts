@@ -1,7 +1,8 @@
 import { setContext, getContext } from 'svelte'
 import type { Readable, Writable } from 'svelte/store'
 import { I18nService } from './i18n-service'
-import { I18NextTranslationService, TType } from './translation-service'
+import { I18NextTranslationService } from './translation-service'
+import type { TType } from './translation-service'
 
 export const initLocalizationService = (): I18nService => {
   // Initialize our services
