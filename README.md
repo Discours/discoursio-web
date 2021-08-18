@@ -1,4 +1,4 @@
-### First - clone the repo 
+### First - clone the repo
 
 ```sh
 git clone git@github.com:Discours/discoursio-web

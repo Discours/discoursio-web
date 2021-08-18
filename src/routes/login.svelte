@@ -139,7 +139,7 @@
   </form>
 </div>
 
-<style>
+<style lang="scss">
   div {
     display: flex;
     flex-direction: row;
@@ -169,6 +169,7 @@
     line-height: 24px;
     border: none;
     outline: none;
+    color: var(--danger-color);
   }
   .register-tab-title,
   .login-tab-title {

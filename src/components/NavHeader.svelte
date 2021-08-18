@@ -1,7 +1,7 @@
 <script>
   import Icon from './Icon.svelte'
   import Userpic from './Userpic.svelte'
-  import { graphql } from '../stores/common'
+  import { graphql, GRAPHQL_ENDPOINT } from '../stores/common'
   import { token, session } from '../stores/auth'
   import { GET_ME } from '../graphql/queries'
   import { GraphQLClient } from 'graphql-request'
@@ -11,7 +11,9 @@
   const { t } = getLocalization()
 
   $: if ($token) {
-    $graphql = new GraphQLClient('test2.discours.io/graphql', { headers: { Auth: $token } })
+    $graphql = new GraphQLClient(GRAPHQL_ENDPOINT, {
+      headers: { Auth: $token },
+    })
     console.log('app: graphql connection is autorized')
     console.debug(token)
     $graphql.request(GET_ME).then((user) => ($session = user))
