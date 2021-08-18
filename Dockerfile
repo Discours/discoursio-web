@@ -4,10 +4,10 @@ copy ./ /usr/app
 run yarn install
 run yarn build
 run apk update
-run apk --no-cache add -q git nginx python3 py3-pip
+run apk --no-cache add -q git nginx python3 py3-pip openssh-client
 run ln -sf python3 /usr/bin/python
 run python3 -m ensurepip
-run pip3 install --no-cache --upgrade pip setuptools pipenv openssh-client
+run pip3 install --no-cache --upgrade pip setuptools pipenv
 run rm -rf api
 run git clone git@github.com:Discours/discours-backend-next.git api
 run adduser -g 'Nginx www user' -h /home/www/ wwwcbz
