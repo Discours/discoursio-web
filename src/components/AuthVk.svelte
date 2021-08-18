@@ -24,11 +24,13 @@
 
   function initialise() {
     console.log('auth: vk async init')
+    VK = window['VK']
     apiId && VK.init({ apiId })
     disabled = false
   }
 
   function login() {
+    VK = window['VK']
     VK.Widgets.Auth('vk-auth', {
       onAuth: (res) => {
         const { uid, first_name, last_name, hash } = res

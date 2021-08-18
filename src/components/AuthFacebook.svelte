@@ -25,6 +25,7 @@
 
   function initialise() {
     console.log('auth: fb async init')
+    FB = window['FB']
     FB.init({
       appId,
       cookie: true,
@@ -35,6 +36,7 @@
   }
 
   function login() {
+    FB = window['FB']
     FB.login(
       function (response) {
         if (response.status === 'connected') {

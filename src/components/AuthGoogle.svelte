@@ -16,7 +16,7 @@
       loader(
         [{ type: 'script', url: '//apis.google.com/js/api:client.js' }],
         () => {
-          gapi = window && window['gapi']
+          gapi = window['gapi']
           return gapi
         },
         () => initialise()
@@ -26,6 +26,7 @@
   let GoogleAuth
 
   function initialise() {
+    gapi = window['gapi']
     gapi.load('auth2', async () => {
       GoogleAuth = gapi.auth2.init({ client_id: clientId })
       GoogleAuth.then(attachHandler, handleInitialisationError)
