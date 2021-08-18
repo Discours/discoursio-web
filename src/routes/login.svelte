@@ -1,6 +1,6 @@
 <script>
   import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-  import { graphql } from '../stores/auth'
+  import { graphql } from '../stores/common'
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
   import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'

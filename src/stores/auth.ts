@@ -1,6 +1,5 @@
 import type { Writable, Readable } from 'svelte/store'
 import { writable, derived } from 'svelte/store'
-import type { GraphQLClient } from 'graphql-request'
 import type { User } from '../graphql/codegen'
 import { org } from './common'
 
@@ -27,4 +26,3 @@ export const orgRole: Readable<AS> = derived(
     return 8
   }
 )
-export const graphql: Writable<GraphQLClient> = writable()
