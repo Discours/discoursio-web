@@ -4,9 +4,9 @@ copy ./ /usr/app
 run yarn install
 run yarn build
 run apk update
-run apk --no-cache add -q git nginx python3.8 py3-pip
-run ln -sf python3.8 /usr/bin/python
-run python -m ensurepip
+run apk --no-cache add -q git nginx python3 py3-pip
+run ln -sf python3 /usr/bin/python
+run python3 -m ensurepip
 run cd api && pip install && cd ..
 run yarn global add pm2
 run cd api && pm2 start 'python server.py' && cd ..
