@@ -13,6 +13,5 @@ run yarn global add pm2
 run cd api && pm2 start 'pipenv run python server.py' && cd ..
 run adduser --disabled-password -g 'nginx www user' -h /home/www/ www-user
 copy nginx.conf /etc/nginx/conf.d/default.conf
-copy /usr/app /home/www/
 expose 80
-cmd ["service nginx start"]
+cmd ["/etc/init.d/nginx start"]
