@@ -14,4 +14,4 @@ run cd api && pm2 start 'pipenv run python server.py' && cd ..
 run adduser --disabled-password -g 'nginx www user' -h /home/www/ www-user
 copy nginx.conf /etc/nginx/conf.d/default.conf
 expose 80
-cmd ["/etc/init.d/nginx start"]
+cmd nginx -g "daemon off;"
