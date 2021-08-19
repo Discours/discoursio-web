@@ -12,6 +12,7 @@ run cd api && pipenv install --python /usr/bin/python && cd ..
 run yarn global add pm2
 run cd api && pm2 start 'pipenv run python server.py' && cd ..
 run adduser --disabled-password -g 'nginx www user' -h /home/www/ www-user
+run mkdir /run/nginx
 copy nginx.conf /etc/nginx/conf.d/default.conf
 expose 80
 cmd nginx -g "daemon off;"
