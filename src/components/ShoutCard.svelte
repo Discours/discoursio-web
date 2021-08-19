@@ -18,11 +18,13 @@
 </div>
 
 <style>
+/*
   .shout-body {
     font-family: var(--font);
     font-size: 2vh;
     padding: 3vw;
   }
+*/
   .shout-author,
   .shout-rating {
     display: flex;
