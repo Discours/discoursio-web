@@ -3,7 +3,7 @@
   import NavHeader from '../components/NavHeader.svelte'
   import Subnavigation from '../components/Subnavigation.svelte';
   import '../app.scss'
-
+  
   initLocalizationContext()
 </script>
 
@@ -15,3 +15,7 @@
   <slot />
 </main>
 <footer></footer>
+
+<style lang="scss" global>
+  @import '../app.scss';
+</style>
