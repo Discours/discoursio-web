@@ -12,8 +12,12 @@ const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
-  preprocess: [globalStyle(), mdsvex(), typescript(), scss()],
-
+  preprocess: [globalStyle(), mdsvex(), typescript(), scss({
+    // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
+    prependData: `@import 'src/styles/_variables.scss';`
+  })],
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   kit: {
     adapter: vercel(),
     // hydrate the <div id="svelte"> element in src/app.html
