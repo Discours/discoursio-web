@@ -1,20 +1,19 @@
 <script lang="ts">
-// import type { Shout, User } from '../graphql/codegen'
-// import { topics, authors } from '../stores/zine'
+  // import type { Shout, User } from '../graphql/codegen'
+  // import { topics, authors } from '../stores/zine'
 
-export let shout
-
+  export let shout
 </script>
 
 <section class="article-card">
   <div class="article-card__cover">
-    <img src="{shout.cover}" alt="{shout.title}"/>
+    <img src={shout.cover} alt={shout.title} />
   </div>
 
   {#if shout.topics}
-  <div class="article-card__category">
-    <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
-  </div>
+    <div class="article-card__category">
+      <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
+    </div>
   {/if}
 
   <div class="article-card__title">
@@ -46,7 +45,7 @@ export let shout
     position: relative;
 
     .floor-1 &:nth-child(2) {
-      border-top: 1px solid rgba(0,0,0,0.1);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
       margin-top: 2.4rem !important;
       padding-top: 2.4rem;
 
@@ -123,7 +122,11 @@ export let shout
       z-index: -1;
 
       &:after {
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.6)
+        );
         content: '';
         height: 100%;
         position: absolute;

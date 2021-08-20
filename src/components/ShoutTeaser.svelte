@@ -18,14 +18,14 @@
 </div>
 
 <style>
-/*
+  /*
   .shout {
     border-bottom: 1px solid black;
     padding-bottom: 2vh;
     min-height: 12vh;
   }
 */
-/*
+  /*
   .shout-body {
     font-family: var(--font);
     font-size: 2vh;

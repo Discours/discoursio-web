@@ -26,3 +26,14 @@ export const orgRole: Readable<AS> = derived(
     return 8
   }
 )
+
+// ui form needs
+export const auth: Writable<{
+  email: string
+  password: string
+  remember: boolean
+}> = writable({
+  email: '',
+  password: '',
+  remember: false,
+})

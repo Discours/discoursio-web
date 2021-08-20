@@ -1,45 +1,45 @@
 <script>
-import Icon from './Icon.svelte'
-import Userpic from './Userpic.svelte'
-import { graphql, GRAPHQL_ENDPOINT } from '../stores/common'
-import { token, session } from '../stores/auth'
-import { GET_ME } from '../graphql/queries'
-import { GraphQLClient } from 'graphql-request'
-import { getLocalization } from '../i18n'
-import { onMount } from 'svelte'
+  import Icon from './Icon.svelte'
+  import Userpic from './Userpic.svelte'
+  import { graphql, GRAPHQL_ENDPOINT } from '../stores/common'
+  import { token, session } from '../stores/auth'
+  import { GET_ME } from '../graphql/queries'
+  import { GraphQLClient } from 'graphql-request'
+  import { getLocalization } from '../i18n'
+  import { onMount } from 'svelte'
 
-const { t } = getLocalization()
+  const { t } = getLocalization()
 
-$: if ($token) {
-  $graphql = new GraphQLClient(GRAPHQL_ENDPOINT, {
-    headers: { Auth: $token },
-  })
-  console.log('app: graphql connection is autorized')
-  console.debug(token)
-  $graphql.request(GET_ME).then((user) => ($session = user))
-}
+  $: if ($token) {
+    $graphql = new GraphQLClient(GRAPHQL_ENDPOINT, {
+      headers: { Auth: $token },
+    })
+    console.log('app: graphql connection is autorized')
+    console.debug(token)
+    $graphql.request(GET_ME).then((user) => ($session = user))
+  }
 
-let res = ''
-let newMessages = 0 // FIXME: get with query
+  let res = ''
+  let newMessages = 0 // FIXME: get with query
 
-onMount(() => res = window.location.pathname)
+  onMount(() => (res = window.location.pathname))
 
   const MAIN_NAVIGATION = [
     {
       title: 'журнал',
-      href: '/'
+      href: '/',
     },
     {
       title: 'лента',
-      href: '/feed'
+      href: '/feed',
     },
     {
       title: 'сообщество',
-      href: '/community'
+      href: '/community',
     },
     {
       title: 'форум',
-      href: '/forum'
+      href: '/forum',
     },
   ]
 </script>
@@ -50,10 +50,12 @@ onMount(() => res = window.location.pathname)
   <ul class="col main-navigation">
     {#each MAIN_NAVIGATION as navItem, index}
       <li class:selected={res === navItem.href}>
-        {#if res === navItem.href }
+        {#if res === navItem.href}
           {navItem.title}
         {:else}
-          <a href="{navItem.href}" on:click={() => res = navItem.href}>{navItem.title}</a>
+          <a href={navItem.href} on:click={() => (res = navItem.href)}
+            >{navItem.title}</a
+          >
         {/if}
       </li>
     {/each}

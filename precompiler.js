@@ -18,7 +18,11 @@ const handle = async (callback) => {
     // creates shouts.json
     .on('file', async (root, stats, next) => {
       const [fname, ext] = stats.name.split('.')
-      const dirname = root.replace(contentPath, '').replace(stats.name, '').split(sep).pop()
+      const dirname = root
+        .replace(contentPath, '')
+        .replace(stats.name, '')
+        .split(sep)
+        .pop()
       if (ext === 'md') {
         const slug = fname === 'index' ? dirname : fname
 

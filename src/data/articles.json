@@ -22,13 +22,14 @@
         "viewname": "Анастасия Лозовая",
         "slug": "anastasia-lozovaya"
       }
-    ]
+    ],
+    "body": "## blablabla\n\n blabla. bla."
   },
   {
     "title": "Рабский менталитет — это миф Почему россияне не обречены на вечную несвободу",
     "slug": "slave-mentality",
     "cover": "http://picsum.photos/248/152?r=0.623909341222405",
-    "topicse": [
+    "topics": [
       {
         "title": "Политика",
         "slug": "politics"
@@ -39,7 +40,8 @@
         "viewname": "Иван Вахрушев",
         "slug": "ivan-vahrushev"
       }
-    ]
+    ],
+    "body": "## blablabla\n\n blabla. bla."
   },
   {
     "title": "«Мы уничтожим коммунистический режим Северной Кореи!»",
@@ -61,7 +63,8 @@
         "viewname": "Иван Вахрушев",
         "slug": "ivan-vahrushev"
       }
-    ]
+    ],
+    "body": "## blablabla\n\n blabla. bla."
   },
   {
     "title": "«Здесь я свободен во всём» Как живут нелегальные торговцы из электричек",
@@ -78,7 +81,8 @@
         "viewname": "Марина Никифорова",
         "slug": "marina-nikiforova"
       }
-    ]
+    ],
+    "body": "## blablabla\n\n blabla. bla."
   },
   {
     "title": "Их вещи: монологи секс-работниц о дорогих им предметах",
@@ -95,6 +99,7 @@
         "viewname": "Владимир Коркунов",
         "slug": "vlad-korkunov"
       }
-    ]
+    ],
+    "body": "## blablabla\n\n blabla. bla."
   }
 ]

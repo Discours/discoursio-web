@@ -1,36 +1,48 @@
 <script>
-import { onMount } from 'svelte';
-import { shouts, topics, currentTopic } from '../stores/zine'
+  import { onMount } from 'svelte'
+  import { noop } from 'svelte/internal'
+  import { shoutlist, shoutsMock, currentTopic } from '../stores/zine'
 
-  
-  // FIXME: get all the possible topics from shouts
-  let ttt = new Set([])
-  $: if ($shouts) {
-    const keys = Object.keys($shouts)
-    keys &&
-      keys.forEach((sid) => {
-        if ($shouts[sid] && $shouts[sid].topics) {
-          $shouts[sid].topics.forEach((topic) => ttt.add(topic))
-        }
-      })
-    // console.log(topi
+  // getting all the possible topics from shouts
+  let ttt = []
+
+  onMount(() => {
+    $currentTopic = window.location.hash
+    ttt = [{ slug: '', title: 'Все' }]
+    $shoutlist.forEach((shout) =>
+      shout.topics.forEach((t) => (t in ttt) ? noop(): ttt.push(t))
+    )
+  })
+
+  const navigate = (slug) => {
+    // on nav click
+    $currentTopic = '#' + slug
+    if (slug === '') {
+      // @ts-ignore
+      $shoutlist = shoutsMock
+    } else {
+      console.log('filtering on hash topic')
+      // @ts-ignore
+      $shoutlist = shoutsMock.filter((a) =>
+        a.topics.find((t) => t.slug === slug)
+      )
+    }
+    // console.log($shoutlist)
   }
-onMount(() => {
-  $currentTopic = window.location.hash
-})
-const here = (slug) => window && window.location.hash === '#' + slug
 </script>
 
 <nav class="subnavigation">
   <ul>
-    {#each Array.from(ttt) as {slug, title}, index}
-      <li class:selected="{index === 0}">
-        {#if $currentTopic === '#' + slug}
-          {title.toLowerCase()}
-          {:else}
-          <a href="#{slug}" on:click={() => $currentTopic = '#' + slug}>{title.toLowerCase()}</a>
-        {/if}
-      </li>
+    {#each Array.from(ttt) as { slug, title }, index}
+      {#if $currentTopic === '#' + slug}
+        <li class="selected">{title.toLowerCase()}</li>
+      {:else}
+        <li>
+          <a href="#{slug}" on:click={() => navigate(slug)}>
+            {title.toLowerCase()}
+          </a>
+        </li>
+      {/if}
     {/each}
   </ul>
 </nav>

@@ -1,18 +1,18 @@
 <script>
-  export let articleData;
+  export let articleData
 </script>
 
 <section class="article-card">
   <div class="article-card__cover">
-    <img src="{articleData.cover}" alt="{articleData.title}"/>
+    <img src={articleData.cover} alt={articleData.title} />
   </div>
 
   <div class="article-card__category">
-    <a href="{articleData.category.href}">{articleData.category.title}</a>
+    <a href={articleData.category.href}>{articleData.category.title}</a>
   </div>
 
   <div class="article-card__title">
-    <a href="{articleData.slug}">
+    <a href={articleData.slug}>
       {articleData.title}
     </a>
   </div>
@@ -24,7 +24,7 @@
   <div class="article-card__author">
     {#each articleData.author as author, index}
       {#if index > 0},{/if}
-      <a href="{author.href}">{author.name}</a>
+      <a href={author.href}>{author.name}</a>
     {/each}
   </div>
 </section>
@@ -40,7 +40,7 @@
     position: relative;
 
     .floor-1 &:nth-child(2) {
-      border-top: 1px solid rgba(0,0,0,0.1);
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
       margin-top: 2.4rem !important;
       padding-top: 2.4rem;
 
@@ -117,7 +117,11 @@
       z-index: -1;
 
       &:after {
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+        background: linear-gradient(
+          0deg,
+          rgba(0, 0, 0, 0.6),
+          rgba(0, 0, 0, 0.6)
+        );
         content: '';
         height: 100%;
         position: absolute;

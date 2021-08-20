@@ -4,17 +4,17 @@
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
   import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
-  // import { onMount } from 'svelte'
+  import { auth } from '../stores/auth'
 
   let create = false,
-    useSocial = false
-  let emailInput, passwordInput, rememberCheck
-  let auth
+    useSocial = false,
+    remember = false,
+    emailInput
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
     let q = await $graphql.request(SIGN_IN, {
-      variables: { email: emailInput.value, password: passwordInput.value },
+      variables: { email: $auth.email, password: $auth.password },
     })
     console.debug(q)
   }
@@ -22,7 +22,7 @@
   const register = async () => {
     console.log('auth: register with discours.io account ')
     let q = await $graphql.request(SIGN_UP, {
-      variables: { email: emailInput.value, password: passwordInput.value },
+      variables: { email: $auth.email, password: $auth.password },
     })
     console.debug(q)
   }
@@ -41,17 +41,6 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="view">
   <form class="auth">
-    {#if auth}
-      {#if auth.loading}
-        Loading...
-      {:else if auth.error}
-        Error: {auth.error.message}
-      {:else if auth.data}
-        <p>
-          {auth.data}
-        </p>
-      {/if}
-    {/if}
     <div class="tabs" style="width: 100%; height: 54px; margin-top: 16px;">
       <div
         class="login-tab-title half"
@@ -75,6 +64,7 @@
           <input
             autocomplete="username"
             class="login-input"
+            bind:value={$auth.email}
             bind:this={emailInput}
             type="text"
             placeholder="Ваша почта"
@@ -89,7 +79,7 @@
           <input
             autocomplete="current-password"
             class="password-input"
-            bind:this={passwordInput}
+            bind:value={$auth.password}
             type="password"
             placeholder="Пароль"
           />
@@ -99,7 +89,7 @@
 
     <div style="width: 100%; margin-top: 16px;">
       <div class="half">
-        <input type="checkbox" bind:this={rememberCheck} />
+        <input type="checkbox" bind:checked={remember} />
         <span style="line-height: 20px;">Запомнить</span>
       </div>
       <div class="half" style="color: rgba(158.93, 161.32, 167.47, 1);">
@@ -112,6 +102,7 @@
         {create ? 'Создать аккаунт' : 'Войти'}
       </div>
     </div>
+    {#if useSocial}[v]{:else}[&nbsp;]{/if}
     <a href="/login" on:click={() => (useSocial = !useSocial)}>
       <div>
         {'Использовать учётную запись в соцсети'}

@@ -2,55 +2,55 @@
   const SUBNAVIGATION = [
     {
       title: 'статьи',
-      href: '/'
+      href: '/',
     },
     {
       title: 'искусство',
-      href: '/'
+      href: '/',
     },
     {
       title: 'события',
-      href: '/'
+      href: '/',
     },
     {
       title: 'молоко+',
-      href: '/'
+      href: '/',
     },
     {
       title: 'галерея',
-      href: '/'
+      href: '/',
     },
     {
       title: 'личный опыт',
-      href: '/'
+      href: '/',
     },
     {
       title: 'общество',
-      href: '/'
+      href: '/',
     },
     {
       title: 'культура',
-      href: '/'
+      href: '/',
     },
     {
       title: 'теории',
-      href: '/'
+      href: '/',
     },
     {
       title: 'спецпроекты',
-      href: '/'
+      href: '/',
     },
-  ];
+  ]
 </script>
 
 <nav class="subnavigation">
   <ul>
     {#each SUBNAVIGATION as navItem, index}
-      <li class:selected="{index === 0}">
+      <li class:selected={index === 0}>
         {#if index === 0}
           {navItem.title}
-          {:else}
-          <a href="{navItem.href}">{navItem.title}</a>
+        {:else}
+          <a href={navItem.href}>{navItem.title}</a>
         {/if}
       </li>
     {/each}
@@ -81,6 +81,7 @@
       }
     }
 
-    .selected {}
+    .selected {
+    }
   }
 </style>
