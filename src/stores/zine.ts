@@ -1,6 +1,8 @@
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { Shout } from '../graphql/codegen'
-import shoutsData from '../../static/shouts.json'
+import type { Shout, User, Topic } from '../graphql/codegen'
 
-export const shouts: Writable<{ [key: string]: Shout }> = writable(shoutsData)
+export const shouts: Writable<{ [key: string]: Shout }> = writable()
+export const topics: Writable<Topic[]> = writable()
+export const authors: Writable<{ [uid: string]: User }> = writable({})
+export const currentTopic: Writable<string> = writable()

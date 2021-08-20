@@ -1,36 +1,165 @@
 <script lang="ts">
-  import MD from 'marked'
+// import type { Shout, User } from '../graphql/codegen'
+// import { topics, authors } from '../stores/zine'
 
-  export let shout
-  // TODO: ShoutCard layout, logix
+export let shout
+
 </script>
 
-<div class="shout">
-  {#if shout.body}
-    <div class="shout-body">
-      {@html MD(shout.body)}
-    </div>
-  {/if}
-  <div class="shout-controls">
-    <div class="shout-author">{(shout && shout.author) || 'anonymous'}</div>
-    <div class="shout-rating">+22</div>
+<section class="article-card">
+  <div class="article-card__cover">
+    <img src="{shout.cover}" alt="{shout.title}"/>
   </div>
-</div>
 
-<style>
-/*
-  .shout-body {
-    font-family: var(--font);
-    font-size: 2vh;
-    padding: 3vw;
-  }
-*/
-  .shout-author,
-  .shout-rating {
+  {#if shout.topics}
+  <div class="article-card__category">
+    <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
+  </div>
+  {/if}
+
+  <div class="article-card__title">
+    <a href="/a/{shout.slug}">
+      {shout.title}
+    </a>
+  </div>
+
+  {#if shout.subtitle}
+    <div class="article-card__subtitle">{shout.subtitle}</div>
+  {/if}
+
+  <div class="article-card__author">
+    {#each shout.authors as { slug, viewname }, i}
+      {#if i > 0},{/if}
+      <a href="/x/{slug}">{viewname}</a>
+    {/each}
+  </div>
+</section>
+
+<style lang="scss">
+  @import '../styles/imports';
+
+  .article-card {
     display: flex;
-    float: right;
-    width: 30vw;
-    height: 3vh;
-    font-size: 2vh;
+    flex-direction: column;
+    line-height: 1.2;
+    margin-bottom: 2.4rem;
+    position: relative;
+
+    .floor-1 &:nth-child(2) {
+      border-top: 1px solid rgba(0,0,0,0.1);
+      margin-top: 2.4rem !important;
+      padding-top: 2.4rem;
+
+      .article-card__cover {
+        display: none;
+      }
+    }
+  }
+
+  .article-card__cover {
+    height: 0;
+    margin-bottom: 1.6rem;
+    padding-bottom: 56.2%;
+    position: relative;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  .article-card__category {
+    @include font-size(1.2rem);
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+
+    a {
+      color: $link-color;
+    }
+  }
+
+  .article-card__title {
+    @include font-size(2.2rem);
+    color: $default-color;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .article-card__subtitle {
+    @include font-size(1.7rem);
+    color: #696969;
+    font-weight: 400;
+    margin-bottom: 0.8rem;
+  }
+
+  .article-card__author {
+    @include font-size(1.5rem);
+    font-weight: 400;
+
+    a {
+      color: #9fa1a7;
+    }
+  }
+
+  .article-card--with-cover {
+    padding: 2.4rem;
+
+    &,
+    a,
+    .article-card__title,
+    .article-card__subtitle {
+      color: #fff;
+    }
+
+    .article-card__cover {
+      height: 100%;
+      left: 0;
+      padding: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: -1;
+
+      &:after {
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+        content: '';
+        height: 100%;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+      }
+    }
+  }
+
+  .article-card--type-1 {
+    .article-card__cover {
+      margin-top: 1.6rem;
+      order: 1;
+    }
+  }
+
+  .article-card--type-2 {
+    padding-bottom: 150%;
+
+    .article-card__author {
+      margin-top: 3.2rem;
+    }
+  }
+
+  .article-card--type-2-1 {
+    justify-content: flex-end;
+    padding: 2.4rem 2.4rem 50%;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+    @include media-breakpoint-up(md) {
+      padding: 3.2rem 3.2rem 50%;
+    }
+
+    .article-card__title,
+    .article-card__subtitle {
+      @include font-size(2rem);
+    }
   }
 </style>

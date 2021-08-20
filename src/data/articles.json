@@ -1,0 +1,100 @@
+[
+  {
+    "title": "Эми Петерсон «Создание литературы в эпоху антропоцена»",
+    "slug": "literature-in-the-age-of-antropocenus",
+    "cover": "http://picsum.photos/248/152?r=0.7760844920203465",
+    "topics": [
+      {
+        "title": "Литература",
+        "slug": "literature"
+      },
+      {
+        "title": "Проза",
+        "slug": "prose"
+      }
+    ],
+    "authors": [
+      {
+        "viewname": "Александр Бардашев",
+        "slug": "alexandr-berdashev"
+      },
+      {
+        "viewname": "Анастасия Лозовая",
+        "slug": "anastasia-lozovaya"
+      }
+    ]
+  },
+  {
+    "title": "Рабский менталитет — это миф Почему россияне не обречены на вечную несвободу",
+    "slug": "slave-mentality",
+    "cover": "http://picsum.photos/248/152?r=0.623909341222405",
+    "topicse": [
+      {
+        "title": "Политика",
+        "slug": "politics"
+      }
+    ],
+    "authors": [
+      {
+        "viewname": "Иван Вахрушев",
+        "slug": "ivan-vahrushev"
+      }
+    ]
+  },
+  {
+    "title": "«Мы уничтожим коммунистический режим Северной Кореи!»",
+    "subtitle": "Как работала пропаганда в южнокорейских школах",
+    "slug": "how-propaganda-was-working-in-korea",
+    "cover": "http://picsum.photos/248/152?r=0.845167101028091",
+    "topics": [
+      {
+        "title": "Культура",
+        "slug": "culture"
+      }
+    ],
+    "authors": [
+      {
+        "viewname": "Екатерина Ильина",
+        "slug": "katy-ilyina"
+      },
+      {
+        "viewname": "Иван Вахрушев",
+        "slug": "ivan-vahrushev"
+      }
+    ]
+  },
+  {
+    "title": "«Здесь я свободен во всём» Как живут нелегальные торговцы из электричек",
+    "slug": "here-i-am-fully-free",
+    "cover": "http://picsum.photos/248/152?r=0.04025856296740615",
+    "topics": [
+      {
+        "title": "Деньги",
+        "slug": "money"
+      }
+    ],
+    "authors": [
+      {
+        "viewname": "Марина Никифорова",
+        "slug": "marina-nikiforova"
+      }
+    ]
+  },
+  {
+    "title": "Их вещи: монологи секс-работниц о дорогих им предметах",
+    "slug": "sex-industry-workers-speeches",
+    "cover": "http://picsum.photos/248/152?r=0.595446144459828",
+    "topics": [
+      {
+        "title": "Личный опыт",
+        "slug": "empiric"
+      }
+    ],
+    "authors": [
+      {
+        "viewname": "Владимир Коркунов",
+        "slug": "vlad-korkunov"
+      }
+    ]
+  }
+]

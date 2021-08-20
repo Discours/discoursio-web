@@ -1,5 +1,4 @@
 <script lang="ts">
-import { org } from '../../stores/common'
 import { shouts } from '../../stores/zine'
 import type { Shout } from '../../graphql/codegen'
 
@@ -15,8 +14,5 @@ $: if($shouts && params?.shout) {
 
 </script>
 
-<svelte:head>
-  <title>Дискурс {$org === 'discours.io' ? '' : ': ' + $org + ' '}: {data.title}</title
-  >
-</svelte:head>
+<svelte:head><title>Дискурс : {data.title}</title></svelte:head>
 <div>{@html data.body}</div>

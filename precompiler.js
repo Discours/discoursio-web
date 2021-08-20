@@ -26,7 +26,7 @@ const handle = async (callback) => {
         const { content, data } = matter(
           fs.readFileSync(`${root}${sep}${stats.name}`)
         )
-        let shout = { ...data, body: content }
+        let shout = { ...data, body: content, slug }
         shouts[slug] = shout
         fs.writeFileSync(
           resolve(staticPath, `shouts.json`),

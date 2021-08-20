@@ -1,17 +1,23 @@
-<script>
-  import { initLocalizationContext } from '../i18n/index'
-  import NavHeader from '../components/NavHeader.svelte'
-  import Subnavigation from '../components/Subnavigation.svelte';
-  import '../app.scss'
-  
-  initLocalizationContext()
+<script lang="ts">
+import { initLocalizationContext } from '../i18n/index'
+import NavHeader from '../components/NavHeader.svelte'
+import NavTopics  from '../components/NavTopics.svelte';
+import '../app.scss'
+import shoutsData from '../data/articles.json'
+import topicsData from '../data/topics.json'
+import { topics, shouts } from '../stores/zine'
+
+$: $topics = topicsData
+$: $shouts = shoutsData
+
+initLocalizationContext()
 </script>
 
 <header>
   <NavHeader/>
 </header>
 <main>
-  <Subnavigation/>
+  <NavTopics />
   <slot />
 </main>
 <footer></footer>

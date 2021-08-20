@@ -1,0 +1,254 @@
+[
+  {
+    "slug": "prose",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:17:25.581000+00:00",
+    "value": "\u043f\u0440\u043e\u0437\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "Tj6B422GbJRQZZjSm"
+  },
+  {
+    "slug": "drama",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:17:33.917000+00:00",
+    "value": "\u0434\u0440\u0430\u043c\u0430\u0442\u0443\u0440\u0433\u0438\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "KPDSTjpfit3cQoyis"
+  },
+  {
+    "slug": "social",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:18:06.765000+00:00",
+    "value": "\u043e\u0431\u0449\u0435\u0441\u0442\u0432\u043e",
+    "parents": [],
+    "children": [],
+    "old_id": "3gDdHmJdk8ECQpXQ2"
+  },
+  {
+    "slug": "empiric",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:18:11.991000+00:00",
+    "value": "\u043b\u0438\u0447\u043d\u044b\u0439 \u043e\u043f\u044b\u0442",
+    "parents": [],
+    "children": [],
+    "old_id": "4xbEoyh2QaxfaXc3o"
+  },
+  {
+    "slug": "culture",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:18:27.207000+00:00",
+    "value": "\u043a\u0443\u043b\u044c\u0442\u0443\u0440\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "k2XP8tzmPfz9SK6DY"
+  },
+  {
+    "slug": "rock",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:19:41.324000+00:00",
+    "value": "\u0440\u043e\u043a",
+    "parents": [],
+    "children": [],
+    "old_id": "EDn4DB6SziN8aTefY"
+  },
+  {
+    "slug": "photography",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:20:14.754000+00:00",
+    "value": "\u0444\u043e\u0442\u043e\u0433\u0440\u0430\u0444\u0438\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "nZWZs6QT7qrMcMet3"
+  },
+  {
+    "slug": "hip-hop",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:20:56.821000+00:00",
+    "value": "\u0445\u0438\u043f-\u0445\u043e\u043f",
+    "parents": [],
+    "children": [],
+    "old_id": "cyaDXneTADJewkdet"
+  },
+  {
+    "slug": "electronic-music",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:21:43.723000+00:00",
+    "value": "\u044d\u043b\u0435\u043a\u0442\u0440\u043e\u043d\u0438\u043a\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "HK4tqXuQDqMvY6dhs"
+  },
+  {
+    "slug": "essay",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:22:13.487000+00:00",
+    "value": "\u044d\u0441\u0441\u0435",
+    "parents": [],
+    "children": [],
+    "old_id": "8egij7vad9ZHaGqwc"
+  },
+  {
+    "slug": "poetry",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:22:23.377000+00:00",
+    "value": "\u043f\u043e\u044d\u0437\u0438\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "Gu6mYPRgxNpQe8aGP"
+  },
+  {
+    "slug": "documentary",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:22:35.695000+00:00",
+    "value": "\u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u043e\u0435 \u043a\u0438\u043d\u043e",
+    "parents": [],
+    "children": [],
+    "old_id": "7qDStMYXwyL2u4pez"
+  },
+  {
+    "slug": "art",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:22:46.012000+00:00",
+    "value": "\u0432\u0438\u0434\u0435\u043e\u0430\u0440\u0442",
+    "parents": [],
+    "children": [],
+    "old_id": "anSPwCqzMWMHREaJe"
+  },
+  {
+    "slug": "drawing",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:24:02.354000+00:00",
+    "value": "\u0433\u0440\u0430\u0444\u0438\u043a\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "SQXJPBJnWhcCLDcGk"
+  },
+  {
+    "slug": "experimental-music",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:24:15.676000+00:00",
+    "value": "\u044d\u043a\u0441\u043f\u0435\u0440\u0438\u043c\u0435\u043d\u0442\u0430\u043b\u044c\u043d\u0430\u044f \u043c\u0443\u0437\u044b\u043a\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "rDmu9MjrMZN4chNBY"
+  },
+  {
+    "slug": "clips",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:24:34.415000+00:00",
+    "value": "\u0432\u0438\u0434\u0435\u043e\u043a\u043b\u0438\u043f\u044b",
+    "parents": [],
+    "children": [],
+    "old_id": "hy2MiiN7dcgPrHGLC"
+  },
+  {
+    "slug": "movies",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:28:01.225000+00:00",
+    "value": "\u0445\u0443\u0434\u043e\u0436\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e\u0435 \u043a\u0438\u043d\u043e",
+    "parents": [],
+    "children": [],
+    "old_id": "2GCc6LPvhh75RW3ji"
+  },
+  {
+    "slug": "alternative",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:31:07.401000+00:00",
+    "value": "\u0430\u043b\u044c\u0442\u0435\u0440\u043d\u0430\u0442\u0438\u0432\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "eZMeuMimaRviiaZdh"
+  },
+  {
+    "slug": "theory",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:33:30.756000+00:00",
+    "value": "\u0442\u0435\u043e\u0440\u0438\u0438",
+    "parents": [],
+    "children": [],
+    "old_id": "BrXsNJdqyBKoS7tbD"
+  },
+  {
+    "slug": "lectures",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:33:46.876000+00:00",
+    "value": "\u043b\u0435\u043a\u0446\u0438\u0438",
+    "parents": [],
+    "children": [],
+    "old_id": "pw9cb38DmmxTtC4Jq"
+  },
+  {
+    "slug": "painting",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:35:07.662000+00:00",
+    "value": "\u0436\u0438\u0432\u043e\u043f\u0438\u0441\u044c",
+    "parents": [],
+    "children": [],
+    "old_id": "E36Tr2nyi4vvzhWPQ"
+  },
+  {
+    "slug": "street-art",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 10:37:21.604000+00:00",
+    "value": "\u0441\u0442\u0440\u0438\u0442-\u0430\u0440\u0442",
+    "parents": [],
+    "children": [],
+    "old_id": "ZL8wFMWeMb6XPt69o"
+  },
+  {
+    "slug": "digital-art",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 11:11:04.294000+00:00",
+    "value": "цифровое искусство",
+    "parents": [],
+    "children": [],
+    "old_id": "rs3Hd7EvomYzXvfwP"
+  },
+  {
+    "slug": "bardsongs",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 11:11:52.933000+00:00",
+    "value": "\u0430\u0432\u0442\u043e\u0440\u0441\u043a\u0430\u044f \u043f\u0435\u0441\u043d\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "x5bNu9L9iRCM9y6J2"
+  },
+  {
+    "slug": "animation",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 11:20:35.700000+00:00",
+    "value": "\u043c\u0443\u043b\u044c\u0442\u0438\u043f\u043b\u0438\u043a\u0430\u0446\u0438\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "TsgsDcFJgep4Koryw"
+  },
+  {
+    "slug": "jazz",
+    "createdBy": 0,
+    "createdAt": "2016-04-25 11:29:43.930000+00:00",
+    "value": "\u0434\u0436\u0430\u0437",
+    "parents": [],
+    "children": [],
+    "old_id": "5uSQF7TiESZusfRt3"
+  },
+  {
+    "slug": "sculpture",
+    "createdBy": 0,
+    "createdAt": "2016-10-10 16:14:27.171000+00:00",
+    "value": "\u0441\u043a\u0443\u043b\u044c\u043f\u0442\u0443\u0440\u0430",
+    "parents": [],
+    "children": [],
+    "old_id": "zBkwaKHpQR7DTvFNs"
+  },
+  {
+    "slug": "audiopoetry",
+    "createdBy": 0,
+    "createdAt": "2017-08-09 15:46:35.828000+00:00",
+    "value": "\u0430\u0443\u0434\u0438\u043e\u043f\u043e\u044d\u0437\u0438\u044f",
+    "parents": [],
+    "children": [],
+    "old_id": "BSDyvN5KbRb9BQxyp"
+  }
+]

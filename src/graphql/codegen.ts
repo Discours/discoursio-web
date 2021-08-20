@@ -13,7 +13,7 @@ export type Scalars = {
   Boolean: boolean
   Int: number
   Float: number
-  DateTime: Date
+  DateTime: string
 }
 
 export type AuthResult = {
@@ -191,24 +191,25 @@ export type Role = {
 
 export type Shout = {
   __typename?: 'Shout'
-  org_id: Scalars['Int']
   slug: Scalars['String']
   authors: Array<Scalars['Int']>
+  body: Scalars['String']
+  org_id?: Maybe<Scalars['Int']>
   cover?: Maybe<Scalars['String']>
   layout?: Maybe<Scalars['String']>
-  body: Scalars['String']
-  createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
+  createdAt?: Scalars['DateTime']
+  updatedAt?: Maybe<Scalars['DateTime']>
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
   rating?: Maybe<Scalars['Int']>
   ratigns?: Maybe<Array<Maybe<Rating>>>
-  published: Scalars['Boolean']
+  published?: Maybe<Scalars['Boolean']>
   publishedAt?: Maybe<Scalars['DateTime']>
   replyTo?: Maybe<Scalars['String']>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
   topics?: Maybe<Array<Maybe<Scalars['String']>>>
   title?: Maybe<Scalars['String']>
+  subtitle?: Maybe<Scalars['String']>
   versionOf?: Maybe<Scalars['String']>
   visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>

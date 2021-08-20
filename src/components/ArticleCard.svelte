@@ -12,13 +12,13 @@
   </div>
 
   <div class="article-card__title">
-    <a href="{articleData.href}">
+    <a href="{articleData.slug}">
       {articleData.title}
     </a>
   </div>
 
-  {#if articleData.description}
-    <div class="article-card__description">{articleData.description}</div>
+  {#if articleData.subtitle}
+    <div class="article-subtitle">{articleData.subtitle}</div>
   {/if}
 
   <div class="article-card__author">
@@ -81,7 +81,7 @@
     margin-bottom: 0.8rem;
   }
 
-  .article-card__description {
+  .article-card__subtitle {
     @include font-size(1.7rem);
     color: #696969;
     font-weight: 400;
@@ -103,7 +103,7 @@
     &,
     a,
     .article-card__title,
-    .article-card__description {
+    .article-card__subtitle {
       color: #fff;
     }
 
@@ -152,7 +152,7 @@
     }
 
     .article-card__title,
-    .article-card__description {
+    .article-card__subtitle {
       @include font-size(2rem);
     }
   }
