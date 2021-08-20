@@ -18,16 +18,20 @@
 </div>
 
 <style>
+/*
   .shout {
     border-bottom: 1px solid black;
     padding-bottom: 2vh;
     min-height: 12vh;
   }
+*/
+/*
   .shout-body {
     font-family: var(--font);
     font-size: 2vh;
     padding: 3vw;
   }
+*/
   .shout-author,
   .shout-rating {
     margin-top: -1vh;
@@ -35,7 +39,7 @@
     float: right;
     min-width: 3vw;
     line-height: 3vh;
-    font-size: 2vh;
+    /*font-size: 2vh;*/
     border-radius: 15px;
     padding: 0.5vw;
     color: white;

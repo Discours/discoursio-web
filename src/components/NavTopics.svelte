@@ -56,7 +56,7 @@
   a:link,
   a:visited {
     text-decoration: none;
-    font-size: 2vh;
+    /*font-size: 2vh;*/
     font-weight: 500;
     line-height: 20px;
     color: black;

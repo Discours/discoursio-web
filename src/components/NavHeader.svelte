@@ -25,13 +25,42 @@
   onMount(() => {
     res = window.location.pathname
   })
+
+  const MAIN_NAVIGATION = [
+    {
+      title: 'журнал',
+      href: '/journal'
+    },
+    {
+      title: 'лента',
+      href: '/news'
+    },
+    {
+      title: 'сообщество',
+      href: '/community'
+    },
+    {
+      title: 'форум',
+      href: '/forum'
+    },
+  ];
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<nav>
-  <a href="/"><h1>Дискурc</h1></a>
-  <div style="width: 195px;" />
-  <div class="router">
+<nav class="row header__inner">
+  <div class="main-logo col"><a href="/">Дискурc</a></div>
+  <ul class="col main-navigation">
+    {#each MAIN_NAVIGATION as navItem, index}
+      <li class:selected="{index === 0}">
+        {#if index === 0}
+          {navItem.title}
+          {:else}
+          <a href="{navItem.href}">{navItem.title}</a>
+        {/if}
+      </li>
+    {/each}
+  </ul>
+  <div class="router col-sm-4">
     <!-- public routes -->
     <div class="routerow">
       <div class="routecell">
@@ -94,38 +123,40 @@
 </nav>
 
 <style lang="scss">
-  nav {
-    width: 100%;
-    height: 80px;
-    background-color: rgba(20.4, 20.4, 20.4, 1);
-    display: inline-flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+  @import '../styles/variables';
+  @import '../../node_modules/bootstrap/scss/vendor/rfs';
 
-    h1 {
-      width: 180px;
-      height: 80px;
-      padding: 8px 16px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      font-weight: 700;
-      line-height: 44px;
-      text-align: center;
+  .header__inner {
+    flex-wrap: wrap;
+  }
+
+  .main-logo {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    flex: 0;
+    font-size: 36px;
+    font-weight: 700;
+    height: 80px;
+    padding-right: 3.2rem;
+    text-align: center;
+    text-transform: uppercase;
+
+    a {
       color: white;
-      text-transform: uppercase;
     }
+  }
+
+  nav {
+    align-items: center;
 
     .router {
-      height: 28px;
+      //height: 28px;
       display: flex;
-      flex-direction: row;
-      align-items: flex-end;
+      //flex-direction: row;
+      //align-items: flex-end;
       justify-content: flex-end;
-      width: 100%;
+      //width: 100%;
 
       .routerow {
         display: inline-flex;
@@ -147,6 +178,35 @@
           }
         }
       }
+    }
+  }
+
+  .main-navigation {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    @include font-size(1.7rem);
+
+    li {
+      margin-right: 2.4rem;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    a {
+      color: rgba(255, 255, 255, 0.64);
+
+      &:hover {
+        color: #fff;
+      }
+    }
+
+    .selected {
+      border-bottom: 2px solid;
+      color: #fff;
     }
   }
 </style>
