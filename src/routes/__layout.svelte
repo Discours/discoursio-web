@@ -14,7 +14,7 @@
 </script>
 
 <header>
-  <NavHeader />
+  <NavHeader/>
 </header>
 <main>
   <NavTopics />

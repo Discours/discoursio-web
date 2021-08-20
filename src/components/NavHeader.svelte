@@ -45,64 +45,30 @@
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<nav class="row header__inner">
-  <div class="main-logo col"><a href="/">Дискурc</a></div>
-  <ul class="col main-navigation">
-    {#each MAIN_NAVIGATION as navItem, index}
-      <li class:selected={res === navItem.href}>
-        {#if res === navItem.href}
-          {navItem.title}
-        {:else}
-          <a href={navItem.href} on:click={() => (res = navItem.href)}
+<div class="wide-container">
+  <nav class="row header__inner">
+    <div class="main-logo col"><a href="/">Дискурc</a></div>
+    <ul class="col main-navigation">
+      {#each MAIN_NAVIGATION as navItem, index}
+        <li class:selected={res === navItem.href}>
+          {#if res === navItem.href}
+            {navItem.title}
+          {:else}
+            <a href={navItem.href} on:click={() => (res = navItem.href)}
             >{navItem.title}</a
-          >
-        {/if}
-      </li>
-    {/each}
-  </ul>
-  <div class="router col-sm-4">
-    <!-- public routes -->
-    <div class="routerow">
-      <div class="routecell">
-        <a href="/search">
-          <Icon
-            name={res === '/search' ? 'searching' : 'search'}
-            title={$t('Search')}
-          />
-        </a>
-      </div>
-    </div>
-
-    <div class="routerow">
-      <div class="routecell">
-        {#if $token}
-          <a href="/inbox">
-            <Icon name="bell" counter={newMessages} />
-          </a>
-        {:else}
-          <a href="/login"> Войти </a>
-        {/if}
-      </div>
-    </div>
-
-    {#if $token}
-      <!-- private routes -->
+            >
+          {/if}
+        </li>
+      {/each}
+    </ul>
+    <div class="router col-sm-4">
+      <!-- public routes -->
       <div class="routerow">
         <div class="routecell">
-          <a href="/profile">
-            <div class:entered={res === '/profile'}>
-              <Userpic />
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <div class="routerow">
-        <div class="routecell">
-          <a href="/editor">
+          <a href="/search">
             <Icon
-              name={res === '/editor' ? 'editing' : 'editor'}
-              title="editor"
+              name={res === '/search' ? 'searching' : 'search'}
+              title={$t('Search')}
             />
           </a>
         </div>
@@ -110,22 +76,55 @@
 
       <div class="routerow">
         <div class="routecell">
-          <a href="/community">
-            <Icon
-              name={res === '/comunity' ? 'community-entered' : 'commmunity'}
-              title="community"
-            />
-          </a>
+          {#if $token}
+            <a href="/inbox">
+              <Icon name="bell" counter={newMessages}/>
+            </a>
+          {:else}
+            <a href="/login"> Войти </a>
+          {/if}
         </div>
       </div>
-    {/if}
-  </div>
-</nav>
+
+      {#if $token}
+        <!-- private routes -->
+        <div class="routerow">
+          <div class="routecell">
+            <a href="/profile">
+              <div class:entered={res === '/profile'}>
+                <Userpic/>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="routerow">
+          <div class="routecell">
+            <a href="/editor">
+              <Icon
+                name={res === '/editor' ? 'editing' : 'editor'}
+                title="editor"
+              />
+            </a>
+          </div>
+        </div>
+
+        <div class="routerow">
+          <div class="routecell">
+            <a href="/community">
+              <Icon
+                name={res === '/comunity' ? 'community-entered' : 'commmunity'}
+                title="community"
+              />
+            </a>
+          </div>
+        </div>
+      {/if}
+    </div>
+  </nav>
+</div>
 
 <style lang="scss">
-  @import '../styles/variables';
-  @import '../../node_modules/bootstrap/scss/vendor/rfs';
-
   .header__inner {
     flex-wrap: wrap;
   }

@@ -15,27 +15,75 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 
 <div class="home">
-  <div class="floor-1 row">
-    <div class="col-md-3">
-      {#each $shoutlist.slice(0, 2) as shout}
-        <ShoutCard {shout} />
+  <div class="floor floor--1">
+    <div class="wide-container row">
+      <div class="col-md-3">
+        {#each $shoutlist.slice(0, 2) as shout}
+          <ShoutCard {shout}/>
+        {/each}
+      </div>
+      <div class="col-md-6">
+        {#each $shoutlist.slice(2, 3) as shout}
+          <ShoutCard {shout}/>
+        {/each}
+      </div>
+      <div class="col-md-3">
+        {#each $shoutlist.slice(3, 5) as shout}
+          <ShoutCard {shout}/>
+        {/each}
+      </div>
+    </div>
+  </div>
+
+  <div class="floor floor--2">
+    <div class="wide-container row">
+      <div class="col-md-6">
+        {#each $shoutlist.slice(0, 1) as article}
+          <ShoutCard shout="{article}"/>
+        {/each}
+      </div>
+      <div class="col-md-6">
+        <h3>Самое читаемое</h3>
+        {#each $shoutlist.slice(1, 4) as article}
+          <ShoutCard shout="{article}"/>
+        {/each}
+      </div>
+    </div>
+  </div>
+
+  <div class="floor floor--3">
+    <div class="wide-container row">
+      {#each $shoutlist.slice(2, 5) as article}
+        <div class="col-md-4">
+          <ShoutCard shout="{article}"/>
+        </div>
       {/each}
     </div>
-    <div class="col-md-6">
-      {#each $shoutlist.slice(2, 3) as shout}
-        <ShoutCard {shout} />
-      {/each}
-    </div>
-    <div class="col-md-3">
-      {#each $shoutlist.slice(3, 5) as shout}
-        <ShoutCard {shout} />
+  </div>
+
+  <div class="floor floor--important">
+    <div class="wide-container row">
+      <h2 class="col-12"><span>Важное</span></h2>
+      {#each $shoutlist.slice(0, 3) as article}
+        <div class="col-md-4">
+          <ShoutCard shout="{article}"/>
+        </div>
       {/each}
     </div>
   </div>
 </div>
 
 <style lang="scss">
-  .floor-1 .article-card:nth-child(2) .article-card__cover {
-    display: none;
+  .floor {
+    margin-bottom: 6.4rem;
+
+    .wide-container {
+      padding: 0;
+    }
+  }
+
+  .floor--important {
+    background: #000;
+    color: #fff;
   }
 </style>
