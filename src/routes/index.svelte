@@ -33,9 +33,3 @@
     </div>
   </div>
 </div>
-
-<style lang="scss">
-  .floor-1 .article-card:nth-child(2) .article-card__cover {
-    display: none;
-  }
-</style>
