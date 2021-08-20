@@ -5,8 +5,6 @@ import matter from 'gray-matter'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
 
-const ORG = 'discours.io' // default org
-let lang = 'ru' // default language
 const cwd = resolve('.')
 const contentPath = resolve(cwd, 'content')
 // const srcPath = resolve(cwd, 'src')
@@ -16,42 +14,24 @@ const shouts = {}
 const handle = async (callback) => {
   // NOTE! File structure convention
   // content/<org>/<any-folders>/<article-slug>.md
-  console.log(
-    'precompiler: handling `content` [lang: ' + lang + '] [org: ' + ORG + ']'
-  )
-
   walk(contentPath)
     // creates shouts.json
     .on('file', async (root, stats, next) => {
-      // process parts of name
-      let ext,
-        lng = ''
-      const nameparts = stats.name.split('.')
-      if (nameparts.length === 3) [, lng, ext] = nameparts
-      if (nameparts.length === 2) [, ext] = nameparts
-      if (lng === '') lng = lang // if no lang suffix then language is default
+      const [fname, ext] = stats.name.split('.')
+      const dirname = root.replace(contentPath, '').replace(stats.name, '').split(sep).pop()
       if (ext === 'md') {
-        // process path
-        const pathparts = root.replace(contentPath, '').split(sep)
-        pathparts.shift() // removes first empty
-        const org = pathparts.shift()
-        const slug = pathparts.join(sep).replace(ext, '')
+        const slug = fname === 'index' ? dirname : fname
 
         // split frontmatter
         const { content, data } = matter(
           fs.readFileSync(`${root}${sep}${stats.name}`)
         )
-        let shout = { ...data, slug, body: content, language: lng }
-        !shouts[lng] && (shouts[lng] = {})
-        if (org === ORG) {
-          // NOTE: save only current org shouts
-
-          shouts[lng][slug] = shout
-          fs.writeFileSync(
-            resolve(staticPath, `shouts${lng === 'ru' ? '' : '.' + lng}.json`),
-            JSON.stringify(shouts[lng], false, 2)
-          )
-        }
+        let shout = { ...data, body: content }
+        shouts[slug] = shout
+        fs.writeFileSync(
+          resolve(staticPath, `shouts.json`),
+          JSON.stringify(shouts, false, 2)
+        )
       }
       next()
     })

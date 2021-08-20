@@ -1,8 +1,6 @@
 ---
 layout: blog
 title: Манифест разработки Дискурса
-org: discours.io
-language: 'ru'
 ---
 
 # Манифест разработки Дискурса
