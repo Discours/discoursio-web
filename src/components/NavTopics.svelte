@@ -10,7 +10,7 @@
     $currentTopic = window.location.hash
     ttt = [{ slug: '', title: 'Все' }]
     $shoutlist.forEach((shout) =>
-      shout.topics.forEach((t) => (t in ttt) ? noop(): ttt.push(t))
+      shout.topics.forEach((t) => (t in ttt ? noop() : ttt.push(t)))
     )
   })
 

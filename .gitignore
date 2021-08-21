@@ -7,3 +7,4 @@ build
 pnpm*
 static/*.json
 .verce*
+*.sqlite*

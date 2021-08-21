@@ -18,12 +18,7 @@
     "lint": "prettier --ignore-path .gitignore  --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "gen": "node precompiler.js",
-    "codegen": "graphql-codegen",
-    "api:dev": "pip install pipenv",
-    "api:enter": "cd api",
-    "api:clone": "git clone https://github.com/Discours/discours-backend-next api",
-    "api:setup": "pipenv install -r requirements.txt",
-    "api:start": "pipenv run python api/server.py"
+    "codegen": "graphql-codegen"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "latest",

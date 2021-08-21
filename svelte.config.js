@@ -19,6 +19,11 @@ const config = {
     scss({
       // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
       prependData: `@import 'src/styles/_variables.scss';`,
+      // Docs say renderSync is faster for Dart Sass which I am using
+      // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/preprocessing.md#scss-sass
+      renderSync: true,
+      // Dart Sass recognizes 'expanded' and 'compressed'
+      outputStyle: 'expanded',
     }),
   ],
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
