@@ -189,6 +189,14 @@ export type Role = {
   permissions: Array<Scalars['Int']>
 }
 
+export type Author = {
+  __typename?: 'Author'
+  name: Scalars['String']
+  about: Scalars['String']
+  slug: Scalars['String']
+  avatar: Scalars['String']
+}
+
 export type Shout = {
   __typename?: 'Shout'
   slug: Scalars['String']

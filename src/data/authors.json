@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Сергей Стрельников",
+    "about": "Философ, преподаватель ТомГУ",
+    "slug": "sergey-strelnikov",
+    "avatar": "http://picsum.photos/248/152?r=0.3793314952930513"
+  },
+  {
+    "name": "Павел Пепперштейн",
+    "about": "Писатель, художник",
+    "slug": "pavel-peppershtein",
+    "avatar": "http://picsum.photos/248/152?r=0.9663662595939932"
+  },
+  {
+    "name": "Дмитрий Левчик",
+    "about": "Доктор исторических наук, политолог, журналист",
+    "slug": "dmitri-levchik",
+    "avatar": "http://picsum.photos/248/152?r=0.29948227694923846"
+  },
+  {
+    "name": "Константин Константинопольский",
+    "about": "Кандидат искусствоведения, преподаватель, драматург",
+    "slug": "konstantin-konstantinopolsky",
+    "avatar": "http://picsum.photos/248/152?r=0.49653922675849227"
+  }
+]

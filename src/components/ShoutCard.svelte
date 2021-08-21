@@ -21,12 +21,12 @@
 
     <div class="article-card__title">
       <a href="/a/{shout.slug}">
-        {shout.title}
+        {@html shout.title}
       </a>
     </div>
 
     {#if shout.subtitle}
-      <div class="article-card__subtitle">{shout.subtitle}</div>
+      <div class="article-card__subtitle">{@html shout.subtitle}</div>
     {/if}
 
     <div class="article-card__author">
@@ -216,8 +216,12 @@
   }
 
   :global(.floor--important) {
-    padding-bottom: $container-padding-x;
-    padding-top: $grid-gutter-width;
+    padding-bottom: 0;
+    padding-top: $container-padding-x;
+
+    @include media-breakpoint-up(md){
+      padding-top: $grid-gutter-width;
+    }
 
     :global(h2) {
       position: relative;
@@ -241,6 +245,10 @@
       }
     }
 
+    .article-card {
+      margin-bottom: $grid-gutter-width;
+    }
+
     .article-card__category,
     .article-card__title {
       a {
@@ -255,6 +263,93 @@
 
     .article-card__author {
       margin-top: 0.8rem;
+    }
+  }
+
+  :global(.floor--5 .col-md-4) {
+    .article-card__cover {
+      padding-bottom: 62.5%;
+    }
+
+    .article-card__title {
+      @include font-size(2.4rem);
+    }
+  }
+
+  :global(.floor--6),
+  :global(.floor--7) {
+    .article-card {
+      &,
+      a,
+      .article-card__title,
+      .article-card__subtitle {
+        color: #fff;
+      }
+
+      .article-card__cover-container,
+      .article-card__cover,
+      .article-card__content {
+        height: 100%;
+        left: 0;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+      }
+
+      .article-card__content {
+        padding: 2.4rem;
+        z-index: 1;
+      }
+
+      .article-card__cover {
+        padding: 0;
+
+        &:after {
+          background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.6)
+          );
+          content: '';
+          height: 100%;
+          position: absolute;
+          width: 100%;
+          z-index: 1;
+        }
+      }
+    }
+  }
+
+  :global(.floor--6) {
+    .article-card {
+      max-height: 55%;
+      padding: 55% 2.4rem 0;
+    }
+
+    .article-card__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+
+  :global(.floor--7) {
+    .article-card {
+      padding: 160% 2.4rem 0;
+    }
+
+    .article-card__title {
+      @include font-size(2.6rem);
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    :global(.floor--6) {
+      :global(h4) {
+        margin-top: 0;
+      }
     }
   }
 

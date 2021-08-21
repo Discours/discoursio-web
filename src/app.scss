@@ -105,5 +105,21 @@ a:link {
 }
 
 a {
+  color: #000;
   transition: color 0.2s;
+}
+
+.button {
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  @include font-size(1.5rem);
+}
+
+.button--subscribe {
+  padding: 0.6rem 1.2rem;
+  @include font-size(1.5rem);
 }
