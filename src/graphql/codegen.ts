@@ -197,6 +197,14 @@ export type Author = {
   avatar: Scalars['String']
 }
 
+export type Community = {
+  __typename?: 'Community'
+  name: Scalars['String']
+  description: Scalars['String']
+  slug: Scalars['String']
+  avatar: Scalars['String']
+}
+
 export type Shout = {
   __typename?: 'Shout'
   slug: Scalars['String']
