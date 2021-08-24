@@ -4,6 +4,7 @@
   import Community from '../components/Community.svelte'
   // import Editor from '../components/Editor.svelte'
   import {authorslist, shoutlist, communitieslist} from '../stores/zine'
+  import DiscoursBanner from '../components/DiscoursBanner.svelte';
 
   // {#if false && isEditor && editingShout}
   //  <Editor shout={editingShout} />
@@ -194,6 +195,18 @@
       <div class="col-md-4">
         <ShoutCard shout="{$shoutlist[4]}"/>
       </div>
+    </div>
+  </div>
+
+  <DiscoursBanner/>
+
+  <div class="floor floor--10">
+    <div class="wide-container row">
+      {#each $shoutlist.slice(2, 5) as article}
+        <div class="col-md-4">
+          <ShoutCard shout="{article}"/>
+        </div>
+      {/each}
     </div>
   </div>
 </div>

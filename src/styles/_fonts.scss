@@ -24,3 +24,12 @@
   font-weight: 700;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Muller';
+  font-display: fallback;
+  src: url('/static/fonts/Muller-ExtraBold.woff2') format('woff2'),
+    url('/static/fonts/Muller-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+}
