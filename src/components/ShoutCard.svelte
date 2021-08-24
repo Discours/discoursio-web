@@ -1,6 +1,7 @@
 <script lang="ts">
   // import type { Shout, User } from '../graphql/codegen'
   // import { topics, authors } from '../stores/zine'
+  import Icon from './Icon.svelte';
 
   export let shout
 </script>
@@ -8,8 +9,14 @@
 <section class="article-card">
   <div class="article-card__cover-container">
     <div class="article-card__cover">
-      <img src={shout.cover} alt={shout.title} />
+      <img src="{shout.cover}" alt="{shout.title}" />
     </div>
+
+    {#if shout.type}
+      <div class="article-card__type">
+        <Icon name="{shout.type}" />
+      </div>
+    {/if}
   </div>
 
   <div class="article-card__content">
@@ -55,6 +62,10 @@
         display: none;
       }
     }
+  }
+
+  .article-card__cover-container {
+    position: relative;
   }
 
   .article-card__cover {
@@ -159,6 +170,27 @@
         width: 100%;
         z-index: 1;
       }
+    }
+  }
+
+  .article-card__type {
+    background: #fff;
+    border-radius: 100%;
+    height: 3.2rem;
+    position: absolute;
+    right: 0.8rem;
+    text-align: center;
+    top: 0.8rem;
+    width: 3.2rem;
+    z-index: 1;
+
+    :global(img) {
+      height: auto;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
     }
   }
 
