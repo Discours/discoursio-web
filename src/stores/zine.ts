@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { Shout, User, Topic, Author } from '../graphql/codegen'
+import type { Shout, User, Topic } from '../graphql/codegen'
 import shoutsMock from '../data/articles.json'
 import authorsMock from '../data/authors.json'
 
