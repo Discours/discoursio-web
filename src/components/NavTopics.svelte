@@ -31,7 +31,7 @@
   }
 </script>
 
-<nav class="subnavigation">
+<nav class="subnavigation wide-container">
   <ul>
     {#each Array.from(ttt) as { slug, title }, index}
       {#if $currentTopic === '#' + slug}
@@ -48,12 +48,10 @@
 </nav>
 
 <style lang="scss">
-  @import '../styles/variables';
-  @import '../../node_modules/bootstrap/scss/vendor/rfs';
-
   .subnavigation {
     @include font-size(1.7rem);
-    margin: 2rem 0 9rem;
+    margin-top: 2rem;
+    margin-bottom: 9rem;
 
     ul {
       display: flex;

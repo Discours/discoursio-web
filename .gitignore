@@ -8,3 +8,4 @@ pnpm*
 static/*.json
 .verce*
 *.sqlite*
+Pipfile*

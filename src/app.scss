@@ -2,7 +2,6 @@
 @import 'styles/fonts';
 @import '../node_modules/bootstrap/scss/mixins/lists';
 @import '../node_modules/bootstrap/scss/mixins/container';
-@import '../node_modules/bootstrap/scss/mixins/grid';
 @import '../node_modules/bootstrap/scss/mixins/utilities';
 
 @import '../node_modules/bootstrap/scss/containers';
@@ -48,11 +47,10 @@ section {
   margin: 0;
 }
 
-.header__inner,
-.footer__inner,
-main {
-  max-width: 1440px;
+.wide-container {
   margin: 0 auto;
+  max-width: 1440px;
+  padding: 0 $container-padding-x;
 }
 
 header {
@@ -77,7 +75,6 @@ h3 {
 
 main {
   box-sizing: border-box;
-  padding: 0 $container-padding-x;
 }
 
 body,
@@ -108,5 +105,21 @@ a:link {
 }
 
 a {
+  color: #000;
   transition: color 0.2s;
+}
+
+.button {
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  @include font-size(1.5rem);
+}
+
+.button--subscribe {
+  padding: 0.6rem 1.2rem;
+  @include font-size(1.5rem);
 }

@@ -6,37 +6,39 @@
 </script>
 
 <section class="article-card">
-  <div class="article-card__cover">
-    <img src={shout.cover} alt={shout.title} />
-  </div>
-
-  {#if shout.topics}
-    <div class="article-card__category">
-      <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
+  <div class="article-card__cover-container">
+    <div class="article-card__cover">
+      <img src={shout.cover} alt={shout.title} />
     </div>
-  {/if}
-
-  <div class="article-card__title">
-    <a href="/a/{shout.slug}">
-      {shout.title}
-    </a>
   </div>
 
-  {#if shout.subtitle}
-    <div class="article-card__subtitle">{shout.subtitle}</div>
-  {/if}
+  <div class="article-card__content">
+    {#if shout.topics}
+      <div class="article-card__category">
+        <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
+      </div>
+    {/if}
 
-  <div class="article-card__author">
-    {#each shout.authors as { slug, viewname }, i}
-      {#if i > 0},{/if}
-      <a href="/x/{slug}">{viewname}</a>
-    {/each}
+    <div class="article-card__title">
+      <a href="/a/{shout.slug}">
+        {@html shout.title}
+      </a>
+    </div>
+
+    {#if shout.subtitle}
+      <div class="article-card__subtitle">{@html shout.subtitle}</div>
+    {/if}
+
+    <div class="article-card__author">
+      {#each shout.authors as {slug, viewname}, i}
+        {#if i > 0},{/if}
+        <a href="/x/{slug}">{viewname}</a>
+      {/each}
+    </div>
   </div>
 </section>
 
 <style lang="scss">
-  @import '../styles/imports';
-
   .article-card {
     display: flex;
     flex-direction: column;
@@ -44,7 +46,7 @@
     margin-bottom: 2.4rem;
     position: relative;
 
-    .floor-1 &:nth-child(2) {
+    :global(.floor--1) &:nth-child(2) {
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       margin-top: 2.4rem !important;
       padding-top: 2.4rem;
@@ -69,6 +71,14 @@
     }
   }
 
+  .article-card__category,
+  .article-card__author {
+    a {
+      position: relative;
+      z-index: 2;
+    }
+  }
+
   .article-card__category {
     @include font-size(1.2rem);
     margin-bottom: 0.8rem;
@@ -81,16 +91,32 @@
 
   .article-card__title {
     @include font-size(2.2rem);
-    color: $default-color;
     font-weight: 700;
     margin-bottom: 0.8rem;
+
+    a {
+      color: $default-color;
+
+      &:before {
+        content: '';
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+      }
+    }
   }
 
   .article-card__subtitle {
     @include font-size(1.7rem);
-    color: #696969;
     font-weight: 400;
     margin-bottom: 0.8rem;
+
+    a {
+      color: #696969;
+    }
   }
 
   .article-card__author {
@@ -136,33 +162,195 @@
     }
   }
 
-  .article-card--type-1 {
-    .article-card__cover {
+  :global(.floor--2 .col-md-6) {
+    &:first-child {
+      .article-card__cover {
+        padding-bottom: 50%;
+      }
+    }
+
+    &:last-child {
+      :global(h3) {
+        font-weight: 400;
+        margin-top: 0;
+        text-transform: uppercase;
+      }
+
+      .article-card {
+        flex-direction: row;
+        margin-bottom: 2.4rem;
+      }
+
+      .article-card__cover-container {
+        @include make-col(4);
+      }
+
+      .article-card__cover {
+        margin-bottom: 0;
+      }
+
+      .article-card__content {
+        padding-left: 1.6rem;
+      }
+
+      .article-card__title {
+        @include font-size(1.7rem);
+      }
+
+      .article-card__title,
+      .article-card__subtitle {
+        display: inline;
+      }
+
+      .article-card__author {
+        margin-top: 0.4rem;
+      }
+    }
+  }
+
+  :global(.floor--3 .col-md-4) {
+    .article-card__cover-container {
       margin-top: 1.6rem;
-      order: 1;
+      order: 2;
     }
   }
 
-  .article-card--type-2 {
-    padding-bottom: 150%;
+  :global(.floor--important) {
+    padding-bottom: 0;
+    padding-top: $container-padding-x;
 
-    .article-card__author {
-      margin-top: 3.2rem;
+    @include media-breakpoint-up(md){
+      padding-top: $grid-gutter-width;
     }
-  }
 
-  .article-card--type-2-1 {
-    justify-content: flex-end;
-    padding: 2.4rem 2.4rem 50%;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    :global(h2) {
+      position: relative;
+      text-align: center;
 
-    @include media-breakpoint-up(md) {
-      padding: 3.2rem 3.2rem 50%;
+      &:before {
+        background: #fff;
+        content: '';
+        height: 4px;
+        left: $container-padding-x;
+        position: absolute;
+        top: 50%;
+        width: calc(100% - #{$grid-gutter-width});
+      }
+
+      :global(span) {
+        background: #000;
+        padding: 0 $container-padding-x;
+        position: relative;
+        z-index: 1;
+      }
+    }
+
+    .article-card {
+      margin-bottom: $grid-gutter-width;
+    }
+
+    .article-card__category,
+    .article-card__title {
+      a {
+        color: #fff;
+      }
     }
 
     .article-card__title,
     .article-card__subtitle {
-      @include font-size(2rem);
+      display: inline;
+    }
+
+    .article-card__author {
+      margin-top: 0.8rem;
     }
   }
+
+  :global(.floor--5 .col-md-4) {
+    .article-card__cover {
+      padding-bottom: 62.5%;
+    }
+
+    .article-card__title {
+      @include font-size(2.4rem);
+    }
+  }
+
+  :global(.floor--6),
+  :global(.floor--7) {
+    .article-card {
+      &,
+      a,
+      .article-card__title,
+      .article-card__subtitle {
+        color: #fff;
+      }
+
+      .article-card__cover-container,
+      .article-card__cover,
+      .article-card__content {
+        height: 100%;
+        left: 0;
+        margin: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: -1;
+      }
+
+      .article-card__content {
+        padding: 2.4rem;
+        z-index: 1;
+      }
+
+      .article-card__cover {
+        padding: 0;
+
+        &:after {
+          background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.6)
+          );
+          content: '';
+          height: 100%;
+          position: absolute;
+          width: 100%;
+          z-index: 1;
+        }
+      }
+    }
+  }
+
+  :global(.floor--6) {
+    .article-card {
+      max-height: 55%;
+      padding: 55% 2.4rem 0;
+    }
+
+    .article-card__content {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+  }
+
+  :global(.floor--7) {
+    .article-card {
+      padding: 160% 2.4rem 0;
+    }
+
+    .article-card__title {
+      @include font-size(2.6rem);
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    :global(.floor--6) {
+      :global(h4) {
+        margin-top: 0;
+      }
+    }
+  }
+
 </style>

@@ -4,6 +4,7 @@
   import NavTopics from '../components/NavTopics.svelte'
   import '../app.scss'
   import shoutsData from '../data/articles.json'
+  import authorsData from '../data/authors.json'
   import topicsData from '../data/topics.json'
   import { topics, shouts } from '../stores/zine'
 
@@ -14,7 +15,7 @@
 </script>
 
 <header>
-  <NavHeader />
+  <NavHeader/>
 </header>
 <main>
   <NavTopics />

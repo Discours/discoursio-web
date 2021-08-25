@@ -284,7 +284,7 @@ export type User = {
   updatedAt?: Maybe<Scalars['DateTime']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
   ratings?: Maybe<Array<Maybe<Rating>>>
-  slug?: Maybe<Scalars['String']>
+  slug: Scalars['String']
   bio?: Maybe<Scalars['String']>
   notifications?: Maybe<Array<Maybe<Scalars['Int']>>>
 }

@@ -1,6 +1,6 @@
 [
   {
-    "title": "Эми Петерсон «Создание литературы в эпоху антропоцена»",
+    "title": "Эми Петерсон «Создание литературы в&nbsp;эпоху антропоцена»",
     "slug": "literature-in-the-age-of-antropocenus",
     "cover": "http://picsum.photos/248/152?r=0.7760844920203465",
     "topics": [
@@ -15,18 +15,18 @@
     ],
     "authors": [
       {
-        "viewname": "Александр Бардашев",
+        "name": "Александр Бардашев",
         "slug": "alexandr-berdashev"
       },
       {
-        "viewname": "Анастасия Лозовая",
+        "name": "Анастасия Лозовая",
         "slug": "anastasia-lozovaya"
       }
     ],
     "body": "## blablabla\n\n blabla. bla."
   },
   {
-    "title": "Рабский менталитет — это миф Почему россияне не обречены на вечную несвободу",
+    "title": "Рабский менталитет&nbsp;— это миф Почему россияне не&nbsp;обречены на&nbsp;вечную несвободу",
     "slug": "slave-mentality",
     "cover": "http://picsum.photos/248/152?r=0.623909341222405",
     "topics": [
@@ -37,7 +37,7 @@
     ],
     "authors": [
       {
-        "viewname": "Иван Вахрушев",
+        "name": "Иван Вахрушев",
         "slug": "ivan-vahrushev"
       }
     ],
@@ -45,7 +45,7 @@
   },
   {
     "title": "«Мы уничтожим коммунистический режим Северной Кореи!»",
-    "subtitle": "Как работала пропаганда в южнокорейских школах",
+    "subtitle": "Как работала пропаганда в&nbsp;южнокорейских школах",
     "slug": "how-propaganda-was-working-in-korea",
     "cover": "http://picsum.photos/248/152?r=0.845167101028091",
     "topics": [
@@ -56,18 +56,18 @@
     ],
     "authors": [
       {
-        "viewname": "Екатерина Ильина",
+        "name": "Екатерина Ильина",
         "slug": "katy-ilyina"
       },
       {
-        "viewname": "Иван Вахрушев",
+        "name": "Иван Вахрушев",
         "slug": "ivan-vahrushev"
       }
     ],
     "body": "## blablabla\n\n blabla. bla."
   },
   {
-    "title": "«Здесь я свободен во всём» Как живут нелегальные торговцы из электричек",
+    "title": "«Здесь я&nbsp;свободен во&nbsp;всём» Как живут нелегальные торговцы из&nbsp;электричек",
     "slug": "here-i-am-fully-free",
     "cover": "http://picsum.photos/248/152?r=0.04025856296740615",
     "topics": [
@@ -78,14 +78,14 @@
     ],
     "authors": [
       {
-        "viewname": "Марина Никифорова",
+        "name": "Марина Никифорова",
         "slug": "marina-nikiforova"
       }
     ],
     "body": "## blablabla\n\n blabla. bla."
   },
   {
-    "title": "Их вещи: монологи секс-работниц о дорогих им предметах",
+    "title": "Их вещи: монологи секс-работниц о&nbsp;дорогих им предметах",
     "slug": "sex-industry-workers-speeches",
     "cover": "http://picsum.photos/248/152?r=0.595446144459828",
     "topics": [
@@ -96,7 +96,7 @@
     ],
     "authors": [
       {
-        "viewname": "Владимир Коркунов",
+        "name": "Владимир Коркунов",
         "slug": "vlad-korkunov"
       }
     ],
