@@ -1,6 +1,7 @@
 <script lang="ts">
   // import type { Shout, User } from '../graphql/codegen'
   // import { topics, authors } from '../stores/zine'
+  import Icon from './Icon.svelte';
 
   export let shout
 </script>
@@ -8,8 +9,14 @@
 <section class="article-card">
   <div class="article-card__cover-container">
     <div class="article-card__cover">
-      <img src={shout.cover} alt={shout.title} />
+      <img src="{shout.cover}" alt="{shout.title}" />
     </div>
+
+    {#if shout.type}
+      <div class="article-card__type">
+        <Icon name="{shout.type}" />
+      </div>
+    {/if}
   </div>
 
   <div class="article-card__content">
@@ -55,6 +62,10 @@
         display: none;
       }
     }
+  }
+
+  .article-card__cover-container {
+    position: relative;
   }
 
   .article-card__cover {
@@ -162,6 +173,27 @@
     }
   }
 
+  .article-card__type {
+    background: #fff;
+    border-radius: 100%;
+    height: 3.2rem;
+    position: absolute;
+    right: 0.8rem;
+    text-align: center;
+    top: 0.8rem;
+    width: 3.2rem;
+    z-index: 1;
+
+    :global(img) {
+      height: auto;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+    }
+  }
+
   :global(.floor--2 .col-md-6) {
     &:first-child {
       .article-card__cover {
@@ -170,12 +202,6 @@
     }
 
     &:last-child {
-      :global(h3) {
-        font-weight: 400;
-        margin-top: 0;
-        text-transform: uppercase;
-      }
-
       .article-card {
         flex-direction: row;
         margin-bottom: 2.4rem;
@@ -277,7 +303,9 @@
   }
 
   :global(.floor--6),
-  :global(.floor--7) {
+  :global(.floor--7),
+  :global(.floor--teaser),
+  :global(.floor--11 .col-md-8) {
     .article-card {
       &,
       a,
@@ -345,12 +373,75 @@
     }
   }
 
-  @include media-breakpoint-up(md) {
-    :global(.floor--6) {
-      :global(h4) {
-        margin-top: 0;
+  :global(.floor--9) {
+    .article-card__title,
+    .article-card__subtitle {
+      display: inline;
+      @include font-size(2.2rem);
+    }
+
+    .article-card__author {
+      margin-top: 0.8rem;
+    }
+
+    .article-card__cover {
+      padding-bottom: 50%;
+    }
+  }
+
+  :global(.floor--teaser) {
+    .article-card {
+      min-height: 15em;
+      padding-top: 33.33%;
+    }
+
+    .article-card__content {
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article-card__title {
+      @include font-size(4.8rem);
+    }
+  }
+
+  :global(.floor--11) {
+    :global(.col-md-4) {
+      .article-card__cover-container {
+        margin-top: 1.6rem;
+        order: 2;
+      }
+    }
+
+    :global(.col-md-8) {
+      .article-card {
+        padding-top: 50%;
+      }
+
+      .article-card__title,
+      .article-card__subtitle {
+        @include font-size(2rem)
+      }
+
+      .article-card__content {
+        justify-content: flex-end;
+        display: flex;
+        flex-direction: column;
       }
     }
   }
 
+  :global(.floor--12) {
+    :global(.col-md-4):first-child {
+      .article-card__cover-container,
+      .article-card__category {
+        display: none;
+      }
+
+      .article-card__title {
+        @include font-size(1.7rem);
+      }
+    }
+  }
 </style>

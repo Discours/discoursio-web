@@ -6,10 +6,13 @@
   import shoutsData from '../data/articles.json'
   import authorsData from '../data/authors.json'
   import topicsData from '../data/topics.json'
-  import { topics, shouts } from '../stores/zine'
+  import communitiesData from '../data/communities.json'
+  import {topics, shouts, authorslist, communitieslist} from '../stores/zine'
 
   $: $topics = topicsData
   $: $shouts = shoutsData
+  $: $authorslist = authorsData
+  $: $communitieslist = communitiesData
 
   initLocalizationContext()
 </script>
