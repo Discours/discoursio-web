@@ -48,11 +48,11 @@ $: {
       {/if}
     {/each}
 
-    {#if $currentTopic !== '#' }
-    <li style="width: 100%; text-align: right;">
+    {#if $currentTopic !== '#' && $currentTopic !== ''}
+    <li style="width: auto; text-align: right;">
       <!-- svelte-ignore a11y-invalid-attribute -->
       <a href="#" on:click={() => navigate('')}>
-        {'[все]'}
+        {'[x]'}
       </a>
     </li>
     {/if}

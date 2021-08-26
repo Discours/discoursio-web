@@ -5,7 +5,7 @@
 <div class="community">
   <div class="community__avatar">
     <a href="{community.slug}">
-      <img src="{community.avatar}" alt="{community.name}"/>
+      <img src="{community.pic}" alt="{community.name}"/>
     </a>
   </div>
 
@@ -14,7 +14,7 @@
       <a href="{community.slug}">{@html community.name}</a>
     </div>
 
-    <div class="community__about">{@html community.description}</div>
+    <div class="community__about">{@html community.desc}</div>
 
     <div class="community__subscribe">
       <button class="button button--subscribe">Подписаться</button>
