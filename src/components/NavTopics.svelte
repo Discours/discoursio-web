@@ -8,11 +8,14 @@
 
   onMount(() => {
     $currentTopic = window.location.hash
-    ttt = [{ slug: '', title: 'Все' }]
-    $shoutlist.forEach((shout) =>
+  })
+
+$: {
+  ttt = []
+  $shoutlist.forEach((shout) =>
       shout.topics.forEach((t) => (t in ttt ? noop() : ttt.push(t)))
     )
-  })
+}
 
   const navigate = (slug) => {
     // on nav click
@@ -35,7 +38,7 @@
   <ul>
     {#each Array.from(ttt) as { slug, title }, index}
       {#if $currentTopic === '#' + slug}
-        <li class="selected">{title.toLowerCase()}</li>
+        <li class="selected">{'#' + title.toLowerCase()}</li>
       {:else}
         <li>
           <a href="#{slug}" on:click={() => navigate(slug)}>
@@ -44,6 +47,15 @@
         </li>
       {/if}
     {/each}
+
+    {#if $currentTopic !== '#' }
+    <li style="width: 100%; text-align: right;">
+      <!-- svelte-ignore a11y-invalid-attribute -->
+      <a href="#" on:click={() => navigate('')}>
+        {'[все]'}
+      </a>
+    </li>
+    {/if}
   </ul>
 </nav>
 

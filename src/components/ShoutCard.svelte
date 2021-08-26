@@ -7,6 +7,7 @@
 </script>
 
 <section class="article-card">
+  {#if shout}
   <div class="article-card__cover-container">
     <div class="article-card__cover">
       <img src="{shout.cover}" alt="{shout.title}" />
@@ -43,6 +44,7 @@
       {/each}
     </div>
   </div>
+  {/if}
 </section>
 
 <style lang="scss">

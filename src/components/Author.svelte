@@ -4,15 +4,15 @@
 
 <div class="author">
   <div class="author__avatar">
-    <img src="{author.avatar}" alt="{author.name}"/>
+    <img src="{author.userpic}" alt="{author.viewname}"/>
   </div>
 
   <div class="author__details">
     <div class="author__name">
-      <a href="{author.slug}">{author.name}</a>
+      <a href="{author.slug}">{author.viewname}</a>
     </div>
 
-    <div class="author__about">{author.about}</div>
+    <div class="author__about">{author.bio}</div>
   </div>
 
   <div class="author__subscribe">
