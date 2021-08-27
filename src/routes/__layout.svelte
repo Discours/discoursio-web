@@ -3,16 +3,18 @@
   import NavHeader from '../components/NavHeader.svelte'
   import NavTopics from '../components/NavTopics.svelte'
   import '../app.scss'
-  import shoutsData from '../data/articles.json'
-  import authorsData from '../data/authors.json'
-  import topicsData from '../data/topics.json'
-  import communitiesData from '../data/communities.json'
-  import {topics, shouts, authorslist, communitieslist} from '../stores/zine'
+  import { onMount } from 'svelte'
+  import type { Shout } from '../graphql/codegen'
+  import { shoutslist, shouts, topicslist, topics, authors, authorslist, communities, communitieslist } from '../stores/zine'
 
-  $: $topics = topicsData
-  $: $shouts = shoutsData
-  $: $authorslist = authorsData
-  $: $communitieslist = communitiesData
+  onMount(() => {
+    console.log('app loading data...')
+    // TODO: data loading calls
+    $shoutslist.forEach(s => $shouts[s.slug] = s)
+    $topicslist.forEach(s => $topics[s.slug] = s)
+    $authorslist.forEach(s => $authors[s.slug] = s)
+    $communitieslist.forEach(s => $communities[s.slug] = s)
+  })
 
   initLocalizationContext()
 </script>

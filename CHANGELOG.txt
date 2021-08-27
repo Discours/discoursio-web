@@ -1,3 +1,9 @@
+[0.0.6]
+[-] organization, org_id
+[+] community entity
+[+] mainpage markup
+[+] topics filter naviation
+
 [0.0.5]
 [+] migrate to sveltekit
 [-] removed apollo due bug

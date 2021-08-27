@@ -3,107 +3,46 @@
     "title": "Эми Петерсон «Создание литературы в&nbsp;эпоху антропоцена»",
     "slug": "literature-in-the-age-of-antropocenus",
     "cover": "http://picsum.photos/248/152?r=0.7760844920203465",
-    "topics": [
-      {
-        "title": "Литература",
-        "slug": "literature"
-      },
-      {
-        "title": "Проза",
-        "slug": "prose"
-      }
-    ],
-    "authors": [
-      {
-        "name": "Александр Бардашев",
-        "slug": "alexandr-berdashev"
-      },
-      {
-        "name": "Анастасия Лозовая",
-        "slug": "anastasia-lozovaya"
-      }
-    ],
+    "topics": ["literature", "prose"],
+    "authors": [8, 9],
     "body": "## blablabla\n\n blabla. bla.",
-    "type": "audio"
+    "layout": "music"
   },
   {
     "title": "Рабский менталитет&nbsp;— это миф Почему россияне не&nbsp;обречены на&nbsp;вечную несвободу",
     "slug": "slave-mentality",
     "cover": "http://picsum.photos/248/152?r=0.623909341222405",
-    "topics": [
-      {
-        "title": "Политика",
-        "slug": "politics"
-      }
-    ],
-    "authors": [
-      {
-        "name": "Иван Вахрушев",
-        "slug": "ivan-vahrushev"
-      }
-    ],
+    "topics": ["politics"],
+    "authors": [5],
     "body": "## blablabla\n\n blabla. bla.",
-    "type": "art"
+    "layout": "art"
   },
   {
     "title": "«Мы уничтожим коммунистический режим Северной Кореи!»",
     "subtitle": "Как работала пропаганда в южнокорейских школах",
     "slug": "how-propaganda-was-working-in-korea",
     "cover": "http://picsum.photos/248/152?r=0.845167101028091",
-    "topics": [
-      {
-        "title": "Культура",
-        "slug": "culture"
-      }
-    ],
-    "authors": [
-      {
-        "name": "Екатерина Ильина",
-        "slug": "katy-ilyina"
-      },
-      {
-        "name": "Иван Вахрушев",
-        "slug": "ivan-vahrushev"
-      }
-    ],
+    "topics": ["culture"],
+    "authors": [4, 5],
     "body": "## blablabla\n\n blabla. bla.",
-    "type": "literature"
+    "layout": "prose"
   },
   {
     "title": "«Здесь я&nbsp;свободен во&nbsp;всём» Как живут нелегальные торговцы из&nbsp;электричек",
     "slug": "here-i-am-fully-free",
     "cover": "http://picsum.photos/248/152?r=0.04025856296740615",
-    "topics": [
-      {
-        "title": "Деньги",
-        "slug": "money"
-      }
-    ],
-    "authors": [
-      {
-        "name": "Марина Никифорова",
-        "slug": "marina-nikiforova"
-      }
-    ],
+    "topics": ["money"],
+    "authors": [6],
     "body": "## blablabla\n\n blabla. bla.",
-    "type": "video"
+    "layout": "video"
   },
   {
     "title": "Их вещи: монологи секс-работниц о&nbsp;дорогих им предметах",
     "slug": "sex-industry-workers-speeches",
     "cover": "http://picsum.photos/248/152?r=0.595446144459828",
-    "topics": [
-      {
-        "title": "Личный опыт",
-        "slug": "empiric"
-      }
-    ],
-    "authors": [
-      {
-        "name": "Владимир Коркунов",
-        "slug": "vlad-korkunov"
-      }
-    ],
-    "body": "## blablabla\n\n blabla. bla."
+    "topics": ["empiric"],
+    "authors": [7],
+    "body": "## blablabla\n\n blabla. bla.",
+    "layout": "article"
   }
 ]

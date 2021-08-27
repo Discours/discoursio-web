@@ -1,9 +1,9 @@
 <script lang="ts">
-  // import type { Shout, User } from '../graphql/codegen'
-  // import { topics, authors } from '../stores/zine'
-  import Icon from './Icon.svelte';
+  import type { Shout } from '../graphql/codegen'
+  import { topics, authors, authorslist } from '../stores/zine'
+  import Icon from './Icon.svelte'
 
-  export let shout
+  export let shout: Shout | Partial<Shout>
 </script>
 
 <section class="article-card">
@@ -13,19 +13,19 @@
       <img src="{shout.cover}" alt="{shout.title}" />
     </div>
 
-    {#if shout.type}
+    {#if shout.layout}
       <div class="article-card__type">
-        <Icon name="{shout.type}" />
+        <Icon name="{shout.layout}" />
       </div>
     {/if}
   </div>
 
   <div class="article-card__content">
-    {#if shout.topics}
+    {#each shout.topics as topicslug}
       <div class="article-card__category">
-        <a href="/{shout.topics[0].slug}">{shout.topics[0].title}</a>
+        <a href="/{topicslug}">{$topics[topicslug]? $topics[topicslug].value : topicslug}</a>
       </div>
-    {/if}
+    {/each}
 
     <div class="article-card__title">
       <a href="/a/{shout.slug}">
@@ -38,9 +38,11 @@
     {/if}
 
     <div class="article-card__author">
-      {#each shout.authors as {slug, viewname}, i}
-        {#if i > 0},{/if}
-        <a href="/x/{slug}">{viewname}</a>
+      {#each shout.authors as i}
+        {#if $authorslist[i]}
+          {#if shout.authors.indexOf(i) > 0},{/if}
+          <a href="/x/{$authorslist[i].slug}">{$authorslist[i].viewname}</a>
+        {/if}
       {/each}
     </div>
   </div>

@@ -1,33 +1,33 @@
 <script>
   import { onMount } from 'svelte'
   import { noop } from 'svelte/internal'
-  import { shoutlist, shoutsMock, currentTopic } from '../stores/zine'
+  import { shoutslist, filterTopic, topics, shouts } from '../stores/zine'
 
   // getting all the possible topics from shouts
   let ttt = []
 
   onMount(() => {
-    $currentTopic = window.location.hash
+    $filterTopic = window.location.hash
   })
 
-$: {
+$: if($shouts) {
   ttt = []
-  $shoutlist.forEach((shout) =>
+  $shoutslist.forEach((shout) =>
       shout.topics.forEach((t) => (t in ttt ? noop() : ttt.push(t)))
     )
 }
 
   const navigate = (slug) => {
     // on nav click
-    $currentTopic = '#' + slug
+    $filterTopic = '#' + slug
     if (slug === '') {
       // @ts-ignore
-      $shoutlist = shoutsMock
+      ttt = $shoutslist
     } else {
-      console.log('filtering on hash topic')
+      // console.log('filtering on hash topic')
       // @ts-ignore
-      $shoutlist = shoutsMock.filter((a) =>
-        a.topics.find((t) => t.slug === slug)
+      ttt = $shoutslist.filter((a) =>
+        a.topics.find((t) => t === slug)
       )
     }
     // console.log($shoutlist)
@@ -36,19 +36,19 @@ $: {
 
 <nav class="subnavigation wide-container">
   <ul>
-    {#each Array.from(ttt) as { slug, title }, index}
-      {#if $currentTopic === '#' + slug}
-        <li class="selected">{'#' + title.toLowerCase()}</li>
+    {#each ttt as t}
+      {#if $filterTopic === '#' + t}
+        <li class="selected">{'#' + ($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}</li>
       {:else}
         <li>
-          <a href="#{slug}" on:click={() => navigate(slug)}>
-            {title.toLowerCase()}
+          <span style="color:transparent">#</span><a href="#{t}" on:click={() => navigate(t)}>
+            {($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
           </a>
         </li>
       {/if}
     {/each}
 
-    {#if $currentTopic !== '#' && $currentTopic !== ''}
+    {#if $filterTopic !== '#' && $filterTopic !== ''}
     <li style="width: auto; text-align: right;">
       <!-- svelte-ignore a11y-invalid-attribute -->
       <a href="#" on:click={() => navigate('')}>

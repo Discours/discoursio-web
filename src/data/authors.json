@@ -22,5 +22,37 @@
     "bio": "Кандидат искусствоведения, преподаватель, драматург",
     "slug": "konstantin-konstantinopolsky",
     "userpic": "http://picsum.photos/248/152?r=0.49653922675849227"
+  },
+  {
+    "viewname": "Екатерина Ильина",
+    "slug": "katy-ilyina",
+    "bio": "Писатель, художник",
+    "userpic": "https://picsum.photos/248/152?r=0.363454543"
+  },
+  {
+    "viewname": "Иван Вахрушев",
+    "slug": "ivan-vahrushev",
+    "bio": "",
+    "userpic": "https://picsum.photos/248/152?r=0.3634544533543"
+  },
+  {
+    "viewname": "Александр Бардашев",
+    "slug": "alexandr-berdashev",
+    "userpic": "http://picsum.photos/248/152?r=0.4965392267849227"
+  },
+  {
+    "viewname": "Анастасия Лозовая",
+    "slug": "anastasia-lozovaya",
+    "userpic": "http://picsum.photos/248/152?r=0.496539226758227"
+  },
+  {
+    "viewname": "Марина Никифорова",
+    "slug": "marina-nikiforova",
+    "userpic": "http://picsum.photos/248/152?r=0.49922675849227"
+  },
+  {
+    "viewname": "Владимир Коркунов",
+    "slug": "vlad-korkunov",
+    "userpic": "http://picsum.photos/248/152?r=0.653922675849227"
   }
 ]
