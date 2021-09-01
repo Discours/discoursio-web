@@ -7,10 +7,10 @@
   let ttt = []
 
   onMount(() => {
-    $filterTopic = window.location.hash
+    $filterTopic = window.location.hash.replace('#', '')
   })
 
-$: if($shouts) {
+$: if($shoutslist && $shouts) {
   ttt = []
   $shoutslist.forEach((shout) =>
       shout.topics.forEach((t) => (t in ttt ? noop() : ttt.push(t)))
@@ -19,8 +19,8 @@ $: if($shouts) {
 
   const navigate = (slug) => {
     // on nav click
-    $filterTopic = '#' + slug
-    if (slug === '') {
+    $filterTopic = slug
+    if ($filterTopic === '') {
       // @ts-ignore
       ttt = $shoutslist
     } else {
@@ -48,7 +48,7 @@ $: if($shouts) {
       {/if}
     {/each}
 
-    {#if $filterTopic !== '#' && $filterTopic !== ''}
+    {#if $filterTopic !== ''}
     <li style="width: auto; text-align: right;">
       <!-- svelte-ignore a11y-invalid-attribute -->
       <a href="#" on:click={() => navigate('')}>

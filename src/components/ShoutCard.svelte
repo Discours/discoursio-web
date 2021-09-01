@@ -23,7 +23,7 @@
   <div class="article-card__content">
     {#each shout.topics as topicslug}
       <div class="article-card__category">
-        <a href="/{topicslug}">{$topics[topicslug]? $topics[topicslug].value : topicslug}</a>
+        <a href="/search?t={topicslug}">{$topics[topicslug]? $topics[topicslug].value : topicslug}</a>
       </div>
     {/each}
 

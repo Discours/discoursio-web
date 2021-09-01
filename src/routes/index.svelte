@@ -4,7 +4,8 @@
   import Community from '../components/Community.svelte'
   // import Editor from '../components/Editor.svelte'
   import {authorslist, shoutslist, communitieslist} from '../stores/zine'
-  import DiscoursBanner from '../components/DiscoursBanner.svelte';
+  import DiscoursBanner from '../components/DiscoursBanner.svelte'
+  import NavTopics from '../components/NavTopics.svelte'
 
   // {#if false && isEditor && editingShout}
   //  <Editor shout={editingShout} />
@@ -18,6 +19,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 
 <div class="home">
+  <NavTopics />
   <div class="floor floor--1">
     <div class="wide-container row">
       <div class="col-md-3">

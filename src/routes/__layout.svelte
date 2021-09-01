@@ -1,11 +1,22 @@
 <script lang="ts">
   import { initLocalizationContext } from '../i18n/index'
   import NavHeader from '../components/NavHeader.svelte'
-  import NavTopics from '../components/NavTopics.svelte'
   import '../app.scss'
   import { onMount } from 'svelte'
-  import type { Shout } from '../graphql/codegen'
   import { shoutslist, shouts, topicslist, topics, authors, authorslist, communities, communitieslist } from '../stores/zine'
+  import { graphql, GRAPHQL_ENDPOINT } from '../stores/common'
+  import { token, session } from '../stores/auth'
+  import { GET_ME } from '../graphql/queries'
+  import { GraphQLClient } from 'graphql-request'
+
+  $: if ($token) {
+    $graphql = new GraphQLClient(GRAPHQL_ENDPOINT, {
+      headers: { Auth: $token },
+    })
+    console.log('app: graphql connection is autorized')
+    console.debug(token)
+    $graphql.request(GET_ME).then((user) => ($session = user))
+  }
 
   onMount(() => {
     console.log('app loading data...')
@@ -23,7 +34,6 @@
   <NavHeader/>
 </header>
 <main>
-  <NavTopics />
   <slot />
 </main>
 <footer />

@@ -3,6 +3,10 @@
 [+] community entity
 [+] mainpage markup
 [+] topics filter naviation
+[+] monor schema fixes
+[-] gitea.js api
+[+] async sveltekit-styled queries
+[+] login basic markup
 
 [0.0.5]
 [+] migrate to sveltekit

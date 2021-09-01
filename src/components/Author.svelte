@@ -5,11 +5,11 @@
 <div class="author">
   <div class="author__avatar">
     <img src="{author.userpic}" alt="{author.viewname}"/>
-  </div>
+  </div>1
 
   <div class="author__details">
     <div class="author__name">
-      <a href="{author.slug}">{author.viewname}</a>
+      <a href="/x/{author.slug}">{author.viewname}</a>
     </div>
 
     <div class="author__about">{author.bio}</div>
