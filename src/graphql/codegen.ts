@@ -23,6 +23,23 @@ export type AuthResult = {
   user?: Maybe<User>
 }
 
+export type Comment = {
+  __typename?: 'Comment'
+  id: Scalars['Int']
+  author: Scalars['Int']
+  body: Scalars['String']
+  replyTo: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  updatedAt: Scalars['DateTime']
+  shout: Scalars['Int']
+  deletedAt?: Maybe<Scalars['DateTime']>
+  deletedBy?: Maybe<Scalars['Int']>
+  rating?: Maybe<Scalars['Int']>
+  ratigns?: Maybe<Array<Maybe<Rating>>>
+  views?: Maybe<Scalars['Int']>
+  old_id?: Maybe<Scalars['String']>
+}
+
 export type Community = {
   __typename?: 'Community'
   slug: Scalars['String']
@@ -100,15 +117,16 @@ export type MutationCreateShoutArgs = {
 }
 
 export type MutationUpdateShoutArgs = {
+  id: Scalars['Int']
   input: ShoutInput
 }
 
 export type MutationDeleteShoutArgs = {
-  slug: Scalars['String']
+  id: Scalars['Int']
 }
 
 export type MutationRateShoutArgs = {
-  slug: Scalars['String']
+  id: Scalars['Int']
   value: Scalars['Int']
 }
 
@@ -144,10 +162,13 @@ export type Query = {
   signIn: AuthResult
   signOut: Result
   getCurrentUser: UserResult
-  getUserById: UserResult
+  getUserBySlug: UserResult
   getMessages: Array<Message>
+  getShoutBySlug: Shout
+  topShoutsByView: Array<Maybe<Shout>>
+  topShoutsByRating: Array<Maybe<Shout>>
+  favoritesShouts: Array<Maybe<Shout>>
   topAuthors: Array<Maybe<User>>
-  topShouts: Array<Maybe<Shout>>
 }
 
 export type QueryIsEmailFreeArgs = {
@@ -159,13 +180,33 @@ export type QuerySignInArgs = {
   password?: Maybe<Scalars['String']>
 }
 
-export type QueryGetUserByIdArgs = {
-  id: Scalars['Int']
+export type QueryGetUserBySlugArgs = {
+  slug: Scalars['String']
 }
 
 export type QueryGetMessagesArgs = {
   count?: Maybe<Scalars['Int']>
   page?: Maybe<Scalars['Int']>
+}
+
+export type QueryGetShoutBySlugArgs = {
+  slug: Scalars['String']
+}
+
+export type QueryTopShoutsByViewArgs = {
+  limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryTopShoutsByRatingArgs = {
+  limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryFavoritesShoutsArgs = {
+  limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryTopAuthorsArgs = {
+  limit?: Maybe<Scalars['Int']>
 }
 
 export type Rating = {
@@ -190,40 +231,42 @@ export type Role = {
 
 export type Shout = {
   __typename?: 'Shout'
-  authors: Array<Scalars['Int']>
+  id: Scalars['Int']
   slug: Scalars['String']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
-  updatedAt: Scalars['DateTime']
-  community?: Maybe<Scalars['Int']>
+  authors: Array<User>
+  comments?: Maybe<Array<Maybe<Comment>>>
+  ratigns?: Maybe<Array<Maybe<Rating>>>
+  visibleFor?: Maybe<Array<Maybe<User>>>
+  community?: Maybe<Community>
   cover?: Maybe<Scalars['String']>
   layout?: Maybe<Scalars['String']>
-  deletedAt?: Maybe<Scalars['DateTime']>
-  deletedBy?: Maybe<Scalars['Int']>
   rating?: Maybe<Scalars['Int']>
-  ratigns?: Maybe<Array<Maybe<Rating>>>
-  published: Scalars['Boolean']
-  publishedAt?: Maybe<Scalars['DateTime']>
-  replyTo?: Maybe<Scalars['Int']>
+  views?: Maybe<Scalars['Int']>
+  replyTo?: Maybe<Shout>
+  versionOf?: Maybe<Shout>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
   topics?: Maybe<Array<Maybe<Scalars['String']>>>
   title?: Maybe<Scalars['String']>
   subtitle?: Maybe<Scalars['String']>
-  versionOf?: Maybe<Scalars['String']>
-  visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
-  visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
-  views?: Maybe<Scalars['Int']>
+  updatedAt?: Maybe<Scalars['DateTime']>
+  updatedBy?: Maybe<Scalars['Int']>
+  deletedAt?: Maybe<Scalars['DateTime']>
+  deletedBy?: Maybe<Scalars['Int']>
+  publishedBy?: Maybe<Scalars['Int']>
+  publishedAt?: Maybe<Scalars['DateTime']>
   old_id?: Maybe<Scalars['String']>
 }
 
 export type ShoutInput = {
-  org_id: Scalars['Int']
   slug: Scalars['String']
   body: Scalars['String']
   replyTo?: Maybe<Scalars['String']>
   tags?: Maybe<Array<Maybe<Scalars['String']>>>
-  topics?: Maybe<Array<Maybe<Scalars['String']>>>
+  topics?: Maybe<Array<Maybe<Scalars['Int']>>>
   title?: Maybe<Scalars['String']>
+  subtitle?: Maybe<Scalars['String']>
   versionOf?: Maybe<Scalars['String']>
   visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
   visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
@@ -280,10 +323,10 @@ export type User = {
   links?: Maybe<Array<Maybe<Scalars['String']>>>
   emailConfirmed?: Maybe<Scalars['Boolean']>
   muted?: Maybe<Scalars['Boolean']>
-  rating?: Maybe<Scalars['Int']>
   roles?: Maybe<Array<Maybe<Role>>>
   updatedAt?: Maybe<Scalars['DateTime']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
+  rating?: Maybe<Scalars['Int']>
   ratings?: Maybe<Array<Maybe<Rating>>>
   bio?: Maybe<Scalars['String']>
   notifications?: Maybe<Array<Maybe<Scalars['Int']>>>

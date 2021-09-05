@@ -2,11 +2,13 @@
   import MD from 'marked'
   import type { Shout } from '../graphql/codegen'
   import { orgRole, AS } from '../stores/auth'
+  import { authors } from '../stores/zine'
+  import ShoutComment from '../components/ShoutComment.svelte'
 
   export let shout: Shout
-  export let editing: boolean
+  export let canEdit: boolean
 
-  const editShout = (shout) => {
+  const edit = (shout) => {
     console.log(shout)
   }
 </script>
@@ -16,17 +18,24 @@
     <div class="shout-title">
       {shout.title}
     </div>
-    <div class="shout-body" contenteditable={editing}>
+    <div class="shout-body" contenteditable={canEdit}>
       {@html MD(shout.body)}
     </div>
     <div class="shout-controls">
-      <div class="shout-author">{shout.author || 'anonymous'}</div>
+      {#each shout.authors as author_id}
+        <div class="shout-author">{$authors[author_id].viewname}</div>
+      {/each}
       <div class="shout-rating">+22</div>
       {#if $orgRole >= AS.EDITOR}
-        <a class="editlink" href="#edit" on:click={() => editShout(shout)}>
+        <a class="editlink" href="#edit" on:click={() => edit(shout)}>
           {'Edit'}
         </a>
       {/if}
+    </div>
+    <div class="shout-comments">
+      {#each shout.comments as comment}
+        <ShoutComment {comment} canEdit={ shout.authors.indexOf(comment.author) !==-1 } />
+      {/each}
     </div>
   {/if}
 </div>

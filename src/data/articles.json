@@ -43,6 +43,7 @@
     "topics": ["empiric"],
     "authors": [7],
     "body": "## blablabla\n\n blabla. bla.",
-    "layout": "article"
+    "layout": "article",
+    "comments": []
   }
 ]
