@@ -2,6 +2,7 @@ from node:alpine
 workdir /usr/app
 copy ./ /usr/app
 run yarn install
+run yarn ssr
 run yarn build
 run apk update
 run apk --no-cache add -q nginx
