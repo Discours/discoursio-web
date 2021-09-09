@@ -5,6 +5,7 @@ import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
 import vercel from '@sveltejs/adapter-vercel'
+import node from '@sveltejs/adapter-node'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
@@ -33,7 +34,7 @@ const config = {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   kit: {
-    adapter: vercel(),
+    adapter: process.env.VERCEL ? vercel() : node(),
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
     vite: {
