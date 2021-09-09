@@ -6,6 +6,7 @@ import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
 import vercel from '@sveltejs/adapter-vercel'
 import node from '@sveltejs/adapter-node'
+import ssr from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
@@ -26,6 +27,11 @@ const preprocess = [
     outputStyle: 'expanded',
   }),
 ]
+const adapter = process.env.VERCEL ? vercel() : (process.env.SSR ? ssr() : {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  adapt: async () => await node()
+})
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
@@ -34,13 +40,11 @@ const config = {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   kit: {
-    adapter: process.env.VERCEL ? vercel() : node(),
+    adapter,
+    ssr: process.env.SSR === 1,
     // hydrate the <div id="svelte"> element in src/app.html
     target: '#svelte',
     vite: {
-      build: {
-        cssCodeSplit: false,
-      },
       optimizeDeps: {
         include: ['yjs', 'y-indexeddb', 'y-webrtc'],
         exclude: [],

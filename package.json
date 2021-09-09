@@ -18,7 +18,8 @@
     "lint": "prettier --ignore-path .gitignore  --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
     "gen": "node precompiler.js",
-    "codegen": "graphql-codegen"
+    "codegen": "graphql-codegen",
+    "ssr": "SSR=1 npm run build"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "latest",
