@@ -38,10 +38,10 @@
     {/if}
 
     <div class="article-card__author">
-      {#each shout.authors as i}
-        {#if $authorslist[i]}
-          {#if shout.authors.indexOf(i) > 0},{/if}
-          <a href="/x/{$authorslist[i].slug}">{$authorslist[i].viewname}</a>
+      {#each shout.authors as a}
+        {#if a}
+          {#if shout.authors.indexOf(a) > 0},{/if}
+          <a href="/x/{a.slug}">{a.viewname}</a>
         {/if}
       {/each}
     </div>

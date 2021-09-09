@@ -46,8 +46,8 @@ const config = {
     target: '#svelte',
     vite: {
       optimizeDeps: {
-        include: ['yjs', 'y-indexeddb', 'y-webrtc'],
-        exclude: [],
+        include: ['yjs', 'y-indexeddb'],
+        exclude: ['y-webrtc'],
       },
       esbuildOptions: {
         external: [],

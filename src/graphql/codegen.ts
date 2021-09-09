@@ -235,7 +235,7 @@ export type Shout = {
   slug: Scalars['String']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
-  authors: Array<User>
+  authors: Array<User | Partial<User>>
   comments?: Maybe<Array<Maybe<Comment>>>
   ratigns?: Maybe<Array<Maybe<Rating>>>
   visibleFor?: Maybe<Array<Maybe<User>>>

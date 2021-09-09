@@ -14,7 +14,7 @@
 >
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <label>{title}</label>
-  <Icon {icon} />
+  <Icon name={icon} />
 </button>
 
 <style lang="scss" scoped>

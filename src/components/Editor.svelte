@@ -13,26 +13,30 @@
 
   const DEFAULT_ROOM = 'discours.io/demo'
   const ydoc = new Y.Doc()
-  const provider = new WebrtcProvider(DEFAULT_ROOM, ydoc)
-  provider.signalingUrls = [
+  const providerIndexeddb = new IndexeddbPersistence(DEFAULT_ROOM, ydoc)
+  const providerWebrtc = new WebrtcProvider(DEFAULT_ROOM, ydoc)
+  providerWebrtc.signalingUrls = [
     'wss://signaling.discours.io',
     'wss://y-webrtc-signaling-eu.herokuapp.com',
   ]
-  console.log(provider)
+  console.log(providerWebrtc)
+  console.log(providerIndexeddb)
   console.log(ydoc)
   let element
   let editor
 
-  export let shout: Shout = {
-    org: $org,
+  export let shout: Partial<Shout> = {
     slug: '',
-    author: 0,
     body: '',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: new Date().toLocaleDateString("en-US"),
+    updatedAt: new Date().toLocaleDateString("en-US"),
   }
 
   onDestroy(() => editor && editor.destroy())
+
+  const synced = () => {
+      console.log('loaded data from indexed db')
+    }
 
   onMount(() => {
     editor = new Editor({
@@ -45,10 +49,11 @@
       },
     })
     // Store the Y document in the browser
-    new IndexeddbPersistence(DEFAULT_ROOM, ydoc)
-    provider.connect()
-    console.log(provider)
-    // Object.keys(provider.room.doc)
+    providerWebrtc.connect()
+    console.log(providerWebrtc)
+    console.log(Object.keys(providerWebrtc.room.doc))
+    providerIndexeddb.whenSynced.then(synced)
+
   })
 </script>
 

@@ -10,16 +10,23 @@
     'wss://y-webrtc-signaling-eu.herokuapp.com',
   ]
 
-  let provider, ydoc
+  let webrtc, db, ydoc
+
+  const synced = () => {
+      console.log('loaded data from indexed db')
+    }
 
   onMount(() => {
     ydoc = new Y.Doc()
-    provider = new WebrtcProvider(DEFAULT_ROOM, ydoc)
-    provider.signalingUrls = signalingUrls
+    webrtc = new WebrtcProvider(DEFAULT_ROOM, ydoc)
+    // this allows you to instantly get the (cached) documents data
+    db = new IndexeddbPersistence('count-demo', ydoc)
+    db.whenSynced.then(synced)
+    webrtc.signalingUrls = signalingUrls
     console.debug(ydoc)
   })
 </script>
 
 <svelte:head><title>Дискурс : Редакция</title></svelte:head>
 
-<p>Connected to {provider && provider.roomName}</p>
+<p>Connected to {webrtc && webrtc.roomName}</p>
