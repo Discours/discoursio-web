@@ -8,7 +8,6 @@
   import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
   import type { Shout } from '../graphql/codegen'
-  import { org } from '../stores/common'
   // import { editorAccept } from '../graphql/queries'
 
   const DEFAULT_ROOM = 'discours.io/demo'
@@ -28,15 +27,15 @@
   export let shout: Partial<Shout> = {
     slug: '',
     body: '',
-    createdAt: new Date().toLocaleDateString("en-US"),
-    updatedAt: new Date().toLocaleDateString("en-US"),
+    createdAt: new Date().toLocaleDateString('en-US'),
+    updatedAt: new Date().toLocaleDateString('en-US'),
   }
 
   onDestroy(() => editor && editor.destroy())
 
   const synced = () => {
-      console.log('loaded data from indexed db')
-    }
+    console.log('loaded data from indexed db')
+  }
 
   onMount(() => {
     editor = new Editor({
@@ -53,35 +52,35 @@
     console.log(providerWebrtc)
     console.log(Object.keys(providerWebrtc.room.doc))
     providerIndexeddb.whenSynced.then(synced)
-
   })
 </script>
 
-<div class="connected-counter">
-  {'0'}
-</div>
-{#if editor}
-  <button
-    on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-    class:active={editor.isActive('heading', { level: 1 })}
-  >
-    H1
-  </button>
-  <button
-    on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-    class:active={editor.isActive('heading', { level: 2 })}
-  >
-    H2
-  </button>
-  <button
-    on:click={() => editor.chain().focus().setParagraph().run()}
-    class:active={editor.isActive('paragraph')}
-  >
-    P
-  </button>
-{/if}
+<section>
+  <div class="connected-counter">{'0'}</div>
+  <p>Connected to {providerWebrtc && providerWebrtc.roomName}</p>
+  {#if editor}
+    <button
+      on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
+      class:active={editor.isActive('heading', { level: 1 })}
+    >
+      H1
+    </button>
+    <button
+      on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+      class:active={editor.isActive('heading', { level: 2 })}
+    >
+      H2
+    </button>
+    <button
+      on:click={() => editor.chain().focus().setParagraph().run()}
+      class:active={editor.isActive('paragraph')}
+    >
+      P
+    </button>
+  {/if}
 
-<div bind:this={element} />
+  <div bind:this={element} />
+</section>
 
 <style>
   button.active {

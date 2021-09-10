@@ -1,7 +1,7 @@
 <script lang="ts">
   export let name: string
-  export let title: string = ''
-  export let counter: number = 0
+  export let title = ''
+  export let counter = 0
 </script>
 
 <img

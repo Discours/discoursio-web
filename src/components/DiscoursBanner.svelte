@@ -5,7 +5,7 @@
       <p>Помочь журналу</p>
     </div>
     <div class="col-md-6 offset-md-1">
-      <img src="/static/discours-banner.jpg" alt="Дискурс"/>
+      <img src="/discours-banner.jpg" alt="Дискурс" />
     </div>
   </a>
 </div>

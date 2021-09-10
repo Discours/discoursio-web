@@ -1,5 +1,5 @@
 <script context="module">
-  import data from '../../static/shouts.json'
+  import data from '../data/articles.json'
   import NavTopics from '../components/NavTopics.svelte'
 </script>
 

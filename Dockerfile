@@ -1,9 +1,8 @@
 from node:alpine
 workdir /usr/app
 copy ./ /usr/app
-run npm install -g pnpm
-run pnpm i
-run pnpm ssr
+run yarn i
+run yarn build
 run apk update
 run apk --no-cache add -q nginx
 run adduser --disabled-password -g 'nginx www-user' -h /home/www/ www-user

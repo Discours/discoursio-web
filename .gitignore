@@ -9,3 +9,5 @@ static/*.json
 .verce*
 *.sqlite*
 Pipfile*
+api/migration/content
+api/migration/data

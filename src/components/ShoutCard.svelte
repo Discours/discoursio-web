@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Shout } from '../graphql/codegen'
-  import { topics, authors, authorslist } from '../stores/zine'
+  import { topics } from '../stores/zine'
   import Icon from './Icon.svelte'
 
   export let shout: Shout | Partial<Shout>
@@ -8,44 +8,46 @@
 
 <section class="article-card">
   {#if shout}
-  <div class="article-card__cover-container">
-    <div class="article-card__cover">
-      <img src="{shout.cover}" alt="{shout.title}" />
+    <div class="article-card__cover-container">
+      <div class="article-card__cover">
+        <img src={shout.cover} alt={shout.title} />
+      </div>
+
+      {#if shout.layout}
+        <div class="article-card__type">
+          <Icon name={shout.layout} />
+        </div>
+      {/if}
     </div>
 
-    {#if shout.layout}
-      <div class="article-card__type">
-        <Icon name="{shout.layout}" />
-      </div>
-    {/if}
-  </div>
-
-  <div class="article-card__content">
-    {#each shout.topics as topicslug}
-      <div class="article-card__category">
-        <a href="/search?t={topicslug}">{$topics[topicslug]? $topics[topicslug].value : topicslug}</a>
-      </div>
-    {/each}
-
-    <div class="article-card__title">
-      <a href="/a/{shout.slug}">
-        {@html shout.title}
-      </a>
-    </div>
-
-    {#if shout.subtitle}
-      <div class="article-card__subtitle">{@html shout.subtitle}</div>
-    {/if}
-
-    <div class="article-card__author">
-      {#each shout.authors as a}
-        {#if a}
-          {#if shout.authors.indexOf(a) > 0},{/if}
-          <a href="/x/{a.slug}">{a.viewname}</a>
-        {/if}
+    <div class="article-card__content">
+      {#each shout.topics as topicslug}
+        <div class="article-card__category">
+          <a href="/search?t={topicslug}"
+            >{$topics[topicslug] ? $topics[topicslug].value : topicslug}</a
+          >
+        </div>
       {/each}
+
+      <div class="article-card__title">
+        <a href="/a/{shout.slug}">
+          {@html shout.title}
+        </a>
+      </div>
+
+      {#if shout.subtitle}
+        <div class="article-card__subtitle">{@html shout.subtitle}</div>
+      {/if}
+
+      <div class="article-card__author">
+        {#each shout.authors as a}
+          {#if a}
+            {#if shout.authors.indexOf(a) > 0},{/if}
+            <a href="/x/{a.slug}">{a.viewname}</a>
+          {/if}
+        {/each}
+      </div>
     </div>
-  </div>
   {/if}
 </section>
 
@@ -249,7 +251,7 @@
     padding-bottom: 0;
     padding-top: $container-padding-x;
 
-    @include media-breakpoint-up(md){
+    @include media-breakpoint-up(md) {
       padding-top: $grid-gutter-width;
     }
 
@@ -425,7 +427,7 @@
 
       .article-card__title,
       .article-card__subtitle {
-        @include font-size(2rem)
+        @include font-size(2rem);
       }
 
       .article-card__content {

@@ -3,7 +3,7 @@
   import Author from '../components/Author.svelte'
   import Community from '../components/Community.svelte'
   // import Editor from '../components/Editor.svelte'
-  import {authorslist, shoutslist, communitieslist} from '../stores/zine'
+  import { authorslist, shoutslist, communitieslist } from '../stores/zine'
   import DiscoursBanner from '../components/DiscoursBanner.svelte'
   import NavTopics from '../components/NavTopics.svelte'
 
@@ -24,17 +24,17 @@
     <div class="wide-container row">
       <div class="col-md-3">
         {#each $shoutslist.slice(0, 2) as shout}
-          <ShoutCard {shout}/>
+          <ShoutCard {shout} />
         {/each}
       </div>
       <div class="col-md-6">
         {#each $shoutslist.slice(2, 3) as shout}
-          <ShoutCard {shout}/>
+          <ShoutCard {shout} />
         {/each}
       </div>
       <div class="col-md-3">
         {#each $shoutslist.slice(3, 5) as shout}
-          <ShoutCard {shout}/>
+          <ShoutCard {shout} />
         {/each}
       </div>
     </div>
@@ -44,13 +44,13 @@
     <div class="wide-container row">
       <div class="col-md-6">
         {#each $shoutslist.slice(0, 1) as article}
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         {/each}
       </div>
       <div class="col-md-6">
         <h4>Самое читаемое</h4>
         {#each $shoutslist.slice(1, 4) as article}
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         {/each}
       </div>
     </div>
@@ -60,7 +60,7 @@
     <div class="wide-container row">
       {#each $shoutslist.slice(2, 5) as article}
         <div class="col-md-4">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -71,7 +71,7 @@
       <h2 class="col-12"><span>Важное</span></h2>
       {#each $shoutslist.slice(0, 3) as article}
         <div class="col-md-4">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -81,7 +81,7 @@
     <div class="wide-container row">
       {#each $shoutslist.slice(2, 5) as article}
         <div class="col-md-4">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -90,13 +90,13 @@
   <div class="floor floor--6">
     <div class="wide-container row">
       <div class="col-md-8">
-        <ShoutCard shout="{$shoutslist[0]}"/>
+        <ShoutCard shout={$shoutslist[0]} />
       </div>
       <div class="col-md-4">
         <h4>Авторы месяца</h4>
 
         {#each $authorslist as author}
-          <Author author="{author}"/>
+          <Author {author} />
         {/each}
 
         <button class="button">Еще авторы</button>
@@ -109,7 +109,7 @@
       <h2 class="col-12">Коротко</h2>
       {#each $shoutslist.slice(0, 4) as article}
         <div class="col-md-6 col-lg-3">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -120,7 +120,7 @@
       <h2 class="col-12"><span>Избранное</span></h2>
       {#each $shoutslist.slice(0, 4) as article}
         <div class="col-md-3">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -131,11 +131,11 @@
       <div class="col-md-4">
         <h4>Популярные сообщества</h4>
         {#each $communitieslist as community}
-          <Community community="{community}"/>
+          <Community {community} />
         {/each}
       </div>
       <div class="col-md-8">
-        <ShoutCard shout="{$shoutslist[2]}"/>
+        <ShoutCard shout={$shoutslist[2]} />
       </div>
     </div>
   </div>
@@ -144,7 +144,7 @@
     <div class="wide-container row">
       {#each $shoutslist.slice(0, 3) as article}
         <div class="col-md-4">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>
@@ -153,12 +153,12 @@
   <div class="floor floor--2">
     <div class="wide-container row">
       <div class="col-md-6">
-        <ShoutCard shout="{$shoutslist[4]}"/>
+        <ShoutCard shout={$shoutslist[4]} />
       </div>
       <div class="col-md-6">
         <h4>Самое обсуждаемое</h4>
         {#each $shoutslist.slice(1, 4) as article}
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         {/each}
       </div>
     </div>
@@ -167,7 +167,7 @@
   <div class="floor floor--teaser">
     <div class="wide-container row">
       <div class="col-md-12">
-        <ShoutCard shout="{$shoutslist[0]}"/>
+        <ShoutCard shout={$shoutslist[0]} />
       </div>
     </div>
   </div>
@@ -175,10 +175,10 @@
   <div class="floor floor--11">
     <div class="wide-container row">
       <div class="col-md-4">
-        <ShoutCard shout="{$shoutslist[1]}"/>
+        <ShoutCard shout={$shoutslist[1]} />
       </div>
       <div class="col-md-8">
-        <ShoutCard shout="{$shoutslist[2]}"/>
+        <ShoutCard shout={$shoutslist[2]} />
       </div>
     </div>
   </div>
@@ -188,25 +188,25 @@
       <div class="col-md-4">
         <h4>Философия</h4>
         {#each $shoutslist.slice(0, 3) as article}
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         {/each}
       </div>
       <div class="col-md-4">
-        <ShoutCard shout="{$shoutslist[3]}"/>
+        <ShoutCard shout={$shoutslist[3]} />
       </div>
       <div class="col-md-4">
-        <ShoutCard shout="{$shoutslist[4]}"/>
+        <ShoutCard shout={$shoutslist[4]} />
       </div>
     </div>
   </div>
 
-  <DiscoursBanner/>
+  <DiscoursBanner />
 
   <div class="floor floor--10">
     <div class="wide-container row">
       {#each $shoutslist.slice(2, 5) as article}
         <div class="col-md-4">
-          <ShoutCard shout="{article}"/>
+          <ShoutCard shout={article} />
         </div>
       {/each}
     </div>

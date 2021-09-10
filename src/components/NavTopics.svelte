@@ -10,12 +10,12 @@
     $filterTopic = window.location.hash.replace('#', '')
   })
 
-$: if($shoutslist && $shouts) {
-  ttt = []
-  $shoutslist.forEach((shout) =>
+  $: if ($shoutslist && $shouts) {
+    ttt = []
+    $shoutslist.forEach((shout) =>
       shout.topics.forEach((t) => (t in ttt ? noop() : ttt.push(t)))
     )
-}
+  }
 
   const navigate = (slug) => {
     // on nav click
@@ -26,9 +26,7 @@ $: if($shoutslist && $shouts) {
     } else {
       // console.log('filtering on hash topic')
       // @ts-ignore
-      ttt = $shoutslist.filter((a) =>
-        a.topics.find((t) => t === slug)
-      )
+      ttt = $shoutslist.filter((a) => a.topics.find((t) => t === slug))
     }
     // console.log($shoutlist)
   }
@@ -38,10 +36,15 @@ $: if($shoutslist && $shouts) {
   <ul>
     {#each ttt as t}
       {#if $filterTopic === '#' + t}
-        <li class="selected">{'#' + ($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}</li>
+        <li class="selected">
+          {'#' + ($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
+        </li>
       {:else}
         <li>
-          <span style="color:transparent">#</span><a href="#{t}" on:click={() => navigate(t)}>
+          <span style="color:transparent">#</span><a
+            href="#{t}"
+            on:click={() => navigate(t)}
+          >
             {($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
           </a>
         </li>
@@ -49,12 +52,12 @@ $: if($shoutslist && $shouts) {
     {/each}
 
     {#if $filterTopic !== ''}
-    <li style="width: auto; text-align: right;">
-      <!-- svelte-ignore a11y-invalid-attribute -->
-      <a href="#" on:click={() => navigate('')}>
-        {'[x]'}
-      </a>
-    </li>
+      <li style="width: auto; text-align: right;">
+        <!-- svelte-ignore a11y-invalid-attribute -->
+        <a href="#" on:click={() => navigate('')}>
+          {'[x]'}
+        </a>
+      </li>
     {/if}
   </ul>
 </nav>

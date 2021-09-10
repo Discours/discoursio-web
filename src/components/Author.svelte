@@ -1,13 +1,13 @@
 <script lang="ts">
-import type { User } from "src/graphql/codegen"
+  import type { User } from 'src/graphql/codegen'
 
   export let author: User | Partial<User>
 </script>
 
 <div class="author">
   <div class="author__avatar">
-    <img src="{author.userpic}" alt="{author.viewname}"/>
-  </div>1
+    <img src={author.userpic} alt={author.viewname} />
+  </div>
 
   <div class="author__details">
     <div class="author__name">

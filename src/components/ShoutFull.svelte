@@ -2,10 +2,10 @@
   import MD from 'marked'
   import type { Shout } from '../graphql/codegen'
   import { orgRole, AS, session } from '../stores/auth'
-  import { authors } from '../stores/zine'
+  // import { authors } from '../stores/zine'
   import ShoutComment from '../components/ShoutComment.svelte'
 
-  export let shout: Shout
+  export let shout: Shout | Partial<Shout>
   export let canEdit: boolean
 
   const edit = (shout) => {
@@ -34,7 +34,7 @@
     </div>
     <div class="shout-comments">
       {#each shout.comments as comment}
-        <ShoutComment {comment} canEdit={ comment.author === $session.id } />
+        <ShoutComment {comment} canEdit={comment.author === $session.id} />
       {/each}
     </div>
   {/if}
