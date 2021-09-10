@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "run-s gen dev:sk",
     "dev:sk": "svelte-kit dev",
-    "build:sk": "svelte-kit build --verbose",
+    "build:sk": "svelte-kit build",
     "build": "run-s gen build:sk",
     "preview": "svelte-kit preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",

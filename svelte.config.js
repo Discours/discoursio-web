@@ -21,17 +21,15 @@ const scssOptions = {
   outputStyle: 'expanded',
 }
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
-const adapter = process.env.VERCEL
-  ? vercel()
-  : process.env.SSR
-  ? ssr()
-  : {
-      // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-      adapt: async () => await node(),
-    }
+let adapter = {
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  adapt: async () => await node(),
+}
+adapter = process.env.VERCEL ? vercel() : (process.env.SSR ? ssr() : adapter)
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
+  adapter,
   preprocess: [
     globalStyle(),
     mdsvex(),
@@ -54,7 +52,6 @@ const config = {
       },
     },
   },
-  adapter,
   ssr: process.env.SSR === 1,
   skipIntroByDefault: true,
   target: '#svelte'

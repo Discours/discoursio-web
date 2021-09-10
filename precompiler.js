@@ -42,7 +42,7 @@ const handle = async (callback) => {
 
     // creates index.html's
     .on('end', () => {
-      console.log('precompiler: shouts.json created')
+      console.log('TODO: include pregenerated shouts.json')
       callback && callback()
     })
 }
