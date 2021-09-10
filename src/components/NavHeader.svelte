@@ -43,7 +43,7 @@
             {navItem.title}
           {:else}
             <a href={navItem.href} on:click={() => (res = navItem.href)}
-            >{navItem.title}</a
+              >{navItem.title}</a
             >
           {/if}
         </li>
@@ -66,7 +66,7 @@
         <div class="routecell">
           {#if $token}
             <a href="/inbox">
-              <Icon name="bell" counter={newMessages}/>
+              <Icon name="bell" counter={newMessages} />
             </a>
           {:else}
             <a href="/login"> Войти </a>
@@ -80,7 +80,7 @@
           <div class="routecell">
             <a href="/profile">
               <div class:entered={res === '/profile'}>
-                <Userpic/>
+                <Userpic />
               </div>
             </a>
           </div>

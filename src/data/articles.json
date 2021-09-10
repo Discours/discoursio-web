@@ -4,7 +4,18 @@
     "slug": "literature-in-the-age-of-antropocenus",
     "cover": "http://picsum.photos/248/152?r=0.7760844920203465",
     "topics": ["literature", "prose"],
-    "authors": [8, 9],
+    "authors": [
+      {
+        "viewname": "Анастасия Лозовая",
+        "slug": "anastasia-lozovaya",
+        "userpic": "http://picsum.photos/248/152?r=0.496539226758227"
+      },
+      {
+        "viewname": "Марина Никифорова",
+        "slug": "marina-nikiforova",
+        "userpic": "http://picsum.photos/248/152?r=0.49922675849227"
+      }
+    ],
     "body": "## blablabla\n\n blabla. bla.",
     "layout": "music"
   },
@@ -13,7 +24,14 @@
     "slug": "slave-mentality",
     "cover": "http://picsum.photos/248/152?r=0.623909341222405",
     "topics": ["politics"],
-    "authors": [5],
+    "authors": [
+      {
+        "viewname": "Екатерина Ильина",
+        "slug": "katy-ilyina",
+        "bio": "Писатель, художник",
+        "userpic": "https://picsum.photos/248/152?r=0.363454543"
+      }
+    ],
     "body": "## blablabla\n\n blabla. bla.",
     "layout": "art"
   },
@@ -23,7 +41,20 @@
     "slug": "how-propaganda-was-working-in-korea",
     "cover": "http://picsum.photos/248/152?r=0.845167101028091",
     "topics": ["culture"],
-    "authors": [4, 5],
+    "authors": [
+      {
+        "viewname": "Константин Константинопольский",
+        "bio": "Кандидат искусствоведения, преподаватель, драматург",
+        "slug": "konstantin-konstantinopolsky",
+        "userpic": "http://picsum.photos/248/152?r=0.49653922675849227"
+      },
+      {
+        "viewname": "Екатерина Ильина",
+        "slug": "katy-ilyina",
+        "bio": "Писатель, художник",
+        "userpic": "https://picsum.photos/248/152?r=0.363454543"
+      }
+    ],
     "body": "## blablabla\n\n blabla. bla.",
     "layout": "prose"
   },
@@ -32,7 +63,14 @@
     "slug": "here-i-am-fully-free",
     "cover": "http://picsum.photos/248/152?r=0.04025856296740615",
     "topics": ["money"],
-    "authors": [6],
+    "authors": [
+      {
+        "viewname": "Иван Вахрушев",
+        "slug": "ivan-vahrushev",
+        "bio": "",
+        "userpic": "https://picsum.photos/248/152?r=0.3634544533543"
+      }
+    ],
     "body": "## blablabla\n\n blabla. bla.",
     "layout": "video"
   },
@@ -41,7 +79,13 @@
     "slug": "sex-industry-workers-speeches",
     "cover": "http://picsum.photos/248/152?r=0.595446144459828",
     "topics": ["empiric"],
-    "authors": [7],
+    "authors": [
+      {
+        "viewname": "Александр Бардашев",
+        "slug": "alexandr-berdashev",
+        "userpic": "http://picsum.photos/248/152?r=0.4965392267849227"
+      }
+    ],
     "body": "## blablabla\n\n blabla. bla.",
     "layout": "article",
     "comments": []

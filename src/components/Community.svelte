@@ -4,14 +4,14 @@
 
 <div class="community">
   <div class="community__avatar">
-    <a href="{community.slug}">
-      <img src="{community.pic}" alt="{community.name}"/>
+    <a href={community.slug}>
+      <img src={community.pic} alt={community.name} />
     </a>
   </div>
 
   <div class="community__details">
     <div class="community__name">
-      <a href="{community.slug}">{@html community.name}</a>
+      <a href={community.slug}>{@html community.name}</a>
     </div>
 
     <div class="community__about">{@html community.desc}</div>

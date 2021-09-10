@@ -58,7 +58,6 @@ export const GET_ME = gql`
         bio
         userpic
         links
-
       }
     }
   }
@@ -67,7 +66,7 @@ export const GET_ME = gql`
 // TODO: joined with comments, topics, ratings and authors
 export const GET_SHOUT = gql`
   query {
-    getShoutBySlug(slug: $slug ) {
+    getShoutBySlug(slug: $slug) {
       title
       subtitle
       layout
@@ -92,7 +91,7 @@ export const GET_SHOUT = gql`
 
 export const GET_AUTHOR = gql`
   query {
-    getUserBySlug(slug: $slug ) {
+    getUserBySlug(slug: $slug) {
       slug
       viewname
       bio
@@ -103,6 +102,6 @@ export const GET_AUTHOR = gql`
       createdAt
       wasOnlineAt
       ratings
-    } 
+    }
   }
 `

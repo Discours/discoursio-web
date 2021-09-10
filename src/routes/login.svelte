@@ -40,7 +40,7 @@
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="row view">
-  <div class="col-sm-6 d-md-none login-image"></div>
+  <div class="col-sm-6 d-md-none login-image" />
   <form class="col-sm-6 auth">
     <div class="auth__inner">
       <div class="tabs">
@@ -148,7 +148,7 @@
   }
 
   .login-image {
-    background: url('/static/auth-page.jpg') center no-repeat;
+    background: url('/auth-page.jpg') center no-repeat;
     background-size: cover;
 
     @include media-breakpoint-down(sm) {

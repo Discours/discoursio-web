@@ -11,43 +11,38 @@ import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const { scss, globalStyle } = require('svelte-preprocess')
-
+const scssOptions = {
+  // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
+  prependData: `@import 'src/styles/_imports.scss';`,
+  // Docs say renderSync is faster for Dart Sass which I am using
+  // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/preprocessing.md#scss-sass
+  renderSync: true,
+  // Dart Sass recognizes 'expanded' and 'compressed'
+  outputStyle: 'expanded',
+}
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
-const preprocess = [
-  globalStyle(),
-  mdsvex(),
-  typescript(),
-  scss({
-    // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
-    prependData: `@import 'src/styles/_imports.scss';`,
-    // Docs say renderSync is faster for Dart Sass which I am using
-    // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/preprocessing.md#scss-sass
-    renderSync: true,
-    // Dart Sass recognizes 'expanded' and 'compressed'
-    outputStyle: 'expanded',
-  }),
-]
-const adapter = process.env.VERCEL ? vercel() : (process.env.SSR ? ssr() : {
+let adapter = {
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  adapt: async () => await node()
-})
+  adapt: async () => await node(),
+}
+adapter = process.env.VERCEL ? vercel() : (process.env.SSR ? ssr() : adapter)
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  // Consult https://github.com/sveltejs/svelte-preprocess
-  // for more information about preprocessors
-  preprocess,
+  adapter,
+  preprocess: [
+    globalStyle(),
+    mdsvex(),
+    typescript(),
+    scss(scssOptions, { name: 'scss' }),
+  ],
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   kit: {
-    adapter,
-    ssr: process.env.SSR === 1,
-    // hydrate the <div id="svelte"> element in src/app.html
-    target: '#svelte',
     vite: {
       optimizeDeps: {
-        include: ['yjs', 'y-indexeddb', 'y-webrtc'],
-        exclude: [],
+        include: ['yjs', 'y-indexeddb'],
+        exclude: ['y-webrtc'],
       },
       esbuildOptions: {
         external: [],
@@ -57,6 +52,9 @@ const config = {
       },
     },
   },
+  ssr: process.env.SSR === 1,
+  skipIntroByDefault: true,
+  target: '#svelte'
 }
 
 export default config

@@ -1,6 +1,6 @@
 <script>
   import { createEventDispatcher, onMount } from 'svelte'
-  import loader from '@beyonk/async-script-loader'
+  import loader from '../lib/asyncloader'
   import Icon from './Icon.svelte'
 
   const dispatch = createEventDispatcher()

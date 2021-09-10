@@ -27,9 +27,7 @@
     "no-descending-specificity": [
       true,
       {
-        "ignore": [
-          "selectors-within-list"
-        ]
+        "ignore": ["selectors-within-list"]
       }
     ],
     "no-invalid-double-slash-comments": true
