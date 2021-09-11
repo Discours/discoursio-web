@@ -19,9 +19,9 @@ interface Role {
   level: AS
 }
 
-export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID
-export const VK_APP_ID = process.env.VK_APP_ID
-export const GOOGLE_APP_ID = process.env.GOOGLE_APP_ID
+export const FACEBOOK_APP_ID = '1809443122683615'
+export const VK_APP_ID = '7901964'
+export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable()
 export const session: Writable<User> = writable()
 export const roles: Readable<Role[]> = derived(

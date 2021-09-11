@@ -8,10 +8,14 @@
   import type { Shout } from '../graphql/codegen'
   import ProsemirrorEditor from 'prosemirror-svelte'
   import { createRichTextEditor } from 'prosemirror-svelte/state'
-
-  const placeholder = "Напишите что-нибудь здесь..."
+  import { ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
+  import { keymap } from 'prosemirror-keymap'
+  import { EditorState } from 'prosemirror-state'
+  import exampleSetup from 'prosemirror-example-setup'
+  import { schema } from '../lib/editor-schema.js'
+  
   let editorState
-
+  let placeholder = 'Напишите что-нибудь'
   export let shout: Partial<Shout> = {
     slug: '',
     body: '',
@@ -19,7 +23,9 @@
     updatedAt: new Date().toLocaleDateString('en-US'),
   }
 
-  const handleChange = (ev) => { editorState = ev.detail.editorState }
+  const handleChange = (ev) => { 
+    editorState = ev.detail.editorState
+  }
   
   $: if(shout) {
     import('marked').then((imp) => {
@@ -43,6 +49,19 @@
   onMount(async () => {
     $room = window.location.pathname
     $ydoc = new Y.Doc()
+    editorState = EditorState.create({
+      schema,
+      plugins: [
+          ySyncPlugin($ydoc.get('test', Y.XmlFragment)), // FIXME 
+          yCursorPlugin($p2p.awareness),
+          yUndoPlugin(),
+          keymap({
+            'Mod-z': undo,
+            'Mod-y': redo,
+            'Mod-Shift-z': redo
+          })
+        ].concat(exampleSetup({ schema }))
+    })
     $db = new IndexeddbPersistence($room, $ydoc)
     $db.whenSynced.then(() => console.log('loaded data from indexed db'))
   })
