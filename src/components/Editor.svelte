@@ -1,28 +1,16 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
-  import { Editor } from '@tiptap/core'
-  import StarterKit from '@tiptap/starter-kit'
-  import Collaboration from '@tiptap/extension-collaboration'
-  import CollaborationCursor from '@tiptap/extension-collaboration-cursor'
-  import * as Y from 'yjs'
-  import { WebrtcProvider } from 'y-webrtc'
-  import { IndexeddbPersistence } from 'y-indexeddb'
-  import type { Shout } from '../graphql/codegen'
-  // import { editorAccept } from '../graphql/queries'
+  import { onMount } from 'svelte'
 
-  const DEFAULT_ROOM = 'discours.io/demo'
-  const ydoc = new Y.Doc()
-  const providerIndexeddb = new IndexeddbPersistence(DEFAULT_ROOM, ydoc)
-  const providerWebrtc = new WebrtcProvider(DEFAULT_ROOM, ydoc)
-  providerWebrtc.signalingUrls = [
-    'wss://signaling.discours.io',
-    'wss://y-webrtc-signaling-eu.herokuapp.com',
-  ]
-  console.log(providerWebrtc)
-  console.log(providerIndexeddb)
-  console.log(ydoc)
-  let element
-  let editor
+  import * as Y from 'yjs'
+  // import { WebrtcProvider } from 'y-webrtc'
+  import { IndexeddbPersistence } from 'y-indexeddb'
+  import { ydoc, p2p, db, room, collaborating } from '../stores/editor'
+  import type { Shout } from '../graphql/codegen'
+  import ProsemirrorEditor from 'prosemirror-svelte'
+  import { createRichTextEditor } from 'prosemirror-svelte/state'
+
+  const placeholder = "Напишите что-нибудь здесь..."
+  let editorState
 
   export let shout: Partial<Shout> = {
     slug: '',
@@ -31,60 +19,43 @@
     updatedAt: new Date().toLocaleDateString('en-US'),
   }
 
-  onDestroy(() => editor && editor.destroy())
-
-  const synced = () => {
-    console.log('loaded data from indexed db')
+  const handleChange = (ev) => { editorState = ev.detail.editorState }
+  
+  $: if(shout) {
+    import('marked').then((imp) => {
+      if(shout.old_id) {
+        editorState = createRichTextEditor( shout.body )
+      } else {
+        const marked = imp.default
+        editorState = createRichTextEditor( marked(shout.body) )
+      }
+    })
   }
 
-  onMount(() => {
-    editor = new Editor({
-      element,
-      extensions: [Collaboration, CollaborationCursor, StarterKit],
-      content: shout.body,
-      onTransaction: () => {
-        // force re-render so `editor.isActive` works as expected
-        editor = editor
-      },
+  $: if($collaborating) {
+    import('y-webrtc').then((imp) => {
+      const { WebrtcProvider } = imp
+      $p2p = new WebrtcProvider($room, $ydoc)
+      $p2p.connect()
     })
-    // Store the Y document in the browser
-    providerWebrtc.connect()
-    console.log(providerWebrtc)
-    console.log(Object.keys(providerWebrtc.room.doc))
-    providerIndexeddb.whenSynced.then(synced)
+  }
+
+  onMount(async () => {
+    $room = window.location.pathname
+    $ydoc = new Y.Doc()
+    $db = new IndexeddbPersistence($room, $ydoc)
+    $db.whenSynced.then(() => console.log('loaded data from indexed db'))
   })
 </script>
 
 <section>
-  <div class="connected-counter">{'0'}</div>
-  <p>Connected to {providerWebrtc && providerWebrtc.roomName}</p>
-  {#if editor}
-    <button
-      on:click={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-      class:active={editor.isActive('heading', { level: 1 })}
-    >
-      H1
-    </button>
-    <button
-      on:click={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-      class:active={editor.isActive('heading', { level: 2 })}
-    >
-      H2
-    </button>
-    <button
-      on:click={() => editor.chain().focus().setParagraph().run()}
-      class:active={editor.isActive('paragraph')}
-    >
-      P
-    </button>
-  {/if}
-
-  <div bind:this={element} />
+{#if $p2p}
+  <div class="connected-counter">{$p2p.room.webrtcConns.size}</div>
+  <p>Connected to {$p2p && $p2p.roomName}</p>
+{/if}
+  <ProsemirrorEditor {placeholder} {editorState} on:change={handleChange} debounceChangeEventsInterval={500} />
+  <button 
+    on:click={() => $collaborating = !$collaborating}
+    value={($collaborating? 'Отключить с' : 'С' ) + 'овместное редактирование'} 
+    />
 </section>
-
-<style>
-  button.active {
-    background: black;
-    color: white;
-  }
-</style>
