@@ -12,8 +12,6 @@ let plugins = [
         // })
     ]
 
-if(process.env.NODE_ENV === 'development') {
-    plugins.push(cssnano({ preset: 'default' }))
-}
+if(process.env.NODE_ENV !== 'development') plugins.push(cssnano({ preset: 'default' }))
 
 module.exports = { plugins }
