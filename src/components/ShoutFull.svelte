@@ -1,12 +1,14 @@
 <script lang="ts">
   import MD from 'marked'
   import type { Shout } from '../graphql/codegen'
-  import { orgRole, AS, session } from '../stores/auth'
+  import { roles, AS, session } from '../stores/auth'
   // import { authors } from '../stores/zine'
   import ShoutComment from '../components/ShoutComment.svelte'
 
   export let shout: Shout | Partial<Shout>
   export let canEdit: boolean
+
+$: canEdit = true // FIXME >= AS.EDITOR
 
   const edit = (shout) => {
     console.log(shout)
@@ -26,7 +28,7 @@
         <div class="shout-author">{author.viewname}</div>
       {/each}
       <div class="shout-rating">+22</div>
-      {#if $orgRole >= AS.EDITOR}
+      {#if canEdit }
         <a class="editlink" href="#edit" on:click={() => edit(shout)}>
           {'Edit'}
         </a>

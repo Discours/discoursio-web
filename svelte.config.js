@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { join } from 'path'
 import { readFileSync } from 'fs'
@@ -36,13 +37,16 @@ const config = {
     typescript(),
     scss(scssOptions, { name: 'scss' }),
   ],
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
+  onwarn(warning, next) {
+    if (warning.code === 'css-unused-selector' || warning.code === 'a11y-distracting-elements') return
+    next(warning)
+  },
   kit: {
     vite: {
       optimizeDeps: {
-        include: ['yjs', 'y-indexeddb'],
-        exclude: ['y-webrtc'],
+        include: ['yjs', 'y-indexeddb', 'y-webrtc'],
+        exclude: [],
       },
       esbuildOptions: {
         external: [],

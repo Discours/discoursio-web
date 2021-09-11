@@ -1,7 +1,6 @@
 import type { Writable, Readable } from 'svelte/store'
 import { writable, derived } from 'svelte/store'
 import type { User } from '../graphql/codegen'
-import { org } from './common'
 
 // counted UI-related role states
 export enum AS {
@@ -12,18 +11,29 @@ export enum AS {
   EXPERT = 5, // uses collaborative editing
   EDITOR = 6, // can approve publications
   OWNER = 7, // can edit org settings
-  ADMIN = 8, // can manage all orgs
+  ADMIN = 8, // can manage all communities
 }
-export const FACEBOOK_APP_ID = '1809443122683615'
-export const VK_APP_ID = '7901964'
-export const GOOGLE_APP_ID = ''
+
+interface Role {
+  community: number
+  level: AS
+}
+
+export const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID
+export const VK_APP_ID = process.env.VK_APP_ID
+export const GOOGLE_APP_ID = process.env.GOOGLE_APP_ID
 export const token: Writable<string> = writable()
 export const session: Writable<User> = writable()
-export const orgRole: Readable<AS> = derived(
-  [org, session],
-  ([$org, $session]) => {
-    $session && console.log(`${$org} roles: ${$session.roles}`)
-    return 8
+export const roles: Readable<Role[]> = derived(
+  [session],
+  ([$session]) => {
+    $session && console.log(`roles: ${$session.roles}`)
+    return [
+      {
+        community: 0, // discours.io
+        level: AS.ADMIN
+      },
+    ]
   }
 )
 

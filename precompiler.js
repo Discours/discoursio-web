@@ -13,7 +13,7 @@ const shouts = {}
 
 const handle = async (callback) => {
   // NOTE! File structure convention
-  // content/<org>/<any-folders>/<article-slug>.md
+  // content/<any-folders>/<article-slug>.md
   walk(contentPath)
     // creates shouts.json
     .on('file', async (root, stats, next) => {

@@ -13,13 +13,13 @@
     communities,
     communitieslist,
   } from '../stores/zine'
-  import { graphql, GRAPHQL_ENDPOINT } from '../stores/common'
+  import { graphql } from '../stores/common'
   import { token, session } from '../stores/auth'
   import { GET_ME } from '../graphql/queries'
   import { GraphQLClient } from 'graphql-request'
 
   $: if ($token) {
-    $graphql = new GraphQLClient(GRAPHQL_ENDPOINT, {
+    $graphql = new GraphQLClient('/graphql', {
       headers: { Auth: $token },
     })
     console.log('app: graphql connection is autorized')
