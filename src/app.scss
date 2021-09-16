@@ -1,13 +1,5 @@
-@import 'styles/imports';
+@import 'styles/variables';
 @import 'styles/fonts';
-@import '../node_modules/bootstrap/scss/mixins/lists';
-@import '../node_modules/bootstrap/scss/mixins/container';
-@import '../node_modules/bootstrap/scss/mixins/utilities';
-
-@import '../node_modules/bootstrap/scss/containers';
-@import '../node_modules/bootstrap/scss/grid';
-
-@import '../node_modules/bootstrap/scss/utilities';
 
 :root {
   --background-color: #fff;

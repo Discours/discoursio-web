@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-
   import * as Y from 'yjs'
   // import { WebrtcProvider } from 'y-webrtc'
   import { IndexeddbPersistence } from 'y-indexeddb'
@@ -12,7 +11,7 @@
   import { keymap } from 'prosemirror-keymap'
   import { EditorState } from 'prosemirror-state'
   import exampleSetup from 'prosemirror-example-setup'
-  import { schema } from '../lib/editor-schema.js'
+  import { schema } from '../lib/editor-schema'
   
   let editorState
   let placeholder = 'Напишите что-нибудь'

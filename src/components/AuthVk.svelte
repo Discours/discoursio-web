@@ -1,31 +1,31 @@
 <script>
   import { onMount, createEventDispatcher } from 'svelte'
   import loader from '../lib/asyncloader'
+  import { VK_APP_ID } from '../stores/auth'
+
   const dispatch = createEventDispatcher()
 
   let disabled = true
-  export let apiId
   export let authUrl = null
   export let width = 32
   export let text = ''
   let VK
 
   onMount(() => {
-    apiId &&
-      loader(
-        [{ type: 'script', url: '//vk.com/js/api/openapi.js?169' }],
-        () => {
-          VK = window['VK']
-          return VK
-        },
-        () => initialise()
-      )
+    loader(
+      [{ type: 'script', url: '//vk.com/js/api/openapi.js?169' }],
+      () => {
+        VK = window['VK']
+        return VK
+      },
+      () => initialise()
+    )
   })
 
   function initialise() {
     console.log('auth: vk async init')
     VK = window['VK']
-    apiId && VK.init({ apiId })
+    VK.init({ apiId: VK_APP_ID})
     disabled = false
   }
 

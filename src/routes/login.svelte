@@ -1,9 +1,8 @@
-<script>
+<script lang="ts">
   import { SIGN_IN, SIGN_UP } from '../graphql/queries'
   import { graphql } from '../stores/common'
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
-  import { FACEBOOK_APP_ID, VK_APP_ID } from '../stores/auth'
   import { auth } from '../stores/auth'
 
   let create = false,
@@ -102,12 +101,10 @@
         >
           <div class="social">
             <AuthVk
-              apiId={VK_APP_ID}
               on:auth-success={providerSuccess}
               on:auth-failure={providerFailure}
             />
             <AuthFacebook
-              appId={FACEBOOK_APP_ID}
               on:auth-success={providerSuccess}
               on:auth-failure={providerFailure}
             />

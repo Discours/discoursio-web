@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Schema } from 'prosemirror-model'
+import type { SchemaSpec } from 'prosemirror-model'
 
 const brDOM = ['br']
 
-const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
+const calcYchangeDomAttrs = (attrs, domAttrs: any = {}) => {
   domAttrs = Object.assign({}, domAttrs)
   if (attrs.ychange !== null) {
     domAttrs.ychange_user = attrs.ychange.user
@@ -13,7 +16,7 @@ const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
 
 // :: Object
 // [Specs](#model.NodeSpec) for the nodes defined in this schema.
-export const nodes = {
+export const nodes: SchemaSpec['nodes'] = {
   // :: NodeSpec The top level document node.
   doc: {
     content: 'block+'
@@ -103,7 +106,7 @@ export const nodes = {
     draggable: true,
     parseDOM: [{
       tag: 'img[src]',
-      getAttrs (dom) {
+      getAttrs (dom: HTMLElement) {
         return {
           src: dom.getAttribute('src'),
           title: dom.getAttribute('title'),
@@ -134,7 +137,7 @@ export const nodes = {
 const emDOM = ['em', 0]; const strongDOM = ['strong', 0]; const codeDOM = ['code', 0]
 
 // :: Object [Specs](#model.MarkSpec) for the marks in the schema.
-export const marks = {
+export const marks: Partial<SchemaSpec['marks']> = {
   // :: MarkSpec A link. Has `href` and `title` attributes. `title`
   // defaults to the empty string. Rendered and parsed as an `<a>`
   // element.
@@ -146,7 +149,7 @@ export const marks = {
     inclusive: false,
     parseDOM: [{
       tag: 'a[href]',
-      getAttrs (dom) {
+      getAttrs (dom: HTMLElement) {
         return { href: dom.getAttribute('href'), title: dom.getAttribute('title') }
       }
     }],
@@ -167,8 +170,8 @@ export const marks = {
       // This works around a Google Docs misbehavior where
       // pasted content will be inexplicably wrapped in `<b>`
       // tags with a font-weight normal.
-      { tag: 'b', getAttrs: node => node.style.fontWeight !== 'normal' && null },
-      { style: 'font-weight', getAttrs: value => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null }],
+      { tag: 'b', getAttrs: (node: HTMLElement) => node.style.fontWeight !== 'normal' && null },
+      { style: 'font-weight', getAttrs: (value: string) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null }],
     toDOM () { return strongDOM }
   },
 
@@ -198,4 +201,5 @@ export const marks = {
 //
 // To reuse elements from this schema, extend or read from its
 // `spec.nodes` and `spec.marks` [properties](#model.Schema.spec).
+
 export const schema = new Schema({ nodes, marks })

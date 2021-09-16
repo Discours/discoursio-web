@@ -5,6 +5,7 @@ import { readFileSync } from 'fs'
 import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
+import WindiCSS from 'vite-plugin-windicss/dist/index.mjs'
 import vercel from '@sveltejs/adapter-vercel'
 import node from '@sveltejs/adapter-node'
 import ssr from '@sveltejs/adapter-static'
@@ -30,10 +31,10 @@ const scssOptions = {
 const config = {
   adapter,
   preprocess: [
-    mdsvex(),
     scss(scssOptions, { name: 'scss' }),
-    postcss(postcssConfig, { name: 'postcss' }),
+    // postcss(postcssConfig, { name: 'postcss' }),
     globalStyle(),
+    mdsvex(),
     typescript(),
   ],
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
@@ -43,6 +44,9 @@ const config = {
   },
   kit: {
     vite: {
+      plugins: [
+        WindiCSS(),
+      ],
       optimizeDeps: {
         include: ['yjs', 'y-indexeddb', 'y-webrtc']
       },

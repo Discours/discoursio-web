@@ -1,33 +1,33 @@
-<script>
+<script lang="ts">
   import Icon from './Icon.svelte'
   import { onMount, createEventDispatcher } from 'svelte'
   import loader from '../lib/asyncloader'
+  import { FACEBOOK_APP_ID } from '../stores/auth'
+
   const dispatch = createEventDispatcher()
 
   const version = 'v11.0'
 
   let disabled = true
-  export let appId
   export let text = ''
   let FB
 
   onMount(() => {
-    appId &&
-      loader(
-        [{ type: 'script', url: '//connect.facebook.net/ru_RU/sdk.js' }],
-        () => {
-          FB = window['FB']
-          return FB
-        },
-        () => initialise()
-      )
+    loader(
+      [{ type: 'script', url: '//connect.facebook.net/ru_RU/sdk.js' }],
+      () => {
+        FB = window['FB']
+        return FB
+      },
+      () => initialise()
+    )
   })
 
   function initialise() {
     console.log('auth: fb async init')
     FB = window['FB']
     FB.init({
-      appId,
+      appId: FACEBOOK_APP_ID,
       cookie: true,
       xfbml: false,
       version,

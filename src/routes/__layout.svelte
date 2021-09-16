@@ -1,7 +1,8 @@
 <script lang="ts">
+  import '../app.scss'
+  import 'virtual:windi.css'
   import { initLocalizationContext } from '../i18n/index'
   import NavHeader from '../components/NavHeader.svelte'
-  import '../app.scss'
   import { onMount } from 'svelte'
   import {
     shoutslist,
@@ -28,6 +29,7 @@
   }
 
   onMount(() => {
+    // import('virtual:windi-devtools')
     console.log('app loading data...')
     // TODO: data loading calls
     $shoutslist.forEach((s) => ($shouts[s.slug] = s))
@@ -39,14 +41,8 @@
   initLocalizationContext()
 </script>
 
-<header>
-  <NavHeader />
-</header>
 <main>
-  <slot />
+  <header><NavHeader /></header>
+  <slot></slot>
+  <footer></footer>
 </main>
-<footer />
-
-<style lang="scss" global>
-  @import '../app.scss';
-</style>
