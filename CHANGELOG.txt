@@ -5,6 +5,9 @@
 [+] topics filter naviation
 [+] monor schema fixes
 [-] gitea.js api
+[-] postcss with plugins
+[-] bootstrap
+[+] windicss
 [+] async sveltekit-styled queries
 [+] login basic markup
 

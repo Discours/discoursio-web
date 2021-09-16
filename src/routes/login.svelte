@@ -140,7 +140,7 @@
     width: 100%;
 
     input {
-      @include font-size(1.7rem);
+      font-size: 1.7rem;
     }
   }
 
@@ -156,7 +156,7 @@
   .tabs {
     display: flex;
     font-weight: 700;
-    @include font-size(2.6rem);
+    font-size: 2.6rem;
     margin-bottom: 1.6rem;
 
     & > div {
@@ -178,7 +178,7 @@
   .auth-actions {
     justify-content: space-between;
     margin-bottom: 1.6rem;
-
+    
     @include media-breakpoint-up(md) {
       display: flex;
     }
@@ -197,7 +197,7 @@
     flex-direction: column;
     justify-content: center;
     padding: $container-padding-x;
-
+    
     @include media-breakpoint-up(lg) {
       padding: 3rem 6.8rem;
     }
@@ -207,7 +207,7 @@
     color: #9fa1a7;
     display: block;
     font-weight: 700;
-    @include font-size(2rem);
+    font-size: 2rem;
     padding: 1.6rem;
     pointer-events: all;
     text-align: center;

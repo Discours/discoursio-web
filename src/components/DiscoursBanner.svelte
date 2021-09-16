@@ -17,7 +17,7 @@
     padding: 0.8rem 0 0;
 
     h3 {
-      @include font-size(3.2rem);
+      font-size: 3.2rem;
       font-weight: 800;
       line-height: 1.2;
       margin: 0 0 0.5em;

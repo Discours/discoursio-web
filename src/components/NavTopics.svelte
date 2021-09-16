@@ -21,18 +21,16 @@
     // on nav click
     $filterTopic = slug
     if ($filterTopic === '') {
-      // @ts-ignore
       ttt = $shoutslist
     } else {
       // console.log('filtering on hash topic')
-      // @ts-ignore
       ttt = $shoutslist.filter((a) => a.topics.find((t) => t === slug))
     }
     // console.log($shoutlist)
   }
 </script>
 
-<nav class="subnavigation wide-container">
+<nav class="subnavigation wide-container text-2xl">
   <ul>
     {#each ttt as t}
       {#if $filterTopic === '#' + t}
@@ -41,10 +39,8 @@
         </li>
       {:else}
         <li>
-          <span style="color:transparent">#</span><a
-            href="#{t}"
-            on:click={() => navigate(t)}
-          >
+          <span style="color:transparent">#</span>
+          <a href={'#' + t} on:click={() => navigate(t)}>
             {($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
           </a>
         </li>
@@ -53,8 +49,7 @@
 
     {#if $filterTopic !== ''}
       <li style="width: auto; text-align: right;">
-        <!-- svelte-ignore a11y-invalid-attribute -->
-        <a href="#" on:click={() => navigate('')}>
+        <a href={''} on:click={() => navigate('')}>
           {'[x]'}
         </a>
       </li>
@@ -64,7 +59,6 @@
 
 <style lang="scss">
   .subnavigation {
-    @include font-size(1.7rem);
     margin-top: 2rem;
     margin-bottom: 9rem;
 

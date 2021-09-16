@@ -4,6 +4,7 @@
   import { token, session } from '../stores/auth'
   import { getLocalization } from '../i18n'
   import { onMount } from 'svelte'
+  import { goto } from '$app/navigation'
 
   const { t } = getLocalization()
 
@@ -14,20 +15,16 @@
 
   const MAIN_NAVIGATION = [
     {
-      title: 'журнал',
+      title: 'журнал', // популярное/рекомендованное
       href: '/',
     },
     {
-      title: 'лента',
+      title: 'лента', // актуальное
       href: '/feed',
     },
     {
-      title: 'сообщество',
-      href: '/community',
-    },
-    {
-      title: 'форум',
-      href: '/forum',
+      title: 'создать публикацию',
+      href: '/create',
     },
   ]
 </script>
@@ -35,8 +32,10 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="wide-container">
   <nav class="row header__inner">
-    <div class="main-logo col"><a href="/">Дискурc</a></div>
-    <ul class="col main-navigation">
+
+    <div class="main-logo col-auto"><a href="/">Дискурc</a></div>
+
+    <ul class="col main-navigation text-2xl">
       {#each MAIN_NAVIGATION as navItem, index}
         <li class:selected={res === navItem.href}>
           {#if res === navItem.href}
@@ -48,67 +47,34 @@
           {/if}
         </li>
       {/each}
-    </ul>
-    <div class="router col-sm-4">
-      <!-- public routes -->
-      <div class="routerow">
-        <div class="routecell">
-          <a href="/search">
-            <Icon
-              name={res === '/search' ? 'searching' : 'search'}
-              title={$t('Search')}
-            />
-          </a>
-        </div>
-      </div>
-
-      <div class="routerow">
-        <div class="routecell">
-          {#if $token}
-            <a href="/inbox">
-              <Icon name="bell" counter={newMessages} />
-            </a>
-          {:else}
-            <a href="/login"> Войти </a>
-          {/if}
-        </div>
-      </div>
-
       {#if $token}
-        <!-- private routes -->
-        <div class="routerow">
-          <div class="routecell">
-            <a href="/profile">
-              <div class:entered={res === '/profile'}>
-                <Userpic />
-              </div>
+        <li class:selected={res === '/community'}>
+          {#if res === '/community'}
+            {'сообщество'}
+          {:else}
+            <a href={'/community'} on:click={() => (res = '/community')}>
+              {'сообщество'}
             </a>
-          </div>
-        </div>
-
-        <div class="routerow">
-          <div class="routecell">
-            <a href="/editor">
-              <Icon
-                name={res === '/editor' ? 'editing' : 'editor'}
-                title="editor"
-              />
-            </a>
-          </div>
-        </div>
-
-        <div class="routerow">
-          <div class="routecell">
-            <a href="/community">
-              <Icon
-                name={res === '/comunity' ? 'community-entered' : 'commmunity'}
-                title="community"
-              />
-            </a>
-          </div>
-        </div>
+          {/if}
+        </li>
       {/if}
+    </ul>
+
+    <div class="right-10 top-10 absolute inline-flex">
+      <a href="/inbox" on:click|preventDefault={() => $token ? goto('/inbox') : goto('/login') }>
+        <Icon name="bell" counter={$token ? newMessages : 1} />
+      </a>
     </div>
+
+    {#if $token}
+      <span class="user">
+        <a href="/profile">
+          <div class:entered={res === '/profile'}>
+            <Userpic />
+          </div>
+        </a>
+      </span>
+    {/if}
   </nav>
 </div>
 
@@ -116,10 +82,10 @@
   .header__inner {
     flex-wrap: wrap;
   }
-
+  
   .main-logo {
     align-items: center;
-    display: flex;
+    display: inline-flex;
     flex-direction: row;
     flex: 0;
     font-size: 36px;
@@ -137,43 +103,13 @@
   nav {
     align-items: center;
 
-    .router {
-      //height: 28px;
-      display: flex;
-      //flex-direction: row;
-      //align-items: flex-end;
-      justify-content: flex-end;
-      //width: 100%;
-
-      .routerow {
-        display: inline-flex;
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: flex-start;
-        padding-top: 2px;
-
-        .routecell {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-
-          a {
-            font-size: 15px;
-            font-weight: 500;
-            line-height: 22px;
-            color: white;
-          }
-        }
-      }
-    }
   }
 
   .main-navigation {
-    display: flex;
+    display: inline-flex;
     list-style: none;
     margin: 0;
     padding: 0;
-    @include font-size(1.7rem);
 
     li {
       margin-right: 2.4rem;

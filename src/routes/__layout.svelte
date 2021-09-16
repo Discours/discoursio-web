@@ -3,6 +3,7 @@
   import 'virtual:windi.css'
   import { initLocalizationContext } from '../i18n/index'
   import NavHeader from '../components/NavHeader.svelte'
+  import DiscoursFooter from '../components/DiscoursFooter.svelte'
   import { onMount } from 'svelte'
   import {
     shoutslist,
@@ -41,8 +42,12 @@
   initLocalizationContext()
 </script>
 
-<main>
-  <header><NavHeader /></header>
-  <slot></slot>
-  <footer></footer>
-</main>
+<header><NavHeader /></header>
+<main><slot /></main>
+<footer><DiscoursFooter /></footer>
+
+<style>
+  main {
+    padding: 0 3rem;
+  }
+</style>

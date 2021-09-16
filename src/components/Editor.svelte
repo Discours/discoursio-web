@@ -7,12 +7,17 @@
   import type { Shout } from '../graphql/codegen'
   import ProsemirrorEditor from 'prosemirror-svelte'
   import { createRichTextEditor } from 'prosemirror-svelte/state'
-  import { ySyncPlugin, yCursorPlugin, yUndoPlugin, undo, redo } from 'y-prosemirror'
+  import {
+    ySyncPlugin,
+    yCursorPlugin,
+    yUndoPlugin,
+    undo,
+    redo,
+  } from 'y-prosemirror'
   import { keymap } from 'prosemirror-keymap'
   import { EditorState } from 'prosemirror-state'
-  import exampleSetup from 'prosemirror-example-setup'
   import { schema } from '../lib/editor-schema'
-  
+
   let editorState
   let placeholder = 'Напишите что-нибудь'
   export let shout: Partial<Shout> = {
@@ -22,22 +27,22 @@
     updatedAt: new Date().toLocaleDateString('en-US'),
   }
 
-  const handleChange = (ev) => { 
+  const handleChange = (ev) => {
     editorState = ev.detail.editorState
   }
-  
-  $: if(shout) {
+
+  $: if (shout) {
     import('marked').then((imp) => {
-      if(shout.old_id) {
-        editorState = createRichTextEditor( shout.body )
+      if (shout.old_id) {
+        editorState = createRichTextEditor(shout.body)
       } else {
         const marked = imp.default
-        editorState = createRichTextEditor( marked(shout.body) )
+        editorState = createRichTextEditor(marked(shout.body))
       }
     })
   }
 
-  $: if($collaborating) {
+  $: if ($collaborating) {
     import('y-webrtc').then((imp) => {
       const { WebrtcProvider } = imp
       $p2p = new WebrtcProvider($room, $ydoc)
@@ -51,15 +56,15 @@
     editorState = EditorState.create({
       schema,
       plugins: [
-          ySyncPlugin($ydoc.get('test', Y.XmlFragment)), // FIXME 
-          yCursorPlugin($p2p.awareness),
-          yUndoPlugin(),
-          keymap({
-            'Mod-z': undo,
-            'Mod-y': redo,
-            'Mod-Shift-z': redo
-          })
-        ].concat(exampleSetup({ schema }))
+        ySyncPlugin($ydoc.get('test', Y.XmlFragment)), // FIXME
+        yCursorPlugin($p2p.awareness),
+        yUndoPlugin(),
+        keymap({
+          'Mod-z': undo,
+          'Mod-y': redo,
+          'Mod-Shift-z': redo,
+        }),
+      ].concat({ schema }),
     })
     $db = new IndexeddbPersistence($room, $ydoc)
     $db.whenSynced.then(() => console.log('loaded data from indexed db'))
@@ -67,13 +72,18 @@
 </script>
 
 <section>
-{#if $p2p}
-  <div class="connected-counter">{$p2p.room.webrtcConns.size}</div>
-  <p>Connected to {$p2p && $p2p.roomName}</p>
-{/if}
-  <ProsemirrorEditor {placeholder} {editorState} on:change={handleChange} debounceChangeEventsInterval={500} />
-  <button 
-    on:click={() => $collaborating = !$collaborating}
-    value={($collaborating? 'Отключить с' : 'С' ) + 'овместное редактирование'} 
-    />
+  {#if $p2p}
+    <div class="connected-counter">{$p2p.room.webrtcConns.size}</div>
+    <p>Connected to {$p2p && $p2p.roomName}</p>
+  {/if}
+  <ProsemirrorEditor
+    {placeholder}
+    {editorState}
+    on:change={handleChange}
+    debounceChangeEventsInterval={500}
+  />
+  <button
+    on:click={() => ($collaborating = !$collaborating)}
+    value={($collaborating ? 'Отключить с' : 'С') + 'овместное редактирование'}
+  />
 </section>

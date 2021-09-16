@@ -2,7 +2,7 @@
   import type { User } from '../../graphql/codegen'
 
   interface AuthorProps {
-	  user: User | Partial<User>
+    user: User | Partial<User>
   }
 
   export async function load({ page, fetch }): Promise<{ props: AuthorProps }> {
@@ -21,8 +21,7 @@
   export let props: { user: User | Partial<User> }
 </script>
 
-<svelte:head
-  ><title>Дискурс : {props.user ? props.user.viewname : 'Автор'}</title
-  ></svelte:head
->
+<svelte:head>
+  <title>Дискурс : {props.user ? props.user.viewname : 'Автор'}</title>
+</svelte:head>
 {#if props.user}<Author author={props.user} />{/if}

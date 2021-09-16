@@ -97,7 +97,7 @@
   }
 
   .article-card__category {
-    @include font-size(1.2rem);
+    font-size: 1.2rem;
     margin-bottom: 0.8rem;
     text-transform: uppercase;
 
@@ -107,7 +107,7 @@
   }
 
   .article-card__title {
-    @include font-size(2.2rem);
+    font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
 
@@ -127,7 +127,7 @@
   }
 
   .article-card__subtitle {
-    @include font-size(1.7rem);
+    font-size: 1.7rem;
     font-weight: 400;
     margin-bottom: 0.8rem;
 
@@ -137,7 +137,7 @@
   }
 
   .article-card__author {
-    @include font-size(1.5rem);
+    font-size: 1.5rem;
     font-weight: 400;
 
     a {
@@ -165,12 +165,7 @@
       z-index: -1;
 
       &:after {
-        background: linear-gradient(
-          0deg,
-          rgba(0, 0, 0, 0.6),
-          rgba(0, 0, 0, 0.6)
-        );
-        content: '';
+        background: rgba(0,0,0,0.6);
         height: 100%;
         position: absolute;
         width: 100%;
@@ -197,46 +192,6 @@
       top: 50%;
       transform: translate(-50%, -50%);
       width: auto;
-    }
-  }
-
-  :global(.floor--2 .col-md-6) {
-    &:first-child {
-      .article-card__cover {
-        padding-bottom: 50%;
-      }
-    }
-
-    &:last-child {
-      .article-card {
-        flex-direction: row;
-        margin-bottom: 2.4rem;
-      }
-
-      .article-card__cover-container {
-        @include make-col(4);
-      }
-
-      .article-card__cover {
-        margin-bottom: 0;
-      }
-
-      .article-card__content {
-        padding-left: 1.6rem;
-      }
-
-      .article-card__title {
-        @include font-size(1.7rem);
-      }
-
-      .article-card__title,
-      .article-card__subtitle {
-        display: inline;
-      }
-
-      .article-card__author {
-        margin-top: 0.4rem;
-      }
     }
   }
 
@@ -304,7 +259,7 @@
     }
 
     .article-card__title {
-      @include font-size(2.4rem);
+      font-size: 2.4rem;
     }
   }
 
@@ -375,7 +330,7 @@
     }
 
     .article-card__title {
-      @include font-size(2.6rem);
+      font-size: 2.6rem;
     }
   }
 
@@ -383,7 +338,7 @@
     .article-card__title,
     .article-card__subtitle {
       display: inline;
-      @include font-size(2.2rem);
+      font-size: 2.2rem;
     }
 
     .article-card__author {
@@ -408,7 +363,7 @@
     }
 
     .article-card__title {
-      @include font-size(4.8rem);
+      font-size: 4.8rem;
     }
   }
 
@@ -427,7 +382,7 @@
 
       .article-card__title,
       .article-card__subtitle {
-        @include font-size(2rem);
+        font-size: 2rem;
       }
 
       .article-card__content {
@@ -446,7 +401,7 @@
       }
 
       .article-card__title {
-        @include font-size(1.7rem);
+        font-size: 1.7rem;
       }
     }
   }

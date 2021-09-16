@@ -24,18 +24,15 @@ export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable()
 export const session: Writable<User> = writable()
-export const roles: Readable<Role[]> = derived(
-  [session],
-  ([$session]) => {
-    $session && console.log(`roles: ${$session.roles}`)
-    return [
-      {
-        community: 0, // discours.io
-        level: AS.ADMIN
-      },
-    ]
-  }
-)
+export const roles: Readable<Role[]> = derived([session], ([$session]) => {
+  $session && console.log(`roles: ${$session.roles}`)
+  return [
+    {
+      community: 0, // discours.io
+      level: AS.ADMIN,
+    },
+  ]
+})
 
 // ui form needs
 export const auth: Writable<{

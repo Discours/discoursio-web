@@ -56,12 +56,12 @@
   }
 
   .community__name {
-    @include font-size(1.7rem);
+    font-size: 1.7rem;
     margin-bottom: 0.8rem;
   }
 
   .community__about {
-    @include font-size(1.5rem);
+    font-size: 1.5rem;
     color: rgba(0, 0, 0, 0.3);
   }
 

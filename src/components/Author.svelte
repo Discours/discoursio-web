@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { User } from 'src/graphql/codegen'
+  import type { User } from '../graphql/codegen'
 
   export let author: User | Partial<User>
 </script>
@@ -10,7 +10,7 @@
   </div>
 
   <div class="author__details">
-    <div class="author__name">
+    <div class="author__name text-3xl text-2xl">
       <a href="/x/{author.slug}">{author.viewname}</a>
     </div>
 
@@ -56,12 +56,12 @@
   }
 
   .author__name {
-    @include font-size(1.7rem);
+    font-size: 1.7rem;
     margin-bottom: 0.8rem;
   }
 
   .author__about {
-    @include font-size(1.5rem);
+    font-size: 1.5rem;
     color: rgba(0, 0, 0, 0.3);
   }
 

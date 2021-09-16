@@ -8,8 +8,8 @@
     slug: string
   }
 
-  export async function load({ page, fetch }): Promise<{ props: ShoutProps; }> {
-    const { slug } = page.params 
+  export async function load({ page, fetch }): Promise<{ props: ShoutProps }> {
+    const { slug } = page.params
     const shout = await fetch(`/a/${slug}.json`).then((r) => r.json())
     return {
       props: { shout, slug },
@@ -19,7 +19,7 @@
 
 <script lang="ts">
   import { shouts } from '../../stores/zine'
-import { page } from '$app/stores';
+  import { page } from '$app/stores'
 
   export let params: { slug: string }
 

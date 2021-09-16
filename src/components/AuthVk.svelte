@@ -25,7 +25,7 @@
   function initialise() {
     console.log('auth: vk async init')
     VK = window['VK']
-    VK.init({ apiId: VK_APP_ID})
+    VK.init({ apiId: VK_APP_ID })
     disabled = false
   }
 
