@@ -1,0 +1,16 @@
+diff --git a/node_modules/vite/src/node/plugins/css.ts b/node_modules/vite/src/node/plugins/css.ts
+index eaa18d3..243eb35 100644
+--- a/node_modules/vite/src/node/plugins/css.ts
++++ b/node_modules/vite/src/node/plugins/css.ts
+@@ -904,9 +904,9 @@ async function minifyCSS(css: string, config: ResolvedConfig) {
+     target: config.build.target || undefined
+   })
+   if (warnings.length) {
+-    const msgs = await formatMessages(warnings, { kind: 'warning' })
++    // const msgs = await formatMessages(warnings, { kind: 'warning' })
+     config.logger.warn(
+-      chalk.yellow(`warnings when minifying css:\n${msgs.join('\n')}`)
++      chalk.yellow(`${warnings.length} warnings when minifying css`)
+     )
+   }
+   return code
