@@ -52,6 +52,46 @@
 </section>
 
 <style lang="scss">
+  :global(.floor--2 .col-md-6) {
+    &:first-child {
+      .article-card__cover {
+        padding-bottom: 50%;
+      }
+    }
+
+    &:last-child {
+      .article-card {
+        flex-direction: row;
+        margin-bottom: 2.4rem;
+      }
+
+      .article-card__cover-container {
+        // @include make-col(4);
+      }
+
+      .article-card__cover {
+        margin-bottom: 0;
+      }
+
+      .article-card__content {
+        padding-left: 1.6rem;
+      }
+
+      .article-card__title {
+        font-size: 1.7rem;
+      }
+
+      .article-card__title,
+      .article-card__subtitle {
+        display: inline;
+      }
+
+      .article-card__author {
+        margin-top: 0.4rem;
+      }
+    }
+  }
+
   .article-card {
     display: flex;
     flex-direction: column;
