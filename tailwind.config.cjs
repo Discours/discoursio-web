@@ -9,28 +9,16 @@ const config = {
     require('windicss/plugin/typography'),
     require('tailwind-bootstrap-grid')({
       containerMaxWidths: {
-        xs: '0',
+        // xs: '0',
         sm: '576px',
         md: '768px',
         lg: '992px',
         xl: '1200px',
-        xxl: '1400px'
+        // xxl: '1400px'
       },
       gridGutterWidth: '5.2rem'
     }),
   ],
-  purge: {
-    enabled: true,
-    content: [
-      './**/*.ts',
-      './*.ts',
-      './**/*.js',
-      './*.js',
-      './**/*.svelte',
-      './*.svelte',
-      './public/index.html',
-    ],
-  },
   theme: {
     extend: {
       colors: {
@@ -61,7 +49,6 @@ const config = {
       },
     },
   },
-  plugins: [],
 }
 
 module.exports = config
