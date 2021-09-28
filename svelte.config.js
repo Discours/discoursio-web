@@ -3,7 +3,7 @@
 import { join } from 'path'
 import { readFileSync } from 'fs'
 import { cwd } from 'process'
-import { typescript } from 'svelte-preprocess-esbuild'
+// import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
 import vercel from '@sveltejs/adapter-vercel'
@@ -11,7 +11,7 @@ import node from '@sveltejs/adapter-node'
 import ssr from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const { scss, /* postcss, */ globalStyle } = require('svelte-preprocess')
+const { scss, typescript, /* postcss, */ globalStyle } = require('svelte-preprocess')
 const { default: windiVite } = require('vite-plugin-windicss')
 const windiConfig = require('./tailwind.config.cjs')
 

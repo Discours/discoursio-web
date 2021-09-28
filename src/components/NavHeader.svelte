@@ -1,15 +1,17 @@
 <script>
   import Icon from './Icon.svelte'
   import Userpic from './Userpic.svelte'
+  import Auth from './Auth.svelte'
   import { token, session } from '../stores/auth'
   import { getLocalization } from '../i18n'
   import { onMount } from 'svelte'
-  import { goto } from '$app/navigation'
+  import { fade } from 'svelte/transition'
 
   const { t } = getLocalization()
 
   let res = ''
   let newMessages = 0 // FIXME: get with query
+  let showingAuth = false
 
   onMount(() => (res = window.location.pathname))
 
@@ -27,6 +29,14 @@
       href: '/create',
     },
   ]
+
+  const showLogin = () => {
+    showingAuth = !showingAuth
+  }
+
+  const showNotifications = () => {
+    console.log('nav: showing notifications')
+  }
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -60,8 +70,8 @@
       {/if}
     </ul>
 
-    <div class="right-10 top-10 absolute inline-flex">
-      <a href="/inbox" on:click|preventDefault={() => $token ? goto('/inbox') : goto('/login') }>
+    <div class="notice inline-flex">
+      <a href="/inbox" on:click|preventDefault={() => $token ? showNotifications() : showLogin() }>
         <Icon name="bell" counter={$token ? newMessages : 1} />
       </a>
     </div>
@@ -76,11 +86,28 @@
       </span>
     {/if}
   </nav>
+  
+  {#if showingAuth}
+  <div class="modalwrap" transition:fade>
+    <Auth />
+  </div>
+  {/if}
+  
 </div>
-
 <style lang="scss">
   .header__inner {
     flex-wrap: wrap;
+  }
+
+  .notice {
+    width: auto;
+  }
+
+  .modalwrap {
+    position: fixed;
+    width: 100%; height: 100%;
+    background: black;
+    opacity: 0.8;
   }
   
   .main-logo {

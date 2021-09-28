@@ -37,7 +37,6 @@
     "@types/spark-md5": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^4.31.2",
     "@typescript-eslint/parser": "^4.31.2",
-    "esbuild": "latest",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -75,7 +74,6 @@
     "svelte-add": "^2021.9.1-8.1",
     "svelte-check": "^2.2.6",
     "svelte-preprocess": "^4.9.5",
-    "svelte-preprocess-esbuild": "^2.0.0",
     "svelte-windicss-preprocess": "^4.0.12",
     "tailwind-bootstrap-grid": "^4.0.0",
     "tslib": "^2.3.1",
@@ -89,9 +87,5 @@
     "y-webrtc": "^10.2.0",
     "yjs": "^13.5.12"
   },
-  "type": "module",
-  "resolutions": {
-    "graphql": "latest",
-    "esbuild": "latest"
-  }
+  "type": "module"
 }

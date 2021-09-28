@@ -4,25 +4,31 @@
   export let counter = 0
 </script>
 
-<img
-  src={'icons/' + name + '.svg'}
-  alt={title ?? name}
-  class:counter
-  data-counter={counter}
-/>
+<div class="icon">
+  <img
+    src={'icons/' + name + '.svg'}
+    alt={title ?? name}
+  />
+  {#if counter!=0}<div class="counter">{counter.toString()}</div>{/if}
+</div>
 
 <style>
+  .icon {
+    position: relative;
+  }
   img {
     width: 100%;
     height: 100%;
   }
-  .counter::after {
-    content: attr(data-counter);
-    font-size: smaller;
-    background: red;
+  .counter {
+    background-color:red;
+    font-size: 1rem;
+    font-weight: 700;
     color: white;
-    top: 0 !important;
-    right: 0 !important;
-    width: 5px;
+    position: absolute;
+    width: 1rem;
+    text-align: center;
+    top: -.5rem; right: -.5rem;
+    border-radius: 1rem;
   }
 </style>
