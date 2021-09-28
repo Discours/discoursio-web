@@ -29,28 +29,24 @@
       href: '/create',
     },
   ]
-
   const toggleLogin = () => {
-    showingAuth = !showingAuth;
-
-    if (showingAuth) {
-      document.addEventListener('keydown', onDocumentKeyDown);
-    } else {
-      document.removeEventListener('keydown', onDocumentKeyDown);
-    }
+    showingAuth = !showingAuth
   }
 
   const showNotifications = () => {
     console.log('nav: showing notifications')
   }
 
-  const onDocumentKeyDown = (evt) => {
-    if (evt.code === 'Esc' || evt.code === 'Escape') {
-      toggleLogin();
-    }
-  };
+  const closeModal = (ev) => {
+    if (ev.target &&
+      (ev.target.className.includes("modalwrap")) || 
+      (ev.target.src.includes('close'))
+    ) showingAuth = false
+    return
+  }
 </script>
 
+<svelte:window on:keydown={e => {if(e.key === 'Escape') showingAuth = false}} />
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="wide-container">
   <nav class="row header__inner">
@@ -83,7 +79,7 @@
     </ul>
 
     <div class="notice inline-flex">
-      <a href="/inbox" on:click|preventDefault={() => $token ? showNotifications() : toggleLogin() }>
+      <a href={''} on:click|preventDefault={() => $token ? showNotifications() : toggleLogin() }>
         <Icon name="bell" counter={$token ? newMessages : 1} />
       </a>
     </div>
@@ -100,7 +96,7 @@
   </nav>
 
   {#if showingAuth}
-  <div class="modalwrap" transition:fade>
+  <div class="modalwrap" transition:fade on:click|preventDefault={closeModal}>
     <Auth />
   </div>
   {/if}
@@ -116,6 +112,8 @@
   }
 
   .modalwrap {
+    pointer-events: all;
+    cursor: pointer;
     align-items: center;
     background: rgba(20, 20, 20, 0.7);
     display: flex;

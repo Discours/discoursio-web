@@ -216,7 +216,7 @@
     width: 0.8em;
     z-index: 1;
 
-    .icon {
+    :global(.icon) {
       height: 100%;
       width: 100%;
     }
