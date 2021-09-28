@@ -52,6 +52,8 @@
 </section>
 
 <style lang="scss">
+  @import '../styles/imports';
+
   :global(.floor--2 .col-md-6) {
     &:first-child {
       .article-card__cover {

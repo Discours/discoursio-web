@@ -1,6 +1,6 @@
 <script lang="ts">
   import '../app.scss'
-  import 'virtual:windi.css'
+  // import 'virtual:windi.css'
   import { initLocalizationContext } from '../i18n/index'
   import NavHeader from '../components/NavHeader.svelte'
   import DiscoursFooter from '../components/DiscoursFooter.svelte'
@@ -44,10 +44,4 @@
 
 <header><NavHeader /></header>
 <main><slot /></main>
-<footer><DiscoursFooter /></footer>
-
-<style>
-  main {
-    padding: 0 3rem;
-  }
-</style>
+<DiscoursFooter />

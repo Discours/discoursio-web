@@ -35,9 +35,9 @@
       onAuth: (res) => {
         const { uid, first_name, last_name, hash } = res
         if (uid) {
-          /* docs.vk.com: Для проверки авторизации Вы можете 
-            использовать полученный параметр hash, сравнив его 
-            с md5 подписью от app_id+user_id+secret_key, 
+          /* docs.vk.com: Для проверки авторизации Вы можете
+            использовать полученный параметр hash, сравнив его
+            с md5 подписью от app_id+user_id+secret_key,
             например md5(667481942537fTanpCrNSeuGPbA4ENCo). */
           dispatch('auth-success', {
             userId: uid,
@@ -52,26 +52,12 @@
   }
 </script>
 
-<div on:click={login} {disabled} id="vk-auth">
+<div on:click={login} {disabled} id="vk-auth" class="vk-icon">
   <div id="vk_api_transport" />
-  <img src="/icons/vk-square.svg" alt="vk" /><span>{text}</span>
+  <img src="/icons/vk.svg" alt="vk" /><span>{text}</span>
 </div>
 
 <style>
-  div {
-    width: 100%;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-  div img {
-    max-width: 25px;
-    margin-right: 40px;
-  }
   div span {
     font-family: Roboto, sans-serif;
     font-size: 14px;

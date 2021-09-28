@@ -13,7 +13,6 @@ import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const { scss, typescript, /* postcss, */ globalStyle } = require('svelte-preprocess')
 const { default: windiVite } = require('vite-plugin-windicss')
-const windiConfig = require('./tailwind.config.cjs')
 
 const ignoreWarns = [
   'a11y-distracting-elements',
@@ -55,7 +54,7 @@ const config = {
     ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
   kit: {
     vite: {
-      plugins: [windiVite(windiConfig)],
+      plugins: [windiVite({})],
       optimizeDeps: {
         include: ['yjs', 'y-indexeddb', 'y-webrtc'],
       },

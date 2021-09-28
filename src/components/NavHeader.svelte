@@ -30,13 +30,25 @@
     },
   ]
 
-  const showLogin = () => {
-    showingAuth = !showingAuth
+  const toggleLogin = () => {
+    showingAuth = !showingAuth;
+
+    if (showingAuth) {
+      document.addEventListener('keydown', onDocumentKeyDown);
+    } else {
+      document.removeEventListener('keydown', onDocumentKeyDown);
+    }
   }
 
   const showNotifications = () => {
     console.log('nav: showing notifications')
   }
+
+  const onDocumentKeyDown = (evt) => {
+    if (evt.code === 'Esc' || evt.code === 'Escape') {
+      toggleLogin();
+    }
+  };
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -71,7 +83,7 @@
     </ul>
 
     <div class="notice inline-flex">
-      <a href="/inbox" on:click|preventDefault={() => $token ? showNotifications() : showLogin() }>
+      <a href="/inbox" on:click|preventDefault={() => $token ? showNotifications() : toggleLogin() }>
         <Icon name="bell" counter={$token ? newMessages : 1} />
       </a>
     </div>
@@ -86,13 +98,13 @@
       </span>
     {/if}
   </nav>
-  
+
   {#if showingAuth}
   <div class="modalwrap" transition:fade>
     <Auth />
   </div>
   {/if}
-  
+
 </div>
 <style lang="scss">
   .header__inner {
@@ -104,12 +116,18 @@
   }
 
   .modalwrap {
+    align-items: center;
+    background: rgba(20, 20, 20, 0.7);
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    left: 0;
     position: fixed;
-    width: 100%; height: 100%;
-    background: black;
-    opacity: 0.8;
+    top: 0;
+    width: 100%;
+    z-index: 10;
   }
-  
+
   .main-logo {
     align-items: center;
     display: inline-flex;

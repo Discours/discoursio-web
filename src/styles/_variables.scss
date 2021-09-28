@@ -1,5 +1,5 @@
 $include-column-box-sizing: true !default;
-$rfs-breakpoint: 1400px !default;
+$rfs-breakpoint: 1360px !default;
 $rfs-base-value: 1.6rem !default;
 $rfs-rem-value: 10 !default;
 $grid-columns:      12;
@@ -9,8 +9,8 @@ $grid-breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 992px,
-  xl: 1200px,
-  xxl: 1400px
+  //xl: 1200px,
+  //xxl: 1400px
 ) !default;
 $default-color: #141414;
 $link-color: #2638d9;

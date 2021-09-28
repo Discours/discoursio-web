@@ -7,17 +7,6 @@ const config = {
     require('windicss/plugin/filters'),
     require('windicss/plugin/scroll-snap'),
     require('windicss/plugin/typography'),
-    require('tailwind-bootstrap-grid')({
-      containerMaxWidths: {
-        // xs: '0',
-        sm: '576px',
-        md: '768px',
-        lg: '992px',
-        xl: '1200px',
-        // xxl: '1400px'
-      },
-      gridGutterWidth: '5.2rem'
-    }),
   ],
   theme: {
     extend: {

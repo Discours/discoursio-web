@@ -62,17 +62,6 @@
 </div>
 
 <style>
-  .facebook-auth {
-    width: 100%;
-    border: 0;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-  }
-
   .facebook-auth span {
     font-family: Roboto, sans-serif;
     font-size: 14px;

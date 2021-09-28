@@ -1,5 +1,13 @@
 @import 'styles/fonts';
 @import 'styles/imports';
+@import '../node_modules/bootstrap/scss/mixins/lists';
+@import '../node_modules/bootstrap/scss/mixins/container';
+@import '../node_modules/bootstrap/scss/mixins/utilities';
+
+@import '../node_modules/bootstrap/scss/containers';
+@import '../node_modules/bootstrap/scss/grid';
+
+@import '../node_modules/bootstrap/scss/utilities';
 
 :root {
   --background-color: #fff;
@@ -43,7 +51,7 @@ section {
 
 .wide-container {
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 1400px;
   padding: 0 $container-padding-x;
 }
 
@@ -52,19 +60,19 @@ header {
 }
 
 h1 {
-  font-size: 4.8rem;
+  @include font-size(4.8rem);
 }
 
 h2 {
-  font-size: 4rem;
+  @include font-size(4rem);
 }
 
 h3 {
-  font-size: 3.2rem;
+  @include font-size(3.2rem);
 }
 
-h3 {
-  font-size: 2.6rem;
+h4 {
+  @include font-size(2.6rem);
 }
 
 main {
@@ -99,13 +107,23 @@ a {
 }
 
 .button {
-  background: rgba(0, 0, 0, 0.05);
+  background: #000;
   border: none;
+  color: #fff;
   cursor: pointer;
   font-family: inherit;
+  font-size: 100%;
   font-weight: 500;
   padding: 0.6rem 1.2rem;
-  font-size: 1.5rem;
+  text-align: center;
+
+  &:hover {
+    color: #ccc;
+  }
+
+  &:active {
+    color: #9fa1a7;
+  }
 }
 
 .button--subscribe {
@@ -136,4 +154,8 @@ input[type='checkbox'] {
       background-image: url('/icons/checkbox-checked.svg');
     }
   }
+}
+
+.hidden {
+  display: none !important;
 }
