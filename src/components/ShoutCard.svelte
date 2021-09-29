@@ -235,6 +235,10 @@
       transform: translate(-50%, -50%);
       width: auto;
     }
+
+    :global(.icon) {
+      height: 100%;
+    }
   }
 
   :global(.floor--3 .col-md-4) {

@@ -39,10 +39,9 @@
 
   const closeModal = (ev) => {
     if (ev.target &&
-      (ev.target.className.includes("modalwrap")) || 
-      (ev.target.src.includes('close'))
+      (ev.target.classList.contains('modalwrap')) ||
+      (ev.target.classList.contains('close-control'))
     ) showingAuth = false
-    return
   }
 </script>
 
@@ -113,7 +112,6 @@
 
   .modalwrap {
     pointer-events: all;
-    cursor: pointer;
     align-items: center;
     background: rgba(20, 20, 20, 0.7);
     display: flex;

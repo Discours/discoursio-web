@@ -38,8 +38,24 @@
 <svelte:head><title>Дискурс : Авторизация</title></svelte:head>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div class="row view">
-  <div class="col-sm-6 d-md-none login-image" />
+<div class="row view" class:view--registration={create}>
+  <div class="col-sm-6 d-md-none login-image">
+    <div class="login-image__text" class:hidden={!create}>
+      <h2>Дискурс</h2>
+      <h4>Присоединятесь к&nbsp;глобальному сообществу авторов со&nbsp;всего
+        мира!</h4>
+      <p class="registration-benefits">Познакомитесь с&nbsp;выдающимися людьми
+        нашего времени, участвуйте
+        в&nbsp;редактировании
+        и&nbsp;обсуждении статей, выступайте экспертом, оценивайте материалы
+        других авторов со&nbsp;всего мира и&nbsp;определяйте, какие статьи будут
+        опубликованы в&nbsp;журнале. Каждый день вас ждут новые истории и&nbsp;ещё
+        много всего интересного!</p>
+      <p class="disclamer">Регистрируясь, вы&nbsp;даёте согласие
+        с&nbsp;<a href="#">правилами пользования</a>
+        сайтом, на&nbsp;<a href="#">обработку персональных данных</a> и&nbsp;на&nbsp;получение почтовых уведомлений.</p>
+    </div>
+  </div>
   <form class="col-sm-6 auth">
     <div class="auth__inner">
       <h4>
@@ -112,7 +128,7 @@
   </form>
 
   <div class="close-control">
-    <Icon name="close" />
+    <svg width="16" height="18" viewBox="0 0 16 18" xmlns="http://www.w3.org/2000/svg"><path d="M7.99987 7.52552L14.1871 0.92334L15.9548 2.80968L9.76764 9.41185L15.9548 16.014L14.1871 17.9004L7.99987 11.2982L1.81269 17.9004L0.0449219 16.014L6.23211 9.41185L0.0449225 2.80968L1.81269 0.92334L7.99987 7.52552Z" fill="currentColor"/></svg>
   </div>
 </div>
 
@@ -132,13 +148,71 @@
     }
   }
 
+  .view--registration {
+    .login-image {
+      order: 2;
+    }
+
+    .login-image:before {
+      background: linear-gradient(0deg, rgba(20, 20, 20, 0.8), rgba(20, 20, 20, 0.8));
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .close-control {
+      color: #fff;
+    }
+  }
+
   .login-image {
     background: #141414 url('/auth-page.jpg') center no-repeat;
     background-size: cover;
+    color: #fff;
+    display: flex;
+    @include font-size(1.5rem);
+    padding: 3em;
+    position: relative;
 
     @include media-breakpoint-down(sm) {
       display: none;
     }
+
+    :global(h2) {
+      text-transform: uppercase;
+    }
+
+    :global(h4) {
+      font-weight: normal;
+    }
+  }
+
+  .login-image__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+
+    a {
+      color: #fff;
+
+      &:hover {
+        color: rgba(255,255,255,0.7);
+      }
+    }
+  }
+
+  .registration-benefits {
+    flex: 1;
+  }
+
+  .disclamer {
+    color: #9fa1a7;
+    @include font-size(1.2rem);
   }
 
   .auth-actions {
@@ -209,12 +283,22 @@
   .close-control {
     cursor: pointer;
     height: 0.8em;
+    opacity: 1;
     padding: 0;
     position: absolute;
     right: 1em;
     top: 1em;
+    transition: opacity 0.3s;
     width: 0.8em;
     z-index: 1;
+
+    svg {
+      pointer-events: none;
+    }
+
+    &:hover {
+      opacity: 0.5;
+    }
 
     :global(.icon) {
       height: 100%;
