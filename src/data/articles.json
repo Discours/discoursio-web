@@ -2,18 +2,18 @@
   {
     "title": "Эми Петерсон «Создание литературы в&nbsp;эпоху антропоцена»",
     "slug": "literature-in-the-age-of-antropocenus",
-    "cover": "http://picsum.photos/248/152?r=0.7760844920203465",
+    "cover": "https://picsum.photos/248/152?r=0.7760844920203465",
     "topics": ["literature", "prose"],
     "authors": [
       {
         "viewname": "Анастасия Лозовая",
         "slug": "anastasia-lozovaya",
-        "userpic": "http://picsum.photos/248/152?r=0.496539226758227"
+        "userpic": "https://picsum.photos/248/152?r=0.496539226758227"
       },
       {
         "viewname": "Марина Никифорова",
         "slug": "marina-nikiforova",
-        "userpic": "http://picsum.photos/248/152?r=0.49922675849227"
+        "userpic": "https://picsum.photos/248/152?r=0.49922675849227"
       }
     ],
     "body": "## blablabla\n\n blabla. bla.",
@@ -22,7 +22,7 @@
   {
     "title": "Рабский менталитет&nbsp;— это миф Почему россияне не&nbsp;обречены на&nbsp;вечную несвободу",
     "slug": "slave-mentality",
-    "cover": "http://picsum.photos/248/152?r=0.623909341222405",
+    "cover": "https://picsum.photos/248/152?r=0.623909341222405",
     "topics": ["politics"],
     "authors": [
       {
@@ -39,14 +39,14 @@
     "title": "«Мы уничтожим коммунистический режим Северной Кореи!»",
     "subtitle": "Как работала пропаганда в южнокорейских школах",
     "slug": "how-propaganda-was-working-in-korea",
-    "cover": "http://picsum.photos/248/152?r=0.845167101028091",
+    "cover": "https://picsum.photos/248/152?r=0.845167101028091",
     "topics": ["culture"],
     "authors": [
       {
         "viewname": "Константин Константинопольский",
         "bio": "Кандидат искусствоведения, преподаватель, драматург",
         "slug": "konstantin-konstantinopolsky",
-        "userpic": "http://picsum.photos/248/152?r=0.49653922675849227"
+        "userpic": "https://picsum.photos/248/152?r=0.49653922675849227"
       },
       {
         "viewname": "Екатерина Ильина",
@@ -61,7 +61,7 @@
   {
     "title": "«Здесь я&nbsp;свободен во&nbsp;всём» Как живут нелегальные торговцы из&nbsp;электричек",
     "slug": "here-i-am-fully-free",
-    "cover": "http://picsum.photos/248/152?r=0.04025856296740615",
+    "cover": "https://picsum.photos/248/152?r=0.04025856296740615",
     "topics": ["money"],
     "authors": [
       {
@@ -77,13 +77,13 @@
   {
     "title": "Их вещи: монологи секс-работниц о&nbsp;дорогих им предметах",
     "slug": "sex-industry-workers-speeches",
-    "cover": "http://picsum.photos/248/152?r=0.595446144459828",
+    "cover": "https://picsum.photos/248/152?r=0.595446144459828",
     "topics": ["empiric"],
     "authors": [
       {
         "viewname": "Александр Бардашев",
         "slug": "alexandr-berdashev",
-        "userpic": "http://picsum.photos/248/152?r=0.4965392267849227"
+        "userpic": "https://picsum.photos/248/152?r=0.4965392267849227"
       }
     ],
     "body": "## blablabla\n\n blabla. bla.",
