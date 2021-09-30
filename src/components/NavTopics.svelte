@@ -31,14 +31,14 @@
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
-  <ul>
+  <ul class="topics">
     {#each ttt as t}
       {#if $filterTopic === '#' + t}
-        <li class="selected">
+        <li class="item selected">
           {'#' + ($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
         </li>
       {:else}
-        <li>
+        <li class="item">
           <span style="color:transparent">#</span>
           <a href={'#' + t} on:click={() => navigate(t)}>
             {($topics && $topics[t] ? $topics[t].value : t).toLowerCase()}
@@ -48,7 +48,7 @@
     {/each}
 
     {#if $filterTopic !== ''}
-      <li style="width: auto; text-align: right;">
+      <li class="item" style="width: auto; text-align: right;">
         <a href={''} on:click={() => navigate('')}>
           {'[x]'}
         </a>
@@ -62,7 +62,7 @@
     margin-top: 2rem;
     margin-bottom: 9rem;
 
-    ul {
+    .topics {
       display: flex;
       flex-wrap: wrap;
       list-style: none;
@@ -70,7 +70,7 @@
       padding: 0;
     }
 
-    li {
+    .item {
       margin-right: 2.4rem;
 
       &:last-child {

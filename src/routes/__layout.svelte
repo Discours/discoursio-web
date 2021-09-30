@@ -20,8 +20,8 @@
   import { GET_ME } from '../graphql/queries'
   import { GraphQLClient } from 'graphql-request'
 
-  $: if ($token) {
-    $graphql = new GraphQLClient('/graphql', {
+  $: if ($token && window) {
+    $graphql = new GraphQLClient(window.location.hostname + '/graphql', {
       headers: { Auth: $token },
     })
     console.log('app: graphql connection is autorized')

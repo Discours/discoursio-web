@@ -3,12 +3,14 @@
   import { graphql } from '../stores/common'
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
-  import { auth } from '../stores/auth'
-  import Icon from './Icon.svelte'
+  import AuthGoogle from '../components/AuthGoogle.svelte'
+  import { auth, GOOGLE_APP_ID } from '../stores/auth'
+  import { fade } from 'svelte/transition'
+  import { onMount } from 'svelte'
 
-  let create = false,
-    useSocial = false,
-    emailInput
+  export let mode = 'login'
+  export let code
+  let emailInput
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
@@ -26,21 +28,45 @@
     console.debug(q)
   }
 
+  const forget = async () => {
+    console.log('auth: forget password clicked')
+    // TODO: forget handler
+  }
+
+  const reset = async () => {
+    console.log('auth: resetting password with code')
+    console.log(code)
+    // TODO: implement me
+  }
+
   const providerSuccess = (e) => {
     console.dir(e.detail.user)
+    // TODO: implement me
   }
 
   const providerFailure = (e) => {
     console.error(e)
+    // TODO: implement me
   }
+
+  const resend = () => {
+    console.log('auth: resending auth code')
+    // TODO: implement me
+  }
+
+  onMount(() => {
+    if(code) {
+      reset()
+    }
+  })
 </script>
 
 <svelte:head><title>Дискурс : Авторизация</title></svelte:head>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div class="row view" class:view--registration={create}>
+<div class="row view" class:view--registration={mode === 'register'}>
   <div class="col-sm-6 d-md-none login-image">
-    <div class="login-image__text" class:hidden={!create}>
+    <div class="login-image__text" class:show={mode === 'register'}>
       <h2>Дискурс</h2>
       <h4>Присоединятесь к&nbsp;глобальному сообществу авторов со&nbsp;всего
         мира!</h4>
@@ -52,20 +78,32 @@
         опубликованы в&nbsp;журнале. Каждый день вас ждут новые истории и&nbsp;ещё
         много всего интересного!</p>
       <p class="disclamer">Регистрируясь, вы&nbsp;даёте согласие
-        с&nbsp;<a href="#">правилами пользования</a>
-        сайтом, на&nbsp;<a href="#">обработку персональных данных</a> и&nbsp;на&nbsp;получение почтовых уведомлений.</p>
+        с&nbsp;<a href={'/rules'}>правилами пользования</a>
+        сайтом, на&nbsp;<a href={'/agreement'}>обработку персональных данных</a> и&nbsp;на&nbsp;получение почтовых уведомлений.</p>
     </div>
   </div>
   <form class="col-sm-6 auth">
     <div class="auth__inner">
       <h4>
-        {#if create}
+        {#if mode === 'register'}
           Создать аккаунт
-        {:else}
+        {:else if mode === 'login'}
           Войти в&nbsp;Дискурс
+        {:else if mode === 'forget'}
+          Забыли пароль?
+        {:else if mode === 'reset'}
+          Введите секретный код восстановления пароля
         {/if}
-      </h4>
 
+      </h4>
+      <div class="auth-subtitle">
+        {#if mode === 'forget'}
+          Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.
+        {:else if mode === 'reset'}
+          Введите код из письма или пройдите по ссылке для подтверждения.
+        {/if}
+      </div>
+      {#if mode !== 'reset'}
       <input
         autocomplete="username"
         bind:value={$auth.email}
@@ -73,57 +111,96 @@
         type="text"
         placeholder="Ваша почта"
       />
-
+      {/if}
+      {#if mode === 'register' || mode === 'login'}
       <input
         autocomplete="current-password"
         bind:value={$auth.password}
         type="password"
         placeholder="Пароль"
       />
-
+      {:else if mode === 'reset'}
+      <input
+        autocomplete="reset-code"
+        bind:value={code}
+        type="text"
+        placeholder="Код восстановления"
+      />
+      <input
+        autocomplete="setup-password"
+        bind:value={$auth.password}
+        type="password"
+        placeholder="Новый пароль"
+      />
+      {/if}
       <div>
-        <button class="button submitbtn" on:click={create ? register : login}>
-          {create ? 'Создать аккаунт' : 'Войти'}
+        <button class="button submitbtn" on:click={
+          mode === 'register' && register ||
+          mode === 'login' && login ||
+          mode === 'forget' && forget ||
+          mode === 'reset' && reset}>
+          {mode === 'register' && 'Создать аккаунт' || 
+          mode === 'login' && 'Войти' ||
+          mode === 'forget' && 'Восстановить пароль' || 
+          mode === 'reset' && 'Создать новый пароль'}
         </button>
       </div>
 
-      {#if !create}
+      {#if mode === 'login'}
         <div class="auth-actions">
-          <a href="/resetpassword">Забыли пароль?</a>
+          <a href={''} on:click={() => mode = 'forget'}>Забыли пароль?</a>
         </div>
       {/if}
 
-      <div class="social-nets-label">
-        {#if create}
-          Или создайте аккаунт с&nbsp;помощью соцсетей
-        {:else}
-          Или войдите через соцсети
-        {/if}
-      </div>
+      {#if mode !== 'forget' && mode !== 'reset'}
 
-      <div class="social-provider">
-        <div class="social">
-          <AuthFacebook
-            on:auth-success={providerSuccess}
-            on:auth-failure={providerFailure}
-          />
-          <AuthVk
-            on:auth-success={providerSuccess}
-            on:auth-failure={providerFailure}
-          />
+        <div class="providers-text">
+          {#if mode === 'register'}
+            Или создайте аккаунт с&nbsp;помощью соцсетей
+          {:else if mode === 'login'}
+            Или войдите через соцсети
+          {/if}
         </div>
-      </div>
+
+        {#if code}
+        <a href={''} on:click={resend}>Отправить код повторно</a>
+        {/if}
+
+        <div class="social-provider">
+          <div class="social">
+            <AuthFacebook
+              on:auth-success={providerSuccess}
+              on:auth-failure={providerFailure}
+            />
+            <AuthGoogle
+              clientId={GOOGLE_APP_ID}
+              on:auth-success={providerSuccess}
+              on:auth-failure={providerFailure}
+            />
+            <AuthVk
+              on:auth-success={providerSuccess}
+              on:auth-failure={providerFailure}
+            />
+          </div>
+        </div>
+
+        {/if}
 
       <div class="registration-control">
-        <div class:hidden={!create}>
-          <span class="registration-link" on:click={() => (create = false)}
+        <div class:show={mode === 'register'}>
+          <span class="registration-link" on:click={() => (mode = 'login')}
           >У&nbsp;меня есть аккаунт</span>
         </div>
-        <div class:hidden={create}>
-          <span class="registration-link" on:click={() => (create = true)}
+        <div class:show={mode === 'login'}>
+          <span class="registration-link" on:click={() => (mode = 'register')}
           >У&nbsp;меня еще нет аккаунта</span>
         </div>
+        <div class:show={mode === 'forget'}>
+          <span class="registration-link" on:click={() => (mode = 'login')}
+          >Я знаю пароль</span>
+        </div>
       </div>
+
     </div>
   </form>
 
@@ -191,7 +268,7 @@
   }
 
   .login-image__text {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
@@ -204,6 +281,9 @@
         color: rgba(255,255,255,0.7);
       }
     }
+  }
+  .login-image__text.show {
+    display: flex;
   }
 
   .registration-benefits {
@@ -310,15 +390,26 @@
     color: $link-color;
     margin-top: 1em;
     text-align: center;
+    div {
+      display: none;
+    }
+    .show {
+      display: block;
+    }
   }
 
   .registration-link {
     cursor: pointer;
   }
 
-  .social-nets-label {
+  .providers-text {
     @include font-size(1.5rem);
     margin-top: 1em;
     text-align: center;
+  }
+
+  .auth-subtitle {
+    @include font-size(1.5rem);
+    margin: 1em;
   }
 </style>

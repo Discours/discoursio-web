@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
+import type { GraphQLClient } from 'graphql-request'
 
 export enum Locale {
   RU = 'ru',
