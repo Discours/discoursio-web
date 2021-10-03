@@ -25,7 +25,7 @@
     </div>
     <div class="shout-controls">
       {#each shout.authors as author}
-        <div class="shout-author">{author.viewname}</div>
+        <div class="shout-author">{author.name}</div>
       {/each}
       <div class="shout-rating">+22</div>
       {#if canEdit}

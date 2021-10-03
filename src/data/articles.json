@@ -6,12 +6,12 @@
     "topics": ["literature", "prose"],
     "authors": [
       {
-        "viewname": "Анастасия Лозовая",
+        "name": "Анастасия Лозовая",
         "slug": "anastasia-lozovaya",
         "userpic": "https://picsum.photos/248/152?r=0.496539226758227"
       },
       {
-        "viewname": "Марина Никифорова",
+        "name": "Марина Никифорова",
         "slug": "marina-nikiforova",
         "userpic": "https://picsum.photos/248/152?r=0.49922675849227"
       }
@@ -26,7 +26,7 @@
     "topics": ["politics"],
     "authors": [
       {
-        "viewname": "Екатерина Ильина",
+        "name": "Екатерина Ильина",
         "slug": "katy-ilyina",
         "bio": "Писатель, художник",
         "userpic": "https://picsum.photos/248/152?r=0.363454543"
@@ -43,13 +43,13 @@
     "topics": ["culture"],
     "authors": [
       {
-        "viewname": "Константин Константинопольский",
+        "name": "Константин Константинопольский",
         "bio": "Кандидат искусствоведения, преподаватель, драматург",
         "slug": "konstantin-konstantinopolsky",
         "userpic": "https://picsum.photos/248/152?r=0.49653922675849227"
       },
       {
-        "viewname": "Екатерина Ильина",
+        "name": "Екатерина Ильина",
         "slug": "katy-ilyina",
         "bio": "Писатель, художник",
         "userpic": "https://picsum.photos/248/152?r=0.363454543"
@@ -65,7 +65,7 @@
     "topics": ["money"],
     "authors": [
       {
-        "viewname": "Иван Вахрушев",
+        "name": "Иван Вахрушев",
         "slug": "ivan-vahrushev",
         "bio": "",
         "userpic": "https://picsum.photos/248/152?r=0.3634544533543"
@@ -81,7 +81,7 @@
     "topics": ["empiric"],
     "authors": [
       {
-        "viewname": "Александр Бардашев",
+        "name": "Александр Бардашев",
         "slug": "alexandr-berdashev",
         "userpic": "https://picsum.photos/248/152?r=0.4965392267849227"
       }

@@ -35,6 +35,7 @@ const scssOptions = {
   outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
+const shouts = require('./static/shouts.json')
 
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -49,6 +50,18 @@ const config = {
     mdsvex(),
     typescript(),
   ],
+  prerender: {
+      entries: [
+      '/',
+      '/create',
+      '/feed',
+      '/t',
+      '/me',
+      '/forum',
+      '/search',
+      ...Object.keys(shouts)
+    ]
+  },
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   onwarn: (w, cb) =>
     ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),

@@ -24,7 +24,7 @@
       {#each shout.topics as topicslug}
         <div class="article-card__category">
           <a href="/search?t={topicslug}"
-            >{$topics[topicslug] ? $topics[topicslug].value : topicslug}</a
+            >{$topics[topicslug] ? $topics[topicslug].title : topicslug}</a
           >
         </div>
       {/each}
@@ -43,7 +43,7 @@
         {#each shout.authors as a}
           {#if a}
             {#if shout.authors.indexOf(a) > 0},{/if}
-            <a href="/x/{a.slug}">{a.viewname}</a>
+            <a href="/@{a.slug}">{a.name}</a>
           {/if}
         {/each}
       </div>

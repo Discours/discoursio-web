@@ -14,7 +14,7 @@ export const SIGN_IN = gql`
       error
       token
       user {
-        viewname
+        name
         slug
         userpic
       }
@@ -28,7 +28,7 @@ export const SIGN_UP = gql`
       error
       token
       user {
-        viewname
+        name
         slug
         userpic
         bio
@@ -53,7 +53,7 @@ export const GET_ME = gql`
     getCurrentUser {
       error
       user {
-        viewname
+        name
         slug
         bio
         userpic
@@ -93,7 +93,7 @@ export const GET_AUTHOR = gql`
   query {
     getUserBySlug(slug: $slug) {
       slug
-      viewname
+      name
       bio
       roles
       userpic
@@ -102,6 +102,74 @@ export const GET_AUTHOR = gql`
       createdAt
       wasOnlineAt
       ratings
+    }
+  }
+`
+
+export const GET_TOPICS = gql`
+  query {
+    getTopics(community: $community) {
+      slug
+      name
+      desc
+      pic
+    }
+  }
+`
+
+export const GET_COMMUNITIES = gql`
+  query {
+    getCommunities() {
+      slug
+      pic
+      value
+      desc
+      parents
+      children
+      createdAt
+      createdBy
+    }
+  }
+`
+
+export const GET_SHOUTS = gql`
+  query {
+    getShouts(community: $community, topic: $topic, author: $author) {
+      title
+      subtitle
+      layout
+      cover
+      community
+      authors
+      topics
+      replyTo
+      published
+      publishedAt
+      views
+      rating
+      ratings
+      comments
+    }
+  }
+`
+
+export const GET_SHOUTS_BY_RATING = gql`
+  query {
+    getShoutsByRating(community: $community, topic: $topic, author: $author) {
+      title
+      subtitle
+      layout
+      cover
+      community
+      authors
+      topics
+      replyTo
+      published
+      publishedAt
+      views
+      rating
+      ratings
+      comments
     }
   }
 `

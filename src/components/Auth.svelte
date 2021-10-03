@@ -9,7 +9,8 @@
   import { onMount } from 'svelte'
 
   export let mode = 'login'
-  export let code
+  export let code = ''
+  let password2 = ''
   let emailInput
 
   const login = async () => {
@@ -34,8 +35,20 @@
   }
 
   const reset = async () => {
-    console.log('auth: resetting password with code')
+    console.log('auth: confirming reset password code')
     console.log(code)
+    // TODO: implement me
+  }
+
+  const resend = () => {
+    console.log('auth: resending auth code')
+    // TODO: implement me
+  }
+
+  const renew = () => {
+    if(password2 === $auth.password) {
+      console.log('auth: renewing password')
+    }
     // TODO: implement me
   }
 
@@ -49,10 +62,7 @@
     // TODO: implement me
   }
 
-  const resend = () => {
-    console.log('auth: resending auth code')
-    // TODO: implement me
-  }
+  
 
   onMount(() => {
     if(code) {
@@ -84,6 +94,7 @@
   </div>
   <form class="col-sm-6 auth">
     <div class="auth__inner">
+
       <h4>
         {#if mode === 'register'}
           Создать аккаунт
@@ -93,9 +104,11 @@
           Забыли пароль?
         {:else if mode === 'reset'}
           Введите секретный код восстановления пароля
+        {:else if mode === 'password'}
+          Введите новый пароль
         {/if}
-
       </h4>
+
       <div class="auth-subtitle">
         {#if mode === 'forget'}
           Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.
@@ -103,46 +116,55 @@
           Введите код из письма или пройдите по ссылке для подтверждения.
         {/if}
       </div>
-      {#if mode !== 'reset'}
-      <input
-        autocomplete="username"
-        bind:value={$auth.email}
-        bind:this={emailInput}
-        type="text"
-        placeholder="Ваша почта"
-      />
+
+      {#if mode !== 'reset' && mode !== 'password'}
+        <input
+          autocomplete="username"
+          bind:value={$auth.email}
+          bind:this={emailInput}
+          type="text"
+          placeholder="Ваша почта"
+        />
       {/if}
+
       {#if mode === 'register' || mode === 'login'}
-      <input
-        autocomplete="current-password"
-        bind:value={$auth.password}
-        type="password"
-        placeholder="Пароль"
-      />
-      {:else if mode === 'reset'}
-      <input
-        autocomplete="reset-code"
-        bind:value={code}
-        type="text"
-        placeholder="Код восстановления"
-      />
-      <input
-        autocomplete="setup-password"
-        bind:value={$auth.password}
-        type="password"
-        placeholder="Новый пароль"
-      />
+        <input
+          autocomplete="current-password"
+          bind:value={$auth.password}
+          type="password"
+          placeholder="Пароль"
+        />
+        {:else if mode === 'reset'}
+        <input
+          bind:value={code}
+          type="text"
+          placeholder="Код восстановления"
+        />
+        {:else if mode === 'password'}
+        <input
+          bind:value={$auth.password}
+          type="password"
+          placeholder="Новый пароль"
+        />
+        <input
+          bind:value={password2}
+          type="password"
+          placeholder="Подтверждение пароля"
+        />
       {/if}
+      
       <div>
         <button class="button submitbtn" on:click={
           mode === 'register' && register ||
           mode === 'login' && login ||
           mode === 'forget' && forget ||
-          mode === 'reset' && reset}>
+          mode === 'reset' && reset ||
+          mode === 'password' && renew}>
           {mode === 'register' && 'Создать аккаунт' || 
           mode === 'login' && 'Войти' ||
-          mode === 'forget' && 'Восстановить пароль' || 
-          mode === 'reset' && 'Создать новый пароль'}
+          mode === 'forget' && 'Восстановить пароль' ||
+          mode === 'reset' && ' Подтвердить' || 
+          mode === 'password' && 'Создать новый пароль'}
         </button>
       </div>
 
@@ -161,10 +183,6 @@
             Или войдите через соцсети
           {/if}
         </div>
-
-        {#if code}
-        <a href={''} on:click={resend}>Отправить код повторно</a>
-        {/if}
 
         <div class="social-provider">
           <div class="social">
@@ -198,6 +216,10 @@
         <div class:show={mode === 'forget'}>
           <span class="registration-link" on:click={() => (mode = 'login')}
           >Я знаю пароль</span>
+        </div>
+        <div class:show={mode === 'reset'}>
+          <span class="registration-link" on:click={resend}
+          >Отправить код повторно</span>
         </div>
       </div>
 

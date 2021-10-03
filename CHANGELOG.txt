@@ -1,8 +1,17 @@
+[0.0.7]
+[+] nav refactoring /[what] /@[who]
+[+] /reset/[code], /reset/password
+[+] modal auth dialog
+[+] Topic.pic field
+[+] internal svelte prerender
+[+] GET_SHOUTS, GET_SHOUTS_BY_RATING, GET_TOPICS, GET_COMMUNITIES via caching json trick
+[~] User.username -> User.name
+
 [0.0.6]
 [-] organization, org_id
 [+] community entity
 [+] mainpage markup
-[+] topics filter naviation
+[+] topics filter navigation
 [+] monor schema fixes
 [-] gitea.js api
 [-] postcss with plugins

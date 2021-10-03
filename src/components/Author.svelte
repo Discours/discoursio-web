@@ -6,12 +6,12 @@
 
 <div class="author">
   <div class="author__avatar">
-    <img src={author.userpic} alt={author.viewname} />
+    <img src={author.userpic} alt={author.name} />
   </div>
 
   <div class="author__details">
     <div class="author__name text-3xl text-2xl">
-      <a href="/x/{author.slug}">{author.viewname}</a>
+      <a href="/@{author.slug}">{author.name}</a>
     </div>
 
     <div class="author__about">{author.bio}</div>
