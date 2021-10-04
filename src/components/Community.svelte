@@ -1,8 +1,16 @@
 <script lang="ts">
-  export let community
+  import type { Community } from '../graphql/codegen'
+  import { communities } from '../stores/zine'
+
+  export let slug: string
+  let community: Community | Partial<Community>
+
+$: if($communities && !community) community = $communities[slug]
+
 </script>
 
 <div class="community">
+  {#if community}
   <div class="community__avatar">
     <a href={community.slug}>
       <img src={community.pic} alt={community.name} />
@@ -11,7 +19,7 @@
 
   <div class="community__details">
     <div class="community__name">
-      <a href={community.slug}>{@html community.name}</a>
+      <a href={community.slug}>{community.name}</a>
     </div>
 
     <div class="community__about">{@html community.desc}</div>
@@ -20,6 +28,7 @@
       <button class="button button--subscribe">Подписаться</button>
     </div>
   </div>
+  {/if}
 </div>
 
 <style lang="scss">

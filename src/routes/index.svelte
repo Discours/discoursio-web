@@ -2,24 +2,39 @@
   import ShoutCard from '../components/ShoutCard.svelte'
   import Author from '../components/Author.svelte'
   import Community from '../components/Community.svelte'
-  // import Editor from '../components/Editor.svelte'
-  import { authorslist, shoutslist, communitieslist } from '../stores/zine'
+  import { shouts, authors, communities, topics, topicslist, authorslist, shoutslist, communitieslist } from '../stores/zine'
   import DiscoursBanner from '../components/DiscoursBanner.svelte'
   import NavTopics from '../components/NavTopics.svelte'
+  import { onMount } from 'svelte'
 
-  // {#if false && isEditor && editingShout}
-  //  <Editor shout={editingShout} />
-  // {:else}
+  import shoutsMock from '../data/articles.json'
+  import authorsMock from '../data/authors.json'
+  import communitiesMock from '../data/communities.json'
+  import topicsMock from '../data/topics.json'
 
-  //export let topShouts: string[] = [] // TODO: topShouts -> shouts ids
+  let loaded = false
 
-  // $: if ($shouts) topShouts = Object.keys($shouts) // FIXME: with query
+  onMount(() => {
+    console.log('app: root page loading mock data')
+    $shouts = shoutsMock
+    $shoutslist = Object.values($shouts)
+    $authors = authorsMock
+    $authorslist = Object.values($authors)
+    $topics = topicsMock
+    $topicslist = Object.values($topics)
+    $communities = communitiesMock
+    $communitieslist = Object.values($communities)
+    loaded = true
+  })
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 
 <div class="home">
   <NavTopics />
+
+  {#if loaded}
+
   <div class="floor floor--1">
     <div class="wide-container row">
       <div class="col-md-3">
@@ -211,6 +226,9 @@
       {/each}
     </div>
   </div>
+
+  {/if}
+
 </div>
 
 <style lang="scss">

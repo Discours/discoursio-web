@@ -7,15 +7,15 @@ import { fileURLToPath } from 'url'
 
 const cwd = resolve('.')
 const contentPath = resolve(cwd, 'content')
-// const srcPath = resolve(cwd, 'src')
-const staticPath = resolve(cwd, 'static')
+const srcPath = resolve(cwd, 'src')
+// const staticPath = resolve(cwd, 'static')
 const shouts = {}
 
 const handle = async (callback) => {
   // NOTE! File structure convention
   // content/<any-folders>/<article-slug>.md
   walk(contentPath)
-    // creates shouts.json
+    // creates articles.json
     .on('file', async (root, stats, next) => {
       const [fname, ext] = stats.name.split('.')
       const dirname = root
@@ -33,7 +33,7 @@ const handle = async (callback) => {
         let shout = { ...data, body: content, slug }
         shouts[slug] = shout
         fs.writeFileSync(
-          resolve(staticPath, `shouts.json`),
+          resolve(srcPath, `src/data/articles.json`),
           JSON.stringify(shouts, false, 2)
         )
       }
@@ -42,7 +42,6 @@ const handle = async (callback) => {
 
     // creates index.html's
     .on('end', () => {
-      console.log('TODO: include pregenerated shouts.json')
       callback && callback()
     })
 }

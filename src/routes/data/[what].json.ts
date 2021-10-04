@@ -2,13 +2,16 @@
 import { graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
 import { GET_SHOUT } from '../../graphql/queries'
+import { topics } from '../../stores/zine'
 
 const api = getStore(graphql)
+const ttt = getStore(topics)
 
 export async function get({ params, locals }) {
   console.debug(locals)
-  const { shout } = params
-  return await api.request(GET_SHOUT, { variables: { slug: shout } })
+  const { what } = params
+  if (what in ttt) return ttt[what]
+  return await api.request(GET_SHOUT, { variables: { slug: what } })
 }
 
 export async function put(request) {

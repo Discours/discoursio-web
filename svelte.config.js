@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { join } from 'path'
@@ -35,7 +36,10 @@ const scssOptions = {
   outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
-
+const articles = require('./src/data/articles.json')
+const topics = require('./src/data/topics.json')
+const communities = require('./src/data/communities.json')
+const authors = require('./src/data/authors.json')
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -49,6 +53,19 @@ const config = {
     mdsvex(),
     typescript(),
   ],
+  prerender: {
+      entries: [
+      '/',
+      '/create',
+      '/feed',
+      '/forum',
+      '/search',
+      ...Object.keys(articles).reduce((_pv,cv,_ci,_all) => '/' + cv),
+      ...Object.keys(topics).reduce((_pv,cv,_ci,_all) => '/' + cv),
+      ...Object.keys(communities).reduce((_pv,cv,_ci,_all) => '/@' + cv),
+      ...Object.keys(authors).reduce((_pv,cv,_ci,_all) => '/@' + cv),
+    ]
+  },
   compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
   onwarn: (w, cb) =>
     ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),

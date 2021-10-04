@@ -17,7 +17,7 @@
       {@html MD(comment.body)}
     </div>
     <div class="shout-controls">
-      <div class="shout-author">{$authors[comment.author].viewname}</div>
+      <div class="shout-author">{$authors[comment.author].name}</div>
       <div class="shout-rating">{comment.rating}</div>
       {#if canEdit}
         <a class="editlink" href="#edit" on:click={edit}>
