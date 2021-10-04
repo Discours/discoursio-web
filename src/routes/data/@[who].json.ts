@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { graphql } from '../stores/common'
+import { graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
-import { GET_AUTHOR } from '../graphql/queries'
-import { communities } from '../stores/zine'
+import { GET_AUTHOR } from '../../graphql/queries'
+import { communities } from '../../stores/zine'
 
 const api = getStore(graphql)
 const coms = getStore(communities)
