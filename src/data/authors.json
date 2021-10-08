@@ -1,58 +1,175 @@
-[
-  {
-    "name": "Сергей Стрельников",
-    "bio": "Философ, преподаватель ТомГУ",
-    "slug": "sergey-strelnikov",
-    "userpic": "https://picsum.photos/248/152?r=0.3793314952930513"
-  },
-  {
-    "name": "Павел Пепперштейн",
-    "bio": "Писатель, художник",
-    "slug": "pavel-peppershtein",
-    "userpic": "https://picsum.photos/248/152?r=0.9663662595939932"
-  },
-  {
-    "name": "Дмитрий Левчик",
-    "bio": "Доктор исторических наук, политолог, журналист",
-    "slug": "dmitri-levchik",
-    "userpic": "https://picsum.photos/248/152?r=0.29948227694923846"
-  },
-  {
-    "name": "Константин Константинопольский",
-    "bio": "Кандидат искусствоведения, преподаватель, драматург",
-    "slug": "konstantin-konstantinopolsky",
-    "userpic": "https://picsum.photos/248/152?r=0.49653922675849227"
-  },
-  {
-    "name": "Екатерина Ильина",
-    "slug": "katy-ilyina",
-    "bio": "Писатель, художник",
-    "userpic": "https://picsum.photos/248/152?r=0.363454543"
-  },
-  {
-    "name": "Иван Вахрушев",
-    "slug": "ivan-vahrushev",
-    "bio": "",
-    "userpic": "https://picsum.photos/248/152?r=0.3634544533543"
-  },
-  {
-    "name": "Александр Бардашев",
-    "slug": "alexandr-berdashev",
-    "userpic": "https://picsum.photos/248/152?r=0.4965392267849227"
-  },
-  {
-    "name": "Анастасия Лозовая",
-    "slug": "anastasia-lozovaya",
-    "userpic": "https://picsum.photos/248/152?r=0.496539226758227"
-  },
-  {
-    "name": "Марина Никифорова",
-    "slug": "marina-nikiforova",
-    "userpic": "https://picsum.photos/248/152?r=0.49922675849227"
-  },
-  {
-    "name": "Владимир Коркунов",
-    "slug": "vlad-korkunov",
-    "userpic": "https://picsum.photos/248/152?r=0.653922675849227"
-  }
-]
+{
+    "bloodless": {
+        "bio": "\n",
+        "createdAt": "2017-10-17 21:27:49.583000+00:00",
+        "id": 308,
+        "links": [
+            "https://www.facebook.com/roman.bloodless",
+            "https://vk.com/semireflectivit"
+        ],
+        "muted": false,
+        "name": "Роман Бескровный",
+        "old_id": "DanjjG6TJ6YyCyGEA",
+        "rating": 17,
+        "ratings": [],
+        "roles": [],
+        "slug": "bloodless",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/149aa6f0-90da-11e8-a560-8fb4ec62d69b.png",
+        "wasOnlineAt": "2021-07-09 14:48:30.774000+00:00"
+    },
+    "damir": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:17:41.816000+00:00",
+        "id": 11,
+        "links": [],
+        "muted": false,
+        "name": "Дамир Бикчурин",
+        "old_id": "K2Pr7bLJ2xS7Hg5HT",
+        "rating": 36,
+        "ratings": [],
+        "roles": [],
+        "slug": "damir",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/46ff1a60-6745-11eb-bc71-d1f83862ac5c.png",
+        "wasOnlineAt": "2021-07-31 19:05:48.048000+00:00"
+    },
+    "dmitriy-ubyz": {
+        "bio": "\n",
+        "createdAt": "2018-04-16 21:21:51.541000+00:00",
+        "id": 349,
+        "links": [
+            "https://www.facebook.com/dmitriy.nikitin.1",
+            "https://vk.com/art_of_vision",
+            "https://vk.com/ubyz619"
+        ],
+        "muted": false,
+        "name": "Дмитрий Убыз",
+        "old_id": "KEBFK8hKDg7s6Cobz",
+        "rating": 20,
+        "ratings": [],
+        "roles": [],
+        "slug": "dmitriy-ubyz",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/86f89290-f8c3-11ea-bdb8-39366c9dd011.jpg",
+        "wasOnlineAt": "2021-03-31 12:41:20.670000+00:00"
+    },
+    "ilya-dik": {
+        "bio": "\n",
+        "createdAt": "2018-06-26 16:57:20.479000+00:00",
+        "id": 377,
+        "links": [
+            "https://www.facebook.com/profile.php?id=100023292660858",
+            "https://vk.com/tokyored"
+        ],
+        "muted": false,
+        "name": "Илья Дик",
+        "old_id": "h8eq2nP5Efp9DTd27",
+        "rating": 16,
+        "ratings": [],
+        "roles": [],
+        "slug": "ilya-dik",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/7679f2c0-1c35-11eb-a7b0-d9acb7da0d32.jpg",
+        "wasOnlineAt": "2021-04-03 07:35:16.195000+00:00"
+    },
+    "lomgrin": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:19:10.614000+00:00",
+        "id": 23,
+        "links": [],
+        "muted": false,
+        "name": "Григорий Ломизе",
+        "old_id": "wcT3ddgmBYaeHnEKC",
+        "rating": 16,
+        "ratings": [],
+        "roles": [],
+        "slug": "lomgrin",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/09971780-90d9-11e8-a560-8fb4ec62d69b.jpeg",
+        "wasOnlineAt": "2019-07-30 15:30:40.818000+00:00"
+    },
+    "lozanasta": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:18:36.490000+00:00",
+        "id": 22,
+        "links": [],
+        "muted": false,
+        "name": "Анастасия Лозовая",
+        "old_id": "FyPGkAwnrXPiv2PxQ",
+        "rating": 18,
+        "ratings": [],
+        "roles": [],
+        "slug": "lozanasta",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/080cf510-90d9-11e8-a560-8fb4ec62d69b.jpeg",
+        "wasOnlineAt": "2021-05-25 12:28:45.803000+00:00"
+    },
+    "pavelsokolov": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:17:27.501000+00:00",
+        "id": 4,
+        "links": [
+            "https://www.facebook.com/paul.sokoloff.7",
+            "https://vk.com/id181433"
+        ],
+        "muted": false,
+        "name": "Павел Соколов",
+        "old_id": "bFTfxTKbwyvpwTRrm",
+        "rating": 18,
+        "ratings": [],
+        "roles": [],
+        "slug": "pavelsokolov",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/f38d2790-90d8-11e8-a560-8fb4ec62d69b.jpeg",
+        "wasOnlineAt": "2021-04-02 16:10:25.103000+00:00"
+    },
+    "sergey_rd": {
+        "bio": "\n",
+        "createdAt": "2019-07-05 10:57:45.912000+00:00",
+        "id": 470,
+        "links": [
+            "https://www.facebook.com/rd.sergey",
+            "https://vk.com/sergey_rd",
+            "https://twitter.com/sergey_rd",
+            "https://russiandino.ru/"
+        ],
+        "muted": false,
+        "name": "Сергей Дедович",
+        "old_id": "igvHBQMLKdYmPjQjK",
+        "rating": 18,
+        "ratings": [],
+        "roles": [],
+        "slug": "sergey_rd",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/a5aeeac0-607b-11eb-8683-0b7ba725e21f.jpg",
+        "wasOnlineAt": "2020-02-17 09:59:05.983000+00:00"
+    },
+    "v-kramer": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:21:25.065000+00:00",
+        "id": 31,
+        "links": [],
+        "muted": false,
+        "name": "Владислав Крамер",
+        "old_id": "Fw8uTSr7dQKd7m6Mz",
+        "rating": 23,
+        "ratings": [],
+        "roles": [],
+        "slug": "v-kramer",
+        "userpic": "",
+        "wasOnlineAt": "2020-11-12 20:31:18.735000+00:00"
+    },
+    "vorovich": {
+        "bio": "\n",
+        "createdAt": "2016-04-25 10:17:37.003000+00:00",
+        "id": 9,
+        "links": [
+            "facebook.com/vorovich",
+            "https://vk.com/bemad",
+            "https://twitter.com/dobrodob",
+            "https://discours.io/vorovich"
+        ],
+        "muted": false,
+        "name": "Константин Ворович",
+        "old_id": "YdE76Wth3yqymKEu5",
+        "rating": 52,
+        "ratings": [],
+        "roles": [],
+        "slug": "vorovich",
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/f8f8f100-90d8-11e8-a560-8fb4ec62d69b.jpeg",
+        "wasOnlineAt": "2021-07-12 08:03:03.958000+00:00"
+    }
+}

@@ -2,11 +2,20 @@
   import type { User } from '../graphql/codegen'
 
   export let author: User | Partial<User>
+
+  const letters = () => {
+    const names = author.name.split(' ')
+    return names[0][0] + (names.length > 1 ? names[1][0] : '')
+  }
 </script>
 
 <div class="author">
   <div class="author__avatar">
-    <img src={author.userpic} alt={author.name} />
+    {#if author.userpic === ''}
+      <div class="userpic">{letters()}</div>
+    {:else}
+      <img src={author.userpic} alt={author.name} />
+    {/if}
   </div>
 
   <div class="author__details">
@@ -47,6 +56,15 @@
       height: 100%;
       object-fit: cover;
       width: 100%;
+    }
+
+    .userpic {
+      border-radius: 50%;
+      font-size: small;
+      border: 2px solid black;
+      background-color: white;
+      text-align: center;
+      line-height: 32px;
     }
   }
 

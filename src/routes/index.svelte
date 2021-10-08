@@ -7,31 +7,31 @@
   import NavTopics from '../components/NavTopics.svelte'
   import { onMount } from 'svelte'
 
-  import shoutsMock from '../data/articles.json'
-  import authorsMock from '../data/authors.json'
-  import communitiesMock from '../data/communities.json'
-  import topicsMock from '../data/topics.json'
+  import shoutsData from '../data/articles.json'
+  import authorsData from '../data/authors.json'
+  import topicsData from '../data/topics.json'
+  import communitiesData from '../data/communities.json'
 
   let loaded = false
 
-  onMount(() => {
+$: if(!loaded) {
     console.log('app: root page loading mock data')
-    $shouts = shoutsMock
+    $shouts = shoutsData
     $shoutslist = Object.values($shouts)
-    $authors = authorsMock
+    $authors = authorsData
     $authorslist = Object.values($authors)
-    $topics = topicsMock
+    $topics = topicsData
     $topicslist = Object.values($topics)
-    $communities = communitiesMock
+    $communities = communitiesData
     $communitieslist = Object.values($communities)
     loaded = true
-  })
+  }
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 
 <div class="home">
-  <NavTopics />
+  {#if $topicslist.length > 0}<NavTopics data={$topicslist} />{/if}
 
   {#if loaded}
 
@@ -110,7 +110,7 @@
       <div class="col-md-4">
         <h4>Авторы месяца</h4>
 
-        {#each $authorslist as author}
+        {#each $authorslist.slice(6) as author}
           <Author {author} />
         {/each}
 
