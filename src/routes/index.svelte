@@ -58,13 +58,13 @@ $: if(!loaded) {
   <div class="floor floor--2">
     <div class="wide-container row">
       <div class="col-md-6">
-        {#each $shoutslist.slice(0, 1) as article}
+        {#each $shoutslist.slice(5, 6) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
       <div class="col-md-6">
         <h4>Самое читаемое</h4>
-        {#each $shoutslist.slice(1, 4) as article}
+        {#each $shoutslist.slice(6, 10) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
@@ -73,7 +73,7 @@ $: if(!loaded) {
 
   <div class="floor floor--3">
     <div class="wide-container row">
-      {#each $shoutslist.slice(2, 5) as article}
+      {#each $shoutslist.slice(10, 13) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
@@ -84,7 +84,7 @@ $: if(!loaded) {
   <div class="floor floor--important">
     <div class="wide-container row">
       <h2 class="col-12"><span>Важное</span></h2>
-      {#each $shoutslist.slice(0, 3) as article}
+      {#each $shoutslist.slice(13, 16) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
@@ -94,7 +94,7 @@ $: if(!loaded) {
 
   <div class="floor floor--5">
     <div class="wide-container row">
-      {#each $shoutslist.slice(2, 5) as article}
+      {#each $shoutslist.slice(16, 18) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
@@ -105,7 +105,7 @@ $: if(!loaded) {
   <div class="floor floor--6">
     <div class="wide-container row">
       <div class="col-md-8">
-        <ShoutCard shout={$shoutslist[0]} />
+        <ShoutCard shout={$shoutslist[60]} />
       </div>
       <div class="col-md-4">
         <h4>Авторы месяца</h4>
@@ -122,7 +122,7 @@ $: if(!loaded) {
   <div class="floor floor--7">
     <div class="wide-container row">
       <h2 class="col-12">Коротко</h2>
-      {#each $shoutslist.slice(0, 4) as article}
+      {#each $shoutslist.slice(10, 14) as article}
         <div class="col-md-6 col-lg-3">
           <ShoutCard shout={article} />
         </div>
@@ -133,7 +133,7 @@ $: if(!loaded) {
   <div class="floor floor--important">
     <div class="wide-container row">
       <h2 class="col-12"><span>Избранное</span></h2>
-      {#each $shoutslist.slice(0, 4) as article}
+      {#each $shoutslist.slice(30, 34) as article}
         <div class="col-md-3">
           <ShoutCard shout={article} />
         </div>
@@ -150,14 +150,14 @@ $: if(!loaded) {
         {/each}
       </div>
       <div class="col-md-8">
-        <ShoutCard shout={$shoutslist[2]} />
+        <ShoutCard shout={$shoutslist[28]} />
       </div>
     </div>
   </div>
 
   <div class="floor floor--10">
     <div class="wide-container row">
-      {#each $shoutslist.slice(0, 3) as article}
+      {#each $shoutslist.slice(20, 23) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
@@ -168,11 +168,11 @@ $: if(!loaded) {
   <div class="floor floor--2">
     <div class="wide-container row">
       <div class="col-md-6">
-        <ShoutCard shout={$shoutslist[4]} />
+        <ShoutCard shout={$shoutslist[47]} />
       </div>
       <div class="col-md-6">
         <h4>Самое обсуждаемое</h4>
-        {#each $shoutslist.slice(1, 4) as article}
+        {#each $shoutslist.slice(41, 44) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
@@ -182,7 +182,7 @@ $: if(!loaded) {
   <div class="floor floor--teaser">
     <div class="wide-container row">
       <div class="col-md-12">
-        <ShoutCard shout={$shoutslist[0]} />
+        <ShoutCard shout={$shoutslist[70]} />
       </div>
     </div>
   </div>
@@ -190,10 +190,10 @@ $: if(!loaded) {
   <div class="floor floor--11">
     <div class="wide-container row">
       <div class="col-md-4">
-        <ShoutCard shout={$shoutslist[1]} />
+        <ShoutCard shout={$shoutslist[11]} />
       </div>
       <div class="col-md-8">
-        <ShoutCard shout={$shoutslist[2]} />
+        <ShoutCard shout={$shoutslist[23]} />
       </div>
     </div>
   </div>
@@ -202,15 +202,15 @@ $: if(!loaded) {
     <div class="wide-container row">
       <div class="col-md-4">
         <h4>Философия</h4>
-        {#each $shoutslist.slice(0, 3) as article}
+        {#each $shoutslist.slice(50, 53) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
       <div class="col-md-4">
-        <ShoutCard shout={$shoutslist[3]} />
+        <ShoutCard shout={$shoutslist[33]} />
       </div>
       <div class="col-md-4">
-        <ShoutCard shout={$shoutslist[4]} />
+        <ShoutCard shout={$shoutslist[44]} />
       </div>
     </div>
   </div>
@@ -219,7 +219,7 @@ $: if(!loaded) {
 
   <div class="floor floor--10">
     <div class="wide-container row">
-      {#each $shoutslist.slice(2, 5) as article}
+      {#each $shoutslist.slice(62, 65) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
