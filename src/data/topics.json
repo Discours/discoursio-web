@@ -143,13 +143,13 @@
         "slug": "editorial4",
         "title": "редактируем"
     },
-    "electronicmusic": {
+    "electronics": {
         "children": [],
         "createdAt": "2016-04-25 10:21:43.723000+00:00",
         "createdBy": "0",
         "old_id": "HK4tqXuQDqMvY6dhs",
         "parents": [],
-        "slug": "electronicmusic",
+        "slug": "electronics",
         "title": "электроника"
     },
     "empiric": {

@@ -2,7 +2,7 @@
     "bloodless": {
         "bio": "\n",
         "createdAt": "2017-10-17 21:27:49.583000+00:00",
-        "id": 308,
+        "id": 307,
         "links": [
             "https://www.facebook.com/roman.bloodless",
             "https://vk.com/semireflectivit"
@@ -15,7 +15,7 @@
         "roles": [],
         "slug": "bloodless",
         "userpic": "https://assets.discours.io/unsafe/100x/production/image/149aa6f0-90da-11e8-a560-8fb4ec62d69b.png",
-        "wasOnlineAt": "2021-07-09 14:48:30.774000+00:00"
+        "wasOnlineAt": "2021-10-04 19:28:19.499000+00:00"
     },
     "damir": {
         "bio": "\n",
@@ -25,17 +25,17 @@
         "muted": false,
         "name": "Дамир Бикчурин",
         "old_id": "K2Pr7bLJ2xS7Hg5HT",
-        "rating": 36,
+        "rating": 37,
         "ratings": [],
         "roles": [],
         "slug": "damir",
         "userpic": "https://assets.discours.io/unsafe/100x/production/image/46ff1a60-6745-11eb-bc71-d1f83862ac5c.png",
-        "wasOnlineAt": "2021-07-31 19:05:48.048000+00:00"
+        "wasOnlineAt": "2021-10-02 11:03:31.530000+00:00"
     },
     "dmitriy-ubyz": {
         "bio": "\n",
         "createdAt": "2018-04-16 21:21:51.541000+00:00",
-        "id": 349,
+        "id": 348,
         "links": [
             "https://www.facebook.com/dmitriy.nikitin.1",
             "https://vk.com/art_of_vision",
@@ -44,7 +44,7 @@
         "muted": false,
         "name": "Дмитрий Убыз",
         "old_id": "KEBFK8hKDg7s6Cobz",
-        "rating": 20,
+        "rating": 22,
         "ratings": [],
         "roles": [],
         "slug": "dmitriy-ubyz",
@@ -54,7 +54,7 @@
     "ilya-dik": {
         "bio": "\n",
         "createdAt": "2018-06-26 16:57:20.479000+00:00",
-        "id": 377,
+        "id": 376,
         "links": [
             "https://www.facebook.com/profile.php?id=100023292660858",
             "https://vk.com/tokyored"
@@ -92,7 +92,7 @@
         "muted": false,
         "name": "Анастасия Лозовая",
         "old_id": "FyPGkAwnrXPiv2PxQ",
-        "rating": 18,
+        "rating": 20,
         "ratings": [],
         "roles": [],
         "slug": "lozanasta",
@@ -115,15 +115,15 @@
         "roles": [],
         "slug": "pavelsokolov",
         "userpic": "https://assets.discours.io/unsafe/100x/production/image/f38d2790-90d8-11e8-a560-8fb4ec62d69b.jpeg",
-        "wasOnlineAt": "2021-04-02 16:10:25.103000+00:00"
+        "wasOnlineAt": "2021-08-18 14:57:23.381000+00:00"
     },
     "sergey_rd": {
         "bio": "\n",
         "createdAt": "2019-07-05 10:57:45.912000+00:00",
-        "id": 470,
+        "id": 469,
         "links": [
             "https://www.facebook.com/rd.sergey",
-            "https://vk.com/sergey_rd",
+            "https://vk.com/deadowitch",
             "https://twitter.com/sergey_rd",
             "https://russiandino.ru/"
         ],
@@ -134,8 +134,8 @@
         "ratings": [],
         "roles": [],
         "slug": "sergey_rd",
-        "userpic": "https://assets.discours.io/unsafe/100x/production/image/a5aeeac0-607b-11eb-8683-0b7ba725e21f.jpg",
-        "wasOnlineAt": "2020-02-17 09:59:05.983000+00:00"
+        "userpic": "https://assets.discours.io/unsafe/100x/production/image/367306f0-fccf-11eb-a9c8-e5f5f28765da.jpeg",
+        "wasOnlineAt": "2021-09-28 15:50:06.620000+00:00"
     },
     "v-kramer": {
         "bio": "\n",
@@ -170,6 +170,6 @@
         "roles": [],
         "slug": "vorovich",
         "userpic": "https://assets.discours.io/unsafe/100x/production/image/f8f8f100-90d8-11e8-a560-8fb4ec62d69b.jpeg",
-        "wasOnlineAt": "2021-07-12 08:03:03.958000+00:00"
+        "wasOnlineAt": "2021-09-22 17:20:42.081000+00:00"
     }
 }
