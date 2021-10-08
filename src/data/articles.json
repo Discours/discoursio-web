@@ -3,7 +3,7 @@
         "authors": [
             {
                 "name": "Кирилл Медведев",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/173fa4b0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "biovital"
             }
         ],
@@ -17,7 +17,9 @@
         "ratings": [],
         "slug": "arkadiy-kots-kto-strelyaet-v-rabochih",
         "title": "Аркадий Коц — Кто стреляет в рабочих",
-        "topics": [],
+        "topics": [
+            "clips"
+        ],
         "updatedAt": "2021-07-31 19:29:55.584000+00:00",
         "views": 6019
     },
@@ -40,7 +42,9 @@
         "ratings": [],
         "slug": "budet-presmykatsya",
         "title": "Будет пресмыкаться",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2020-12-15 15:29:52.283000+00:00",
         "views": 22
     },
@@ -48,7 +52,7 @@
         "authors": [
             {
                 "name": "Светлана Зимина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/febfd2c0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "sveta-zimina"
             }
         ],
@@ -63,7 +67,9 @@
         "ratings": [],
         "slug": "bulling-s-chego-nachinaetsya-detstvo",
         "title": "Буллинг. С чего начинается детство",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 01:10:45.812000+00:00",
         "views": 5175
     },
@@ -86,7 +92,9 @@
         "ratings": [],
         "slug": "byurokraticheskiy-bunt-obrascheniya-grazhdan-v-organy-vlasti",
         "title": "Бюрократический бунт. Обращения граждан в органы власти",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-30 10:16:30.793000+00:00",
         "views": 3932
     },
@@ -109,7 +117,9 @@
         "ratings": [],
         "slug": "byurokraticheskiy-bunt-zhaloby-v-prokuraturu",
         "title": "Бюрократический бунт. Жалобы в прокуратуру",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-28 23:52:42.722000+00:00",
         "views": 3636
     },
@@ -117,7 +127,7 @@
         "authors": [
             {
                 "name": "Богдана Зизевская",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/180abce0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "bogdana-sachko"
             }
         ],
@@ -132,7 +142,9 @@
         "ratings": [],
         "slug": "ch-rno-beloe",
         "title": "Чёрно-белое",
-        "topics": [],
+        "topics": [
+            "photography"
+        ],
         "updatedAt": "2019-06-20 13:41:00.371000+00:00",
         "views": 96
     },
@@ -140,7 +152,7 @@
         "authors": [
             {
                 "name": "Виктория Гендлина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f47c1b70-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "gendlinavika"
             }
         ],
@@ -155,7 +167,9 @@
         "ratings": [],
         "slug": "chernym-po-belomu",
         "title": "Черным по белому",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-30 04:13:23.816000+00:00",
         "views": 5219
     },
@@ -163,7 +177,7 @@
         "authors": [
             {
                 "name": "Владислава Чубарь",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/2c4e1da0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "vlada"
             }
         ],
@@ -178,7 +192,9 @@
         "ratings": [],
         "slug": "da-zdravstvuyut-bratya-koen",
         "title": "Да здравствуют братья Коэн!",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 23:18:05.505000+00:00",
         "views": 2963
     },
@@ -186,7 +202,7 @@
         "authors": [
             {
                 "name": "Александра Свиридова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f82c7940-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexa-svirid"
             }
         ],
@@ -201,7 +217,9 @@
         "ratings": [],
         "slug": "diagnoz-nazyvaet-sebya-synom-esenina",
         "title": "Диагноз: «называет себя сыном Есенина»",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-30 18:14:03.748000+00:00",
         "views": 5439
     },
@@ -223,7 +241,9 @@
         "ratings": [],
         "slug": "dobryy-den-grigoriy",
         "title": "Добрый день, Григорий",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2018-09-19 09:33:22.852000+00:00",
         "views": 12
     },
@@ -231,7 +251,7 @@
         "authors": [
             {
                 "name": "Артем Лапин",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/2b3fe1f0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "not2do"
             }
         ],
@@ -246,7 +266,9 @@
         "ratings": [],
         "slug": "dramaturgiya-i-tehnologiya-v-sovremennom-obrazovanii-intervyu-s-maksimom-bulanovym-iz-mesto",
         "title": "Драматургия и технология в современном образовании. Интервью с Максимом Булановым из МЕСТО:",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-14 17:23:42.190000+00:00",
         "views": 466
     },
@@ -254,7 +276,7 @@
         "authors": [
             {
                 "name": "Павел Чепыжов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/0aaca630-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "lobzz"
             }
         ],
@@ -269,7 +291,9 @@
         "ratings": [],
         "slug": "dzhayls-pod-vologdoy-istoriya-pervoy-angliyskoy-knigi-o-rossii",
         "title": "Джайлс под Вологдой: история первой английской книги о России",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-25 11:34:32.202000+00:00",
         "views": 4615
     },
@@ -277,7 +301,7 @@
         "authors": [
             {
                 "name": "Андрей Кунарев",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/18f4f5d0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "angy7"
             }
         ],
@@ -292,7 +316,9 @@
         "ratings": [],
         "slug": "esli-angloyazychnyy-chitatel-pochuvstvuet-pushkina-budet-luchshe-i-emu-i-miru",
         "title": "«Если англоязычный читатель почувствует Пушкина, будет лучше и ему, и миру»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 20:18:13.644000+00:00",
         "views": 7873
     },
@@ -300,7 +326,7 @@
         "authors": [
             {
                 "name": "Анатолий Вайнштейн",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/1ed12590-b630-11ea-94d3-6f05fa43e636.jpg",
                 "slug": "vanatol"
             }
         ],
@@ -315,7 +341,9 @@
         "ratings": [],
         "slug": "esli-muzyka-prava-ili-zalozhniki-progressa",
         "title": "Если музыка права, или Заложники прогресса",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-27 19:16:51.831000+00:00",
         "views": 3570
     },
@@ -323,7 +351,7 @@
         "authors": [
             {
                 "name": "Ян Выговский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/95c62db0-21bd-11ea-81b2-f3a8ea014b79.jpg",
                 "slug": "v-janis"
             }
         ],
@@ -338,7 +366,9 @@
         "ratings": [],
         "slug": "gertsog-moskovskiy-kak-otets-gorodskoy-identichnosti-stolitsy",
         "title": "«Герцог Московский» как отец городской идентичности столицы",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-30 09:53:06.794000+00:00",
         "views": 3450
     },
@@ -346,7 +376,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -361,7 +391,9 @@
         "ratings": [],
         "slug": "glavnoe-sohranit-arhivy",
         "title": "Главное – сохранить архивы!",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 02:32:26.791000+00:00",
         "views": 4818
     },
@@ -383,7 +415,9 @@
         "ratings": [],
         "slug": "glaza-tsvety",
         "title": "Глаза - цветы",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2016-09-28 22:07:25.370000+00:00",
         "views": 13
     },
@@ -405,7 +439,9 @@
         "ratings": [],
         "slug": "huli-o-hurenito-18-h-gde-h-ne-menshe-diploma-mgu",
         "title": "Хули’ о Хуренито! [18+ Х (где Х, не меньше диплома МГУ)]",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-06-29 22:16:04.859000+00:00",
         "views": 67
     },
@@ -413,7 +449,7 @@
         "authors": [
             {
                 "name": "ВИА Думчино",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/299e4720-909f-11ea-aabd-b5c185c6e803.jpg",
                 "slug": "r00"
             }
         ],
@@ -427,7 +463,9 @@
         "ratings": [],
         "slug": "i-2",
         "title": "И",
-        "topics": [],
+        "topics": [
+            "rock"
+        ],
         "updatedAt": "2021-07-29 17:01:53.110000+00:00",
         "views": 3106
     },
@@ -435,7 +473,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -450,7 +488,9 @@
         "ratings": [],
         "slug": "igry-s-klio-bez-pravil",
         "title": "Игры с Клио. Без правил",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-28 19:48:34.363000+00:00",
         "views": 3272
     },
@@ -458,7 +498,7 @@
         "authors": [
             {
                 "name": "Михаил Кедреновский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/14de3510-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "kedrenovsky"
             }
         ],
@@ -472,7 +512,9 @@
         "ratings": [],
         "slug": "izdelie-videopoeziya",
         "title": "Изделие (видеопоэзия)",
-        "topics": [],
+        "topics": [
+            "art"
+        ],
         "updatedAt": "2021-07-31 20:36:56.134000+00:00",
         "views": 155
     },
@@ -480,7 +522,7 @@
         "authors": [
             {
                 "name": "Максим Бухтеев",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/e8167910-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "maksim-bukhteev"
             }
         ],
@@ -494,7 +536,9 @@
         "ratings": [],
         "slug": "kak-gollivud-s-russkogo-kino-primer-bral",
         "title": "Как Голливуд с русского кино пример брал",
-        "topics": [],
+        "topics": [
+            "documentary"
+        ],
         "updatedAt": "2021-08-01 02:24:12.139000+00:00",
         "views": 5956
     },
@@ -502,7 +546,7 @@
         "authors": [
             {
                 "name": "Анна-Мария Апостолова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/039a31a0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "apostolovaam"
             }
         ],
@@ -517,7 +561,9 @@
         "ratings": [],
         "slug": "karakatitsa",
         "title": "Каракатица",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-28 22:50:10.635000+00:00",
         "views": 3305
     },
@@ -540,7 +586,9 @@
         "ratings": [],
         "slug": "karavan",
         "title": "Караван",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-08 04:38:14.370000+00:00",
         "views": 60
     },
@@ -563,7 +611,9 @@
         "ratings": [],
         "slug": "komu-nuzhna-umnaya-zhenschina",
         "title": "\"Кому нужна умная женщина\"",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2018-11-19 11:05:58.519000+00:00",
         "views": 59
     },
@@ -571,7 +621,7 @@
         "authors": [
             {
                 "name": "Александра Свиридова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f82c7940-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexa-svirid"
             }
         ],
@@ -586,7 +636,9 @@
         "ratings": [],
         "slug": "l-ha-ty-moy-l-ha-ili-mikrob-v-strane-liliputov",
         "title": "«Лёха ты мой, Лёха…», или Микроб в стране лилипутов",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-27 14:49:26.053000+00:00",
         "views": 2379
     },
@@ -594,7 +646,7 @@
         "authors": [
             {
                 "name": "Ян Выговский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/95c62db0-21bd-11ea-81b2-f3a8ea014b79.jpg",
                 "slug": "v-janis"
             }
         ],
@@ -609,7 +661,9 @@
         "ratings": [],
         "slug": "leonid-fedorov-ya-ne-vstrechal-lyudey-nastolko-rasslablennyh-i-svobodnyh",
         "title": "Леонид Федоров: «Я не встречал людей настолько расслабленных и свободных»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-30 03:05:54.520000+00:00",
         "views": 7519
     },
@@ -617,7 +671,7 @@
         "authors": [
             {
                 "name": "Галина Малашкова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/26ef2570-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "gm"
             }
         ],
@@ -632,7 +686,9 @@
         "ratings": [],
         "slug": "lyubov-izmenivshaya-hod-istorii",
         "title": "Любовь, изменившая ход истории",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 16:11:55.960000+00:00",
         "views": 10255
     },
@@ -655,7 +711,9 @@
         "ratings": [],
         "slug": "malenkiy-rasskaz-pro-obychnuyu-nelepost-i-drugie-neschastya",
         "title": "Маленький рассказ про обычную нелепость и другие несчастья.",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2019-08-02 12:01:32.352000+00:00",
         "views": 32
     },
@@ -663,7 +721,7 @@
         "authors": [
             {
                 "name": "Инна Сергеевна",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/1a8559d0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "sneginka87-87"
             }
         ],
@@ -678,7 +736,9 @@
         "ratings": [],
         "slug": "mashina-smerti",
         "title": "Машина смерти",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-28 20:47:01.519000+00:00",
         "views": 3466
     },
@@ -686,7 +746,7 @@
         "authors": [
             {
                 "name": "Майя Кучерская",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/2d387da0-90d9-11e8-a560-8fb4ec62d69b.png",
                 "slug": "mayakucherskaya"
             }
         ],
@@ -700,7 +760,9 @@
         "ratings": [],
         "slug": "masterskaya-mayi-kucherskoy-rasskazy",
         "title": "Мастерская Майи Кучерской. Рассказы",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2021-07-31 08:16:15.104000+00:00",
         "views": 5760
     },
@@ -708,7 +770,7 @@
         "authors": [
             {
                 "name": "Дискурс",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/d96fe690-7417-11e9-a60d-018f69160ca3.jpg",
                 "slug": "discours"
             }
         ],
@@ -723,7 +785,9 @@
         "ratings": [],
         "slug": "mishel-uelbek-seroe-prostranstvo",
         "title": "Мишель Уэльбек: «Серое пространство»",
-        "topics": [],
+        "topics": [
+            "chapters"
+        ],
         "updatedAt": "2021-07-27 17:55:20.144000+00:00",
         "views": 2985
     },
@@ -731,7 +795,7 @@
         "authors": [
             {
                 "name": "Павел Чепыжов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/0aaca630-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "lobzz"
             }
         ],
@@ -746,7 +810,9 @@
         "ratings": [],
         "slug": "moskovskaya-razvyazka-florentiyskoy-tragedii-kak-poslednyaya-pesa-uaylda-vyshla-vpervye-na-russkom",
         "title": "Московская развязка «Флорентийской трагедии»: как последняя пьеса Уайльда вышла впервые на русском",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-27 21:41:02.525000+00:00",
         "views": 4735
     },
@@ -754,7 +820,7 @@
         "authors": [
             {
                 "name": "Анатолий Яцков",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/ecaffe60-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "anatolii-yackov"
             }
         ],
@@ -768,7 +834,9 @@
         "ratings": [],
         "slug": "mulyarov-quin-hlop-hlop-hlop-chetyre-butylochki-sidra-po-butylochke-na-kazhdogo",
         "title": "Mulyarov quin — Хлоп Хлоп хлоп четыре бутылочки сидра по бутылочке на каждого",
-        "topics": [],
+        "topics": [
+            "clips"
+        ],
         "updatedAt": "2021-07-30 02:21:27.457000+00:00",
         "views": 4875
     },
@@ -776,7 +844,7 @@
         "authors": [
             {
                 "name": "Кирилл Медведев",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/173fa4b0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "biovital"
             }
         ],
@@ -790,7 +858,9 @@
         "ratings": [],
         "slug": "muzyka-dlya-rabochego-klassa",
         "title": "Музыка для рабочего класса",
-        "topics": [],
+        "topics": [
+            "rock"
+        ],
         "updatedAt": "2021-07-27 21:59:49.946000+00:00",
         "views": 3543
     },
@@ -798,7 +868,7 @@
         "authors": [
             {
                 "name": "Елена Фролова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/23747da0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "elenafrolova"
             }
         ],
@@ -813,7 +883,9 @@
         "ratings": [],
         "slug": "muzyka-i-perevod-kak-puti-poezii-k-serdtsu-cheloveka",
         "title": "Музыка и перевод как пути поэзии к сердцу человека",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-28 08:03:29.534000+00:00",
         "views": 3884
     },
@@ -821,7 +893,7 @@
         "authors": [
             {
                 "name": "Мария Бессмертная",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/04587890-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "besmasha"
             }
         ],
@@ -836,7 +908,9 @@
         "ratings": [],
         "slug": "my-vernulis-k-istokam-i-snyali-garazh-intervyu-s-solistom-on-the-go-yuroy-makarychevym",
         "title": "«Мы вернулись к истокам и сняли гараж». Интервью с солистом On-The-Go Юрой Макарычевым",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-29 17:47:06.945000+00:00",
         "views": 4251
     },
@@ -844,7 +918,7 @@
         "authors": [
             {
                 "name": "Виктория Гендлина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f47c1b70-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "gendlinavika"
             }
         ],
@@ -859,7 +933,9 @@
         "ratings": [],
         "slug": "my-vsem-svoi-i-vsem-chuzhie-intervyu-s-andreem-rodionovym-i-ekaterinoy-troepolskoy",
         "title": "«Мы всем свои и всем чужие»: интервью с\r\nАндреем Родионовым и Екатериной Троепольской",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-27 21:58:24.481000+00:00",
         "views": 3892
     },
@@ -882,7 +958,9 @@
         "ratings": [],
         "slug": "namo-russkiy-nu-hop",
         "title": "NAMO - русский Nu-Hop",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2018-07-26 15:10:54.282000+00:00",
         "views": 39
     },
@@ -890,7 +968,7 @@
         "authors": [
             {
                 "name": "Илья Буренко",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/b2951da0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "ilya-burenko"
             }
         ],
@@ -904,7 +982,9 @@
         "ratings": [],
         "slug": "napryamki",
         "title": "Напрямки",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2021-07-25 13:57:02.312000+00:00",
         "views": 2802
     },
@@ -912,7 +992,7 @@
         "authors": [
             {
                 "name": "Анна Правдюк",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/19c03510-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "anna-pravdyuk"
             }
         ],
@@ -927,7 +1007,9 @@
         "ratings": [],
         "slug": "nash-graficheskiy-roman-vyros-iz-russkoy-vizualnoy-kultury-nachinaya-s-ikony",
         "title": "«Наш графический роман вырос из русской визуальной культуры, начиная с иконы»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-30 11:17:19.650000+00:00",
         "views": 4898
     },
@@ -935,7 +1017,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -950,7 +1032,9 @@
         "ratings": [],
         "slug": "nastoyaschiy-plach-yaroslavny",
         "title": "Настоящий плач Ярославны",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 16:00:29.751000+00:00",
         "views": 11506
     },
@@ -958,7 +1042,7 @@
         "authors": [
             {
                 "name": "Мария Волохонская",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/25688570-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "tataracabra"
             }
         ],
@@ -973,7 +1057,9 @@
         "ratings": [],
         "slug": "natyurmorty",
         "title": "Натюрморты",
-        "topics": [],
+        "topics": [
+            "drawing"
+        ],
         "updatedAt": "2021-07-19 03:56:04.531000+00:00",
         "views": 2797
     },
@@ -981,7 +1067,7 @@
         "authors": [
             {
                 "name": "Александр Данилин",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/0f936120-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "agdanilin"
             }
         ],
@@ -996,7 +1082,9 @@
         "ratings": [],
         "slug": "ne-hochu-ne-mogu-ne-budu-o-sotsialnoy-apatii-nezhelanii-ponyat-drugogo-i-bolezni-kotoraya-zakryvaet-problemy",
         "title": "«Не хочу, не могу, не буду!» О социальной апатии, нежелании понять другого и болезни, которая закрывает проблемы",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-29 23:34:02.032000+00:00",
         "views": 3641
     },
@@ -1019,7 +1107,9 @@
         "ratings": [],
         "slug": "ne-znayu",
         "title": "Не знаю",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2021-03-24 22:24:20.709000+00:00",
         "views": 19
     },
@@ -1042,7 +1132,9 @@
         "ratings": [],
         "slug": "nichego-horoshego",
         "title": "Ничего хорошего",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2018-07-26 15:11:31.061000+00:00",
         "views": 14
     },
@@ -1050,7 +1142,7 @@
         "authors": [
             {
                 "name": "Павел Соколов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f38d2790-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pavelsokolov"
             }
         ],
@@ -1065,7 +1157,9 @@
         "ratings": [],
         "slug": "nippontsy",
         "title": "Ниппонцы",
-        "topics": [],
+        "topics": [
+            "drama"
+        ],
         "updatedAt": "2021-07-31 09:10:49.796000+00:00",
         "views": 3780
     },
@@ -1073,7 +1167,7 @@
         "authors": [
             {
                 "name": "Мария Бессмертная",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/04587890-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "besmasha"
             }
         ],
@@ -1088,7 +1182,9 @@
         "ratings": [],
         "slug": "nv-unichtozhenie-yazyka",
         "title": "NV: «Уничтожение языка»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-23 14:22:14.261000+00:00",
         "views": 3412
     },
@@ -1096,7 +1192,7 @@
         "authors": [
             {
                 "name": "Екатерина Новоселова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/2625baf0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "esnovoselova"
             }
         ],
@@ -1111,7 +1207,9 @@
         "ratings": [],
         "slug": "o-misteriyah-zveryah-i-geroyah-arhetipy-v-sovremennoy-politike",
         "title": "О мистериях, зверях и героях: архетипы в современной политике",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 00:19:41.507000+00:00",
         "views": 6219
     },
@@ -1119,7 +1217,7 @@
         "authors": [
             {
                 "name": "Павел Соколов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f38d2790-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pavelsokolov"
             }
         ],
@@ -1134,7 +1232,9 @@
         "ratings": [],
         "slug": "o-yaponskoy-vere-polozkovoy-i-ne-tolko",
         "title": "О «японской Вере Полозковой», и не только",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 14:43:14.114000+00:00",
         "views": 3543
     },
@@ -1142,7 +1242,7 @@
         "authors": [
             {
                 "name": "Григорий Дьячков",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/13e72ae0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "dyachkovgregory83"
             }
         ],
@@ -1157,7 +1257,9 @@
         "ratings": [],
         "slug": "obrazovanie-v-epohu-dinastiy",
         "title": "Образование в эпоху династий",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 00:41:43.944000+00:00",
         "views": 3864
     },
@@ -1179,7 +1281,9 @@
         "ratings": [],
         "slug": "odnim-dn-m",
         "title": "Одним днём",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2018-10-12 08:35:52.799000+00:00",
         "views": 29
     },
@@ -1187,7 +1291,7 @@
         "authors": [
             {
                 "name": "Варвара Болховитинова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/06711f60-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "vbolkh"
             }
         ],
@@ -1202,7 +1306,9 @@
         "ratings": [],
         "slug": "odnomu-pridumyvat-kak-to-uyutnee-intervyu-sergeya-sirotkina",
         "title": "«Одному придумывать как-то уютнее». Интервью Сергея Сироткина",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 12:12:01.860000+00:00",
         "views": 3162
     },
@@ -1225,7 +1331,9 @@
         "ratings": [],
         "slug": "perenaselenie-v-megapolise",
         "title": "Перенаселение в мегаполисе",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-28 03:13:52.724000+00:00",
         "views": 500
     },
@@ -1248,7 +1356,9 @@
         "ratings": [],
         "slug": "perezagruzka",
         "title": "Перезагрузка",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2018-07-26 15:13:59.887000+00:00",
         "views": 11
     },
@@ -1256,7 +1366,7 @@
         "authors": [
             {
                 "name": "Константин Сперанский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/0d8b3510-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "ksperansky"
             }
         ],
@@ -1270,7 +1380,9 @@
         "ratings": [],
         "slug": "plyazh",
         "title": "пляж",
-        "topics": [],
+        "topics": [
+            "hip-hop"
+        ],
         "updatedAt": "2021-07-31 20:43:05.723000+00:00",
         "views": 3031
     },
@@ -1278,7 +1390,7 @@
         "authors": [
             {
                 "name": "Павел Паштет Белянский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fff14de0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pashtet"
             }
         ],
@@ -1293,7 +1405,9 @@
         "ratings": [],
         "slug": "podvig",
         "title": "Подвиг",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-26 01:38:49.177000+00:00",
         "views": 1977
     },
@@ -1315,7 +1429,9 @@
         "ratings": [],
         "slug": "poeziya-i-voda",
         "title": "Поэзия и вода",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-06-15 19:32:45.903000+00:00",
         "views": 45
     },
@@ -1323,7 +1439,7 @@
         "authors": [
             {
                 "name": "Александра Свиридова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f82c7940-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexa-svirid"
             }
         ],
@@ -1338,7 +1454,9 @@
         "ratings": [],
         "slug": "posledniy-potseluy",
         "title": "Последний поцелуй",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 15:37:35.880000+00:00",
         "views": 5636
     },
@@ -1361,7 +1479,9 @@
         "ratings": [],
         "slug": "postmodernizm-stadiya-razlozheniya-butyrka-gnostitsizm-i-mihail-bulgakov",
         "title": "Постмодернизм. Стадия разложения. Бутырка, гностицизм и Михаил Булгаков",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-30 16:09:25.189000+00:00",
         "views": 5124
     },
@@ -1369,7 +1489,7 @@
         "authors": [
             {
                 "name": "Егор Осипов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/28857ce0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "egorosipov"
             }
         ],
@@ -1384,7 +1504,9 @@
         "ratings": [],
         "slug": "potom-budet-seychas",
         "title": "Потом будет сейчас",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-30 08:32:43.556000+00:00",
         "views": 3605
     },
@@ -1407,7 +1529,9 @@
         "ratings": [],
         "slug": "proekt-metamodern-k-preodoleniyu-spektaklya",
         "title": "Проект метамодерн: к преодолению спектакля",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 01:16:24.567000+00:00",
         "views": 351
     },
@@ -1415,7 +1539,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -1430,7 +1554,9 @@
         "ratings": [],
         "slug": "proklyataya-kalka",
         "title": "Проклятая Калка",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-30 08:22:26.596000+00:00",
         "views": 6406
     },
@@ -1438,7 +1564,7 @@
         "authors": [
             {
                 "name": "Геннадий Миропольский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/21b408f0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "miropolskij"
             }
         ],
@@ -1453,7 +1579,9 @@
         "ratings": [],
         "slug": "provintsialnye-strofy",
         "title": "Провинциальные строфы",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2018-07-26 15:12:44.615000+00:00",
         "views": 11
     },
@@ -1475,7 +1603,9 @@
         "ratings": [],
         "slug": "rabota-ili-professiya",
         "title": "Работа(,) или профессия",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2020-02-07 20:12:26.784000+00:00",
         "views": 37
     },
@@ -1483,7 +1613,7 @@
         "authors": [
             {
                 "name": "Екатерина Харитонова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f60616d0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "domestique079"
             }
         ],
@@ -1498,7 +1628,9 @@
         "ratings": [],
         "slug": "redaktor-i-avtor-perepiska-iz-dvuh-uglov",
         "title": "Редактор и автор: Переписка из двух углов",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-31 15:56:35.965000+00:00",
         "views": 4977
     },
@@ -1520,7 +1652,9 @@
         "ratings": [],
         "slug": "rossiya-v-puti-otkrytie",
         "title": "«Россия в пути». Открытие",
-        "topics": [],
+        "topics": [
+            "documentary"
+        ],
         "updatedAt": "2020-09-26 21:01:04.715000+00:00",
         "views": 20
     },
@@ -1543,7 +1677,9 @@
         "ratings": [],
         "slug": "ryurik-ivnev-illyustratsii",
         "title": "Рюрик Ивнев. Иллюстрации",
-        "topics": [],
+        "topics": [
+            "drawing"
+        ],
         "updatedAt": "2021-07-28 22:37:50.548000+00:00",
         "views": 6626
     },
@@ -1551,7 +1687,7 @@
         "authors": [
             {
                 "name": "Никита Болотов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/20e435d0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "nikbolotov"
             }
         ],
@@ -1566,7 +1702,9 @@
         "ratings": [],
         "slug": "segodnya-ty-prosypaeshsya-kaskad-rom",
         "title": "Сегодня ты просыпаешься каскадёром",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2021-07-30 03:07:24.145000+00:00",
         "views": 921
     },
@@ -1574,7 +1712,7 @@
         "authors": [
             {
                 "name": "Екатерина Харитонова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f60616d0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "domestique079"
             }
         ],
@@ -1589,7 +1727,9 @@
         "ratings": [],
         "slug": "seychas-ya-antisovetskiy-pisatel-razgovor-s-alekseem-slapovskim",
         "title": "«Сейчас я антисоветский писатель». Разговор с Алексеем Слаповским",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-26 18:05:59.989000+00:00",
         "views": 3583
     },
@@ -1597,7 +1737,7 @@
         "authors": [
             {
                 "name": "Света Брук",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fa5bb550-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "brookcaldwell"
             }
         ],
@@ -1612,7 +1752,9 @@
         "ratings": [],
         "slug": "shotlandskiy-podhod",
         "title": "Шотландский подход",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-29 00:35:07.393000+00:00",
         "views": 2439
     },
@@ -1635,7 +1777,9 @@
         "ratings": [],
         "slug": "sistema-i-yuriy-bykov",
         "title": "Система и Юрий Быков",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2018-11-19 11:05:40.030000+00:00",
         "views": 88
     },
@@ -1643,7 +1787,7 @@
         "authors": [
             {
                 "name": "Надежда Цыпкина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/11ed7dc0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "nadya_tsypkina"
             }
         ],
@@ -1657,7 +1801,9 @@
         "ratings": [],
         "slug": "skazka-pro-solnechnyy-luchik-i-nastuplenie-vesny",
         "title": "Сказка про Солнечный Лучик и наступление весны",
-        "topics": [],
+        "topics": [
+            "essay"
+        ],
         "updatedAt": "2021-07-31 01:25:04.708000+00:00",
         "views": 95
     },
@@ -1665,7 +1811,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -1680,7 +1826,9 @@
         "ratings": [],
         "slug": "skolko-bylo-voysk-u-batyya",
         "title": "Сколько было войск у Батыя?",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-31 06:24:34.543000+00:00",
         "views": 8265
     },
@@ -1688,7 +1836,7 @@
         "authors": [
             {
                 "name": "Александр Княжицкий",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f7371cc0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexander.knyazhitskiy"
             }
         ],
@@ -1702,7 +1850,9 @@
         "ratings": [],
         "slug": "so-begins-another-spring",
         "title": "So begins another spring...",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2021-03-11 08:18:03.524000+00:00",
         "views": 160
     },
@@ -1725,7 +1875,9 @@
         "ratings": [],
         "slug": "sobachya-zhizn",
         "title": "Собачья жизнь",
-        "topics": [],
+        "topics": [
+            "drama"
+        ],
         "updatedAt": "2018-11-19 11:02:18.695000+00:00",
         "views": 30
     },
@@ -1733,7 +1885,7 @@
         "authors": [
             {
                 "name": "Михаил Драбкин",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/29705210-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "atanatar"
             }
         ],
@@ -1748,7 +1900,9 @@
         "ratings": [],
         "slug": "sochi-masshtabno-krasivo-bespolezno-istoriya-odnoy-zheleznoy-dorogi",
         "title": "Сочи: масштабно, красиво, бесполезно. История одной железной дороги",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-31 15:59:21.795000+00:00",
         "views": 5438
     },
@@ -1756,7 +1910,7 @@
         "authors": [
             {
                 "name": "Анюта Вяземская",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/27b2c390-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "wiazemsky"
             }
         ],
@@ -1771,7 +1925,9 @@
         "ratings": [],
         "slug": "solntse-svetit-i-v-sibiri",
         "title": "Солнце светит и в Сибири",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-26 07:08:05.706000+00:00",
         "views": 4294
     },
@@ -1779,7 +1935,7 @@
         "authors": [
             {
                 "name": "БИРТМАН",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/07361d10-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "z185"
             }
         ],
@@ -1793,7 +1949,9 @@
         "ratings": [],
         "slug": "stenka",
         "title": "Стенка",
-        "topics": [],
+        "topics": [
+            "rock"
+        ],
         "updatedAt": "2021-07-31 15:24:43.433000+00:00",
         "views": 3633
     },
@@ -1815,7 +1973,9 @@
         "ratings": [],
         "slug": "stihotvoreniya",
         "title": "Стихотворения",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2021-03-24 01:01:37.063000+00:00",
         "views": 35
     },
@@ -1823,7 +1983,7 @@
         "authors": [
             {
                 "name": "Глеб Струнников",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fd931290-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "mephibox"
             }
         ],
@@ -1838,7 +1998,9 @@
         "ratings": [],
         "slug": "territorii-i-granitsy-na-karte-sssr-byli-nachercheny-karandashom",
         "title": "«Территории и границы на карте СССР были начерчены карандашом»",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 02:29:57.263000+00:00",
         "views": 14610
     },
@@ -1846,7 +2008,7 @@
         "authors": [
             {
                 "name": "Павел Соколов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f38d2790-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pavelsokolov"
             }
         ],
@@ -1861,7 +2023,9 @@
         "ratings": [],
         "slug": "trabaharka",
         "title": "Трабахарка",
-        "topics": [],
+        "topics": [
+            "drama"
+        ],
         "updatedAt": "2021-07-28 08:46:05.177000+00:00",
         "views": 3546
     },
@@ -1869,7 +2033,7 @@
         "authors": [
             {
                 "name": "Света Брук",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fa5bb550-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "brookcaldwell"
             }
         ],
@@ -1884,7 +2048,9 @@
         "ratings": [],
         "slug": "transformatsii",
         "title": "Трансформации",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-30 09:50:32.808000+00:00",
         "views": 3147
     },
@@ -1892,7 +2058,7 @@
         "authors": [
             {
                 "name": "Илья diliago Викторов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/1c9e75d0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "diliago"
             }
         ],
@@ -1907,7 +2073,9 @@
         "ratings": [],
         "slug": "urok-i-opyt",
         "title": "Урок и опыт",
-        "topics": [],
+        "topics": [
+            "drawing"
+        ],
         "updatedAt": "2021-07-31 19:24:40.396000+00:00",
         "views": 2754
     },
@@ -1929,7 +2097,9 @@
         "ratings": [],
         "slug": "v-aktivnom-poiske",
         "title": "В активном поиске",
-        "topics": [],
+        "topics": [
+            "art"
+        ],
         "updatedAt": "2019-05-21 12:10:40.604000+00:00",
         "views": 28
     },
@@ -1937,7 +2107,7 @@
         "authors": [
             {
                 "name": "Илья diliago Викторов",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/1c9e75d0-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "diliago"
             }
         ],
@@ -1952,7 +2122,9 @@
         "ratings": [],
         "slug": "v-antiliricheskom-stroyu",
         "title": "В антилирическом строю",
-        "topics": [],
+        "topics": [
+            "drawing"
+        ],
         "updatedAt": "2021-07-25 14:12:51.126000+00:00",
         "views": 2771
     },
@@ -1960,7 +2132,7 @@
         "authors": [
             {
                 "name": "Александр Данилин",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/0f936120-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "agdanilin"
             }
         ],
@@ -1975,7 +2147,9 @@
         "ratings": [],
         "slug": "v-mire-davno-i-prochno-pereputali-meditsinu-i-politsiyu",
         "title": "В мире давно и прочно перепутали медицину и полицию",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-31 21:37:53.902000+00:00",
         "views": 7627
     },
@@ -1983,7 +2157,7 @@
         "authors": [
             {
                 "name": "Александра Свиридова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f82c7940-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexa-svirid"
             }
         ],
@@ -1998,7 +2172,9 @@
         "ratings": [],
         "slug": "vam-segodnya-interesno-v-nas-to-zhe-za-chto-vy-togda-ubivali-nas",
         "title": "«Вам сегодня интересно в нас то же, за что вы тогда убивали нас»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-28 15:04:14.138000+00:00",
         "views": 3538
     },
@@ -2006,7 +2182,7 @@
         "authors": [
             {
                 "name": "Александр Княжицкий",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f7371cc0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexander.knyazhitskiy"
             }
         ],
@@ -2021,7 +2197,9 @@
         "ratings": [],
         "slug": "vilenskie-strofy",
         "title": "Виленские строфы",
-        "topics": [],
+        "topics": [
+            "poetry"
+        ],
         "updatedAt": "2021-06-15 15:57:17.177000+00:00",
         "views": 262
     },
@@ -2029,7 +2207,7 @@
         "authors": [
             {
                 "name": "Виктория Гендлина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f47c1b70-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "gendlinavika"
             }
         ],
@@ -2044,7 +2222,9 @@
         "ratings": [],
         "slug": "vlast-neobhodimo-totalno-kontrolirovat-po-sledam-konflikta-v-rggu",
         "title": "Власть необходимо тотально контролировать: по следам конфликта в РГГУ",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-27 21:56:27.001000+00:00",
         "views": 4391
     },
@@ -2052,7 +2232,7 @@
         "authors": [
             {
                 "name": "Мария Березина",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/a8f1dcd0-3398-11ea-89a4-b924aac0ccf7.jpg",
                 "slug": "mariaberezina"
             }
         ],
@@ -2067,7 +2247,9 @@
         "ratings": [],
         "slug": "vperedi-milliony-vechnostey",
         "title": "Впереди миллионы вечностей",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2020-04-04 15:22:55.816000+00:00",
         "views": 283
     },
@@ -2075,7 +2257,7 @@
         "authors": [
             {
                 "name": "Дмитрий Левчик",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fcdfa110-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "levchik"
             }
         ],
@@ -2090,7 +2272,9 @@
         "ratings": [],
         "slug": "ya-i-knyaz-vladimir",
         "title": "Я и князь Владимир",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-26 03:44:24.505000+00:00",
         "views": 490
     },
@@ -2098,7 +2282,7 @@
         "authors": [
             {
                 "name": "Мария Бессмертная",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/04587890-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "besmasha"
             }
         ],
@@ -2113,7 +2297,9 @@
         "ratings": [],
         "slug": "ya-ne-chuvstvuyu-uverennosti-utverzhdat-chto-to-krome-lichnyh-oschuscheniy",
         "title": "«Я не чувствую уверенности утверждать что-то, кроме личных ощущений»",
-        "topics": [],
+        "topics": [
+            "culture"
+        ],
         "updatedAt": "2021-07-31 02:55:00.399000+00:00",
         "views": 4007
     },
@@ -2121,7 +2307,7 @@
         "authors": [
             {
                 "name": "Александра Свиридова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f82c7940-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "alexa-svirid"
             }
         ],
@@ -2136,7 +2322,9 @@
         "ratings": [],
         "slug": "ya-staryy-zhid-marek-edelman",
         "title": "«Я, старый жид, Марек Эдельман...»",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-08-01 00:51:39.304000+00:00",
         "views": 95138
     },
@@ -2144,7 +2332,7 @@
         "authors": [
             {
                 "name": "Игорь Мухин",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/97fd1a10-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "igor-mukhin"
             }
         ],
@@ -2159,7 +2347,9 @@
         "ratings": [],
         "slug": "ya-videl-rok-n-roll-kak-sozdavalas-kniga",
         "title": "«Я видел рок-н-ролл»: как создавалась книга",
-        "topics": [],
+        "topics": [
+            "photography"
+        ],
         "updatedAt": "2021-07-23 02:41:57.383000+00:00",
         "views": 5517
     },
@@ -2167,7 +2357,7 @@
         "authors": [
             {
                 "name": "Екатерина Харитонова",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/f60616d0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "domestique079"
             }
         ],
@@ -2182,7 +2372,9 @@
         "ratings": [],
         "slug": "ya-vnikal-v-uklad-naroda-v-chey-strane-merzka-svoboda",
         "title": "«Я вникал в уклад народа, в чьей стране мерзка свобода»",
-        "topics": [],
+        "topics": [
+            "social"
+        ],
         "updatedAt": "2021-07-31 14:43:49.222000+00:00",
         "views": 3614
     },
@@ -2190,7 +2382,7 @@
         "authors": [
             {
                 "name": "Анастасия Малеева",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/1de4b170-90d9-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "stjumaleeva"
             }
         ],
@@ -2205,7 +2397,9 @@
         "ratings": [],
         "slug": "zam-rzshee-more-odessa",
         "title": "Замёрзшее море. Одесса",
-        "topics": [],
+        "topics": [
+            "photography"
+        ],
         "updatedAt": "2021-07-28 23:42:16.249000+00:00",
         "views": 3154
     },
@@ -2227,7 +2421,9 @@
         "ratings": [],
         "slug": "zapozdalye-podsnezhniki",
         "title": "Запоздалые подснежники",
-        "topics": [],
+        "topics": [
+            "prose"
+        ],
         "updatedAt": "2020-10-08 21:39:14.731000+00:00",
         "views": 18
     },
@@ -2235,7 +2431,7 @@
         "authors": [
             {
                 "name": "Павел Паштет Белянский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fff14de0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pashtet"
             }
         ],
@@ -2249,7 +2445,9 @@
         "ratings": [],
         "slug": "zhenskiy-vopros",
         "title": "Женский вопрос",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-28 20:25:42.861000+00:00",
         "views": 2953
     },
@@ -2257,7 +2455,7 @@
         "authors": [
             {
                 "name": "Павел Паштет Белянский",
-                "pic": "",
+                "pic": "https://assets.discours.io/unsafe/100x/production/image/fff14de0-90d8-11e8-a560-8fb4ec62d69b.jpeg",
                 "slug": "pashtet"
             }
         ],
@@ -2272,7 +2470,9 @@
         "ratings": [],
         "slug": "zhizn-prodolzhaetsya",
         "title": "Жизнь продолжается",
-        "topics": [],
+        "topics": [
+            "empiric"
+        ],
         "updatedAt": "2021-07-28 21:32:32.605000+00:00",
         "views": 2419
     }

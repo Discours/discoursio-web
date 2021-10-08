@@ -1,82 +1,299 @@
 {
-    "dialog-kultur": {
+    "alternative": {
         "children": [],
-        "createdAt": "2021-07-05 13:46:07.242000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 10:31:07.401000+00:00",
+        "createdBy": "0",
+        "old_id": "eZMeuMimaRviiaZdh",
         "parents": [],
-        "slug": "dialog-kultur",
-        "title": "диалог культур"
+        "slug": "alternative",
+        "title": "альтернатива"
     },
-    "dozhd": {
+    "animation": {
         "children": [],
-        "createdAt": "2021-07-28 10:28:13.214000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 11:20:35.700000+00:00",
+        "createdBy": "0",
+        "old_id": "TsgsDcFJgep4Koryw",
         "parents": [],
-        "slug": "dozhd",
-        "title": "дождь"
+        "slug": "animation",
+        "title": "мультипликация"
     },
-    "dzhim-morrison": {
+    "art": {
         "children": [],
-        "createdAt": "2021-07-29 17:58:54.191000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 10:22:46.012000+00:00",
+        "createdBy": "0",
+        "old_id": "anSPwCqzMWMHREaJe",
         "parents": [],
-        "slug": "dzhim-morrison",
-        "title": "джим моррисон"
+        "slug": "art",
+        "title": "видеоарт"
     },
-    "iskustvo-1": {
+    "audiopoeziya": {
         "children": [],
-        "createdAt": "2021-07-19 13:10:05.452000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2017-08-09 15:46:35.828000+00:00",
+        "createdBy": "ac7njHaqyN6z8j6hp",
+        "old_id": "BSDyvN5KbRb9BQxyp",
         "parents": [],
-        "slug": "iskustvo-1",
-        "title": "искуство"
+        "slug": "audiopoeziya",
+        "title": "аудиопоэзия"
     },
-    "izdatelstvo": {
+    "bardsongs": {
         "children": [],
-        "createdAt": "2021-07-09 14:48:29.794000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 11:11:52.933000+00:00",
+        "createdBy": "0",
+        "old_id": "x5bNu9L9iRCM9y6J2",
         "parents": [],
-        "slug": "izdatelstvo",
-        "title": "издательство"
+        "slug": "bardsongs",
+        "title": "авторская песня"
     },
-    "klassicheskaya-muzyka": {
+    "chapters": {
         "children": [],
-        "createdAt": "2021-07-05 13:46:07.254000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-07 14:02:49.302000+00:00",
+        "createdBy": "eyn2E6nqQEdGMopj4",
+        "old_id": "sMFAjz9RrwXZkLhpd",
         "parents": [],
-        "slug": "klassicheskaya-muzyka",
-        "title": "классическая музыка"
+        "slug": "chapters",
+        "title": "главы"
     },
-    "kommuny": {
+    "clips": {
         "children": [],
-        "createdAt": "2021-07-27 11:16:10.396000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 10:24:34.415000+00:00",
+        "createdBy": "0",
+        "old_id": "hy2MiiN7dcgPrHGLC",
         "parents": [],
-        "slug": "kommuny",
-        "title": "коммуны"
+        "slug": "clips",
+        "title": "видеоклипы"
     },
-    "povest": {
+    "culture": {
         "children": [],
-        "createdAt": "2021-06-18 17:56:41.332000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 10:18:27.207000+00:00",
+        "createdBy": "0",
+        "old_id": "k2XP8tzmPfz9SK6DY",
         "parents": [],
-        "slug": "povest",
-        "title": "повесть"
+        "slug": "culture",
+        "title": "культура"
     },
-    "prodvizhenie-rossiyskoy-kultury-za-rubezhom": {
+    "digital-art": {
         "children": [],
-        "createdAt": "2021-07-05 13:46:07.262000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 11:11:04.294000+00:00",
+        "createdBy": "0",
+        "old_id": "rs3Hd7EvomYzXvfwP",
         "parents": [],
-        "slug": "prodvizhenie-rossiyskoy-kultury-za-rubezhom",
-        "title": "продвижение российской культуры за рубежом"
+        "slug": "digital-art",
+        "title": "digital art"
     },
-    "starost": {
+    "documentary": {
         "children": [],
-        "createdAt": "2021-07-28 10:28:13.202000+00:00",
-        "createdBy": 9999999,
+        "createdAt": "2016-04-25 10:22:35.695000+00:00",
+        "createdBy": "0",
+        "old_id": "7qDStMYXwyL2u4pez",
         "parents": [],
-        "slug": "starost",
-        "title": "старость"
+        "slug": "documentary",
+        "title": "документальное кино"
+    },
+    "drama": {
+        "children": [],
+        "createdAt": "2016-04-25 10:17:33.917000+00:00",
+        "createdBy": "0",
+        "old_id": "KPDSTjpfit3cQoyis",
+        "parents": [],
+        "slug": "drama",
+        "title": "драматургия"
+    },
+    "drawing": {
+        "children": [],
+        "createdAt": "2016-04-25 10:24:02.354000+00:00",
+        "createdBy": "0",
+        "old_id": "SQXJPBJnWhcCLDcGk",
+        "parents": [],
+        "slug": "drawing",
+        "title": "графика"
+    },
+    "editorial1": {
+        "children": [],
+        "createdAt": "2016-06-16 04:43:45.967000+00:00",
+        "createdBy": "eyn2E6nqQEdGMopj4",
+        "old_id": "m3jMBAZJv6yz2sT85",
+        "parents": [],
+        "slug": "editorial1",
+        "title": "редактируем"
+    },
+    "editorial2": {
+        "children": [],
+        "createdAt": "2016-05-08 13:04:26.991000+00:00",
+        "createdBy": "eyn2E6nqQEdGMopj4",
+        "old_id": "khSAMngA7vv3sgbhz",
+        "parents": [],
+        "slug": "editorial2",
+        "title": "редактируем"
+    },
+    "editorial3": {
+        "children": [],
+        "createdAt": "2016-06-16 04:43:54.405000+00:00",
+        "createdBy": "eyn2E6nqQEdGMopj4",
+        "old_id": "QsAJTYQyM2AkcPjsJ",
+        "parents": [],
+        "slug": "editorial3",
+        "title": "редактируем"
+    },
+    "editorial4": {
+        "children": [],
+        "createdAt": "2016-06-16 04:43:38.101000+00:00",
+        "createdBy": "eyn2E6nqQEdGMopj4",
+        "old_id": "Btgzu3RqEtzZKmrci",
+        "parents": [],
+        "slug": "editorial4",
+        "title": "редактируем"
+    },
+    "electronicmusic": {
+        "children": [],
+        "createdAt": "2016-04-25 10:21:43.723000+00:00",
+        "createdBy": "0",
+        "old_id": "HK4tqXuQDqMvY6dhs",
+        "parents": [],
+        "slug": "electronicmusic",
+        "title": "электроника"
+    },
+    "empiric": {
+        "children": [],
+        "createdAt": "2016-04-25 10:18:11.991000+00:00",
+        "createdBy": "0",
+        "old_id": "4xbEoyh2QaxfaXc3o",
+        "parents": [],
+        "slug": "empiric",
+        "title": "личный опыт"
+    },
+    "essay": {
+        "children": [],
+        "createdAt": "2016-04-25 10:22:13.487000+00:00",
+        "createdBy": "0",
+        "old_id": "8egij7vad9ZHaGqwc",
+        "parents": [],
+        "slug": "essay",
+        "title": "эссе"
+    },
+    "experimental-music": {
+        "children": [],
+        "createdAt": "2016-04-25 10:24:15.676000+00:00",
+        "createdBy": "0",
+        "old_id": "rDmu9MjrMZN4chNBY",
+        "parents": [],
+        "slug": "experimental-music",
+        "title": "экспериментальная музыка"
+    },
+    "hip-hop": {
+        "children": [],
+        "createdAt": "2016-04-25 10:20:56.821000+00:00",
+        "createdBy": "0",
+        "old_id": "cyaDXneTADJewkdet",
+        "parents": [],
+        "slug": "hip-hop",
+        "title": "хип-хоп"
+    },
+    "jazz": {
+        "children": [],
+        "createdAt": "2016-04-25 11:29:43.930000+00:00",
+        "createdBy": "0",
+        "old_id": "5uSQF7TiESZusfRt3",
+        "parents": [],
+        "slug": "jazz",
+        "title": "джаз"
+    },
+    "lectures": {
+        "children": [],
+        "createdAt": "2016-04-25 10:33:46.876000+00:00",
+        "createdBy": "0",
+        "old_id": "pw9cb38DmmxTtC4Jq",
+        "parents": [],
+        "slug": "lectures",
+        "title": "лекции"
+    },
+    "movies": {
+        "children": [],
+        "createdAt": "2016-04-25 10:28:01.225000+00:00",
+        "createdBy": "0",
+        "old_id": "2GCc6LPvhh75RW3ji",
+        "parents": [],
+        "slug": "movies",
+        "title": "художественное кино"
+    },
+    "painting": {
+        "children": [],
+        "createdAt": "2016-04-25 10:35:07.662000+00:00",
+        "createdBy": "0",
+        "old_id": "E36Tr2nyi4vvzhWPQ",
+        "parents": [],
+        "slug": "painting",
+        "title": "живопись"
+    },
+    "photography": {
+        "children": [],
+        "createdAt": "2016-04-25 10:20:14.754000+00:00",
+        "createdBy": "0",
+        "old_id": "nZWZs6QT7qrMcMet3",
+        "parents": [],
+        "slug": "photography",
+        "title": "фотография"
+    },
+    "poetry": {
+        "children": [],
+        "createdAt": "2016-04-25 10:22:23.377000+00:00",
+        "createdBy": "0",
+        "old_id": "Gu6mYPRgxNpQe8aGP",
+        "parents": [],
+        "slug": "poetry",
+        "title": "поэзия"
+    },
+    "prose": {
+        "children": [],
+        "createdAt": "2016-04-25 10:17:25.581000+00:00",
+        "createdBy": "0",
+        "old_id": "Tj6B422GbJRQZZjSm",
+        "parents": [],
+        "slug": "prose",
+        "title": "проза"
+    },
+    "rock": {
+        "children": [],
+        "createdAt": "2016-04-25 10:19:41.324000+00:00",
+        "createdBy": "0",
+        "old_id": "EDn4DB6SziN8aTefY",
+        "parents": [],
+        "slug": "rock",
+        "title": "рок"
+    },
+    "sculpture": {
+        "children": [],
+        "createdAt": "2016-10-10 16:14:27.171000+00:00",
+        "createdBy": "pp8cP8k2gNt8AfGzc",
+        "old_id": "zBkwaKHpQR7DTvFNs",
+        "parents": [],
+        "slug": "sculpture",
+        "title": "скульптура"
+    },
+    "social": {
+        "children": [],
+        "createdAt": "2016-04-25 10:18:06.765000+00:00",
+        "createdBy": "0",
+        "old_id": "3gDdHmJdk8ECQpXQ2",
+        "parents": [],
+        "slug": "social",
+        "title": "общество"
+    },
+    "street-art": {
+        "children": [],
+        "createdAt": "2016-04-25 10:37:21.604000+00:00",
+        "createdBy": "0",
+        "old_id": "ZL8wFMWeMb6XPt69o",
+        "parents": [],
+        "slug": "street-art",
+        "title": "стрит-арт"
+    },
+    "theory": {
+        "children": [],
+        "createdAt": "2016-04-25 10:33:30.756000+00:00",
+        "createdBy": "0",
+        "old_id": "BrXsNJdqyBKoS7tbD",
+        "parents": [],
+        "slug": "theory",
+        "title": "теории"
     }
 }
