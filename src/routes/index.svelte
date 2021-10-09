@@ -48,10 +48,24 @@ $: if(!loaded) {
     return $shoutslist.sort((a,b) => a['comments'].length > b['comments'].length)
   }
 
+  const isThisMonth = (date) => {
+    const when = Date.parse(date)
+    const now = Date.now()
+    return now - when < 1000 * 60 * 60 * 24 * 30
+  }
+
   const topAuthors = () => {
     // TODO: top 4 authors in last month
     // now: returns 4 most rated authors
-    return $authorslist.sort((a,b) => a['rating'] > b['rating'])
+    let authorsMonth = new Set([])
+    $shoutslist.forEach(s => {
+      if(isThisMonth(s['createdAt'])) {
+        s['authors'].forEach(a => {
+          authorsMonth.add($authors[a['slug']])
+        })
+      }
+    })
+    return Array.from(authorsMonth).sort((a,b) => a['rating'] > b['rating'])
   }
 </script>
 
