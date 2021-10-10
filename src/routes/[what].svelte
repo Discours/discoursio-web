@@ -10,7 +10,7 @@
 
   export async function load({ page, fetch }): Promise<{ props: WhatProps }> {
     const { what } = page.params
-    const data = await fetch(`/${what}.json`).then((r) => r.json())
+    const data = await fetch(`/data/${what}.json`).then((r) => r.json())
     return {
       props: { data, what },
     }
@@ -25,11 +25,12 @@
   export let props: WhatProps
 
   let data: Shout | Topic | Partial<Topic> | Partial<Shout>
-  let what = ''
+  let what:string = ''
+  let topic
 
   $: if ($shouts && $topics && props?.what) {
     what = props?.what
-    data = <Topic>$topics[what]
+    topic = <Topic>$topics[what]
     if (!data) data = <Shout>$shouts[what]
   }
 </script>
@@ -38,5 +39,5 @@
 {#if data.body}
   <div>{@html data.body}</div>
 {:else}
-  <TopicView topic={what} />
+  <TopicView {topic} />
 {/if}
