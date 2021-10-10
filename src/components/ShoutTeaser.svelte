@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MD from 'marked'
+  import { parse } from 'extramark'
 
   export let shout
   // TODO: ShoutCard layout, logix
@@ -8,7 +8,7 @@
 <div class="shout">
   {#if shout.body}
     <div class="shout-body">
-      {@html MD(shout.body)}
+      {@html parse(shout.body)}
     </div>
   {/if}
   <div class="shout-controls">

@@ -1,33 +1,24 @@
 <script lang="ts">
-    import type { Topic } from '../graphql/codegen'
-    import { topics } from '../stores/zine'
+  import type { Topic } from '../graphql/codegen'
+  export let topic: Topic | Partial<Topic>
+</script>
   
-    export let slug: string
-    let topic: Topic | Partial<Topic>
-  
-  $: if($topics && !topic) topic = $topics[slug]
-  
-  </script>
-  
-  <div class="topic">
-    <div class="topic__avatar">
-      <a href={topic.slug}>
-        <img src={topic.pic} alt={topic.title} />
-      </a>
+<div class="topic">
+  <div class="topic__avatar">
+    <a href={topic.slug}>
+      <img src={topic.pic} alt={topic.title} />
+    </a>
+  </div>
+  <div class="topic__details">
+    <div class="topic__name">
+      <a href={topic.slug}>{topic.title}</a>
     </div>
-  
-    <div class="topic__details">
-      <div class="topic__name">
-        <a href={topic.slug}>{topic.title}</a>
-      </div>
-  
-      <div class="topic__about">{@html topic.body}</div>
-  
-      <div class="topic__subscribe">
-        <button class="button button--subscribe">Подписаться</button>
-      </div>
+    <div class="topic__about">{@html topic.body}</div>
+    <div class="topic__subscribe">
+      <button class="button button--subscribe">Подписаться</button>
     </div>
   </div>
+</div>
   
   <style lang="scss">
     .topic {

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import MD from 'marked'
+  import { parse } from 'extramark'
   import type { Shout } from '../graphql/codegen'
   import { roles, AS, session } from '../stores/auth'
   // import { authors } from '../stores/zine'
@@ -8,7 +8,8 @@
   export let shout: Shout | Partial<Shout>
   export let canEdit: boolean
 
-  $: canEdit = true // FIXME >= AS.EDITOR
+  let body = ''
+  $: if(!body && shout) body = parse(shout.body)
 
   const edit = (shout) => {
     console.log(shout)
@@ -21,7 +22,7 @@
       {shout.title}
     </div>
     <div class="shout-body" contenteditable={canEdit}>
-      {@html MD(shout.body)}
+      {@html body}
     </div>
     <div class="shout-controls">
       {#each shout.authors as author}

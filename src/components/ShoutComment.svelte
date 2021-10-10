@@ -1,10 +1,13 @@
 <script lang="ts">
   import type { Comment } from '../graphql/codegen'
   import { authors } from '../stores/zine'
-  import MD from 'marked'
+  import { parse } from 'extramark'
 
   export let comment: Comment
   export let canEdit: boolean
+
+  let body = ''
+  $: if(!body && comment) body = parse(comment.body)
 
   const edit = () => {
     console.log('TODO: comment editing...')
@@ -14,7 +17,7 @@
 <div class="comment">
   {#if comment}
     <div class="shout-body" contenteditable={canEdit}>
-      {@html MD(comment.body)}
+      {@html body}
     </div>
     <div class="shout-controls">
       <div class="shout-author">{$authors[comment.author].name}</div>

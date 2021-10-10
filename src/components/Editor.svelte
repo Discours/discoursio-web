@@ -17,6 +17,7 @@
   import { keymap } from 'prosemirror-keymap'
   import { EditorState } from 'prosemirror-state'
   import { schema } from '../lib/editor-schema'
+  import { parse as parseMD } from "extramark"
 
   let editorState
   let placeholder = 'Напишите что-нибудь'
@@ -32,14 +33,7 @@
   }
 
   $: if (shout) {
-    import('marked').then((imp) => {
-      if (shout.old_id) {
-        editorState = createRichTextEditor(shout.body)
-      } else {
-        const marked = imp.default
-        editorState = createRichTextEditor(marked(shout.body))
-      }
-    })
+    editorState = createRichTextEditor(parseMD(shout.body))
   }
 
   $: if ($collaborating) {
