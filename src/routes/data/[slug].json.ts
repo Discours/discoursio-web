@@ -6,7 +6,9 @@ import { GET_SHOUT } from '../../graphql/queries'
 const api = getStore(graphql)
 
 export async function get({ params }) {
-  return await api.request(GET_SHOUT, { variables: params })
+  if (api) {
+    return await api.request(GET_SHOUT, { variables: params })
+  } else return {}
 }
 
 export async function put(request) {

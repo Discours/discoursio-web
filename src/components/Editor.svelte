@@ -17,7 +17,7 @@
   import { keymap } from 'prosemirror-keymap'
   import { EditorState } from 'prosemirror-state'
   import { schema } from '../lib/editor-schema'
-  import MD from "markdown-it"
+  import MD from 'markdown-it'
 
   const mit = new MD()
     // mit.use(require('markdown-it-container'), name [, options])
@@ -38,7 +38,7 @@
   }
 
   $: if (shout) {
-    editorState = createRichTextEditor(mit.parse(shout.body))
+    editorState = createRichTextEditor(mit.parse(shout.body, {}))
   }
 
   $: if ($collaborating) {
