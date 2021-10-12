@@ -30,6 +30,7 @@ export type Comment = {
   author: Scalars['Int']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
+  deleted?: Maybe<Scalars['Boolean']>
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
   id: Scalars['Int']
@@ -241,7 +242,7 @@ export type Shout = {
   authors: Array<User>
   body: Scalars['String']
   comments?: Maybe<Array<Maybe<Comment>>>
-  community?: Maybe<Community>
+  community?: Maybe<Scalars['Int']>
   cover?: Maybe<Scalars['String']>
   createdAt: Scalars['DateTime']
   deletedAt?: Maybe<Scalars['DateTime']>
@@ -307,14 +308,14 @@ export type Token = {
 
 export type Topic = {
   __typename?: 'Topic'
-  title?: Maybe<Scalars['String']>
   body?: Maybe<Scalars['String']>
-  pic?: Maybe<Scalars['String']>
   children?: Maybe<Array<Maybe<Scalars['String']>>>
-  slug: Scalars['String']
   createdAt: Scalars['DateTime']
   createdBy: Scalars['Int']
   parents?: Maybe<Array<Maybe<Scalars['String']>>>
+  pic?: Maybe<Scalars['String']>
+  slug: Scalars['String']
+  title?: Maybe<Scalars['String']>
 }
 
 export type User = {
@@ -327,8 +328,10 @@ export type User = {
   id: Scalars['Int']
   links?: Maybe<Array<Maybe<Scalars['String']>>>
   muted?: Maybe<Scalars['Boolean']>
+  name?: Maybe<Scalars['String']>
   notifications?: Maybe<Array<Maybe<Scalars['Int']>>>
   oauth?: Maybe<Scalars['String']>
+  old_id?: Maybe<Scalars['String']>
   password?: Maybe<Scalars['String']>
   rating?: Maybe<Scalars['Int']>
   ratings?: Maybe<Array<Maybe<Rating>>>
@@ -338,7 +341,6 @@ export type User = {
   updatedAt?: Maybe<Scalars['DateTime']>
   username: Scalars['String']
   userpic?: Maybe<Scalars['String']>
-  name?: Maybe<Scalars['String']>
   wasOnlineAt?: Maybe<Scalars['DateTime']>
 }
 

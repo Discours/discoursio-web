@@ -11,6 +11,14 @@ generates:
     asyncQuery: true
     scalars:
       DateTime: string
+  src/data/messages-mocks.ts:
+    plugins:
+      - typescript-mock-data:
+          typesFile: './codegen.ts'
+          enumValues: upper-case#upperCase
+          typenames: keep
+          scalars:
+            DateTime: string
 hooks:
   afterAllFileWrite:
     - prettier --write
