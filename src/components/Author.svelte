@@ -3,6 +3,7 @@
   import Userpic from './Userpic.svelte'
 
   export let author: User | Partial<User>
+  export let hasSubscribeButton
 </script>
 
 <div class="author">
@@ -14,12 +15,16 @@
         <a href="/@{author.slug}">{author.name}</a>
       </div>
 
-      <div class="author__about">{author.bio}</div>
+      {#if author.bio}
+        <div class="author__about">{author.bio}</div>
+      {/if}
     </div>
 
-    <div class="author__subscribe">
-      <button class="button button--subscribe">Подписаться</button>
-    </div>
+    {#if hasSubscribeButton}
+      <div class="author__subscribe">
+        <button class="button button--subscribe">Подписаться</button>
+      </div>
+    {/if}
   {/if}
 </div>
 

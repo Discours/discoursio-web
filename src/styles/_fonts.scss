@@ -19,6 +19,15 @@
 @font-face {
   font-family: 'Muller';
   font-display: fallback;
+  src: url('/fonts/Muller-MediumItalic.woff2') format('woff2'),
+    url('/fonts/Muller-MediumItalic.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Muller';
+  font-display: fallback;
   src: url('/fonts/Muller-Bold.woff2') format('woff2'),
     url('/fonts/Muller-Bold.woff') format('woff');
   font-weight: 700;

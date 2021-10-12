@@ -24,8 +24,8 @@
 
   const topCommented = () => {
     // now: serving важное
-    return $shoutslist.sort((a,b) => 
-      ($comments[a['slug']]? $comments[a['slug']].length : 0) - 
+    return $shoutslist.sort((a,b) =>
+      ($comments[a['slug']]? $comments[a['slug']].length : 0) -
       ($comments[b['slug']]? $comments[b['slug']].length : 0)
     )
   }
@@ -132,7 +132,7 @@
         <h4>Авторы месяца</h4>
 
         {#each topAuthors().slice(0, 4) as author}
-          <Author {author} />
+          <Author author={author} hasSubscribeButton={true} />
         {/each}
 
         <button class="button">Еще авторы</button>
@@ -263,5 +263,5 @@
     background: #000;
     color: #fff;
   }
-  
+
 </style>
