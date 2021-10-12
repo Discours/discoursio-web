@@ -2,30 +2,9 @@
   import ShoutCard from '../components/ShoutCard.svelte'
   import Author from '../components/Author.svelte'
   import Community from '../components/Community.svelte'
-  import { shouts, authors, communities, topics, topicslist, authorslist, shoutslist, communitieslist } from '../stores/zine'
+  import { comments, authors, topicslist, shoutslist, communitieslist } from '../stores/zine'
   import DiscoursBanner from '../components/DiscoursBanner.svelte'
   import NavTopics from '../components/NavTopics.svelte'
-  import { onMount } from 'svelte'
-
-  import shoutsData from '../data/articles.json'
-  import authorsData from '../data/authors.json'
-  import topicsData from '../data/topics.json'
-  import communitiesData from '../data/communities.json'
-
-  let loaded = false
-
-$: if(!loaded) {
-    console.log('app: root page loading mock data')
-    $shouts = shoutsData
-    $shoutslist = Object.values($shouts)
-    $authors = authorsData
-    $authorslist = Object.values($authors)
-    $topics = topicsData
-    $topicslist = Object.values($topics)
-    $communities = communitiesData
-    $communitieslist = Object.values($communities)
-    loaded = true
-  }
 
   const recent = () => {
     // returns recently updated articles (default)
@@ -34,18 +13,21 @@ $: if(!loaded) {
 
   const topViewed = () => {
     // returns top viewed
-    return $shoutslist.sort((a,b) => a['views'] > b['views'])
+    return $shoutslist.sort((a,b) => a['views'] - b['views'])
   }
 
   const topRated = () => {
     // TODO: ??
     // now: top by rating
-    return $shoutslist.sort((a,b) => a['rating'] > b['rating'])
+    return $shoutslist.sort((a,b) => a['rating'] - b['rating'])
   }
 
   const topCommented = () => {
     // now: serving важное
-    return $shoutslist.sort((a,b) => a['comments'].length > b['comments'].length)
+    return $shoutslist.sort((a,b) => 
+      ($comments[a['slug']]? $comments[a['slug']].length : 0) - 
+      ($comments[b['slug']]? $comments[b['slug']].length : 0)
+    )
   }
 
   const isThisMonth = (date) => {
@@ -65,7 +47,7 @@ $: if(!loaded) {
         })
       }
     })
-    return Array.from(authorsMonth).sort((a,b) => a['rating'] > b['rating'])
+    return Array.from(authorsMonth).sort((a,b) => a['rating'] - b['rating'])
   }
 </script>
 
@@ -73,8 +55,6 @@ $: if(!loaded) {
 
 <div class="home">
   {#if $topicslist.length > 0}<NavTopics data={$topicslist} />{/if}
-
-  {#if loaded}
 
   <div class="floor floor--1">
     <div class="wide-container row">
@@ -187,7 +167,7 @@ $: if(!loaded) {
       <div class="col-md-4">
         <h4>Популярные сообщества</h4>
         {#each $communitieslist as community}
-          <Community {community} />
+          <Community slug={community['slug']} />
         {/each}
       </div>
       <div class="col-md-8">
@@ -243,7 +223,7 @@ $: if(!loaded) {
     <div class="wide-container row">
       <div class="col-md-4">
         <h4>Культура</h4>
-        {#each $shoutslist.filter(s => s['topics'].includes('culture')).slice(0,4) as article}
+        {#each $shoutslist.filter(s => (s['topics']||[]).includes('culture')).slice(0,4) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
@@ -267,8 +247,6 @@ $: if(!loaded) {
       {/each}
     </div>
   </div>
-
-  {/if}
 
 </div>
 

@@ -13,7 +13,7 @@
         <img src={shout.cover} alt={shout.title} />
       </div>
 
-      {#if shout.layout}
+      {#if shout.layout && shout.layout !== 'article' }
         <div class="article-card__type">
           <Icon name={shout.layout} />
         </div>
@@ -21,13 +21,15 @@
     </div>
 
     <div class="article-card__content">
-      {#each shout.topics as topicslug}
-        <div class="article-card__category">
-          <a href="/{topicslug}"
-            >{$topics[topicslug] ? $topics[topicslug].title : topicslug}</a
-          >
-        </div>
-      {/each}
+      {#if shout.topics}
+        {#each shout.topics as topicslug}
+          <div class="article-card__category">
+            <a href="/{topicslug}"
+              >{$topics[topicslug] ? $topics[topicslug].title : topicslug}</a
+            >
+          </div>
+        {/each}
+      {/if}
 
       <div class="article-card__title">
         <a href="/{shout.slug}">

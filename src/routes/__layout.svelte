@@ -4,7 +4,7 @@
   import { initLocalizationContext } from '../i18n/index'
   import NavHeader from '../components/NavHeader.svelte'
   import DiscoursFooter from '../components/DiscoursFooter.svelte'
-  import { onMount } from 'svelte'
+  import { messages, messageslist } from '../stores/inbox'
   import {
     shoutslist,
     shouts,
@@ -14,11 +14,35 @@
     authorslist,
     communities,
     communitieslist,
+    comments,
   } from '../stores/zine'
   import { graphql } from '../stores/common'
   import { token, session } from '../stores/auth'
   import { GET_ME } from '../graphql/queries'
   import { GraphQLClient } from 'graphql-request'
+
+  import shoutsData from '../data/articles.json'
+  import commentsData from '../data/comments.json'
+  import authorsData from '../data/authors.json'
+  import topicsData from '../data/topics.json'
+  import communitiesData from '../data/communities.json'
+  import type { Community } from '../graphql/codegen'
+
+  let loaded = false
+
+  $: if (!loaded) {
+    console.log('app: root page loading mock data')
+    $shouts = shoutsData
+    $shoutslist = Object.values($shouts)
+    $authors = authorsData
+    $authorslist = Object.values($authors)
+    $topics = topicsData
+    $topicslist = Object.values($topics)
+    $communitieslist = communitiesData
+    $communitieslist.forEach((c: Community) => ($communities[c['slug']] = c))
+    $comments = commentsData
+    loaded = true
+  }
 
   $: if ($token && window) {
     $graphql = new GraphQLClient(window.location.hostname + '/graphql', {
@@ -29,19 +53,9 @@
     $graphql.request(GET_ME).then((user) => ($session = user))
   }
 
-  onMount(() => {
-    // import('virtual:windi-devtools')
-    console.log('app loading data...')
-    // TODO: data loading calls
-    $shoutslist.forEach((s) => ($shouts[s.slug] = s))
-    $topicslist.forEach((s) => ($topics[s.slug] = s))
-    $authorslist.forEach((s) => ($authors[s.slug] = s))
-    $communitieslist.forEach((s) => ($communities[s.slug] = s))
-  })
-
   initLocalizationContext()
 </script>
 
 <header><NavHeader /></header>
-<main><slot /></main>
+{#if loaded}<main><slot /></main>{/if}
 <DiscoursFooter />

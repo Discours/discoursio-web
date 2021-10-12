@@ -34,12 +34,12 @@
     slug = props.slug
     community = <Community>$communities[slug]
     if (!community && props.user) author = props?.user
-    if (!community) author = <User>$authors[slug]
+    if (!author) author = <User>$authors[slug]
   }
 </script>
 
 <svelte:head>
-  <title>Дискурс : { props.user ? (typeof props.user === 'string' ? props.user : props.user.name) : slug }</title>
+  <title>Дискурс : { props.user ? props.user.name : slug }</title>
 </svelte:head>
 
 {#if author}

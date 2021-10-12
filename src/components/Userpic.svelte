@@ -1,12 +1,47 @@
 <script lang="ts">
-  import { session } from '../stores/auth'
+  // import { session } from '../stores/auth'
+  import type { User } from '../graphql/codegen'
+
+  export let author: User | Partial<User>
+
+  const letters = () => {
+    const names = author.name.split(' ')
+    return names[0][0] + (names.length > 1 ? names[1][0] : '')
+  }
 </script>
 
-<img src={$session.userpic} alt="userpic" />
+<div class="circlewrap">
+  {#if author && author.userpic === ''}
+    <div class="userpic">{letters()}</div>
+  {:else}
+    <img src={author.userpic} alt={author.name} />
+  {/if}
+</div>
 
-<style>
-  img {
-    border-radius: 50%;
+<style lang="scss">
+  .circlewrap {
+    border-radius: 100%;
+    height: 32px;
+    margin-right: 1.2rem;
+    min-width: 32px;
+    max-width: 32px;
+    overflow: hidden;
+    position: relative;
     width: 32px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .userpic {
+      border-radius: 50%;
+      font-size: small;
+      border: 2px solid black;
+      background-color: white;
+      text-align: center;
+      line-height: 32px;
+    }
   }
 </style>
