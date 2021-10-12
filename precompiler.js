@@ -33,7 +33,7 @@ const handle = async (callback) => {
         let shout = { ...data, body: content, slug }
         shouts[slug] = shout
         fs.writeFileSync(
-          resolve(srcPath, `src/data/articles.json`),
+          resolve(srcPath, `data/articles.json`),
           JSON.stringify(shouts, false, 2)
         )
       }

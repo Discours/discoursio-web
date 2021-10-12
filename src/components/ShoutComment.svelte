@@ -1,7 +1,10 @@
 <script lang="ts">
   import type { Comment } from '../graphql/codegen'
   import { authors } from '../stores/zine'
-  import { parse } from 'extramark'
+  import MD from 'markdown-it'
+
+  const mit = new MD()
+  const { parse } = mit
 
   export let comment: Comment
   export let canEdit: boolean

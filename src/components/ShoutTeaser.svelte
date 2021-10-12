@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { parse } from 'extramark'
+  import MD from 'markdown-it'
+
+  const mit = new MD()
+  const { parse } = mit
 
   export let shout
   // TODO: ShoutCard layout, logix

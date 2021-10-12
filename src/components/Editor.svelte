@@ -17,7 +17,12 @@
   import { keymap } from 'prosemirror-keymap'
   import { EditorState } from 'prosemirror-state'
   import { schema } from '../lib/editor-schema'
-  import { parse as parseMD } from "extramark"
+  import MD from "markdown-it"
+
+  const mit = new MD()
+    // mit.use(require('markdown-it-container'), name [, options])
+    .use(require('markdown-it-footnote'))
+    .use(require('markdown-it-mark'))
 
   let editorState
   let placeholder = 'Напишите что-нибудь'
@@ -33,7 +38,7 @@
   }
 
   $: if (shout) {
-    editorState = createRichTextEditor(parseMD(shout.body))
+    editorState = createRichTextEditor(mit.parse(shout.body))
   }
 
   $: if ($collaborating) {
