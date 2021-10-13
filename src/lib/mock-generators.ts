@@ -3,6 +3,7 @@
 import type {
   AuthResult,
   Comment,
+  CommentRating,
   Community,
   Message,
   MessageResult,
@@ -52,10 +53,6 @@ export const aComment = (overrides?: Partial<Comment>): Comment => {
       overrides && overrides.hasOwnProperty('createdAt')
         ? overrides.createdAt!
         : 'corrupti quibusdam non cupiditate minima ipsum quis',
-    deleted:
-      overrides && overrides.hasOwnProperty('deleted')
-        ? overrides.deleted!
-        : true,
     deletedAt:
       overrides && overrides.hasOwnProperty('deletedAt')
         ? overrides.deletedAt!
@@ -69,10 +66,14 @@ export const aComment = (overrides?: Partial<Comment>): Comment => {
       overrides && overrides.hasOwnProperty('old_id')
         ? overrides.old_id!
         : 'commodi',
+    old_thread:
+      overrides && overrides.hasOwnProperty('old_thread')
+        ? overrides.old_thread!
+        : 'corrupti',
     ratigns:
       overrides && overrides.hasOwnProperty('ratigns')
         ? overrides.ratigns!
-        : [aRating()],
+        : [aCommentRating()],
     rating:
       overrides && overrides.hasOwnProperty('rating')
         ? overrides.rating!
@@ -89,6 +90,28 @@ export const aComment = (overrides?: Partial<Comment>): Comment => {
         : 'et illum velit nemo molestiae quam ut',
     views:
       overrides && overrides.hasOwnProperty('views') ? overrides.views! : 6442,
+  }
+}
+
+export const aCommentRating = (
+  overrides?: Partial<CommentRating>
+): CommentRating => {
+  return {
+    comment_id:
+      overrides && overrides.hasOwnProperty('comment_id')
+        ? overrides.comment_id!
+        : 377,
+    createdAt:
+      overrides && overrides.hasOwnProperty('createdAt')
+        ? overrides.createdAt!
+        : 'mollitia doloribus voluptas velit aperiam voluptates voluptatem',
+    createdBy:
+      overrides && overrides.hasOwnProperty('createdBy')
+        ? overrides.createdBy!
+        : 1768,
+    id: overrides && overrides.hasOwnProperty('id') ? overrides.id! : 5579,
+    value:
+      overrides && overrides.hasOwnProperty('value') ? overrides.value! : 6049,
   }
 }
 

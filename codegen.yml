@@ -6,15 +6,15 @@ generates:
     plugins:
       - 'typescript'
       - 'typescript-operations'
-      - 'graphql-codegen-svelte-apollo'
-    clientPath: 'src/graphql/client'
+      # - 'graphql-codegen-svelte-apollo'
+    # clientPath: 'src/graphql/client'
     asyncQuery: true
     scalars:
       DateTime: string
-  src/data/messages-mocks.ts:
+  src/lib/mock-generators.ts:
     plugins:
       - typescript-mock-data:
-          typesFile: './codegen.ts'
+          typesFile: '../graphql/codegen.ts'
           enumValues: upper-case#upperCase
           typenames: keep
           scalars:
