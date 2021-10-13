@@ -13,3 +13,4 @@ api/migration/content
 api/migration/data
 static/upload/*
 .obsidian
+.vscode

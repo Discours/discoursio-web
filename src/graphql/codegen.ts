@@ -30,17 +30,26 @@ export type Comment = {
   author: Scalars['Int']
   body: Scalars['String']
   createdAt: Scalars['DateTime']
-  deleted?: Maybe<Scalars['Boolean']>
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
   id: Scalars['Int']
   old_id?: Maybe<Scalars['String']>
-  ratigns?: Maybe<Array<Maybe<Rating>>>
+  old_thread?: Maybe<Scalars['String']>
+  ratigns?: Maybe<Array<Maybe<CommentRating>>>
   rating?: Maybe<Scalars['Int']>
   replyTo: Scalars['Int']
   shout: Scalars['Int']
   updatedAt?: Maybe<Scalars['DateTime']>
   views?: Maybe<Scalars['Int']>
+}
+
+export type CommentRating = {
+  __typename?: 'CommentRating'
+  comment_id: Scalars['Int']
+  createdAt: Scalars['DateTime']
+  createdBy: Scalars['Int']
+  id: Scalars['Int']
+  value: Scalars['Int']
 }
 
 export type Community = {
