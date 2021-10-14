@@ -8,13 +8,15 @@ export const communitieslist: Writable<Array<Community | Partial<Community>>> =
 export const shoutslist: Writable<Array<Shout | Partial<Shout>>> = writable([])
 export const topicslist: Writable<Topic[]> = writable([])
 
-export const shouts: Writable<{ [slug: string]: Shout }> = writable({})
+export const shouts: Writable<{ [slug: string]: Shout | Partial<Shout> }> =
+  writable({})
 export const topics: Writable<{ [slug: string]: Topic }> = writable({})
-export const authors: Writable<{ [slug: string]: User }> = writable({})
+export const authors: Writable<{ [slug: string]: User | Partial<User> }> =
+  writable({})
 export const communities: Writable<{ [slug: string]: Community }> = writable({})
-export const comments: Writable<{ [slug: string]: Array<Comment> }> = writable(
-  {}
-)
+export const comments: Writable<{
+  [slug: string]: Array<Comment | Partial<Comment>>
+}> = writable({})
 
 // hash navigation
 export const filterTopic: Writable<string> = writable('')
