@@ -38,6 +38,7 @@
   import implicit from 'markdown-it-implicit-figures'
   import mdcustom from 'markdown-it-container'
   import 'markdown-it-highlight/dist/index.css'
+  import Author from "../components/Author.svelte";
 
   const mit = MD()
   mit.use(mdanch)
@@ -65,41 +66,121 @@
 <svelte:head><title>Дискурс : {shout ? shout.title : ''}</title></svelte:head>
 
 {#if shout && shout.body}
-  <div>
-    <h2>{shout.title}</h2>
-    {#if shout.subtitle}<h4>{shout.subtitle}</h4>{/if}
-    <div
-      class="shout-cover"
-      style={`background-image: url('${shout.cover}')`}
-    />
-    <div class="shout-body">
-      {@html mit.render(shout.body)}
-    </div>
+
+  <div class="shout wide-container row">
+    <article class="col-md-6 offset-md-3">
+      <div class="shout__header">
+        <div class="shout__topic article-card__category">
+          {#each shout.topics as topic, index}
+            {#if index > 0},{/if}
+            {topic}
+          {/each}
+        </div>
+
+        <h1>{shout.title}</h1>
+        {#if shout.subtitle}<h4>{shout.subtitle}</h4>{/if}
+
+        <div class="shout__author">
+          {#each shout.authors as author, index}
+            {#if index > 0}, {/if}
+            {author.name}
+          {/each}
+        </div>
+
+        <div
+          class="shout__cover"
+          style={`background-image: url('${shout.cover}')`}
+        />
+      </div>
+
+      <div class="shout__body">
+        {@html mit.render(shout.body)}
+      </div>
+
+
+      <div class="shout__authors-list">
+        <h4>Авторы</h4>
+
+        {#each shout.authors as author, index}
+          {#if index > 0},{/if}
+          <Author author={author}/>
+        {/each}
+      </div>
+    </article>
   </div>
 {:else}
   <TopicView {topic} />
 {/if}
 
 <style lang="scss">
-  h2 {
-    background-color: transparent;
-    color: grey;
-    text-shadow: 1px 1px black;
-    opacity: 0.8;
-    padding: 2rem;
+  h1 {
+    @include font-size(4rem);
+    line-height: 1.1;
+    margin-top: 0.5em;
   }
 
   :global(img) {
-    width: 80%;
+    max-width: 100%;
   }
 
-  mark {
+  .shout__header {
+    margin: 0 -16.6666% 2em;
   }
 
-  .shout-cover {
-    position: fixed;
+  .article-card__category {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+
+    a {
+      color: $link-color;
+    }
+  }
+
+  .shout__cover {
     background-size: cover;
-    display: flex;
-    height: 26rem;
+    height: 0;
+    padding-bottom: 56.2%;
+  }
+
+  .shout__body {
+    font-size: 1.7rem;
+    line-height: 1.6;
+
+    :global(img) {
+      display: block;
+      margin-bottom: 0.5em;
+    }
+
+    :global(blockquote) {
+      border-left: 4px solid;
+      font-size: 2rem;
+      font-weight: 500;
+      font-style: italic;
+      line-height: 1.4;
+      margin: 1.5em 0 1.5em -16.6666%;
+      padding: 0 0 0 1em;
+    }
+
+    :global(mark) {
+      background: none;
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 1.4;
+    }
+  }
+
+  .shout__author {
+    margin-bottom: 2em;
+  }
+
+  .shout__authors-list {
+    margin-top: 2em;
+
+    :global(h4) {
+      color: #696969;
+      font-size: 1.5rem;
+      font-weight: normal;
+    }
   }
 </style>

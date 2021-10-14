@@ -6,24 +6,24 @@
   export let shout: Shout | Partial<Shout>
 </script>
 
-<section class="article-card">
+<section class="shout-card">
   {#if shout}
-    <div class="article-card__cover-container">
-      <div class="article-card__cover">
+    <div class="shout-card__cover-container">
+      <div class="shout-card__cover">
         <img src={shout.cover} alt={shout.title} />
       </div>
 
-      {#if shout.layout && shout.layout !== 'article' }
-        <div class="article-card__type">
+      {#if shout.layout && shout.layout !== 'shout' }
+        <div class="shout-card__type">
           <Icon name={shout.layout} />
         </div>
       {/if}
     </div>
 
-    <div class="article-card__content">
+    <div class="shout-card__content">
       {#if shout.topics}
         {#each shout.topics as topicslug}
-          <div class="article-card__category">
+          <div class="shout__topic">
             <a href="/{topicslug}"
               >{$topics[topicslug] ? $topics[topicslug].title : topicslug}</a
             >
@@ -31,20 +31,20 @@
         {/each}
       {/if}
 
-      <div class="article-card__title">
+      <div class="shout-card__title">
         <a href="/{shout.slug}">
           {@html shout.title}
         </a>
       </div>
 
       {#if shout.subtitle}
-        <div class="article-card__subtitle">{@html shout.subtitle}</div>
+        <div class="shout-card__subtitle">{@html shout.subtitle}</div>
       {/if}
 
-      <div class="article-card__author">
+      <div class="shout__author">
         {#each shout.authors as a}
           {#if a}
-            {#if shout.authors.indexOf(a) > 0},{/if}
+            {#if shout.authors.indexOf(a) > 0}, {/if}
             <a href="/@{a.slug}">{a.name}</a>
           {/if}
         {/each}
@@ -58,45 +58,45 @@
 
   :global(.floor--2 .col-md-6) {
     &:first-child {
-      .article-card__cover {
+      .shout-card__cover {
         padding-bottom: 50%;
       }
     }
 
     &:last-child {
-      .article-card {
+      .shout-card {
         flex-direction: row;
         margin-bottom: 2.4rem;
       }
 
-      .article-card__cover-container {
+      .shout-card__cover-container {
         // @include make-col(4);
       }
 
-      .article-card__cover {
+      .shout-card__cover {
         margin-bottom: 0;
       }
 
-      .article-card__content {
+      .shout-card__content {
         padding-left: 1.6rem;
       }
 
-      .article-card__title {
+      .shout-card__title {
         font-size: 1.7rem;
       }
 
-      .article-card__title,
-      .article-card__subtitle {
+      .shout-card__title,
+      .shout-card__subtitle {
         display: inline;
       }
 
-      .article-card__author {
+      .shout__author {
         margin-top: 0.4rem;
       }
     }
   }
 
-  .article-card {
+  .shout-card {
     display: flex;
     flex-direction: column;
     line-height: 1.2;
@@ -108,17 +108,17 @@
       margin-top: 2.4rem !important;
       padding-top: 2.4rem;
 
-      .article-card__cover {
+      .shout-card__cover {
         display: none;
       }
     }
   }
 
-  .article-card__cover-container {
+  .shout-card__cover-container {
     position: relative;
   }
 
-  .article-card__cover {
+  .shout-card__cover {
     height: 0;
     margin-bottom: 1.6rem;
     padding-bottom: 56.2%;
@@ -132,25 +132,15 @@
     }
   }
 
-  .article-card__category,
-  .article-card__author {
+  .shout__topic,
+  .shout__author {
     a {
       position: relative;
       z-index: 2;
     }
   }
 
-  .article-card__category {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-    text-transform: uppercase;
-
-    a {
-      color: $link-color;
-    }
-  }
-
-  .article-card__title {
+  .shout-card__title {
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
@@ -170,7 +160,7 @@
     }
   }
 
-  .article-card__subtitle {
+  .shout-card__subtitle {
     font-size: 1.7rem;
     font-weight: 400;
     margin-bottom: 0.8rem;
@@ -180,26 +170,17 @@
     }
   }
 
-  .article-card__author {
-    font-size: 1.5rem;
-    font-weight: 400;
-
-    a {
-      color: #9fa1a7;
-    }
-  }
-
-  .article-card--with-cover {
+  .shout-card--with-cover {
     padding: 2.4rem;
 
     &,
     a,
-    .article-card__title,
-    .article-card__subtitle {
+    .shout-card__title,
+    .shout-card__subtitle {
       color: #fff;
     }
 
-    .article-card__cover {
+    .shout-card__cover {
       height: 100%;
       left: 0;
       padding: 0;
@@ -218,7 +199,7 @@
     }
   }
 
-  .article-card__type {
+  .shout-card__type {
     background: #fff;
     border-radius: 100%;
     height: 3.2rem;
@@ -244,7 +225,7 @@
   }
 
   :global(.floor--3 .col-md-4) {
-    .article-card__cover-container {
+    .shout-card__cover-container {
       margin-top: 1.6rem;
       order: 2;
     }
@@ -280,33 +261,33 @@
       }
     }
 
-    .article-card {
+    .shout-card {
       margin-bottom: $grid-gutter-width;
     }
 
-    .article-card__category,
-    .article-card__title {
+    .shout__topic,
+    .shout-card__title {
       a {
         color: #fff;
       }
     }
 
-    .article-card__title,
-    .article-card__subtitle {
+    .shout-card__title,
+    .shout-card__subtitle {
       display: inline;
     }
 
-    .article-card__author {
+    .shout__author {
       margin-top: 0.8rem;
     }
   }
 
   :global(.floor--5 .col-md-4) {
-    .article-card__cover {
+    .shout-card__cover {
       padding-bottom: 62.5%;
     }
 
-    .article-card__title {
+    .shout-card__title {
       font-size: 2.4rem;
     }
   }
@@ -315,17 +296,17 @@
   :global(.floor--7),
   :global(.floor--teaser),
   :global(.floor--11 .col-md-8) {
-    .article-card {
+    .shout-card {
       &,
       a,
-      .article-card__title,
-      .article-card__subtitle {
+      .shout-card__title,
+      .shout-card__subtitle {
         color: #fff;
       }
 
-      .article-card__cover-container,
-      .article-card__cover,
-      .article-card__content {
+      .shout-card__cover-container,
+      .shout-card__cover,
+      .shout-card__content {
         height: 100%;
         left: 0;
         margin: 0;
@@ -335,12 +316,12 @@
         z-index: -1;
       }
 
-      .article-card__content {
+      .shout-card__content {
         padding: 2.4rem;
         z-index: 1;
       }
 
-      .article-card__cover {
+      .shout-card__cover {
         padding: 0;
 
         &:after {
@@ -360,12 +341,12 @@
   }
 
   :global(.floor--6) {
-    .article-card {
+    .shout-card {
       max-height: 55%;
       padding: 55% 2.4rem 0;
     }
 
-    .article-card__content {
+    .shout-card__content {
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -373,67 +354,67 @@
   }
 
   :global(.floor--7) {
-    .article-card {
+    .shout-card {
       padding: 160% 2.4rem 0;
     }
 
-    .article-card__title {
+    .shout-card__title {
       font-size: 2.6rem;
     }
   }
 
   :global(.floor--9) {
-    .article-card__title,
-    .article-card__subtitle {
+    .shout-card__title,
+    .shout-card__subtitle {
       display: inline;
       font-size: 2.2rem;
     }
 
-    .article-card__author {
+    .shout__author {
       margin-top: 0.8rem;
     }
 
-    .article-card__cover {
+    .shout-card__cover {
       padding-bottom: 50%;
     }
   }
 
   :global(.floor--teaser) {
-    .article-card {
+    .shout-card {
       min-height: 15em;
       padding-top: 33.33%;
     }
 
-    .article-card__content {
+    .shout-card__content {
       justify-content: center;
       display: flex;
       flex-direction: column;
     }
 
-    .article-card__title {
+    .shout-card__title {
       font-size: 4.8rem;
     }
   }
 
   :global(.floor--11) {
     :global(.col-md-4) {
-      .article-card__cover-container {
+      .shout-card__cover-container {
         margin-top: 1.6rem;
         order: 2;
       }
     }
 
     :global(.col-md-8) {
-      .article-card {
+      .shout-card {
         padding-top: 50%;
       }
 
-      .article-card__title,
-      .article-card__subtitle {
+      .shout-card__title,
+      .shout-card__subtitle {
         font-size: 2rem;
       }
 
-      .article-card__content {
+      .shout-card__content {
         justify-content: flex-end;
         display: flex;
         flex-direction: column;
@@ -443,12 +424,12 @@
 
   :global(.floor--12) {
     :global(.col-md-4):first-child {
-      .article-card__cover-container,
-      .article-card__category {
+      .shout-card__cover-container,
+      .shout__topic {
         display: none;
       }
 
-      .article-card__title {
+      .shout-card__title {
         font-size: 1.7rem;
       }
     }
