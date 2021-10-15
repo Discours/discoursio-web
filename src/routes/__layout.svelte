@@ -27,6 +27,7 @@
   import topicsData from '../data/topics.json'
   import communitiesData from '../data/communities.json'
   import type { Community } from '../graphql/codegen'
+  import { onMount } from 'svelte'
 
   let loaded = false
 
@@ -52,6 +53,10 @@
     console.debug(token)
     $graphql.request(GET_ME).then((user) => ($session = user))
   }
+
+  onMount(
+    () => ($graphql = new GraphQLClient(window.location.hostname + '/graphql'))
+  )
 
   initLocalizationContext()
 </script>

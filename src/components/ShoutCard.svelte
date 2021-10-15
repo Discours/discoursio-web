@@ -13,9 +13,9 @@
         <img src={shout.cover} alt={shout.title} />
       </div>
 
-      {#if shout.layout && shout.layout !== 'shout' }
+      {#if shout.layout}
         <div class="shout-card__type">
-          <Icon name={shout.layout} />
+          {#if shout.layout !== 'article'}<Icon name={shout.layout} />{/if}
         </div>
       {/if}
     </div>
@@ -190,7 +190,7 @@
       z-index: -1;
 
       &:after {
-        background: rgba(0,0,0,0.6);
+        background: rgba(0, 0, 0, 0.6);
         height: 100%;
         position: absolute;
         width: 100%;
