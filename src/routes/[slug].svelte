@@ -14,15 +14,16 @@
     session,
     stuff,
   }): Promise<{ props: WhatProps | Partial<WhatProps> }> => {
+    let ret = { props: page.params }
     if (browser) {
-      console.log('--------- - - - - -- - - - -- - -- - ---')
-      return { props: page.params }
+      console.log('preloading skipped in browser')
     } else {
       const { slug } = page.params
       const r = await fetch(`/data/${slug}.json`)
       const shout = await r.json()
-      return { props: { shout, slug } }
+      ret = { props: { shout, slug } }
     }
+    return ret
   }
 </script>
 
@@ -37,8 +38,7 @@
   import mark from 'markdown-it-mark'
   import implicit from 'markdown-it-implicit-figures'
   import mdcustom from 'markdown-it-container'
-  import 'markdown-it-highlight/dist/index.css'
-  import Author from "../components/Author.svelte";
+  import Author from '../components/Author.svelte'
 
   const mit = MD()
   mit.use(mdanch)
@@ -66,7 +66,6 @@
 <svelte:head><title>Дискурс : {shout ? shout.title : ''}</title></svelte:head>
 
 {#if shout && shout.body}
-
   <div class="shout wide-container row">
     <article class="col-md-6 offset-md-3">
       <div class="shout__header">
@@ -97,13 +96,12 @@
         {@html mit.render(shout.body)}
       </div>
 
-
       <div class="shout__authors-list">
         <h4>Авторы</h4>
 
         {#each shout.authors as author, index}
           {#if index > 0},{/if}
-          <Author author={author}/>
+          <Author {author} hasSubscribeButton={false} />
         {/each}
       </div>
     </article>
@@ -131,10 +129,6 @@
     font-size: 1.2rem;
     margin-bottom: 0.8rem;
     text-transform: uppercase;
-
-    a {
-      color: $link-color;
-    }
   }
 
   .shout__cover {
