@@ -4,7 +4,7 @@
 [+] modal auth dialog
 [+] Topic.pic field
 [+] internal svelte prerender
-[+] GET_SHOUTS, GET_SHOUTS_BY_RATING, GET_TOPICS, GET_COMMUNITIES via caching json trick
+[+] GET_SHOUTS, TOP_SHOUTS_BY_RATING, GET_TOPICS, GET_COMMUNITIES via caching json trick
 [~] User.username -> User.name
 
 [0.0.6]

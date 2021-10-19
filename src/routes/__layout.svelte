@@ -30,8 +30,9 @@
   import { onMount } from 'svelte'
 
   let loaded = false
+  let needMocks = false
 
-  $: if (!loaded) {
+  $: if (!loaded && needMocks) {
     console.log('app: root page loading mock data')
     $shouts = shoutsData
     $shoutslist = Object.values($shouts)
@@ -45,8 +46,10 @@
     loaded = true
   }
 
+  let graphql_endpoint = '/graphql'
+
   $: if ($token && window) {
-    $graphql = new GraphQLClient(window.location.hostname + '/graphql', {
+    $graphql = new GraphQLClient(graphql_endpoint, {
       headers: { Auth: $token },
     })
     console.log('app: graphql connection is autorized')
@@ -54,9 +57,13 @@
     $graphql.request(GET_ME).then((user) => ($session = user))
   }
 
-  onMount(
-    () => ($graphql = new GraphQLClient(window.location.hostname + '/graphql'))
-  )
+  onMount(() => {
+    graphql_endpoint =
+      window.location.href.split('/').slice(0, -1).join('') + '/graphql'
+    $graphql = new GraphQLClient(graphql_endpoint)
+    console.debug($graphql)
+    $token = document.cookie || ''
+  })
 
   initLocalizationContext()
 </script>

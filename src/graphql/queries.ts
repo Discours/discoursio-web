@@ -153,23 +153,17 @@ export const GET_SHOUTS = gql`
   }
 `
 
-export const GET_SHOUTS_BY_RATING = gql`
-  query {
-    getShoutsByRating(community: $community, topic: $topic, author: $author) {
+export const TOP_SHOUTS_BY_RATING = gql`
+    topShoutsByRating(limit: $limit) {
       title
       subtitle
       layout
       cover
       community
-      authors
       topics
-      replyTo
-      published
       publishedAt
       views
       rating
-      ratings
-      comments
-    }
+  	}
   }
 `

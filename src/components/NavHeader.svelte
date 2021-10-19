@@ -38,18 +38,22 @@
   }
 
   const closeModal = (ev) => {
-    if (ev.target &&
-      (ev.target.classList.contains('modalwrap')) ||
-      (ev.target.classList.contains('close-control'))
-    ) showingAuth = false
+    if (
+      (ev.target && ev.target.classList.contains('modalwrap')) ||
+      ev.target.classList.contains('close-control')
+    )
+      showingAuth = false
   }
 </script>
 
-<svelte:window on:keydown={e => {if(e.key === 'Escape') showingAuth = false}} />
+<svelte:window
+  on:keydown={(e) => {
+    if (e.key === 'Escape') showingAuth = false
+  }}
+/>
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="wide-container">
   <nav class="row header__inner">
-
     <div class="main-logo col-auto"><a href="/">Дискурc</a></div>
 
     <ul class="col main-navigation text-2xl">
@@ -64,7 +68,7 @@
           {/if}
         </li>
       {/each}
-      {#if $token}
+      {#if !!$token}
         <li class:selected={res === '/community'}>
           {#if res === '/community'}
             {'сообщество'}
@@ -78,16 +82,20 @@
     </ul>
 
     <div class="notice inline-flex">
-      <a href={''} on:click|preventDefault={() => $token ? showNotifications() : toggleLogin() }>
+      <a
+        href={''}
+        on:click|preventDefault={() =>
+          $token ? showNotifications() : toggleLogin()}
+      >
         <Icon name="bell" counter={$token ? newMessages : 1} />
       </a>
     </div>
 
-    {#if $token}
+    {#if $session}
       <span class="user">
         <a href="/profile">
           <div class:entered={res === '/profile'}>
-            <Userpic />
+            <Userpic {$session} />
           </div>
         </a>
       </span>
@@ -95,12 +103,12 @@
   </nav>
 
   {#if showingAuth}
-  <div class="modalwrap" transition:fade on:click|preventDefault={closeModal}>
-    <Auth />
-  </div>
+    <div class="modalwrap" transition:fade on:click|preventDefault={closeModal}>
+      <Auth />
+    </div>
   {/if}
-
 </div>
+
 <style lang="scss">
   .header__inner {
     flex-wrap: wrap;
@@ -143,7 +151,6 @@
 
   nav {
     align-items: center;
-
   }
 
   .main-navigation {
