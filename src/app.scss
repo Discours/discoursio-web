@@ -179,3 +179,12 @@ input[type='checkbox'] {
     color: $link-color;
   }
 }
+
+figure {
+  margin: 2em 0;
+}
+
+figcaption {
+  color: #9fa1a7;
+  @include font-size(1.2rem);
+}
