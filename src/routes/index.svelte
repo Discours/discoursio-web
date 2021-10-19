@@ -2,7 +2,13 @@
   import ShoutCard from '../components/ShoutCard.svelte'
   import Author from '../components/Author.svelte'
   import Community from '../components/Community.svelte'
-  import { comments, authors, topicslist, shoutslist, communitieslist } from '../stores/zine'
+  import {
+    comments,
+    authors,
+    topicslist,
+    shoutslist,
+    communitieslist,
+  } from '../stores/zine'
   import DiscoursBanner from '../components/DiscoursBanner.svelte'
   import NavTopics from '../components/NavTopics.svelte'
 
@@ -13,20 +19,21 @@
 
   const topViewed = () => {
     // returns top viewed
-    return $shoutslist.sort((a,b) => a['views'] - b['views'])
+    return $shoutslist.sort((a, b) => a['views'] - b['views'])
   }
 
   const topRated = () => {
     // TODO: ??
     // now: top by rating
-    return $shoutslist.sort((a,b) => a['rating'] - b['rating'])
+    return $shoutslist.sort((a, b) => a['rating'] - b['rating'])
   }
 
   const topCommented = () => {
     // now: serving важное
-    return $shoutslist.sort((a,b) =>
-      ($comments[a['slug']]? $comments[a['slug']].length : 0) -
-      ($comments[b['slug']]? $comments[b['slug']].length : 0)
+    return $shoutslist.sort(
+      (a, b) =>
+        ($comments[a['slug']] ? $comments[a['slug']].length : 0) -
+        ($comments[b['slug']] ? $comments[b['slug']].length : 0)
     )
   }
 
@@ -40,14 +47,14 @@
     // TODO: top 4 authors in last month
     // now: returns 4 most rated authors
     let authorsMonth = new Set([])
-    $shoutslist.forEach(s => {
-      if(isThisMonth(s['createdAt'])) {
-        s['authors'].forEach(a => {
+    $shoutslist.forEach((s) => {
+      if (isThisMonth(s['createdAt'])) {
+        s['authors'].forEach((a) => {
           authorsMonth.add($authors[a['slug']])
         })
       }
     })
-    return Array.from(authorsMonth).sort((a,b) => a['rating'] - b['rating'])
+    return Array.from(authorsMonth).sort((a, b) => a['rating'] - b['rating'])
   }
 </script>
 
@@ -105,7 +112,7 @@
   <div class="floor floor--important">
     <div class="wide-container row">
       <h2 class="col-12"><span>Важное</span></h2>
-      {#each topCommented().slice(0,4) as article}
+      {#each topCommented().slice(0, 4) as article}
         <div class="col-md-4">
           <ShoutCard shout={article} />
         </div>
@@ -132,7 +139,7 @@
         <h4>Авторы месяца</h4>
 
         {#each topAuthors().slice(0, 4) as author}
-          <Author author={author} hasSubscribeButton={true} />
+          <Author {author} hasSubscribeButton={true} />
         {/each}
 
         <button class="button">Еще авторы</button>
@@ -143,7 +150,7 @@
   <div class="floor floor--7">
     <div class="wide-container row">
       <h2 class="col-12">Коротко</h2>
-      {#each recent().slice(0,4) as article}
+      {#each recent().slice(0, 4) as article}
         <div class="col-md-6 col-lg-3">
           <ShoutCard shout={article} />
         </div>
@@ -154,7 +161,7 @@
   <div class="floor floor--important">
     <div class="wide-container row">
       <h2 class="col-12"><span>Избранное</span></h2>
-      {#each topRated().slice(0,4) as article}
+      {#each topRated().slice(0, 4) as article}
         <div class="col-md-3">
           <ShoutCard shout={article} />
         </div>
@@ -223,7 +230,9 @@
     <div class="wide-container row">
       <div class="col-md-4">
         <h4>Культура</h4>
-        {#each $shoutslist.filter(s => (s['topics']||[]).includes('culture')).slice(0,4) as article}
+        {#each $shoutslist
+          .filter((s) => (s['topics'] || []).includes('culture'))
+          .slice(0, 4) as article}
           <ShoutCard shout={article} />
         {/each}
       </div>
@@ -247,7 +256,6 @@
       {/each}
     </div>
   </div>
-
 </div>
 
 <style lang="scss">
@@ -263,5 +271,4 @@
     background: #000;
     color: #fff;
   }
-
 </style>

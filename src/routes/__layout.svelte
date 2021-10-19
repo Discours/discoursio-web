@@ -32,7 +32,7 @@
   let loaded = false
   let needMocks = false
 
-  $: if (!loaded && needMocks) {
+  $: if (!loaded) {
     console.log('app: root page loading mock data')
     $shouts = shoutsData
     $shoutslist = Object.values($shouts)
@@ -54,12 +54,15 @@
     })
     console.log('app: graphql connection is autorized')
     console.debug(token)
-    $graphql.request(GET_ME).then((user) => ($session = user))
+    try {
+      $graphql.request(GET_ME).then((user) => ($session = user))
+    } catch (e) {
+      console.error('graphql request failed')
+    }
   }
 
   onMount(() => {
-    graphql_endpoint =
-      window.location.href.split('/').slice(0, -1).join('') + '/graphql'
+    graphql_endpoint = '//' + window.location.host + '/graphql'
     $graphql = new GraphQLClient(graphql_endpoint)
     console.debug($graphql)
     $token = document.cookie || ''
