@@ -27,10 +27,11 @@ const handle = async (callback) => {
         const slug = fname === 'index' ? dirname : fname
 
         // split frontmatter
-        const { content, data } = matter(
+        const { /* content,*/ data } = matter(
           fs.readFileSync(`${root}${sep}${stats.name}`)
         )
-        let shout = { ...data, body: content, slug }
+        const content_orig = fs.readFileSync(`${root}${sep}${stats.name.replace('.md', '.html')}`).toString()
+        let shout = { ...data, body: content_orig, slug }
         shouts[slug] = shout
         fs.writeFileSync(
           resolve(srcPath, `data/articles.json`),

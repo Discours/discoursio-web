@@ -46,7 +46,7 @@
     loaded = true
   }
 
-  let graphql_endpoint = '/graphql'
+  let graphql_endpoint = ''
 
   $: if ($token && window) {
     $graphql = new GraphQLClient(graphql_endpoint, {
@@ -62,7 +62,7 @@
   }
 
   onMount(() => {
-    graphql_endpoint = '//' + window.location.host + '/graphql'
+    graphql_endpoint = 'https://' + window.location.host + '/graphql'
     $graphql = new GraphQLClient(graphql_endpoint)
     console.debug($graphql)
     $token = document.cookie || ''

@@ -33,8 +33,8 @@ import Userpic from './Userpic.svelte';
   const options: MD.Options = {}
 
   $: if(!body && shout) {
-    let tokens: any[] = mit.parse(shout.body, options)
-    tokens.forEach(console.debug)
+    // let tokens: any[] = mit.parse(shout.body, options)
+    // tokens.forEach(console.debug)
   }
 
   const handleInput = (ev) => {

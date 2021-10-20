@@ -11,7 +11,7 @@
 <div class="shout">
   {#if shout.body}
     <div class="shout-body">
-      {@html parse(shout.body)}
+      {@html shout.body}
     </div>
   {/if}
   <div class="shout-controls">

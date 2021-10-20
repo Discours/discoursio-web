@@ -93,7 +93,11 @@
       </div>
 
       <div class="shout__body">
-        {@html mit.render(shout.body)}
+        {#if shout.body.slice(0,1) === '<'}
+          {@html shout.body}
+        {:else}
+          {@html mit.render(shout.body)} 
+        {/if}
       </div>
 
       <div class="shout__authors-list">
