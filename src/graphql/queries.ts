@@ -9,7 +9,7 @@ export const IS_EMAIL_FREE = gql`
 
 // email password
 export const SIGN_IN = gql`
-  query {
+  query SignInQuery($email: String!, $password: String!) {
     signIn(email: $email, password: $password) {
       error
       token
