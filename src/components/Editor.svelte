@@ -18,14 +18,14 @@
   import { EditorState } from 'prosemirror-state'
   import { schema } from '../lib/editor-schema'
   import MD from 'markdown-it'
-  import { createRequire } from 'module'
-
-  const require = createRequire(import.meta.url)
+  import footnotePlugin from 'markdown-it-footnote'
+  import markPlugin from 'markdown-it-mark'
+  // import containerPlugin from 'markdown-it-container'
 
   const mit = new MD()
-    // mit.use(require('markdown-it-container'), name [, options])
-    .use(require('markdown-it-footnote'))
-    .use(require('markdown-it-mark'))
+    // mit.use(containerPlugin, name [, options])
+    .use(footnotePlugin)
+    .use(markPlugin)
 
   let editorState
   let placeholder = 'Напишите что-нибудь'
