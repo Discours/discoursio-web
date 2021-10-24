@@ -27,12 +27,7 @@
 
   const forget = async () => {
     console.log('auth: forget password clicked')
-    // TODO: forget handleryarn install v1.22.5
-info No lockfile found.
-[1/4] Resolving packages...
-
-
-
+    // TODO: forget handler
   }
 
   const reset = async () => {
