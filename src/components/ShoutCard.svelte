@@ -13,9 +13,9 @@
         <img src={shout.cover} alt={shout.title} />
       </div>
 
-      {#if shout.layout}
+      {#if shout.layout && shout.layout !== 'article'}
         <div class="shout-card__type">
-          {#if shout.layout !== 'article'}<Icon name={shout.layout} />{/if}
+          <Icon name={shout.layout} />
         </div>
       {/if}
     </div>
@@ -69,9 +69,9 @@
         margin-bottom: 2.4rem;
       }
 
-      .shout-card__cover-container {
+      //.shout-card__cover-container {
         // @include make-col(4);
-      }
+      //}
 
       .shout-card__cover {
         margin-bottom: 0;

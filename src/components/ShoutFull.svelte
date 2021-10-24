@@ -9,8 +9,8 @@ import Userpic from './Userpic.svelte';
   const mit = MD()
   
   export let shout: Shout | Partial<Shout>
-  export let canEdit: boolean = false
-  export let editMode: boolean = false
+  export let canEdit = false
+  export let editMode = false
 
   $: if($session && shout && shout.authors) {
     canEdit = !!shout.authors.find(a => a.slug === $session.slug)

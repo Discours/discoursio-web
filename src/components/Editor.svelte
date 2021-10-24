@@ -18,6 +18,9 @@
   import { EditorState } from 'prosemirror-state'
   import { schema } from '../lib/editor-schema'
   import MD from 'markdown-it'
+  import { createRequire } from 'module'
+
+  const require = createRequire(import.meta.url)
 
   const mit = new MD()
     // mit.use(require('markdown-it-container'), name [, options])

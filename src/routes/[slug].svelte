@@ -54,7 +54,7 @@
   export let props: WhatProps
   let shout: Shout | Partial<Shout>
   let topic: Topic | Partial<Topic>
-  let slug: string = ''
+  let slug = ''
 
   $: if ($shouts && $topics && $page.params.slug) {
     slug = $page.params.slug
