@@ -15,7 +15,7 @@
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
-    let q = await $graphql.request(SIGN_IN, { email: $auth.email, password: $auth.password })
+    let q = await $graphql.request(SIGN_IN, { $email: $auth.email, $password: $auth.password })
     console.debug(q)
   }
 
