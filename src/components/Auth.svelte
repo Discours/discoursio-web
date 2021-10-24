@@ -15,19 +15,24 @@
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
-    let q = await $graphql.request(SIGN_IN, { $email: $auth.email, $password: $auth.password })
+    let q = await $graphql.request(SIGN_IN, { email: $auth.email, password: $auth.password })
     console.debug(q)
   }
 
   const register = async () => {
     console.log('auth: register with discours.io account ')
-    let q = await $graphql.request(SIGN_UP, { $email: $auth.email, $password: $auth.password })
+    let q = await $graphql.request(SIGN_UP, { email: $auth.email, password: $auth.password })
     console.debug(q)
   }
 
   const forget = async () => {
     console.log('auth: forget password clicked')
-    // TODO: forget handler
+    // TODO: forget handleryarn install v1.22.5
+info No lockfile found.
+[1/4] Resolving packages...
+
+
+
   }
 
   const reset = async () => {
