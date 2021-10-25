@@ -4,8 +4,7 @@
   import AuthFacebook from '../components/AuthFacebook.svelte'
   import AuthVk from '../components/AuthVk.svelte'
   import AuthGoogle from '../components/AuthGoogle.svelte'
-  import { auth, GOOGLE_APP_ID } from '../stores/auth'
-  import { fade } from 'svelte/transition'
+  import { auth, GOOGLE_APP_ID, token, session } from '../stores/auth'
   import { onMount } from 'svelte'
 
   export let mode = 'login'
@@ -15,14 +14,22 @@
 
   const login = async () => {
     console.log('auth: signing in with discours.io account')
-    let q = await $graphql.request(SIGN_IN, { email: $auth.email, password: $auth.password })
-    console.debug(q)
+    const res = await $graphql.request(SIGN_IN, { email: $auth.email, password: $auth.password })
+    console.debug(res)
+    if(res && res.token) {
+      $token = res.token
+      if(res.user) $session = res.user
+    }
   }
 
   const register = async () => {
     console.log('auth: register with discours.io account ')
-    let q = await $graphql.request(SIGN_UP, { email: $auth.email, password: $auth.password })
-    console.debug(q)
+    const res = await $graphql.request(SIGN_UP, { email: $auth.email, password: $auth.password })
+    console.debug(res)
+    if(res && res.token) {
+      $token = res.token
+      if(res.user) $session = res.user
+    }
   }
 
   const forget = async () => {
