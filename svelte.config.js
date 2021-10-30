@@ -7,7 +7,7 @@ import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
-import vercel from '@sveltejs/adapter-vercel'
+// import vercel from '@sveltejs/adapter-vercel'
 import node from '@sveltejs/adapter-node'
 import ssr from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
@@ -22,12 +22,7 @@ const ignoreWarns = [
 ]
 
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
-const nodeAdapter = { adapt: async () => await node() }
-const adapter = process.env.VERCEL
-	? vercel()
-	: process.env.SSR
-	? ssr()
-	: nodeAdapter
+const adapter = process.env.SSR ? ssr() : { adapt: async () => await node() }
 
 const scssOptions = {
 	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
