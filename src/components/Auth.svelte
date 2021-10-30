@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-	import { graphql } from '../stores/common'
+	import { api } from '../stores/common'
 	import AuthFacebook from '../components/AuthFacebook.svelte'
 	import AuthVk from '../components/AuthVk.svelte'
 	import AuthGoogle from '../components/AuthGoogle.svelte'
@@ -15,7 +15,7 @@
 
 	const login = async () => {
 		console.log('auth: signing in with discours.io account')
-		let q = await $graphql.request(SIGN_IN, {
+		let q = await $api.request(SIGN_IN, {
 			email: $auth.email,
 			password: $auth.password,
 		})
@@ -24,7 +24,7 @@
 
 	const register = async () => {
 		console.log('auth: register with discours.io account ')
-		let q = await $graphql.request(SIGN_UP, {
+		let q = await $api.request(SIGN_UP, {
 			email: $auth.email,
 			password: $auth.password,
 		})

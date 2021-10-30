@@ -1,9 +1,9 @@
 <script context="module">
-	import data from '../../data/articles.json'
 	import NavTopics from '../../components/NavTopics.svelte'
+	import { shouts } from '../../stores/zine'
 </script>
 
 <svelte:head><title>Дискурс : Лента</title></svelte:head>
 
 <NavTopics />
-<pre>{JSON.stringify(data, null, 2)}</pre>
+<pre>{JSON.stringify($shouts, null, 2)}</pre>

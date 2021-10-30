@@ -1,12 +1,17 @@
-import { writable } from 'svelte/store'
+import { writable, derived } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { GraphQLClient } from 'graphql-request'
+import { token } from './auth'
+import { GraphQLClient } from 'graphql-request'
 
 export enum Locale {
 	RU = 'ru',
 	EN = 'en',
 }
 
-export const graphql: Writable<GraphQLClient> = writable()
-export const loaded: Writable<boolean> = writable(false)
+export const endpoint = writable('https://0.0.0.0:8080')
+export const api = derived(
+	[endpoint, token],
+	([$endpoint, $token]) => new GraphQLClient($endpoint, { headers: { Auth: $token }})
+)
 export const lang: Writable<Locale> = writable(Locale.RU)
+export const loaded: Writable<boolean> = writable(false)
