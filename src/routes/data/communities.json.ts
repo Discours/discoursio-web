@@ -5,7 +5,7 @@ import { GET_COMMUNITIES } from '../../graphql/queries'
 
 const api = getStore(graphql)
 
-export async function get({ locals }) {
-  console.debug(locals)
-  return await api.request(GET_COMMUNITIES, {})
+export async function get() {
+  await api
+  return await api.request(GET_COMMUNITIES)
 }

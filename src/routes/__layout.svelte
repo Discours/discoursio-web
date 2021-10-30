@@ -21,32 +21,32 @@
   import { GET_ME } from '../graphql/queries'
   import { GraphQLClient } from 'graphql-request'
 
-  import shoutsData from '../data/articles.json'
-  import commentsData from '../data/comments.json'
-  import authorsData from '../data/authors.json'
-  import topicsData from '../data/topics.json'
+  // import shoutsData from '../data/articles.json'
+  // import commentsData from '../data/comments.json'
+  // import authorsData from '../data/authors.json'
+  // import topicsData from '../data/topics.json'
   import communitiesData from '../data/communities.json'
   import type { Community } from '../graphql/codegen'
   import { onMount } from 'svelte'
 
   let loaded = false
-  let needMocks = false
+  // let needMocks = false
 
   $: if (!loaded) {
-    console.log('app: root page loading mock data')
-    $shouts = shoutsData
-    $shoutslist = Object.values($shouts)
-    $authors = authorsData
-    $authorslist = Object.values($authors)
-    $topics = topicsData
-    $topicslist = Object.values($topics)
+    // console.log('app: root page loading mock data')
+    // $shouts = shoutsData
+    $shoutslist = Object.values($shouts).sort()
+    // $authors = authorsData
+    $authorslist = Object.values($authors).sort()
+    // $topics = topicsData
+    $topicslist = Object.values($topics).sort()
     $communitieslist = communitiesData
     $communitieslist.forEach((c: Community) => ($communities[c['slug']] = c))
-    $comments = commentsData
+    // $comments = commentsData
     loaded = true
   }
 
-  let graphql_endpoint = ''
+  let graphql_endpoint = 'https://localhost:8080'
 
   $: if ($token && window) {
     $graphql = new GraphQLClient(graphql_endpoint, {
@@ -62,7 +62,11 @@
   }
 
   onMount(() => {
-    graphql_endpoint = 'https://' + window.location.host + '/graphql'
+    if (window.location.hostname === 'localhost') {
+      graphql_endpoint = 'https://localhost:8080'
+    } else {
+      graphql_endpoint = 'https://' + window.location.host + '/graphql'
+    }
     $graphql = new GraphQLClient(graphql_endpoint)
     console.debug($graphql)
     $token = document.cookie || ''

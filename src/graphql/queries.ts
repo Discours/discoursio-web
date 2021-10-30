@@ -106,17 +106,6 @@ export const GET_AUTHOR = gql`
   }
 `
 
-export const GET_TOPICS = gql`
-  query {
-    getTopics(community: $community) {
-      slug
-      name
-      desc
-      pic
-    }
-  }
-`
-
 export const GET_COMMUNITIES = gql`
   query {
     getCommunities() {
@@ -132,28 +121,67 @@ export const GET_COMMUNITIES = gql`
   }
 `
 
-export const GET_SHOUTS = gql`
-  query {
-    getShouts(community: $community, topic: $topic, author: $author) {
+export const SHOUTS_BY_TIME = gql`
+    recentShouts(limit: $limit) {
       title
       subtitle
       layout
       cover
       community
-      authors
       topics
-      replyTo
-      published
       publishedAt
       views
       rating
-      ratings
-      comments
-    }
+  	}
   }
 `
 
-export const TOP_SHOUTS_BY_RATING = gql`
+export const SHOUTS_BY_COMMUNITY = gql`
+    shoutsByCommunity(community: $community, limit: $limit) {
+      title
+      subtitle
+      layout
+      cover
+      community
+      topics
+      publishedAt
+      views
+      rating
+  	}
+  }
+`
+
+export const SHOUTS_BY_AUTHOR = gql`
+    shoutsByAuthor(author: $author, limit: $limit) {
+      title
+      subtitle
+      layout
+      cover
+      community
+      topics
+      publishedAt
+      views
+      rating
+  	}
+  }
+`
+
+export const SHOUTS_BY_TOPIC = gql`
+    shoutsByTopic(topic: $topic, limit: $limit) {
+      title
+      subtitle
+      layout
+      cover
+      community
+      topics
+      publishedAt
+      views
+      rating
+  	}
+  }
+`
+
+export const SHOUTS_BY_RATING = gql`
     topShoutsByRating(limit: $limit) {
       title
       subtitle
@@ -167,3 +195,58 @@ export const TOP_SHOUTS_BY_RATING = gql`
   	}
   }
 `
+
+export const TOPICS_BY_SLUGS = gql`
+  query topicsBySlugs($slugs: [String]!) {
+    topicsBySlugs(slugs: $slugs) {
+      title
+      body
+      slug
+      pic
+      parents
+      children
+      community
+    }
+  }
+`
+export const TOPICS_BY_COMMUNITY = gql`
+  query topicsByCommunity($community: String!) {
+    topicsByCommunity(community: $community) {
+      title
+      body
+      slug
+      pic
+      parents
+      children
+      community
+    }
+  }
+`
+
+export const TOPICS_BY_AUTHOR = gql`
+  query topicsByAuthor($author: String!) {
+    topicsByAuthor(author: $author) {
+      title
+      body
+      slug
+      pic
+      parents
+      children
+      community
+    }
+  }
+`
+/*
+
+type Topic {
+  slug: String! # ID
+  title: String
+  body: String
+  pic: String
+  createdBy: Int! # User
+  createdAt: DateTime!
+  parents: [String] # NOTE: topic can have parent topics
+  children: [String] # and children
+  cat_id: String
+}
+*/

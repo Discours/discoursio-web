@@ -5,6 +5,7 @@
   import {
     comments,
     authors,
+    topics,
     topicslist,
     shoutslist,
     communitieslist,
@@ -61,7 +62,9 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 
 <div class="home">
-  {#if $topicslist.length > 0}<NavTopics data={$topicslist} />{/if}
+  {#if $topicslist.length > 0}
+    <NavTopics slugs={Object.keys($topics).sort()} />
+  {/if}
 
   <div class="floor floor--1">
     <div class="wide-container row">
