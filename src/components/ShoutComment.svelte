@@ -1,35 +1,35 @@
 <script lang="ts">
-  import type { Comment } from '../graphql/codegen'
-  import { authors } from '../stores/zine'
-  import MD from 'markdown-it'
+	import type { Comment } from '../graphql/codegen'
+	import { authors } from '../stores/zine'
+	import MD from 'markdown-it'
 
-  const mit = new MD()
-  const { parse } = mit
+	const mit = new MD()
+	const { parse } = mit
 
-  export let comment: Comment
-  export let canEdit: boolean
+	export let comment: Comment
+	export let canEdit: boolean
 
-  let body = ''
-  $: if(!body && comment) body = parse(comment.body)
+	let body = ''
+	$: if (!body && comment) body = parse(comment.body)
 
-  const edit = () => {
-    console.log('TODO: comment editing...')
-  }
+	const edit = () => {
+		console.log('TODO: comment editing...')
+	}
 </script>
 
 <div class="comment">
-  {#if comment}
-    <div class="shout-body" contenteditable={canEdit}>
-      {@html body}
-    </div>
-    <div class="shout-controls">
-      <div class="shout-author">{$authors[comment.author].name}</div>
-      <div class="shout-rating">{comment.rating}</div>
-      {#if canEdit}
-        <a class="editlink" href="#edit" on:click={edit}>
-          {'Edit'}
-        </a>
-      {/if}
-    </div>
-  {/if}
+	{#if comment}
+		<div class="shout-body" contenteditable={canEdit}>
+			{@html body}
+		</div>
+		<div class="shout-controls">
+			<div class="shout-author">{$authors[comment.author].name}</div>
+			<div class="shout-rating">{comment.rating}</div>
+			{#if canEdit}
+				<a class="editlink" href="#edit" on:click={edit}>
+					{'Edit'}
+				</a>
+			{/if}
+		</div>
+	{/if}
 </div>

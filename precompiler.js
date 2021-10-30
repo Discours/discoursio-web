@@ -12,39 +12,41 @@ const srcPath = resolve(cwd, 'src')
 const shouts = {}
 
 const handle = async (callback) => {
-  // NOTE! File structure convention
-  // content/<any-folders>/<article-slug>.md
-  walk(contentPath)
-    // creates articles.json
-    .on('file', async (root, stats, next) => {
-      const [fname, ext] = stats.name.split('.')
-      const dirname = root
-        .replace(contentPath, '')
-        .replace(stats.name, '')
-        .split(sep)
-        .pop()
-      if (ext === 'md') {
-        const slug = fname === 'index' ? dirname : fname
+	// NOTE! File structure convention
+	// content/<any-folders>/<article-slug>.md
+	walk(contentPath)
+		// creates articles.json
+		.on('file', async (root, stats, next) => {
+			const [fname, ext] = stats.name.split('.')
+			const dirname = root
+				.replace(contentPath, '')
+				.replace(stats.name, '')
+				.split(sep)
+				.pop()
+			if (ext === 'md') {
+				const slug = fname === 'index' ? dirname : fname
 
-        // split frontmatter
-        const { /* content,*/ data } = matter(
-          fs.readFileSync(`${root}${sep}${stats.name}`)
-        )
-        const content_orig = fs.readFileSync(`${root}${sep}${stats.name.replace('.md', '.html')}`).toString()
-        let shout = { ...data, body: content_orig, slug }
-        shouts[slug] = shout
-        fs.writeFileSync(
-          resolve(srcPath, `data/articles.json`),
-          JSON.stringify(shouts, false, 2)
-        )
-      }
-      next()
-    })
+				// split frontmatter
+				const { /* content,*/ data } = matter(
+					fs.readFileSync(`${root}${sep}${stats.name}`)
+				)
+				const content_orig = fs
+					.readFileSync(`${root}${sep}${stats.name.replace('.md', '.html')}`)
+					.toString()
+				let shout = { ...data, body: content_orig, slug }
+				shouts[slug] = shout
+				fs.writeFileSync(
+					resolve(srcPath, `data/articles.json`),
+					JSON.stringify(shouts, false, 2)
+				)
+			}
+			next()
+		})
 
-    // creates index.html's
-    .on('end', () => {
-      callback && callback()
-    })
+		// creates index.html's
+		.on('end', () => {
+			callback && callback()
+		})
 }
 
 export default handle

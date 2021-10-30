@@ -3,8 +3,8 @@ import type { Writable } from 'svelte/store'
 import type { GraphQLClient } from 'graphql-request'
 
 export enum Locale {
-  RU = 'ru',
-  EN = 'en',
+	RU = 'ru',
+	EN = 'en',
 }
 
 export const graphql: Writable<GraphQLClient> = writable()

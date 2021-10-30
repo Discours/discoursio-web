@@ -1,8 +1,8 @@
 [
-  {
-    "name": "Дискурс",
-    "desc": "Открытое горизонтальное медиа",
-    "slug": "discours.io",
-    "pic": "https://discours.io/images/logo-mini.svg"
-  }
+	{
+		"name": "Дискурс",
+		"desc": "Открытое горизонтальное медиа",
+		"slug": "discours.io",
+		"pic": "https://discours.io/images/logo-mini.svg"
+	}
 ]

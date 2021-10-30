@@ -6,11 +6,11 @@ import { GET_SHOUT } from '../../graphql/queries'
 const api = getStore(graphql)
 
 export async function get({ params }) {
-  await api
-  return await api.request(GET_SHOUT, { ...params })
+	await api
+	return await api.request(GET_SHOUT, { ...params })
 }
 
 export async function put(request) {
-  console.log('put', request)
-  // TODO: post the shout on discours
+	console.log('put', request)
+	// TODO: post the shout on discours
 }

@@ -4,19 +4,19 @@ import type { User } from '../graphql/codegen'
 
 // counted UI-related role states
 export enum AS {
-  GUEST = 1, // no account
-  READER = 2, // logged in
-  CRITIC = 3, // has comments with rating
-  AUTHOR = 4, // with public shouts
-  EXPERT = 5, // uses collaborative editing
-  EDITOR = 6, // can approve publications
-  OWNER = 7, // can edit org settings
-  ADMIN = 8, // can manage all communities
+	GUEST = 1, // no account
+	READER = 2, // logged in
+	CRITIC = 3, // has comments with rating
+	AUTHOR = 4, // with public shouts
+	EXPERT = 5, // uses collaborative editing
+	EDITOR = 6, // can approve publications
+	OWNER = 7, // can edit org settings
+	ADMIN = 8, // can manage all communities
 }
 
 interface Role {
-  community: number
-  level: AS
+	community: number
+	level: AS
 }
 
 export const FACEBOOK_APP_ID = '1809443122683615'
@@ -25,22 +25,22 @@ export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable()
 export const session: Writable<User> = writable()
 export const roles: Readable<Role[]> = derived([session], ([$session]) => {
-  $session && console.log(`roles: ${$session.roles}`)
-  return [
-    {
-      community: 0, // discours.io
-      level: AS.ADMIN,
-    },
-  ]
+	$session && console.log(`roles: ${$session.roles}`)
+	return [
+		{
+			community: 0, // discours.io
+			level: AS.ADMIN,
+		},
+	]
 })
 
 // ui form needs
 export const auth: Writable<{
-  email: string
-  password: string
-  remember: boolean
+	email: string
+	password: string
+	remember: boolean
 }> = writable({
-  email: '',
-  password: '',
-  remember: false,
+	email: '',
+	password: '',
+	remember: false,
 })

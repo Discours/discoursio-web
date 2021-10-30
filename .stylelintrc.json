@@ -1,36 +1,36 @@
 {
-  "plugins": ["stylelint-order", "stylelint-scss"],
-  "extends": ["stylelint-config-recommended", "stylelint-config-prettier"],
-  "processors": ["scss"],
-  "rules": {
-    "at-rule-no-unknown": [
-      true,
-      {
-        "ignoreAtRules": [
-          "extends",
-          "tailwind",
-          "apply",
-          "variants",
-          "responsive",
-          "screen",
-          "function",
-          "each",
-          "if",
-          "else",
-          "return",
-          "layer"
-        ]
-      }
-    ],
-    "block-no-empty": null,
-    "declaration-block-trailing-semicolon": null,
-    "no-descending-specificity": [
-      true,
-      {
-        "ignore": ["selectors-within-list"]
-      }
-    ],
-    "no-invalid-double-slash-comments": true
-  },
-  "ignoreFiles": ["*.cjs"]
+	"plugins": ["stylelint-order", "stylelint-scss"],
+	"extends": ["stylelint-config-recommended", "stylelint-config-prettier"],
+	"processors": ["scss"],
+	"rules": {
+		"at-rule-no-unknown": [
+			true,
+			{
+				"ignoreAtRules": [
+					"extends",
+					"tailwind",
+					"apply",
+					"variants",
+					"responsive",
+					"screen",
+					"function",
+					"each",
+					"if",
+					"else",
+					"return",
+					"layer"
+				]
+			}
+		],
+		"block-no-empty": null,
+		"declaration-block-trailing-semicolon": null,
+		"no-descending-specificity": [
+			true,
+			{
+				"ignore": ["selectors-within-list"]
+			}
+		],
+		"no-invalid-double-slash-comments": true
+	},
+	"ignoreFiles": ["*.cjs"]
 }

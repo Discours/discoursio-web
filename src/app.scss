@@ -10,73 +10,73 @@
 @import '../node_modules/bootstrap/scss/utilities';
 
 :root {
-  --background-color: #fff;
-  --default-color: #121416;
-  --link-color: #543fd7;
-  --secondary-color: #85878a;
-  --danger-color: #fc6847;
-  --lightgray-color: rgba(84, 16, 17, 0.06);
-  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	--background-color: #fff;
+	--default-color: #121416;
+	--link-color: #543fd7;
+	--secondary-color: #85878a;
+	--danger-color: #fc6847;
+	--lightgray-color: rgba(84, 16, 17, 0.06);
+	--font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 html {
-  color: $default-color;
-  font-size: 62.5%;
-  height: 100%;
-  -webkit-font-smoothing: antialiased;
-  overscroll-behavior-y: none;
+	color: $default-color;
+	font-size: 62.5%;
+	height: 100%;
+	-webkit-font-smoothing: antialiased;
+	overscroll-behavior-y: none;
 }
 
 body {
-  font-family: 'Muller', Arial, Helvetica, sans-serif;
-  font-size: 2rem;
-  line-height: 1.4;
-  min-height: 100%;
-  -webkit-text-size-adjust: 100%;
+	font-family: 'Muller', Arial, Helvetica, sans-serif;
+	font-size: 2rem;
+	line-height: 1.4;
+	min-height: 100%;
+	-webkit-text-size-adjust: 100%;
 }
 
 html,
 body,
 main,
 section {
-  border: 0;
-  padding: 0;
-  margin: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
 }
 
 .wide-container {
-  margin: 0 auto;
-  max-width: 1400px;
-  padding: 0 $container-padding-x;
+	margin: 0 auto;
+	max-width: 1400px;
+	padding: 0 $container-padding-x;
 }
 
 header {
-  background: $default-color;
+	background: $default-color;
 }
 
 h1 {
-  @include font-size(4.8rem);
+	@include font-size(4.8rem);
 }
 
 h2 {
-  @include font-size(4rem);
+	@include font-size(4rem);
 }
 
 h3 {
-  @include font-size(3.2rem);
+	@include font-size(3.2rem);
 }
 
 h4 {
-  @include font-size(2.6rem);
+	@include font-size(2.6rem);
 }
 
 main {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body,
@@ -89,102 +89,102 @@ h2,
 h3,
 h4,
 h5 {
-  &:first-child {
-    margin-top: 0;
-  }
+	&:first-child {
+		margin-top: 0;
+	}
 }
 
 a,
 a:hover,
 a:visited,
 a:link {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 a {
-  color: #000;
-  transition: color 0.2s;
+	color: #000;
+	transition: color 0.2s;
 }
 
 .button {
-  background: #000;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 100%;
-  font-weight: 500;
-  padding: 0.6rem 1.2rem;
-  text-align: center;
+	background: #000;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 100%;
+	font-weight: 500;
+	padding: 0.6rem 1.2rem;
+	text-align: center;
 
-  &:hover {
-    color: #ccc;
-  }
+	&:hover {
+		color: #ccc;
+	}
 
-  &:active {
-    color: #9fa1a7;
-  }
+	&:active {
+		color: #9fa1a7;
+	}
 }
 
 .button--subscribe {
-  padding: 0.6rem 1.2rem;
-  font-size: 1.5rem;
+	padding: 0.6rem 1.2rem;
+	font-size: 1.5rem;
 }
 
 input[type='checkbox'] {
-  display: none;
+	display: none;
 
-  & + label {
-    padding-left: 30px;
-    position: relative;
+	& + label {
+		padding-left: 30px;
+		position: relative;
 
-    &:before {
-      background: url('/icons/checkbox.svg') no-repeat;
-      content: '';
-      height: 2rem;
-      left: 0;
-      position: absolute;
-      top: 0.2em;
-      width: 2rem;
-    }
-  }
+		&:before {
+			background: url('/icons/checkbox.svg') no-repeat;
+			content: '';
+			height: 2rem;
+			left: 0;
+			position: absolute;
+			top: 0.2em;
+			width: 2rem;
+		}
+	}
 
-  &:checked + label {
-    &:before {
-      background-image: url('/icons/checkbox-checked.svg');
-    }
-  }
+	&:checked + label {
+		&:before {
+			background-image: url('/icons/checkbox-checked.svg');
+		}
+	}
 }
 
 .hidden {
-  display: none !important;
+	display: none !important;
 }
 
 .shout__author {
-  font-size: 1.5rem;
-  font-weight: 400;
+	font-size: 1.5rem;
+	font-weight: 400;
 
-  &,
-  a {
-    color: #696969;
-  }
+	&,
+	a {
+		color: #696969;
+	}
 }
 
 .shout__topic {
-  font-size: 1.2rem;
-  margin-bottom: 0.8rem;
-  text-transform: uppercase;
+	font-size: 1.2rem;
+	margin-bottom: 0.8rem;
+	text-transform: uppercase;
 
-  a {
-    color: $link-color;
-  }
+	a {
+		color: $link-color;
+	}
 }
 
 figure {
-  margin: 2em 0;
+	margin: 2em 0;
 }
 
 figcaption {
-  color: #9fa1a7;
-  @include font-size(1.2rem);
+	color: #9fa1a7;
+	@include font-size(1.2rem);
 }

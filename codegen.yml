@@ -1,24 +1,24 @@
 overwrite: true
 schema:
-  - 'api/schema.graphql'
+ - 'api/schema.graphql'
 generates:
-  src/graphql/codegen.ts:
-    plugins:
-      - 'typescript'
-      - 'typescript-operations'
-      # - 'graphql-codegen-svelte-apollo'
-    # clientPath: 'src/graphql/client'
-    asyncQuery: true
-    scalars:
-      DateTime: string
-  src/lib/mock-generators.ts:
-    plugins:
-      - typescript-mock-data:
-          typesFile: '../graphql/codegen.ts'
-          enumValues: upper-case#upperCase
-          typenames: keep
-          scalars:
-            DateTime: string
+ src/graphql/codegen.ts:
+  plugins:
+   - 'typescript'
+   - 'typescript-operations'
+   # - 'graphql-codegen-svelte-apollo'
+  # clientPath: 'src/graphql/client'
+  asyncQuery: true
+  scalars:
+   DateTime: string
+ src/lib/mock-generators.ts:
+  plugins:
+   - typescript-mock-data:
+      typesFile: '../graphql/codegen.ts'
+      enumValues: upper-case#upperCase
+      typenames: keep
+      scalars:
+       DateTime: string
 hooks:
-  afterAllFileWrite:
-    - prettier --write
+ afterAllFileWrite:
+  - prettier --write

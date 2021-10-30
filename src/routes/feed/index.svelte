@@ -1,6 +1,6 @@
 <script context="module">
-  import data from '../../data/articles.json'
-  import NavTopics from '../../components/NavTopics.svelte'
+	import data from '../../data/articles.json'
+	import NavTopics from '../../components/NavTopics.svelte'
 </script>
 
 <svelte:head><title>Дискурс : Лента</title></svelte:head>

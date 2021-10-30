@@ -12,28 +12,32 @@ import node from '@sveltejs/adapter-node'
 import ssr from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const { scss, typescript, /* postcss, */ globalStyle } = require('svelte-preprocess')
+const {
+	scss,
+	typescript,
+	/* postcss, */ globalStyle,
+} = require('svelte-preprocess')
 // const { default: windiVite } = require('vite-plugin-windicss')
 
 const ignoreWarns = [
-  'a11y-distracting-elements',
-  'a11y-missing-attribute',
-  'css-unused-selector',
+	'a11y-distracting-elements',
+	'a11y-missing-attribute',
+	'css-unused-selector',
 ]
 
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
 const nodeAdapter = { adapt: async () => await node() }
 const adapter = process.env.VERCEL
-  ? vercel()
-  : process.env.SSR
-  ? ssr()
-  : nodeAdapter
+	? vercel()
+	: process.env.SSR
+	? ssr()
+	: nodeAdapter
 
 const scssOptions = {
-  // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
-  prependData: `@import 'src/styles/_imports.scss';`,
-  renderSync: true, // renderSync is faster for Dart Sass which
-  outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
+	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
+	prependData: `@import 'src/styles/_imports.scss';`,
+	renderSync: true, // renderSync is faster for Dart Sass which
+	outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
 const articles = require('./src/data/articles.json')
@@ -43,46 +47,46 @@ const authors = require('./src/data/authors.json')
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  adapter,
-  logger: console,
-  preprocess: [
-    scss(scssOptions, { name: 'scss' }),
-    // windiSvelte({}),
-    // postcss(postcssConfig, { name: 'postcss' }),
-    globalStyle(),
-    mdsvex(),
-    typescript(),
-  ],
-  prerender: {
-      entries: [
-      '/',
-      '/create',
-      '/feed',
-      '/forum',
-      '/search',
-      ...Object.keys(articles).reduce((_pv,cv,_ci,_all) => '/' + cv, ''),
-      ...Object.keys(topics).reduce((_pv,cv,_ci,_all) => '/' + cv, ''),
-      ...Object.keys(communities).reduce((_pv,cv,_ci,_all) => '/@' + cv, ''),
-      ...Object.keys(authors).reduce((_pv,cv,_ci,_all) => '/@' + cv, ''),
-    ]
-  },
-  compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
-  onwarn: (w, cb) =>
-    ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
-  kit: {
-    vite: {
-      // plugins: [windiVite({})],
-      optimizeDeps: {
-        include: ['yjs', 'y-indexeddb', 'y-webrtc'],
-      },
-      ssr: {
-        external: ['w3c-keyname'],
-        noExternal: Object.keys(pkg.dependencies || {}),
-      },
-    },
-  },
-  skipIntroByDefault: true,
-  target: '#svelte',
+	adapter,
+	logger: console,
+	preprocess: [
+		scss(scssOptions, { name: 'scss' }),
+		// windiSvelte({}),
+		// postcss(postcssConfig, { name: 'postcss' }),
+		globalStyle(),
+		mdsvex(),
+		typescript(),
+	],
+	prerender: {
+		entries: [
+			'/',
+			'/create',
+			'/feed',
+			'/forum',
+			'/search',
+			...Object.keys(articles).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
+			...Object.keys(topics).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
+			...Object.keys(communities).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
+			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
+		],
+	},
+	compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
+	onwarn: (w, cb) =>
+		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
+	kit: {
+		vite: {
+			// plugins: [windiVite({})],
+			optimizeDeps: {
+				include: ['yjs', 'y-indexeddb', 'y-webrtc'],
+			},
+			ssr: {
+				external: ['w3c-keyname'],
+				noExternal: Object.keys(pkg.dependencies || {}),
+			},
+		},
+	},
+	skipIntroByDefault: true,
+	target: '#svelte',
 }
 
 export default config

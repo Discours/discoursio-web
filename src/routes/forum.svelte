@@ -1,5 +1,5 @@
 <script lang="ts">
-  // Reincarnation
+	// Reincarnation
 </script>
 
 <svelte:head><title>Дискурс : Форум</title></svelte:head>

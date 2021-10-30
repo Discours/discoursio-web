@@ -6,6 +6,6 @@ const api = getStore(graphql)
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export async function get({ params }) {
-  await api
-  return await api.request(GET_AUTHOR, { ...params })
+	await api
+	return await api.request(GET_AUTHOR, { ...params })
 }
