@@ -11,7 +11,9 @@
 
 	onMount(async () => {
 		if (window.location.hostname !== 'localhost') {
+			console.log('app: updating graphql endpoint')
 			$endpoint = 'https://' + window.location.host + '/graphql'
+			console.log($endpoint)
 		}
 		console.debug($api)
 		$token = document.cookie

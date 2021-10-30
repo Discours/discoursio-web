@@ -72,7 +72,7 @@ const config = {
 			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
 		],
 	},
-	compilerOptions: { cssHash: ({ hash, css }) => hash(css) },
+	compilerOptions: { cssHash: ({ hash, css }) => 's' + hash(css) },
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {

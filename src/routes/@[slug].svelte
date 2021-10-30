@@ -3,6 +3,8 @@
 	import type { Load } from '@sveltejs/kit'
 	import { browser } from '$app/env'
 
+	export const prerender = true
+
 	interface WhoProps {
 		user?: User | Partial<User>
 		slug: string

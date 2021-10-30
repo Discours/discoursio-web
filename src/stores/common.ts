@@ -11,7 +11,7 @@ export enum Locale {
 export const endpoint = writable('https://0.0.0.0:8080')
 export const api = derived(
 	[endpoint, token],
-	([$endpoint, $token]) => new GraphQLClient($endpoint, { headers: { Auth: $token }})
+	([$endpoint, $token]) => new GraphQLClient($endpoint, $token ? { headers: { Auth: $token }} : {})
 )
 export const lang: Writable<Locale> = writable(Locale.RU)
 export const loaded: Writable<boolean> = writable(false)
