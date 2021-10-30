@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { graphql } from '../../stores/common'
+import { api as graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
 import {
 	TOPICS_BY_SLUGS,

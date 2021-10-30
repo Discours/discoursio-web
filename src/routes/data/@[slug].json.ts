@@ -1,4 +1,4 @@
-import { graphql } from '../../stores/common'
+import { api as graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
 import { GET_AUTHOR } from '../../graphql/queries'
 
