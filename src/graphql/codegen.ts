@@ -186,8 +186,6 @@ export type Proposal = {
 
 export type Query = {
 	__typename?: 'Query'
-	topMonth: Array<Maybe<Shout>>
-	topOverall: Array<Maybe<Shout>>
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
@@ -200,19 +198,12 @@ export type Query = {
 	signIn: AuthResult
 	signOut: Result
 	topAuthors: Array<Maybe<User>>
-	topShoutsByRating: Array<Maybe<Shout>>
-	topShoutsByView: Array<Maybe<Shout>>
+	topMonth: Array<Maybe<Shout>>
+	topOverall: Array<Maybe<Shout>>
+	topViewed: Array<Maybe<Shout>>
 	topicsByAuthor: Array<Maybe<Topic>>
 	topicsByCommunity: Array<Maybe<Topic>>
 	topicsBySlugs: Array<Maybe<Topic>>
-}
-
-export type QueryTopMonthArgs = {
-	limit?: Maybe<Scalars['Int']>
-}
-
-export type QueryTopOverallArgs = {
-	limit?: Maybe<Scalars['Int']>
 }
 
 export type QueryGetMessagesArgs = {
@@ -260,11 +251,15 @@ export type QueryTopAuthorsArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 
-export type QueryTopShoutsByRatingArgs = {
+export type QueryTopMonthArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 
-export type QueryTopShoutsByViewArgs = {
+export type QueryTopOverallArgs = {
+	limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryTopViewedArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 

@@ -65,7 +65,7 @@ export const GET_ME = gql`
 
 // TODO: joined with comments, topics, ratings and authors
 export const GET_SHOUT = gql`
-	query getShoutBySlug($slug: String!){
+	query getShoutBySlug($slug: String!) {
 		getShoutBySlug(slug: $slug) {
 			title
 			subtitle
@@ -170,7 +170,7 @@ export const TOP_MONTH = gql`
 `
 
 export const SHOUTS_BY_COMMUNITY = gql`
-	query shoutsByCommunity ($community: String!, $limit: Int) {
+	query shoutsByCommunity($community: String!, $limit: Int) {
 		shoutsByCommunity(community: $community, limit: $limit) {
 			title
 			subtitle
@@ -218,7 +218,7 @@ export const SHOUTS_BY_TOPIC = gql`
 `
 
 export const SHOUTS_BY_RATING = gql`
-	query topicsByRating($limit: Int){
+	query topicsByRating($limit: Int) {
 		topShoutsByRating(limit: $limit) {
 			title
 			subtitle
