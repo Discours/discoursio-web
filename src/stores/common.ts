@@ -8,7 +8,7 @@ export enum Locale {
 	EN = 'en',
 }
 
-export const endpoint = writable('https://0.0.0.0:8080')
+export const endpoint = writable('https://build.discours.io/graphql')
 export const api = derived(
 	[endpoint, token],
 	([$endpoint, $token]) =>

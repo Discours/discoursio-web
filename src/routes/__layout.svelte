@@ -10,9 +10,9 @@
 	import { onMount } from 'svelte'
 
 	onMount(async () => {
-		if (window.location.hostname !== 'localhost') {
-			console.log('app: updating graphql endpoint')
-			$endpoint = 'https://' + window.location.host + '/graphql'
+		if (window.location.hostname === 'localhost') {
+			console.log('app: using testing graphql endpoint')
+			$endpoint = 'http://localhost:8080' // testing only
 			console.log($endpoint)
 		}
 		console.debug($api)
