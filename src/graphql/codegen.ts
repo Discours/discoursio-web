@@ -40,6 +40,7 @@ export type Comment = {
 	replyTo: Scalars['Int']
 	shout: Scalars['Int']
 	updatedAt?: Maybe<Scalars['DateTime']>
+	updatedBy?: Maybe<Scalars['Int']>
 	views?: Maybe<Scalars['Int']>
 }
 
@@ -88,6 +89,8 @@ export type Mutation = {
 	rateShout: Result
 	registerUser: AuthResult
 	requestPasswordReset: Scalars['Boolean']
+	topicSubscribe: Result
+	topicUnsubscribe: Result
 	updateMessage: MessageResult
 	updateProfile: Result
 	updateShout: ShoutResult
@@ -133,6 +136,14 @@ export type MutationRequestPasswordResetArgs = {
 	email: Scalars['String']
 }
 
+export type MutationTopicSubscribeArgs = {
+	slug: Scalars['String']
+}
+
+export type MutationTopicUnsubscribeArgs = {
+	slug: Scalars['String']
+}
+
 export type MutationUpdateMessageArgs = {
 	body: Scalars['String']
 	id: Scalars['Int']
@@ -175,20 +186,27 @@ export type Proposal = {
 
 export type Query = {
 	__typename?: 'Query'
-	favoritesShouts: Array<Maybe<Shout>>
+	favoriteShouts: Array<Maybe<Shout>>
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
 	getUserBySlug: UserResult
 	isEmailFree: Result
+	recentShouts: Array<Maybe<Shout>>
+	shoutsByAuthor: Array<Maybe<Shout>>
+	shoutsByCommunity: Array<Maybe<Shout>>
+	shoutsByTopic: Array<Maybe<Shout>>
 	signIn: AuthResult
 	signOut: Result
 	topAuthors: Array<Maybe<User>>
 	topShoutsByRating: Array<Maybe<Shout>>
 	topShoutsByView: Array<Maybe<Shout>>
+	topicsByAuthor: Array<Maybe<Topic>>
+	topicsByCommunity: Array<Maybe<Topic>>
+	topicsBySlugs: Array<Maybe<Topic>>
 }
 
-export type QueryFavoritesShoutsArgs = {
+export type QueryFavoriteShoutsArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 
@@ -209,6 +227,25 @@ export type QueryIsEmailFreeArgs = {
 	email: Scalars['String']
 }
 
+export type QueryRecentShoutsArgs = {
+	limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryShoutsByAuthorArgs = {
+	author: Scalars['String']
+	limit: Scalars['Int']
+}
+
+export type QueryShoutsByCommunityArgs = {
+	community: Scalars['String']
+	limit: Scalars['Int']
+}
+
+export type QueryShoutsByTopicArgs = {
+	limit: Scalars['Int']
+	topic: Scalars['String']
+}
+
 export type QuerySignInArgs = {
 	email: Scalars['String']
 	password?: Maybe<Scalars['String']>
@@ -224,6 +261,18 @@ export type QueryTopShoutsByRatingArgs = {
 
 export type QueryTopShoutsByViewArgs = {
 	limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryTopicsByAuthorArgs = {
+	author: Scalars['String']
+}
+
+export type QueryTopicsByCommunityArgs = {
+	community: Scalars['String']
+}
+
+export type QueryTopicsBySlugsArgs = {
+	slugs: Array<Maybe<Scalars['String']>>
 }
 
 export type Rating = {
@@ -302,6 +351,7 @@ export type Subscription = {
 	messageUpdated: Message
 	onlineUpdated: Array<User>
 	shoutUpdated: Shout
+	topicUpdated: Shout
 	userUpdated: User
 }
 
@@ -318,9 +368,8 @@ export type Token = {
 export type Topic = {
 	__typename?: 'Topic'
 	body?: Maybe<Scalars['String']>
+	cat_id?: Maybe<Scalars['String']>
 	children?: Maybe<Array<Maybe<Scalars['String']>>>
-	createdAt: Scalars['DateTime']
-	createdBy: Scalars['Int']
 	parents?: Maybe<Array<Maybe<Scalars['String']>>>
 	pic?: Maybe<Scalars['String']>
 	slug: Scalars['String']

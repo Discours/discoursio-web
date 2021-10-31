@@ -5,20 +5,12 @@ generates:
  src/graphql/codegen.ts:
   plugins:
    - 'typescript'
-   - 'typescript-operations'
-   # - 'graphql-codegen-svelte-apollo'
+   # - 'typescript-operations'
+   # - 'typescript-graphql-request'
   # clientPath: 'src/graphql/client'
   asyncQuery: true
   scalars:
    DateTime: string
- src/lib/mock-generators.ts:
-  plugins:
-   - typescript-mock-data:
-      typesFile: '../graphql/codegen.ts'
-      enumValues: upper-case#upperCase
-      typenames: keep
-      scalars:
-       DateTime: string
 hooks:
  afterAllFileWrite:
-  - prettier --write
+  - prettier --ignore-path .gitignore --write --plugin-search-dir=. .

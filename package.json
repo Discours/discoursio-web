@@ -22,7 +22,9 @@
 	},
 	"devDependencies": {
 		"@graphql-codegen/cli": "latest",
+		"@graphql-codegen/core": "latest",
 		"@graphql-codegen/typescript": "latest",
+		"@graphql-codegen/typescript-graphql-request": "latest",
 		"@graphql-codegen/typescript-operations": "latest",
 		"@popperjs/core": "^2.10.2",
 		"@sveltejs/adapter-node": "^1.0.0-next.55",
@@ -40,8 +42,6 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-svelte3": "^3.2.1",
 		"graphql": "latest",
-		"graphql-codegen-svelte-apollo": "latest",
-		"graphql-codegen-typescript-mock-data": "^1.8.5",
 		"graphql-request": "^3.6.1",
 		"graphql-scalars": "^1.12.0",
 		"gray-matter": "^4.0.3",

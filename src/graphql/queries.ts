@@ -14,10 +14,10 @@ export const SIGN_IN = gql`
 			error
 			token
 			user {
-			name
-			slug
-			userpic
-			}	
+				name
+				slug
+				userpic
+			}
 		}
 	}
 `
