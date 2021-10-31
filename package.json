@@ -21,11 +21,8 @@
 		"postinstall": "patch-package"
 	},
 	"devDependencies": {
-		"@graphql-codegen/cli": "latest",
-		"@graphql-codegen/core": "latest",
-		"@graphql-codegen/typescript": "latest",
-		"@graphql-codegen/typescript-graphql-request": "latest",
-		"@graphql-codegen/typescript-operations": "latest",
+		"@graphql-codegen/cli": "alpha",
+		"@graphql-codegen/typescript": "^2.3.0",
 		"@popperjs/core": "^2.10.2",
 		"@sveltejs/adapter-node": "^1.0.0-next.55",
 		"@sveltejs/adapter-static": "^1.0.0-next.21",
@@ -37,6 +34,7 @@
 		"@typescript-eslint/eslint-plugin": "^5.2.0",
 		"@typescript-eslint/parser": "^5.2.0",
 		"bootstrap": "^5.1.3",
+		"esbuild": "latest",
 		"eslint": "^8.1.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
