@@ -186,7 +186,8 @@ export type Proposal = {
 
 export type Query = {
 	__typename?: 'Query'
-	favorites: Array<Maybe<Shout>>
+	topMonth: Array<Maybe<Shout>>
+	topOverall: Array<Maybe<Shout>>
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
@@ -206,7 +207,11 @@ export type Query = {
 	topicsBySlugs: Array<Maybe<Topic>>
 }
 
-export type QueryFavoritesArgs = {
+export type QueryTopMonthArgs = {
+	limit?: Maybe<Scalars['Int']>
+}
+
+export type QueryTopOverallArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 

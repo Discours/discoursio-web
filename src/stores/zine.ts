@@ -2,6 +2,10 @@ import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
 import type { Shout, User, Topic, Community } from '../graphql/codegen'
 
+export const topMonth: Writable<Array<Shout | Partial<Shout>>> = writable([])
+export const topOverall: Writable<Array<Shout | Partial<Shout>>> = writable([])
+export const recents: Writable<Array<Shout | Partial<Shout>>> = writable([])
+
 export const authorslist: Writable<Array<User | Partial<User>>> = writable([])
 export const communitieslist: Writable<Array<Community | Partial<Community>>> =
 	writable([])

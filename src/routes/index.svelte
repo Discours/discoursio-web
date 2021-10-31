@@ -10,6 +10,9 @@
 		shouts,
 		shoutslist,
 		communitieslist,
+		topMonth,
+		topOverall,
+		recents,
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -17,9 +20,9 @@
 
 	onMount(async () => {
 		console.log('homepage: getting recent shouts')
-		// const recents = await fetch(`/data/recents.json?${Date.now()}`)
-		const favorites = await fetch(`/data/favorites.json`)
-		$shouts = await favorites.json()
+		$recents = await (await fetch(`/data/recents.json?${Date.now()}`)).json()
+		$topOverall = await (await fetch(`/data/top-overall.json`)).json()
+		$topMonth = await (await fetch(`/data/top-month.json`)).json()
 		$shoutslist = Object.values($shouts).sort()
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})

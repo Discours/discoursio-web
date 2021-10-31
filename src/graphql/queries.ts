@@ -136,9 +136,26 @@ export const RECENT_SHOUTS = gql`
 		}
 	}
 `
-export const FAVORITE_SHOUTS = gql`
+
+export const TOP_OVERALL = gql`
 	query ($limit: Int) {
-		favorites(limit: $limit) {
+		topOverall(limit: $limit) {
+			title
+			subtitle
+			layout
+			cover
+			community
+			topics
+			publishedAt
+			views
+			rating
+		}
+	}
+`
+
+export const TOP_MONTH = gql`
+	query ($limit: Int) {
+		topMonth(limit: $limit) {
 			title
 			subtitle
 			layout
@@ -256,17 +273,3 @@ export const TOPICS_BY_AUTHOR = gql`
 		}
 	}
 `
-/*
-
-type Topic {
-	slug: String! # ID
-	title: String
-	body: String
-	pic: String
-	createdBy: Int! # User
-	createdAt: DateTime!
-	parents: [String] # NOTE: topic can have parent topics
-	children: [String] # and children
-	cat_id: String
-}
-*/
