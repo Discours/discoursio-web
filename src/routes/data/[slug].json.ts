@@ -3,9 +3,8 @@ import { api as graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
 import { GET_SHOUT } from '../../graphql/queries'
 
-const api = getStore(graphql)
-
 export async function get({ params }) {
+	const api = getStore(graphql)
 	return await api.request(GET_SHOUT, { ...params })
 }
 

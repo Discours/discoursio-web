@@ -12,7 +12,10 @@ import node from '@sveltejs/adapter-node'
 import ssr from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
-const { scss, /* typescript, postcss, */ globalStyle } = require('svelte-preprocess')
+const {
+	scss,
+	/* typescript, postcss, */ globalStyle,
+} = require('svelte-preprocess')
 // const { default: windiVite } = require('vite-plugin-windicss')
 
 const ignoreWarns = [
@@ -31,15 +34,15 @@ const scssOptions = {
 	outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
-let articles =  {} // require('./src/data/articles.json')
+let articles = {} // require('./src/data/articles.json')
 let topics = {} // require('./src/data/topics.json')
 let communities = {
-	'discours': {
-		'slug': 'discours',
-		'title': 'Дискурс',
-		'pic': 'https://discours.io/images/logo.svg'
-	}
-} 
+	discours: {
+		slug: 'discours',
+		title: 'Дискурс',
+		pic: 'https://discours.io/images/logo.svg',
+	},
+}
 let authors = {} // require('./src/data/authors.json')
 
 /** @type {import('@sveltejs/kit').Config} */

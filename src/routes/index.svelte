@@ -17,8 +17,9 @@
 
 	onMount(async () => {
 		console.log('homepage: getting recent shouts')
-		const r = await fetch(`/data/posts.json?${Date.now()}`)
-		$shouts = await r.json()
+		// const recents = await fetch(`/data/recents.json?${Date.now()}`)
+		const favorites = await fetch(`/data/favorites.json`)
+		$shouts = await favorites.json()
 		$shoutslist = Object.values($shouts).sort()
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})

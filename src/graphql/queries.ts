@@ -40,7 +40,7 @@ export const SIGN_UP = gql`
 
 // uses Auth header
 export const SIGN_OUT = gql`
-	{
+	query {
 		signOut {
 			error
 			result
@@ -49,7 +49,7 @@ export const SIGN_OUT = gql`
 `
 // uses Auth header
 export const GET_ME = gql`
-	{
+	query {
 		getCurrentUser {
 			error
 			user {
@@ -65,7 +65,7 @@ export const GET_ME = gql`
 
 // TODO: joined with comments, topics, ratings and authors
 export const GET_SHOUT = gql`
-	query {
+	query getShoutBySlug($slug: String!){
 		getShoutBySlug(slug: $slug) {
 			title
 			subtitle
@@ -90,7 +90,7 @@ export const GET_SHOUT = gql`
 ` // TODO: fix views as sum for all days by shout_id
 
 export const GET_AUTHOR = gql`
-	query {
+	query getUserBySlug($slug: String!) {
 		getUserBySlug(slug: $slug) {
 			slug
 			name
@@ -122,7 +122,23 @@ export const GET_COMMUNITIES = gql`
 `
 
 export const RECENT_SHOUTS = gql`
-		recentShouts(limit: $limit) {
+	query ($limit: Int) {
+		recents(limit: $limit) {
+			title
+			subtitle
+			layout
+			cover
+			community
+			topics
+			publishedAt
+			views
+			rating
+		}
+	}
+`
+export const FAVORITE_SHOUTS = gql`
+	query ($limit: Int) {
+		favorites(limit: $limit) {
 			title
 			subtitle
 			layout
@@ -137,6 +153,7 @@ export const RECENT_SHOUTS = gql`
 `
 
 export const SHOUTS_BY_COMMUNITY = gql`
+	query shoutsByCommunity ($community: String!, $limit: Int) {
 		shoutsByCommunity(community: $community, limit: $limit) {
 			title
 			subtitle
@@ -152,6 +169,7 @@ export const SHOUTS_BY_COMMUNITY = gql`
 `
 
 export const SHOUTS_BY_AUTHOR = gql`
+	query shoutsByAuthor($author: Int!, $limit: Int) {
 		shoutsByAuthor(author: $author, limit: $limit) {
 			title
 			subtitle
@@ -167,6 +185,7 @@ export const SHOUTS_BY_AUTHOR = gql`
 `
 
 export const SHOUTS_BY_TOPIC = gql`
+	query shoutsByTopic($topic: String!, $limit: Int) {
 		shoutsByTopic(topic: $topic, limit: $limit) {
 			title
 			subtitle
@@ -182,6 +201,7 @@ export const SHOUTS_BY_TOPIC = gql`
 `
 
 export const SHOUTS_BY_RATING = gql`
+	query topicsByRating($limit: Int){
 		topShoutsByRating(limit: $limit) {
 			title
 			subtitle

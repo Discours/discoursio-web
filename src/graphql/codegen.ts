@@ -186,13 +186,13 @@ export type Proposal = {
 
 export type Query = {
 	__typename?: 'Query'
-	favoriteShouts: Array<Maybe<Shout>>
+	favorites: Array<Maybe<Shout>>
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
 	getUserBySlug: UserResult
 	isEmailFree: Result
-	recentShouts: Array<Maybe<Shout>>
+	recents: Array<Maybe<Shout>>
 	shoutsByAuthor: Array<Maybe<Shout>>
 	shoutsByCommunity: Array<Maybe<Shout>>
 	shoutsByTopic: Array<Maybe<Shout>>
@@ -206,7 +206,7 @@ export type Query = {
 	topicsBySlugs: Array<Maybe<Topic>>
 }
 
-export type QueryFavoriteShoutsArgs = {
+export type QueryFavoritesArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 
@@ -227,7 +227,7 @@ export type QueryIsEmailFreeArgs = {
 	email: Scalars['String']
 }
 
-export type QueryRecentShoutsArgs = {
+export type QueryRecentsArgs = {
 	limit?: Maybe<Scalars['Int']>
 }
 

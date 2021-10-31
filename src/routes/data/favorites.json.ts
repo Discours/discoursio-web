@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { api as graphql } from '../../stores/common'
 import { get as getStore } from 'svelte/store'
-import { GET_COMMUNITIES } from '../../graphql/queries'
+import { FAVORITE_SHOUTS } from '../../graphql/queries'
 
-export async function get() {
+export const get = async () => {
 	const api = getStore(graphql)
-	return await api.request(GET_COMMUNITIES)
+	return await api.request(FAVORITE_SHOUTS, { limit: 100 })
 }
