@@ -35,12 +35,14 @@ export const roles: Readable<Role[]> = derived([session], ([$session]) => {
 })
 
 // ui form needs
-export const auth: Writable<{
+export const ui: Writable<{
 	email: string
 	password: string
 	remember: boolean
+	showing: boolean
 }> = writable({
 	email: '',
 	password: '',
 	remember: false,
+	showing: false
 })

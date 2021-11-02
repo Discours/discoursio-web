@@ -1,34 +1,61 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
 	import { api } from '../stores/common'
 	import AuthFacebook from '../components/AuthFacebook.svelte'
 	import AuthVk from '../components/AuthVk.svelte'
 	import AuthGoogle from '../components/AuthGoogle.svelte'
-	import { auth, GOOGLE_APP_ID } from '../stores/auth'
-	import { fade } from 'svelte/transition'
+	import {
+		session,
+		ui,
+		GOOGLE_APP_ID,
+		token as tokenStore,
+	} from '../stores/auth'
 	import { onMount } from 'svelte'
+	import { fade } from 'svelte/transition'
 
 	export let mode = 'login'
 	export let code = ''
+	export let warnings = []
 	let password2 = ''
-	let emailInput
+	let warnTimeout
+
+	const authSuccess = ({ token, user }) => {
+		if (token) {
+			$tokenStore = token
+			$session = user
+			$ui.showing = false
+		} else {
+			warnings.push('Ошибка авторизации')
+		}
+	}
+
+	const authFailure = ({ error }) => {
+		warnings.push(error)
+		warnTimeout = setTimeout(
+			() => (warnings = warnings.filter((w) => w !== error)),
+			4200
+		)
+	}
 
 	const login = async () => {
 		console.log('auth: signing in with discours.io account')
-		let q = await $api.request(SIGN_IN, {
-			email: $auth.email,
-			password: $auth.password,
+		const q = await $api.request(SIGN_IN, {
+			email: $ui.email,
+			password: $ui.password,
 		})
-		console.debug(q)
+		const r = await q.json()
+		if (r.get('error')) authFailure(r)
+		else authSuccess(r)
 	}
 
 	const register = async () => {
 		console.log('auth: register with discours.io account ')
-		let q = await $api.request(SIGN_UP, {
-			email: $auth.email,
-			password: $auth.password,
+		const q = await $api.request(SIGN_UP, {
+			email: $ui.email,
+			password: $ui.password,
 		})
-		console.debug(q)
+		authSuccess(await q.json())
 	}
 
 	const forget = async () => {
@@ -48,14 +75,14 @@
 	}
 
 	const renew = () => {
-		if (password2 === $auth.password) {
+		if (password2 === $ui.password) {
 			console.log('auth: renewing password')
 		}
 		// TODO: implement me
 	}
 
 	const providerSuccess = (e) => {
-		console.dir(e.detail.user)
+		console.debug(e)
 		// TODO: implement me
 	}
 
@@ -64,14 +91,8 @@
 		// TODO: implement me
 	}
 
-	onMount(() => {
-		if (code) {
-			reset()
-		}
-	})
+	onMount(() => $page.query.get('code') && reset())
 </script>
-
-<svelte:head><title>Дискурс : Авторизация</title></svelte:head>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="row view" class:view--registration={mode === 'register'}>
@@ -107,7 +128,7 @@
 				{:else if mode === 'forget'}
 					Забыли пароль?
 				{:else if mode === 'reset'}
-					Введите секретный код восстановления пароля
+					Подтвердите почту и действие совершится
 				{:else if mode === 'password'}
 					Введите новый пароль
 				{/if}
@@ -118,24 +139,30 @@
 					Ничего страшного, просто укажите свою почту, чтобы получить ссылку для
 					сброса пароля.
 				{:else if mode === 'reset'}
-					Введите код из письма или пройдите по ссылке для подтверждения.
+					Введите код из письма или пройдите по ссылке в письме для подтверждения
+					регистрации
 				{/if}
+			</div>
+
+			<div class="auth-warnings" style="color: tomato;" transition:fade>
+				{#each warnings as warn}
+					<p>{warn}</p>
+				{/each}
 			</div>
 
 			{#if mode !== 'reset' && mode !== 'password'}
 				<input
 					autocomplete="username"
-					bind:value={$auth.email}
-					bind:this={emailInput}
+					bind:value={$ui.email}
 					type="text"
-					placeholder="Ваша почта"
+					placeholder="Почта"
 				/>
 			{/if}
 
 			{#if mode === 'register' || mode === 'login'}
 				<input
 					autocomplete="current-password"
-					bind:value={$auth.password}
+					bind:value={$ui.password}
 					type="password"
 					placeholder="Пароль"
 				/>
@@ -143,7 +170,7 @@
 				<input bind:value={code} type="text" placeholder="Код восстановления" />
 			{:else if mode === 'password'}
 				<input
-					bind:value={$auth.password}
+					bind:value={$ui.password}
 					type="password"
 					placeholder="Новый пароль"
 				/>
@@ -165,7 +192,7 @@
 				>
 					{(mode === 'register' && 'Создать аккаунт') ||
 						(mode === 'login' && 'Войти') ||
-						(mode === 'forget' && 'Восстановить пароль') ||
+						(mode === 'forget' && 'Выслать пароль') ||
 						(mode === 'reset' && ' Подтвердить') ||
 						(mode === 'password' && 'Создать новый пароль')}
 				</button>
@@ -450,5 +477,11 @@
 	.auth-subtitle {
 		@include font-size(1.5rem);
 		margin: 1em;
+	}
+
+	.auth-warnings {
+		color: #a00;
+		font-weight: 400;
+		font-size: smaller;
 	}
 </style>
