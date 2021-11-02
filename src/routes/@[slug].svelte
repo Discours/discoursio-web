@@ -5,51 +5,44 @@
 
 	export const prerender = true
 
-	interface WhoProps {
-		user?: User | Partial<User>
-		slug: string
-	}
-
 	export const load: Load = async ({
 		page,
 		fetch,
 		session,
 		stuff,
-	}): Promise<{ props: WhoProps | Partial<WhoProps> }> => {
-		if (browser) {
-			return { props: page.params }
-		} else {
+	}): Promise<any> => {
+		if (!browser) {
 			const { slug } = page.params
 			const r = await fetch(`/data/@${slug}.json`)
-			return { props: { user: await r.json(), slug } }
+			const data = await r.json()
+			if (r.status === 200) return { user: data, slug }
+			else console.error(r.status, data.message)
 		}
+		return page.params
 	}
 </script>
 
 <script lang="ts">
-	import Author from '../components/Author.svelte'
-	import CommunityView from '../components/Community.svelte'
+	import UserCard from '../components/UserCard.svelte'
+	import UserCommunity from '../components/UserCommunity.svelte'
 	import { communities, authors } from '../stores/zine'
 
-	export let props: WhoProps
-	let author: User | Partial<User>
-	let community: Community | Partial<Community>
-	let slug = ''
+	export let slug: string
+	export let user: User | Partial<User>
+	export let community: Community | Partial<Community>
 
-	$: if ($communities && $authors && props.slug) {
-		slug = props.slug
-		community = <Community>$communities[slug]
-		if (!community && props.user) author = props?.user
-		if (!author) author = <User>$authors[slug]
+	$: if ($communities && $authors && slug) {
+		community = $communities[slug]
+		user = community ? null : <User>$authors[slug]
 	}
 </script>
 
 <svelte:head>
-	<title>Дискурс : {props.user ? props.user.name : slug}</title>
+	<title>Дискурс : {community ? community.name : user ? user.name : slug}</title>
 </svelte:head>
 
-{#if author}
-	<Author {author} hasSubscribeButton={true} />
+{#if user}
+	<UserCard {user} hasSubscribeButton={true} />
 {:else}
-	<CommunityView {slug} />
+	<UserCommunity {slug} />
 {/if}

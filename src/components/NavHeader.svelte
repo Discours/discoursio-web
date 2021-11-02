@@ -1,8 +1,8 @@
 <script>
-	import Icon from './Icon.svelte'
+	import Icon from './DiscoursIcon.svelte'
 	import Userpic from './Userpic.svelte'
 	import Auth from './Auth.svelte'
-	import { token, session } from '../stores/auth'
+	import { token, session, ui } from '../stores/auth'
 	import { getLocalization } from '../i18n'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -11,7 +11,6 @@
 
 	let res = ''
 	let newMessages = 0 // FIXME: get with query
-	let showingAuth = false
 
 	onMount(() => (res = window.location.pathname))
 
@@ -30,7 +29,7 @@
 		},
 	]
 	const toggleLogin = () => {
-		showingAuth = !showingAuth
+		$ui.showing = !$ui.showing
 	}
 
 	const showNotifications = () => {
@@ -42,13 +41,13 @@
 			(ev.target && ev.target.classList.contains('modalwrap')) ||
 			ev.target.classList.contains('close-control')
 		)
-			showingAuth = false
+			$ui.showing = false
 	}
 </script>
 
 <svelte:window
 	on:keydown={(e) => {
-		if (e.key === 'Escape') showingAuth = false
+		if (e.key === 'Escape') $ui.showing = false
 	}}
 />
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -102,7 +101,7 @@
 		{/if}
 	</nav>
 
-	{#if showingAuth}
+	{#if $ui.showing}
 		<div class="modalwrap" transition:fade on:click|preventDefault={closeModal}>
 			<Auth />
 		</div>

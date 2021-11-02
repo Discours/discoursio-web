@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
-	import Author from '../components/Author.svelte'
-	import Community from '../components/Community.svelte'
+	import UserCard from '../components/UserCard.svelte'
+	import UserCommunity from '../components/UserCommunity.svelte'
 	import {
 		comments,
 		authors,
@@ -155,8 +155,8 @@
 			<div class="col-md-4">
 				<h4>Авторы месяца</h4>
 
-				{#each topAuthors().slice(0, 4) as author}
-					<Author {author} hasSubscribeButton={true} />
+				{#each topAuthors().slice(0, 4) as user}
+					<UserCard {user} hasSubscribeButton={true} />
 				{/each}
 
 				<button class="button">Еще авторы</button>
@@ -191,7 +191,7 @@
 			<div class="col-md-4">
 				<h4>Популярные сообщества</h4>
 				{#each $communitieslist as community}
-					<Community slug={community['slug']} />
+					<UserCommunity slug={community['slug']} />
 				{/each}
 			</div>
 			<div class="col-md-8">

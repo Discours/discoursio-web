@@ -1,5 +1,5 @@
 <script>
-	import Icon from './Icon.svelte'
+	import Icon from './DiscoursIcon.svelte'
 	import { onMount } from 'svelte'
 
 	export let clientId

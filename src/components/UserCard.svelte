@@ -2,21 +2,21 @@
 	import type { User } from '../graphql/codegen'
 	import Userpic from './Userpic.svelte'
 
-	export let author: User | Partial<User>
+	export let user: User | Partial<User>
 	export let hasSubscribeButton
 </script>
 
 <div class="author">
-	{#if author}
-		<Userpic {author} />
+	{#if user}
+		<Userpic {user} />
 
 		<div class="author__details">
 			<div class="author__name text-3xl text-2xl">
-				<a href="/@{author.slug}">{author.name}</a>
+				<a href="/@{user.slug}">{user.name}</a>
 			</div>
 
-			{#if author.bio}
-				<div class="author__about">{author.bio}</div>
+			{#if user.bio}
+				<div class="author__about">{user.bio}</div>
 			{/if}
 		</div>
 

@@ -1,7 +1,7 @@
 <script>
 	import { createEventDispatcher, onMount } from 'svelte'
 	import loader from '../lib/asyncloader'
-	import Icon from './Icon.svelte'
+	import Icon from './DiscoursIcon.svelte'
 
 	const dispatch = createEventDispatcher()
 

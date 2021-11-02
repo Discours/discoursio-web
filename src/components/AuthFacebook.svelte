@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Icon from './Icon.svelte'
+	import Icon from './DiscoursIcon.svelte'
 	import { onMount, createEventDispatcher } from 'svelte'
 	import loader from '../lib/asyncloader'
 	import { FACEBOOK_APP_ID } from '../stores/auth'

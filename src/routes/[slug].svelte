@@ -32,7 +32,7 @@
 <script lang="ts">
 	import type { Topic } from '../graphql/codegen'
 	import { shouts, topics } from '../stores/zine'
-	import TopicView from '../components/Topic.svelte'
+	import TopicView from '../components/TopicCard.svelte'
 	import { page } from '$app/stores'
 	import MD from 'markdown-it'
 	// import hl from 'markdown-it-highlight'
@@ -40,7 +40,7 @@
 	import mark from 'markdown-it-mark'
 	import implicit from 'markdown-it-implicit-figures'
 	import mdcustom from 'markdown-it-container'
-	import Author from '../components/Author.svelte'
+	import UserCard from '../components/UserCard.svelte'
 
 	const mit = MD()
 	mit.use(mdanch)
@@ -105,9 +105,9 @@
 			<div class="shout__authors-list">
 				<h4>Авторы</h4>
 
-				{#each shout.authors as author, index}
+				{#each shout.authors as user, index}
 					{#if index > 0},{/if}
-					<Author {author} hasSubscribeButton={false} />
+					<UserCard {user} hasSubscribeButton={false} />
 				{/each}
 			</div>
 		</article>

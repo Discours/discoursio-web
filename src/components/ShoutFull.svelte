@@ -4,7 +4,7 @@
 	// import { authors } from '../stores/zine'
 	import ShoutComment from '../components/ShoutComment.svelte'
 	import MD from 'markdown-it'
-	import Author from './Author.svelte'
+	import Author from './UserCard.svelte'
 	import Userpic from './Userpic.svelte'
 	const mit = MD()
 
@@ -62,9 +62,9 @@
 			{@html body}
 		</div>
 		<div class="shout-controls">
-			{#each shout.authors as author}
+			{#each shout.authors as user}
 				<div class="shout-author">
-					<a href={`/@${author.slug}`}><Userpic {author} />{author.name}</a>
+					<a href={`/@${user.slug}`}><Userpic {user} />{user.name}</a>
 				</div>
 			{/each}
 			<div class="shout-rating">

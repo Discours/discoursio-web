@@ -2,19 +2,19 @@
 	// import { session } from '../stores/auth'
 	import type { User } from '../graphql/codegen'
 
-	export let author: User | Partial<User>
+	export let user: User | Partial<User>
 
 	const letters = () => {
-		const names = author.name.split(' ')
+		const names = user.name.split(' ')
 		return names[0][0] + (names.length > 1 ? names[1][0] : '')
 	}
 </script>
 
 <div class="circlewrap">
-	{#if author && author.userpic === ''}
+	{#if user && user.userpic === ''}
 		<div class="userpic">{letters()}</div>
 	{:else}
-		<img src={author.userpic} alt={author.name} />
+		<img src={user.userpic} alt={user.name} />
 	{/if}
 </div>
 
