@@ -78,7 +78,7 @@ const config = {
 				include: ['yjs', 'y-indexeddb', 'y-webrtc'],
 			},
 			ssr: {
-				external: ['w3c-keyname'],
+				external: ['y-prosemirror', 'w3c-keyname'],
 				noExternal: Object.keys(pkg.dependencies || {}),
 			},
 		},
