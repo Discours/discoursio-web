@@ -1,3 +1,7 @@
+[0.0.8]
+[+] isolated editor codebase
+[+] sveo
+
 [0.0.7]
 [+] nav refactoring /[what] /@[who]
 [+] /reset/[code], /reset/password

@@ -68,23 +68,26 @@ const config = {
 			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
 		],
 	},
-	compilerOptions: { cssHash: ({ hash, css }) => 's' + hash(css) },
+	compilerOptions: {
+		enableSourcemap: true,
+		cssHash: ({ hash, css }) => 's' + hash(css),
+	},
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
 		vite: {
 			// plugins: [windiVite({})],
-			optimizeDeps: {
-				include: ['yjs', 'y-indexeddb', 'y-webrtc'],
-			},
 			ssr: {
-				external: ['y-prosemirror', 'w3c-keyname'],
+				external: ['w3c-keyname'],
 				noExternal: Object.keys(pkg.dependencies || {}),
-			},
+			}
 		},
 	},
 	skipIntroByDefault: true,
 	target: '#svelte',
+	experimental: {
+		prebundleSvelteLibraries: true,
+	},
 }
 
 export default config
