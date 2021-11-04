@@ -128,6 +128,11 @@ export const RECENT_SHOUTS = gql`
 			subtitle
 			layout
 			cover
+			author {
+				name
+				slug
+				userpic
+			}
 			community
 			topics
 			publishedAt
@@ -146,6 +151,11 @@ export const TOP_OVERALL = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
@@ -162,6 +172,11 @@ export const TOP_MONTH = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
@@ -178,6 +193,11 @@ export const SHOUTS_BY_COMMUNITY = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
@@ -194,6 +214,11 @@ export const SHOUTS_BY_AUTHOR = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
@@ -210,6 +235,11 @@ export const SHOUTS_BY_TOPIC = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
@@ -226,6 +256,11 @@ export const SHOUTS_BY_RATING = gql`
 			cover
 			community
 			topics
+			author {
+				name
+				slug
+				userpic
+			}
 			publishedAt
 			views
 			rating
