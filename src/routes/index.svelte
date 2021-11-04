@@ -22,9 +22,10 @@
 
 	onMount(async () => {
 		console.log('homepage: getting mainpage shouts')
-		$recents = await (await $api.request(RECENT_SHOUTS, { limit: 100 })).json()
-		$topOverall = await (await fetch(`/data/top-overall.json`)).json()
-		$topMonth = await (await fetch(`/data/top-month.json`)).json()
+		$recents = await $api.request(RECENT_SHOUTS, { limit: 100 })
+		console.log($recents)
+		//$topOverall = await (await fetch(`/data/top-overall.json`)).json()
+		//$topMonth = await (await fetch(`/data/top-month.json`)).json()
 		$shouts = $recents
 		$shoutslist = Object.values($shouts).sort()
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
