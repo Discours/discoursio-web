@@ -9,7 +9,7 @@
 		page,
 		fetch,
 		session,
-		stuff,
+		stuff
 	}): Promise<any> => {
 		if (!browser) {
 			const { slug } = page.params

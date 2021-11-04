@@ -3,7 +3,7 @@ module.exports = {
 	env: {
 		es6: true,
 		node: true,
-		browser: true,
+		browser: true
 	},
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
@@ -11,38 +11,38 @@ module.exports = {
 		extraFileExtensions: ['.svelte'],
 		createDefaultProgram: true,
 		ecmaVersion: 2021,
-		sourceType: 'module',
+		sourceType: 'module'
 	},
 	extends: [
 		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
+		'plugin:@typescript-eslint/recommended'
 		// 'plugin:@typescript-eslint/recommended-requiring-type-checking'
 	],
 	plugins: ['svelte3', '@typescript-eslint', 'prettier'],
 	overrides: [
 		{
 			files: ['*.svelte'],
-			processor: 'svelte3/svelte3',
+			processor: 'svelte3/svelte3'
 		},
 		{
 			files: ['*.ts'],
 			extends: [
 				'plugin:@typescript-eslint/recommended',
-				'plugin:prettier/recommended',
-			],
+				'plugin:prettier/recommended'
+			]
 		},
 		{
 			files: ['*.js'],
 			rules: {
-				'@typescript-eslint/no-var-requires': 'off',
-			},
-		},
+				'@typescript-eslint/no-var-requires': 'off'
+			}
+		}
 	],
 	settings: {
 		'svelte3/typescript': true,
-		'svelte3/ignore-styles': () => true,
+		'svelte3/ignore-styles': () => true
 	},
 	rules: {
-		'no-unused-vars': 'off',
-	},
+		'no-unused-vars': 'off'
+	}
 }

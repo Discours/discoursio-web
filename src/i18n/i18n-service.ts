@@ -29,8 +29,8 @@ export class I18nService {
 			fallbackNS: 'common',
 			resources: translations as Resource,
 			interpolation: {
-				escapeValue: false,
-			},
+				escapeValue: false
+			}
 		})
 	}
 

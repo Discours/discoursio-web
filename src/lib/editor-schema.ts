@@ -19,7 +19,7 @@ const calcYchangeDomAttrs = (attrs, domAttrs: any = {}) => {
 export const nodes: SchemaSpec['nodes'] = {
 	// :: NodeSpec The top level document node.
 	doc: {
-		content: 'block+',
+		content: 'block+'
 	},
 
 	// :: NodeSpec A plain paragraph textblock. Represented in the DOM
@@ -31,7 +31,7 @@ export const nodes: SchemaSpec['nodes'] = {
 		parseDOM: [{ tag: 'p' }],
 		toDOM(node) {
 			return ['p', calcYchangeDomAttrs(node.attrs), 0]
-		},
+		}
 	},
 
 	// :: NodeSpec A blockquote (`<blockquote>`) wrapping one or more blocks.
@@ -43,7 +43,7 @@ export const nodes: SchemaSpec['nodes'] = {
 		parseDOM: [{ tag: 'blockquote' }],
 		toDOM(node) {
 			return ['blockquote', calcYchangeDomAttrs(node.attrs), 0]
-		},
+		}
 	},
 
 	// :: NodeSpec A horizontal rule (`<hr>`).
@@ -53,7 +53,7 @@ export const nodes: SchemaSpec['nodes'] = {
 		parseDOM: [{ tag: 'hr' }],
 		toDOM(node) {
 			return ['hr', calcYchangeDomAttrs(node.attrs)]
-		},
+		}
 	},
 
 	// :: NodeSpec A heading textblock, with a `level` attribute that
@@ -62,7 +62,7 @@ export const nodes: SchemaSpec['nodes'] = {
 	heading: {
 		attrs: {
 			level: { default: 1 },
-			ychange: { default: null },
+			ychange: { default: null }
 		},
 		content: 'inline*',
 		group: 'block',
@@ -73,11 +73,11 @@ export const nodes: SchemaSpec['nodes'] = {
 			{ tag: 'h3', attrs: { level: 3 } },
 			{ tag: 'h4', attrs: { level: 4 } },
 			{ tag: 'h5', attrs: { level: 5 } },
-			{ tag: 'h6', attrs: { level: 6 } },
+			{ tag: 'h6', attrs: { level: 6 } }
 		],
 		toDOM(node) {
 			return ['h' + node.attrs.level, calcYchangeDomAttrs(node.attrs), 0]
-		},
+		}
 	},
 
 	// :: NodeSpec A code listing. Disallows marks or non-text inline
@@ -93,12 +93,12 @@ export const nodes: SchemaSpec['nodes'] = {
 		parseDOM: [{ tag: 'pre', preserveWhitespace: 'full' }],
 		toDOM(node) {
 			return ['pre', calcYchangeDomAttrs(node.attrs), ['code', 0]]
-		},
+		}
 	},
 
 	// :: NodeSpec The text node.
 	text: {
-		group: 'inline',
+		group: 'inline'
 	},
 
 	// :: NodeSpec An inline image (`<img>`) node. Supports `src`,
@@ -110,7 +110,7 @@ export const nodes: SchemaSpec['nodes'] = {
 			ychange: { default: null },
 			src: {},
 			alt: { default: null },
-			title: { default: null },
+			title: { default: null }
 		},
 		group: 'inline',
 		draggable: true,
@@ -121,19 +121,19 @@ export const nodes: SchemaSpec['nodes'] = {
 					return {
 						src: dom.getAttribute('src'),
 						title: dom.getAttribute('title'),
-						alt: dom.getAttribute('alt'),
+						alt: dom.getAttribute('alt')
 					}
-				},
-			},
+				}
+			}
 		],
 		toDOM(node) {
 			const domAttrs = {
 				src: node.attrs.src,
 				title: node.attrs.title,
-				alt: node.attrs.alt,
+				alt: node.attrs.alt
 			}
 			return ['img', calcYchangeDomAttrs(node.attrs, domAttrs)]
-		},
+		}
 	},
 
 	// :: NodeSpec A hard line break, represented in the DOM as `<br>`.
@@ -144,8 +144,8 @@ export const nodes: SchemaSpec['nodes'] = {
 		parseDOM: [{ tag: 'br' }],
 		toDOM() {
 			return brDOM
-		},
-	},
+		}
+	}
 }
 
 const emDOM = ['em', 0]
@@ -160,7 +160,7 @@ export const marks: Partial<SchemaSpec['marks']> = {
 	link: {
 		attrs: {
 			href: {},
-			title: { default: null },
+			title: { default: null }
 		},
 		inclusive: false,
 		parseDOM: [
@@ -169,14 +169,14 @@ export const marks: Partial<SchemaSpec['marks']> = {
 				getAttrs(dom: HTMLElement) {
 					return {
 						href: dom.getAttribute('href'),
-						title: dom.getAttribute('title'),
+						title: dom.getAttribute('title')
 					}
-				},
-			},
+				}
+			}
 		],
 		toDOM(node) {
 			return ['a', node.attrs, 0]
-		},
+		}
 	},
 
 	// :: MarkSpec An emphasis mark. Rendered as an `<em>` element.
@@ -185,7 +185,7 @@ export const marks: Partial<SchemaSpec['marks']> = {
 		parseDOM: [{ tag: 'i' }, { tag: 'em' }, { style: 'font-style=italic' }],
 		toDOM() {
 			return emDOM
-		},
+		}
 	},
 
 	// :: MarkSpec A strong mark. Rendered as `<strong>`, parse rules
@@ -198,17 +198,16 @@ export const marks: Partial<SchemaSpec['marks']> = {
 			// tags with a font-weight normal.
 			{
 				tag: 'b',
-				getAttrs: (node: HTMLElement) => node.style.fontWeight !== 'normal' && null,
+				getAttrs: (node: HTMLElement) => node.style.fontWeight !== 'normal' && null
 			},
 			{
 				style: 'font-weight',
-				getAttrs: (value: string) =>
-					/^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
-			},
+				getAttrs: (value: string) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null
+			}
 		],
 		toDOM() {
 			return strongDOM
-		},
+		}
 	},
 
 	// :: MarkSpec Code font mark. Represented as a `<code>` element.
@@ -216,12 +215,12 @@ export const marks: Partial<SchemaSpec['marks']> = {
 		parseDOM: [{ tag: 'code' }],
 		toDOM() {
 			return codeDOM
-		},
+		}
 	},
 	ychange: {
 		attrs: {
 			user: { default: null },
-			state: { default: null },
+			state: { default: null }
 		},
 		inclusive: false,
 		parseDOM: [{ tag: 'ychange' }],
@@ -229,10 +228,10 @@ export const marks: Partial<SchemaSpec['marks']> = {
 			return [
 				'ychange',
 				{ ychange_user: node.attrs.user, ychange_state: node.attrs.state },
-				0,
+				0
 			]
-		},
-	},
+		}
+	}
 }
 
 // :: Schema

@@ -12,17 +12,18 @@
 		communitieslist,
 		topMonth,
 		topOverall,
-		recents,
+		recents
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 
 	onMount(async () => {
-		console.log('homepage: getting recent shouts')
+		console.log('homepage: getting mainpage shouts')
 		$recents = await (await fetch(`/data/recents.json?${Date.now()}`)).json()
 		$topOverall = await (await fetch(`/data/top-overall.json`)).json()
 		$topMonth = await (await fetch(`/data/top-month.json`)).json()
+		$shouts = $recents
 		$shoutslist = Object.values($shouts).sort()
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})

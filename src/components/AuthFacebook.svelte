@@ -30,7 +30,7 @@
 			appId: FACEBOOK_APP_ID,
 			cookie: true,
 			xfbml: false,
-			version,
+			version
 		})
 		disabled = false
 	}
@@ -46,7 +46,7 @@
 
 					dispatch('auth-success', {
 						accessToken,
-						userId,
+						userId
 					})
 				} else {
 					dispatch('auth-info', { response })

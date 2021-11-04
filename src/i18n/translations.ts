@@ -8,8 +8,8 @@ export default {
 			enter: 'enter',
 			create: 'create',
 			search: 'search',
-			community: 'community',
-		},
+			community: 'community'
+		}
 	},
 	ru: {
 		common: {
@@ -20,7 +20,7 @@ export default {
 			enter: 'войти',
 			create: 'создать',
 			search: 'искать',
-			community: 'сообщество',
-		},
-	},
+			community: 'сообщество'
+		}
+	}
 }

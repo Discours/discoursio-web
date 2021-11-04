@@ -9,14 +9,16 @@
 		session,
 		ui,
 		GOOGLE_APP_ID,
-		token as tokenStore,
+		token as tokenStore
 	} from '../stores/auth'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 
+	const prefix = 'Ошибка сервера: '
+
 	export let mode = 'login'
 	export let code = ''
-	export let warnings = []
+	export let warnings = ['']
 	let password2 = ''
 	let warnTimeout
 
@@ -31,29 +33,35 @@
 	}
 
 	const authFailure = ({ error }) => {
-		warnings.push(error)
+		warnings.push(prefix + error)
 		warnTimeout = setTimeout(
-			() => (warnings = warnings.filter((w) => w !== error)),
+			() => (warnings = warnings.filter((w) => w !== prefix + error)),
 			4200
 		)
 	}
 
 	const login = async () => {
 		console.log('auth: signing in with discours.io account')
-		const q = await $api.request(SIGN_IN, {
-			email: $ui.email,
-			password: $ui.password,
-		})
-		const r = await q.json()
-		if (r.get('error')) authFailure(r)
-		else authSuccess(r)
+		try {
+			const q = await $api.request(SIGN_IN, {
+				email: $ui.email,
+				password: $ui.password
+			})
+			console.log('queried')
+			const r = await q.json()
+			if (r.get('error')) authFailure(r)
+			else authSuccess(r)
+		} catch (error) {
+			console.error(error)
+			authFailure({ error: 'попробуйте ещё раз' })
+		}
 	}
 
 	const register = async () => {
 		console.log('auth: register with discours.io account ')
 		const q = await $api.request(SIGN_UP, {
 			email: $ui.email,
-			password: $ui.password,
+			password: $ui.password
 		})
 		authSuccess(await q.json())
 	}
@@ -144,7 +152,7 @@
 				{/if}
 			</div>
 
-			<div class="auth-warnings" style="color: tomato;" transition:fade>
+			<div class="auth-warnings" style="color: red;" transition:fade>
 				{#each warnings as warn}
 					<p>{warn}</p>
 				{/each}

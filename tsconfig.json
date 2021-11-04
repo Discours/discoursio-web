@@ -10,6 +10,6 @@
 		"types": ["svelte", "node"]
 	},
 	"extends": "@tsconfig/svelte/tsconfig.json",
-	"exclude": [ "node_modules/*", "public/*", "*.cjs" ],
+	"exclude": ["node_modules/*", "public/*", "*.cjs"],
 	"include": ["src/**/*.d.ts", "src/**/*.js", "src/**/*.ts", "src/**/*.svelte"]
 }

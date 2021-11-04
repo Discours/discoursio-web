@@ -12,7 +12,7 @@
 		;[
 			...Object.values($recents),
 			...Object.values($topMonth),
-			...Object.values($topOverall),
+			...Object.values($topOverall)
 		].forEach(
 			(s: Partial<Shout>) => s.topics.includes(topic.slug) && shouts.push(s)
 		)

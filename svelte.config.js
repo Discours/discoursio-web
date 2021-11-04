@@ -19,7 +19,7 @@ const { scss, globalStyle } = require('svelte-preprocess')
 const ignoreWarns = [
 	'a11y-distracting-elements',
 	'a11y-missing-attribute',
-	'css-unused-selector',
+	'css-unused-selector'
 ]
 
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
@@ -29,7 +29,7 @@ const scssOptions = {
 	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
 	prependData: `@import 'src/styles/_imports.scss';`,
 	renderSync: true, // renderSync is faster for Dart Sass which
-	outputStyle: 'expanded', // Dart Sass recognizes 'expanded' and 'compressed'
+	outputStyle: 'expanded' // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
 let articles = {} // require('./src/data/articles.json')
@@ -38,8 +38,8 @@ let communities = {
 	discours: {
 		slug: 'discours',
 		title: 'Дискурс',
-		pic: 'https://discours.io/images/logo.svg',
-	},
+		pic: 'https://discours.io/images/logo.svg'
+	}
 }
 let authors = {} // require('./src/data/authors.json')
 
@@ -52,7 +52,7 @@ const config = {
 		scss(scssOptions, { name: 'scss' }),
 		// windiSvelte({}),
 		// postcss(postcssConfig, { name: 'postcss' }),
-		globalStyle(),
+		globalStyle()
 		// mdsvex(),
 	],
 	prerender: {
@@ -65,12 +65,12 @@ const config = {
 			...Object.keys(articles).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
 			...Object.keys(topics).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
 			...Object.keys(communities).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
-			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
-		],
+			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, '')
+		]
 	},
 	compilerOptions: {
 		enableSourcemap: true,
-		cssHash: ({ hash, css }) => 's' + hash(css),
+		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
@@ -79,15 +79,15 @@ const config = {
 			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],
-				noExternal: Object.keys(pkg.dependencies || {}),
+				noExternal: Object.keys(pkg.dependencies || {})
 			}
-		},
+		}
 	},
 	skipIntroByDefault: true,
 	target: '#svelte',
 	experimental: {
-		prebundleSvelteLibraries: true,
-	},
+		prebundleSvelteLibraries: true
+	}
 }
 
 export default config

@@ -17,16 +17,16 @@
 	const MAIN_NAVIGATION = [
 		{
 			title: 'журнал', // популярное/рекомендованное
-			href: '/',
+			href: '/'
 		},
 		{
 			title: 'лента', // актуальное
-			href: '/feed',
+			href: '/feed'
 		},
 		{
 			title: 'создать публикацию',
-			href: '/create',
-		},
+			href: '/create'
+		}
 	]
 	const toggleLogin = () => {
 		$ui.showing = !$ui.showing

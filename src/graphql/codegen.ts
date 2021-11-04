@@ -312,7 +312,6 @@ export type Shout = {
 	publishedBy?: Maybe<Scalars['Int']>
 	ratigns?: Maybe<Array<Maybe<Rating>>>
 	rating?: Maybe<Scalars['Int']>
-	replyTo?: Maybe<Shout>
 	slug: Scalars['String']
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -327,12 +326,10 @@ export type Shout = {
 
 export type ShoutInput = {
 	body: Scalars['String']
-	replyTo?: Maybe<Scalars['String']>
 	slug: Scalars['String']
 	subtitle?: Maybe<Scalars['String']>
-	tags?: Maybe<Array<Maybe<Scalars['String']>>>
 	title?: Maybe<Scalars['String']>
-	topics?: Maybe<Array<Maybe<Scalars['Int']>>>
+	topics?: Maybe<Array<Maybe<Scalars['String']>>>
 	versionOf?: Maybe<Scalars['String']>
 	visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
 	visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>

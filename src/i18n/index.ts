@@ -12,7 +12,7 @@ export const initLocalizationService = (): I18nService => {
 	// Setting the Svelte context
 	setLocalization({
 		t: tranlator.translate,
-		currentLanguage: tranlator.locale,
+		currentLanguage: tranlator.locale
 	})
 
 	return i18n

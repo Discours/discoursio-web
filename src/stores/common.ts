@@ -5,7 +5,7 @@ import { GraphQLClient } from 'graphql-request'
 
 export enum Locale {
 	RU = 'ru',
-	EN = 'en',
+	EN = 'en'
 }
 
 export const endpoint = writable('https://build.discours.io/graphql')

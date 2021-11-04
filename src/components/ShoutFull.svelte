@@ -26,7 +26,7 @@
 		layout: 'article',
 		topics: [], // TODO: topics selector component
 		authors: [], // TODO: insert yourself automatically
-		createdAt: new Date().toUTCString(), // TODO: update on submit
+		createdAt: new Date().toUTCString() // TODO: update on submit
 	} // dynamic binding
 
 	const options: MD.Options = {}

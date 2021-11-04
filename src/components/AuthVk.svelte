@@ -42,12 +42,12 @@
 					dispatch('auth-success', {
 						userId: uid,
 						accessToken: hash,
-						name: first_name + ' ' + last_name,
+						name: first_name + ' ' + last_name
 					})
 				} else dispatch('auth-info', { res })
 			},
 			authUrl,
-			width,
+			width
 		})
 	}
 </script>

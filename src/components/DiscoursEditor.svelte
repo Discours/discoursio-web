@@ -1,12 +1,14 @@
 <script lang="ts">
+	import EditorSSR from 'discours-editor/src/Editor.svelte'
 	import { onMount } from 'svelte'
-
-	let Editor
 	export let props
+	let Editor
 
-	onMount(
-		async () => (Editor = await import('discours-editor/src/Editor.svelte'))
-	)
+	onMount(async () => {
+		Editor = EditorSSR
+	})
 </script>
 
-<div><Editor {props} /></div>
+{#await (Editor = import('discours-editor/src/Editor.svelte'))}
+	<div><Editor {props} /></div>
+{/await}

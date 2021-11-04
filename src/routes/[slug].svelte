@@ -14,14 +14,14 @@
 		page,
 		fetch,
 		session,
-		stuff,
+		stuff
 	}): Promise<{ props: WhatProps | Partial<WhatProps> }> => {
 		let ret = { props: page.params }
 		if (browser) {
 			console.log('preloading skipped in browser')
 		} else {
 			const { slug } = page.params
-			const r = await fetch(`/data/${slug}.json`)
+			const r = await fetch(`/data/_${slug}.json`)
 			const shout = await r.json()
 			ret = { props: { shout, slug } }
 		}
@@ -50,7 +50,7 @@
 
 	mit.use(implicit, {
 		dataType: false, // <figure data-type="image">
-		figcaption: true, // <figcaption>alternative text</figcaption>
+		figcaption: true // <figcaption>alternative text</figcaption>
 	})
 
 	export let props: WhatProps

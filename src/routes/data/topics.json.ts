@@ -4,7 +4,7 @@ import { get as getStore } from 'svelte/store'
 import {
 	TOPICS_BY_SLUGS,
 	TOPICS_BY_COMMUNITY,
-	TOPICS_BY_AUTHOR,
+	TOPICS_BY_AUTHOR
 } from '../../graphql/queries'
 
 export async function get({ params }) {

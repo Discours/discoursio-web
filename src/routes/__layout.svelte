@@ -12,7 +12,7 @@
 	onMount(async () => {
 		if (window.location.hostname === 'localhost') {
 			console.log('app: using testing graphql endpoint')
-			$endpoint = 'http://localhost:8080' // testing only
+			$endpoint = 'http://localhost:8000' // testing only
 			console.log($endpoint)
 		}
 		console.debug($api)

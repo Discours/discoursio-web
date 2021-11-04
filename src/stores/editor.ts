@@ -7,7 +7,7 @@ import type { IndexeddbPersistence } from 'y-indexeddb'
 
 export const signaling: Writable<string[]> = writable([
 	'https://signaling.discours.io',
-	'https://y-webrtc-signaling-eu.herokuapp.com',
+	'https://y-webrtc-signaling-eu.herokuapp.com'
 ])
 export const ydoc: Writable<Y.Doc> = writable()
 export const room: Writable<string> = writable()

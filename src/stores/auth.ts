@@ -11,7 +11,7 @@ export enum AS {
 	EXPERT = 5, // uses collaborative editing
 	EDITOR = 6, // can approve publications
 	OWNER = 7, // can edit org settings
-	ADMIN = 8, // can manage all communities
+	ADMIN = 8 // can manage all communities
 }
 
 interface Role {
@@ -29,8 +29,8 @@ export const roles: Readable<Role[]> = derived([session], ([$session]) => {
 	return [
 		{
 			community: 0, // discours.io
-			level: AS.ADMIN,
-		},
+			level: AS.ADMIN
+		}
 	]
 })
 

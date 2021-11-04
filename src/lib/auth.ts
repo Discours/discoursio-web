@@ -12,7 +12,7 @@ export const routeProtect = (
 	if (!isLoggedIn()) {
 		return {
 			redirect: '/app/auth',
-			status: 303,
+			status: 303
 		}
 	}
 	return base

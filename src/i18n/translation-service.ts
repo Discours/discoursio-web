@@ -46,7 +46,7 @@ export class I18NextTranslationService implements TranslationService {
 		return {
 			subscribe,
 			update: updateLocale,
-			set: setLocale,
+			set: setLocale
 		}
 	}
 
