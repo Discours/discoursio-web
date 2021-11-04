@@ -53,7 +53,12 @@
 			console.error(error)
 			authFailure({ error: 'попробуйте ещё раз' })
 		} finally {
-			r = await q.json()
+			try {
+				r = await q.json()
+			} catch (e) {
+				console.log(q)
+				authFailure(e)
+			}
 			if (r.get('error')) authFailure(r)
 			else authSuccess(r)
 		}
