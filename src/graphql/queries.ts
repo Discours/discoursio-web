@@ -73,7 +73,11 @@ export const GET_SHOUT = gql`
 			cover
 			community
 			body
-			authors
+			authors {
+				name
+				slug
+				userpic
+			}
 			topics
 			replyTo
 			versionOf
@@ -128,7 +132,7 @@ export const RECENT_SHOUTS = gql`
 			subtitle
 			layout
 			cover
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -151,7 +155,7 @@ export const TOP_OVERALL = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -172,7 +176,7 @@ export const TOP_MONTH = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -193,7 +197,7 @@ export const SHOUTS_BY_COMMUNITY = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -214,7 +218,7 @@ export const SHOUTS_BY_AUTHOR = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -235,7 +239,7 @@ export const SHOUTS_BY_TOPIC = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
@@ -256,7 +260,7 @@ export const SHOUTS_BY_RATING = gql`
 			cover
 			community
 			topics
-			author {
+			authors {
 				name
 				slug
 				userpic
