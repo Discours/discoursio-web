@@ -54,6 +54,7 @@
 			authFailure({ error: 'попробуйте ещё раз' })
 		} finally {
 			try {
+				console.log(q)
 				r = await q.json()
 			} catch (e) {
 				console.log(q)
@@ -70,6 +71,7 @@
 			email: $ui.email,
 			password: $ui.password,
 		})
+		console.log(q)
 		authSuccess(await q.json())
 	}
 
