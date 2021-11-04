@@ -17,10 +17,12 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
+	import { RECENT_SHOUTS } from '../graphql/queries'
+	import { api } from '../stores/common'
 
 	onMount(async () => {
 		console.log('homepage: getting mainpage shouts')
-		$recents = await (await fetch(`/data/recents.json?${Date.now()}`)).json()
+		$recents = await (await $api.request(RECENT_SHOUTS, { limit: 100 })).json()
 		$topOverall = await (await fetch(`/data/top-overall.json`)).json()
 		$topMonth = await (await fetch(`/data/top-month.json`)).json()
 		$shouts = $recents

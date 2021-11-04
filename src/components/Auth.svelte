@@ -9,7 +9,7 @@
 		session,
 		ui,
 		GOOGLE_APP_ID,
-		token as tokenStore,
+		token as tokenStore
 	} from '../stores/auth'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -47,20 +47,20 @@
 		try {
 			q = await $api.request(SIGN_IN, {
 				email: $ui.email,
-				password: $ui.password,
+				password: $ui.password
 			})
 		} catch (error) {
 			console.error(error)
 			authFailure({ error: 'попробуйте ещё раз' })
 		} finally {
 			try {
-				console.log(q)
 				r = await q.json()
 			} catch (e) {
-				console.log(q)
 				authFailure(e)
 			}
-			if (r.get('error')) authFailure(r)
+			console.log(r)
+			console.log(q)
+			if (r && r.get('error')) authFailure(r)
 			else authSuccess(r)
 		}
 	}
@@ -69,7 +69,7 @@
 		console.log('auth: register with discours.io account ')
 		const q = await $api.request(SIGN_UP, {
 			email: $ui.email,
-			password: $ui.password,
+			password: $ui.password
 		})
 		console.log(q)
 		authSuccess(await q.json())
