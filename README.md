@@ -13,10 +13,23 @@ brew install redis
 redis-server
 ```
 
-### Start hacking
+### Start backend
 
 ```sh
+cd api
+poetry run python server.py
+```
+
+### Start frontend
+
+```sh
+cd ../
 pnpm i
-pnpm gen
 pnpm dev
+```
+
+### Finally nginx
+
+```sh
+nginx -p . -e errors.log -c nginx.dev.conf
 ```
