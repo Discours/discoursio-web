@@ -18,7 +18,7 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { api, endpoint } from '../stores/common'
-	import { RECENT_SHOUTS } from '../graphql/queries'
+	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries'
 
 	onMount(async () => {
 		if (window.location.hostname !== 'build.discours.io') {
@@ -27,16 +27,16 @@
 		}
 		console.log('homepage: getting mainpage shouts')
 		await $api
-		const data = await $api.request(RECENT_SHOUTS, { limit: 100 })
-		console.log(data)
-		$recents = data.recents
-		$shoutslist = $recents
+		$recents = (await $api.request(RECENT_SHOUTS, { limit: 100 })).recents
+		$topMonth = (await $api.request(TOP_MONTH, { limit: 100 }))['top-month']
+		$topOverall = await $api.request(TOP_OVERALL, { limit: 100 })['top-overall']
+		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
 
 	const recent = () => {
 		// returns recently updated articles (default)
-		return $shoutslist
+		return $recents
 	}
 
 	const topViewed = () => {
