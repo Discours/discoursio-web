@@ -9,10 +9,7 @@
 		topicslist,
 		shouts,
 		shoutslist,
-		communitieslist,
-		topMonth,
-		topOverall,
-		recents
+		communitieslist
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -27,22 +24,18 @@
 		}
 		console.log('homepage: getting mainpage shouts')
 		await $api
-		let r = await $api.request(RECENT_SHOUTS, { limit: 100 })
-		console.log(r)
-		$recents = r.recents
-		r = await $api.request(TOP_MONTH, { limit: 100 })
-		console.log(r)
-		$topMonth = r['top-month']
-		r = await $api.request(TOP_OVERALL, { limit: 100 })
-		console.log(r)
-		$topOverall = r['top-overall']
-		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
+		$shouts = {
+			...(await $api.request(RECENT_SHOUTS, { limit: 100 })),
+			...(await $api.request(TOP_MONTH, { limit: 100 })),
+			...(await $api.request(TOP_OVERALL, { limit: 100 }))
+		}
+		$shoutslist = [...$shouts.recents, ...$shouts.topMonth, ...$shouts.topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
 
 	const recent = () => {
 		// returns recently updated articles (default)
-		return $recents
+		return $shouts.recents
 	}
 
 	const topViewed = () => {
