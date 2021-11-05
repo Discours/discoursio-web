@@ -17,17 +17,20 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
+	import { api, endpoint } from '../stores/common'
 	import { RECENT_SHOUTS } from '../graphql/queries'
-	import { api } from '../stores/common'
 
 	onMount(async () => {
+		if (window.location.hostname !== 'build.discours.io') {
+			console.log('app: using testing graphql endpoint')
+			$endpoint = 'http://localhost:8000' // testing only
+		}
 		console.log('homepage: getting mainpage shouts')
-		$recents = await $api.request(RECENT_SHOUTS, { limit: 100 })
-		console.log($recents)
-		//$topOverall = await (await fetch(`/data/top-overall.json`)).json()
-		//$topMonth = await (await fetch(`/data/top-month.json`)).json()
-		$shouts = $recents
-		$shoutslist = Object.values($shouts).sort()
+		await $api
+		const data = await $api.request(RECENT_SHOUTS, { limit: 100 })
+		console.log(data)
+		$recents = data.get('recents', [])
+		$shoutslist = $recents
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
 

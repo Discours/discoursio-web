@@ -78,7 +78,7 @@ const config = {
 		vite: {
 			// plugins: [windiVite({})],
 			ssr: {
-				external: ['y-prosemirror', 'w3c-keyname'],
+				external: ['w3c-keyname'],
 				noExternal: Object.keys(pkg.dependencies || {})
 			}
 		}
