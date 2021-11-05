@@ -29,7 +29,7 @@
 		await $api
 		const data = await $api.request(RECENT_SHOUTS, { limit: 100 })
 		console.log(data)
-		$recents = data.get('recents', [])
+		$recents = data.recents
 		$shoutslist = $recents
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
