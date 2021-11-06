@@ -17,6 +17,8 @@
 	import { api, endpoint } from '../stores/common'
 	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries'
 
+	$: $shoutslist = $shouts.recents
+
 	onMount(async () => {
 		if (window.location.hostname !== 'build.discours.io') {
 			console.log('app: using testing graphql endpoint')
@@ -30,7 +32,7 @@
 			topOverall: (await $api.request(TOP_OVERALL, { limit: 100 })).topOverall
 		}
 		console.log($shouts)
-		$shoutslist = [...$shouts.recents, ...$shouts.topMonth, ...$shouts.topOverall]
+		// $shoutslist = [...$shouts.recents, ...$shouts.topMonth, ...$shouts.topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
 
