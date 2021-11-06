@@ -25,10 +25,11 @@
 		console.log('homepage: getting mainpage shouts')
 		await $api
 		$shouts = {
-			...(await $api.request(RECENT_SHOUTS, { limit: 100 })),
-			...(await $api.request(TOP_MONTH, { limit: 100 })),
-			...(await $api.request(TOP_OVERALL, { limit: 100 }))
+			recents: (await $api.request(RECENT_SHOUTS, { limit: 100 })).recents,
+			topMonth: (await $api.request(TOP_MONTH, { limit: 100 })).topMonth,
+			topOverall: (await $api.request(TOP_OVERALL, { limit: 100 })).topOverall
 		}
+		console.log($shouts)
 		$shoutslist = [...$shouts.recents, ...$shouts.topMonth, ...$shouts.topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
