@@ -316,7 +316,7 @@ export type Shout = {
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>
 	title?: Maybe<Scalars['String']>
-	topics?: Maybe<Array<Maybe<Scalars['String']>>>
+	topics?: Maybe<Array<Maybe<Scalars['String']>>> | [Partial<Topic>]
 	updatedAt?: Maybe<Scalars['DateTime']>
 	updatedBy?: Maybe<Scalars['Int']>
 	versionOf?: Maybe<Shout>

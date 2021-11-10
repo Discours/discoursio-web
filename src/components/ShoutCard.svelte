@@ -3,7 +3,7 @@
 	import { topics } from '../stores/zine'
 	import Icon from './DiscoursIcon.svelte'
 
-	export let shout: Shout | Partial<Shout>
+	export let shout: Shout | Partial<Shout> | any
 </script>
 
 <section class="shout-card">
@@ -22,11 +22,11 @@
 
 		<div class="shout-card__content">
 			{#if shout.topics}
-				{#each shout.topics as topicslug}
+				{#each shout.topics as topic}
 					<div class="shout__topic">
-						<a href="/{topicslug}"
-							>{$topics[topicslug] ? $topics[topicslug].title : topicslug}</a
-						>
+						<a href="/{topic.slug}">
+							{topic.title}
+						</a>
 					</div>
 				{/each}
 			{/if}
