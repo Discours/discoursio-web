@@ -21,9 +21,15 @@
 			console.log('preloading skipped in browser')
 		} else {
 			const { slug } = page.params
-			const r = await fetch(`/data/_${slug}.json`)
-			const shout = await r.json()
-			ret = { props: { shout, slug } }
+			if (slug.startsWith('@')) {
+				const r = await fetch(`/data/@${slug}.json`)
+				const author = await r.json()
+				ret = { props: { author, slug } }
+			} else {
+				const r = await fetch(`/data/_${slug}.json`)
+				const shout = await r.json()
+				ret = { props: { shout, slug } }
+			}
 		}
 		return ret
 	}

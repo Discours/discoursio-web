@@ -78,7 +78,12 @@ export const GET_SHOUT = gql`
 				slug
 				userpic
 			}
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			replyTo
 			versionOf
 			createdAt
@@ -138,7 +143,12 @@ export const RECENT_SHOUTS = gql`
 				userpic
 			}
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			publishedAt
 			views
 			rating
@@ -154,7 +164,12 @@ export const TOP_OVERALL = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
@@ -175,7 +190,12 @@ export const TOP_MONTH = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
@@ -196,7 +216,12 @@ export const SHOUTS_BY_COMMUNITY = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
@@ -217,7 +242,12 @@ export const SHOUTS_BY_AUTHOR = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
@@ -238,7 +268,12 @@ export const SHOUTS_BY_TOPIC = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
@@ -259,7 +294,12 @@ export const SHOUTS_BY_RATING = gql`
 			layout
 			cover
 			community
-			topics
+			topics {
+				slug
+				title
+				body
+				pic
+			}
 			authors {
 				name
 				slug
