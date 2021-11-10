@@ -3,14 +3,9 @@
 	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
 	import { api } from '../stores/common'
 	import AuthFacebook from '../components/AuthFacebook.svelte'
-	import AuthVk from '../components/AuthVk.svelte'
+	// import AuthVk from '../components/AuthVk.svelte'
 	import AuthGoogle from '../components/AuthGoogle.svelte'
-	import {
-		session,
-		ui,
-		GOOGLE_APP_ID,
-		token as tokenStore
-	} from '../stores/auth'
+	import { session, ui, token as tokenStore } from '../stores/auth'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 
@@ -237,14 +232,13 @@
 							on:auth-failure={providerFailure}
 						/>
 						<AuthGoogle
-							clientId={GOOGLE_APP_ID}
 							on:auth-success={providerSuccess}
 							on:auth-failure={providerFailure}
 						/>
-						<AuthVk
+						<!--AuthVk
 							on:auth-success={providerSuccess}
 							on:auth-failure={providerFailure}
-						/>
+						/-->
 					</div>
 				</div>
 			{/if}

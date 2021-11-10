@@ -1,8 +1,8 @@
 <script>
+	import Icon from './DiscoursIcon.svelte'
+	/*
 	import { createEventDispatcher, onMount } from 'svelte'
 	import loader from '../lib/asyncloader'
-	import Icon from './DiscoursIcon.svelte'
-
 	const dispatch = createEventDispatcher()
 
 	let signinCta
@@ -47,11 +47,13 @@
 		console.error('gauth initialisation error', e)
 		dispatch('init-error', { error: e })
 	}
+	 bind:this={signinCta}
+	*/
 </script>
 
-<div bind:this={signinCta} {disabled} class="google-auth">
-	<Icon name="google" /><span>{text}</span>
-</div>
+<a href="/graphql/oauth/google" class="google-auth">
+	<Icon name="google" />
+</a>
 
 <style>
 	.google-auth {

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import Icon from './DiscoursIcon.svelte'
+	/*
 	import { onMount, createEventDispatcher } from 'svelte'
 	import loader from '../lib/asyncloader'
+	
 	import { FACEBOOK_APP_ID } from '../stores/auth'
 
 	const dispatch = createEventDispatcher()
@@ -55,14 +57,15 @@
 			{ scope: 'email,public_profile' }
 		)
 	}
+	*/
 </script>
 
-<div on:click={login} {disabled} class="facebook-auth">
-	<Icon name="facebook" /><span>{text}</span>
-</div>
+<a href="/graphql/oauth/facebook" class="facebook-auth">
+	<Icon name="facebook" />
+</a>
 
 <style>
-	.facebook-auth span {
+	.facebook-auth {
 		font-family: Roboto, sans-serif;
 		font-size: 14px;
 		font-weight: bold;
