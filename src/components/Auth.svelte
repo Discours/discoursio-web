@@ -2,9 +2,7 @@
 	import { page } from '$app/stores'
 	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
 	import { api } from '../stores/common'
-	import AuthFacebook from '../components/AuthFacebook.svelte'
-	// import AuthVk from '../components/AuthVk.svelte'
-	import AuthGoogle from '../components/AuthGoogle.svelte'
+	import Icon from './DiscoursIcon.svelte'
 	import { session, ui, token as tokenStore } from '../stores/auth'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
@@ -90,16 +88,6 @@
 		if (password2 === $ui.password) {
 			console.log('auth: renewing password')
 		}
-		// TODO: implement me
-	}
-
-	const providerSuccess = (e) => {
-		console.debug(e)
-		// TODO: implement me
-	}
-
-	const providerFailure = (e) => {
-		console.error(e)
 		// TODO: implement me
 	}
 
@@ -227,18 +215,15 @@
 
 				<div class="social-provider">
 					<div class="social">
-						<AuthFacebook
-							on:auth-success={providerSuccess}
-							on:auth-failure={providerFailure}
-						/>
-						<AuthGoogle
-							on:auth-success={providerSuccess}
-							on:auth-failure={providerFailure}
-						/>
-						<!--AuthVk
-							on:auth-success={providerSuccess}
-							on:auth-failure={providerFailure}
-						/-->
+						<a href="/graphql/oauth/facebook" class="facebook-auth">
+							<Icon name="facebook" />
+						</a>
+						<a href="/graphql/oauth/google" class="google-auth">
+							<Icon name="google" />
+						</a>
+						<a href="/graphql/oauth/vk" class="vk-auth">
+							<Icon name="vk" />
+						</a>
 					</div>
 				</div>
 			{/if}
