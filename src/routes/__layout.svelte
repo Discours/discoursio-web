@@ -17,9 +17,14 @@
 		}
 	}
 
+	$: if ($session) {
+		document.cookie = $token
+	}
+
 	onMount(async () => {
 		console.debug($api)
-		$token = document.cookie
+		const t = document.cookie
+		if (t) $token = t
 	})
 
 	initLocalizationContext()
