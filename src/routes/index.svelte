@@ -72,6 +72,7 @@
 				authorsMonth.add($authors[a['slug']])
 			})
 		})
+		console.log(authorsMonth)
 		return Array.from(authorsMonth).sort((a, b) => a['rating'] - b['rating'])
 	}
 </script>
