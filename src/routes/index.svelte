@@ -35,9 +35,6 @@
 		$topOverall = r.topOverall
 		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
-		let ttt = new Set([])
-		$shoutslist.forEach((s) => s.topics.forEach((t) => ttt.add(t)))
-		$topicslist = Array.from(ttt)
 	})
 
 	const recent = () => {

@@ -1,46 +1,27 @@
 <script lang="ts">
 	import { shoutslist, filterTopic, topics, topicslist } from '../stores/zine'
 
-	let slugs = []
-
-	$: slugs = $topicslist.map((t) => t.slug)
-
-	const setTopic = (topic: string) => {
-		$filterTopic = topic
-	}
+	const setTopic = (slug: string) => ($filterTopic = slug)
 
 	$: if ($shoutslist && $shoutslist.length > 0) {
-		let topicset = new Set([])
-		$shoutslist.forEach((s) => s.topics.forEach((topic) => topicset.add(topic)))
-		slugs = Array.from(topicset).sort()
-		if (slugs === Object.keys($topics).sort()) {
-			console.info('nav: topics are up to date')
-		} else {
-			console.info(`nav: updating ${slugs.length} topics`)
-			fetch(`/data/topics.json?slugs=${encodeURI(slugs.toString())}`)
-				.then((r) =>
-					r
-						.json()
-						.then((data) => ($topics = data))
-						.catch(console.error)
-				)
-				.catch(console.error)
-		}
+		let ttt = new Set([])
+		$shoutslist.forEach((s) => s.topics.forEach((t) => ttt.add(t)))
+		$topicslist = Array.from(ttt)
 	}
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
 	<ul class="topics">
-		{#each slugs as t}
-			{#if $topics[t]}
-				<li class="item" class:selected={$filterTopic === t}>
-					<a href={'#' + t} on:click={() => setTopic($filterTopic === t ? '' : t)}>
-						<span class:transparent={$filterTopic !== t}>#</span>{$topics[
-							t
-						].title.toLowerCase()}
-					</a>
-				</li>
-			{/if}
+		{#each $topicslist as t}
+			<li class="item" class:selected={$filterTopic === t.slug}>
+				<a
+					href={'#' + t.slug}
+					on:click={() => setTopic($filterTopic === t.slug ? '' : t.slug)}
+				>
+					<span class:transparent={$filterTopic !== t.slug}>#</span>
+					{t.title.toLowerCase()}
+				</a>
+			</li>
 		{/each}
 	</ul>
 </nav>

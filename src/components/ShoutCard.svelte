@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Shout } from '../graphql/codegen'
-	import { topics } from '../stores/zine'
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout | Partial<Shout> | any
