@@ -35,6 +35,9 @@
 		$topOverall = r.topOverall
 		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
+		let ttt = new Set([])
+		$shoutslist.forEach((s) => s.topics.forEach((t) => ttt.add(t)))
+		$topicslist = Array.from(ttt)
 	})
 
 	const recent = () => {
@@ -48,7 +51,6 @@
 	}
 
 	const topRated = () => {
-		// TODO: ??
 		// now: top by rating
 		return $shoutslist.sort((a, b) => a['rating'] - b['rating'])
 	}
@@ -62,22 +64,13 @@
 		)
 	}
 
-	const isThisMonth = (date) => {
-		const when = Date.parse(date)
-		const now = Date.now()
-		return now - when < 1000 * 60 * 60 * 24 * 30
-	}
-
 	const topAuthors = () => {
-		// TODO: top 4 authors in last month
-		// now: returns 4 most rated authors
+		// top 4 authors in last month
 		let authorsMonth = new Set([])
-		$shoutslist.forEach((s) => {
-			if (isThisMonth(s['createdAt'])) {
-				s['authors'].forEach((a) => {
-					authorsMonth.add($authors[a['slug']])
-				})
-			}
+		$topMonth.forEach((s) => {
+			s['authors'].forEach((a) => {
+				authorsMonth.add($authors[a['slug']])
+			})
 		})
 		return Array.from(authorsMonth).sort((a, b) => a['rating'] - b['rating'])
 	}
@@ -87,7 +80,7 @@
 {#if $shoutslist}
 	<div class="home">
 		{#if $topicslist.length > 0}
-			<NavTopics slugs={Object.keys($topics).sort()} />
+			<NavTopics />
 		{/if}
 
 		<div class="floor floor--1">

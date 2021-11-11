@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { shoutslist, filterTopic, topics, topicslist } from '../stores/zine'
 
-	export let slugs = []
+	let slugs = []
+
+	$: slugs = $topicslist.map((t) => t.slug)
 
 	const setTopic = (topic: string) => {
 		$filterTopic = topic
 	}
-
-	$: if ($topics) $topicslist = Object.values($topics).sort()
 
 	$: if ($shoutslist && $shoutslist.length > 0) {
 		let topicset = new Set([])
