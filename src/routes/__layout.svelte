@@ -5,20 +5,21 @@
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { token, session } from '../stores/auth'
-	import { api, endpoint } from '../stores/common'
+	import { api } from '../stores/common'
 	import { GET_ME } from '../graphql/queries'
 	import { onMount } from 'svelte'
+
+	$: if ($token) {
+		try {
+			$api.request(GET_ME).then((user) => ($session = user))
+		} catch (e) {
+			console.error('graphql request failed')
+		}
+	}
 
 	onMount(async () => {
 		console.debug($api)
 		$token = document.cookie
-		if ($token) {
-			try {
-				$api.request(GET_ME).then((user) => ($session = user))
-			} catch (e) {
-				console.error('graphql request failed')
-			}
-		}
 	})
 
 	initLocalizationContext()
