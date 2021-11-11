@@ -21,10 +21,8 @@
 		document.cookie = $token
 	}
 
-	onMount(async () => {
-		console.debug($api)
-		const t = document.cookie
-		if (t) $token = t
+	onMount(() => {
+		if (!$token) $token = document.cookie
 	})
 
 	initLocalizationContext()
