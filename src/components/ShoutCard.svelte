@@ -1,8 +1,18 @@
 <script lang="ts">
-	import type { Shout } from '../graphql/codegen'
+	import type { User, Topic } from '../graphql/codegen'
 	import Icon from './DiscoursIcon.svelte'
 
-	export let shout: Shout | Partial<Shout> | any
+	export let shout: {
+		topics: Array<Partial<Topic>>
+		authors: Array<Partial<User>>
+		slug: string
+		cover: string
+		layout: string
+		title: string
+		subtitle: string
+	}
+
+	console.log(shout)
 </script>
 
 <section class="shout-card">

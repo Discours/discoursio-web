@@ -316,7 +316,7 @@ export type Shout = {
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>
 	title?: Maybe<Scalars['String']>
-	topics?: Maybe<Array<Maybe<Scalars['String']>>> | [Partial<Topic>]
+	topics?: Maybe<Array<Maybe<Topic>>>
 	updatedAt?: Maybe<Scalars['DateTime']>
 	updatedBy?: Maybe<Scalars['Int']>
 	versionOf?: Maybe<Shout>
@@ -329,7 +329,7 @@ export type ShoutInput = {
 	slug: Scalars['String']
 	subtitle?: Maybe<Scalars['String']>
 	title?: Maybe<Scalars['String']>
-	topics?: Maybe<Array<Maybe<Scalars['String']>>>
+	topic_ids?: Maybe<Array<Maybe<Scalars['Int']>>>
 	versionOf?: Maybe<Scalars['String']>
 	visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
 	visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
@@ -350,6 +350,10 @@ export type Subscription = {
 	shoutUpdated: Shout
 	topicUpdated: Shout
 	userUpdated: User
+}
+
+export type SubscriptionTopicUpdatedArgs = {
+	user_id: Scalars['Int']
 }
 
 export type Token = {
