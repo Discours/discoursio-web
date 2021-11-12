@@ -34,6 +34,7 @@
 		r = await $api.request(TOP_OVERALL, { limit: 100 })
 		$topOverall = r.topOverall
 		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
+		console.debug($shoutslist)
 		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
 	})
 
