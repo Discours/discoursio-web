@@ -72,6 +72,15 @@
 		console.log(authorsMonth)
 		return Array.from(authorsMonth).sort((a, b) => a['rating'] - b['rating'])
 	}
+
+	const onlyTopic = (topic) => {
+		// .filter((s) => (s['topics'] || []).includes('culture'))
+		let filtered = []
+		$shoutslist.forEach(
+			(s) => s.topics.map((t) => t.slug).includes(topic) && filtered.push(s)
+		)
+		return filtered
+	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -104,14 +113,14 @@
 		<div class="floor floor--2">
 			<div class="wide-container row">
 				<div class="col-md-6">
-					{#each $shoutslist.slice(5, 6) as article}
-						<ShoutCard shout={article} />
+					{#each $shoutslist.slice(5, 6) as shout}
+						<ShoutCard {shout} />
 					{/each}
 				</div>
 				<div class="col-md-6">
 					<h4>Самое читаемое</h4>
-					{#each topViewed().slice(0, 4) as article}
-						<ShoutCard shout={article} />
+					{#each topViewed().slice(0, 4) as shout}
+						<ShoutCard {shout} />
 					{/each}
 				</div>
 			</div>
@@ -119,9 +128,9 @@
 
 		<div class="floor floor--3">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(10, 13) as article}
+				{#each $shoutslist.slice(10, 13) as shout}
 					<div class="col-md-4">
-						<ShoutCard shout={article} />
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -248,9 +257,7 @@
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<h4>Культура</h4>
-					{#each $shoutslist
-						.filter((s) => (s['topics'] || []).includes('culture'))
-						.slice(0, 4) as article}
+					{#each onlyTopic('culture').slice(0, 4) as article}
 						<ShoutCard shout={article} />
 					{/each}
 				</div>
