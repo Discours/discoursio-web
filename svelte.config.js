@@ -9,7 +9,7 @@ import { typescript } from 'svelte-preprocess-esbuild'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
 // import vercel from '@sveltejs/adapter-vercel'
 import node from '@sveltejs/adapter-node'
-import ssr from '@sveltejs/adapter-static'
+import prerender from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
@@ -23,7 +23,6 @@ const ignoreWarns = [
 ]
 
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
-const adapter = process.env.SSR ? ssr() : { adapt: async () => await node() }
 
 const scssOptions = {
 	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
@@ -45,7 +44,6 @@ let authors = {} // require('./src/data/authors.json')
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	adapter,
 	logger: console,
 	preprocess: [
 		typescript(),
@@ -75,16 +73,21 @@ const config = {
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
+		adapter: process.env.SSR ? prerender() : node(),
+		target: '#svelte',
 		vite: {
 			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],
-				noExternal: Object.keys(pkg.dependencies || {})
+				noExternal:[
+					'y-webrtc',
+					'y-indexeddb',
+					'y-prosemirror',					
+				] + Object.keys(pkg.dependencies || [])
 			}
 		}
 	},
 	skipIntroByDefault: true,
-	target: '#svelte',
 	experimental: {
 		prebundleSvelteLibraries: true
 	}

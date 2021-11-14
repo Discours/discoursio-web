@@ -39,10 +39,12 @@ export const ui: Writable<{
 	email: string
 	password: string
 	remember: boolean
-	showing: boolean
+	authModal: boolean
+	showNotices: boolean
 }> = writable({
 	email: '',
 	password: '',
 	remember: false,
-	showing: false
+	authModal: false,
+	showNotices: false
 })

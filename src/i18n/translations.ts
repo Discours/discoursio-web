@@ -8,7 +8,7 @@ export default {
 			enter: 'enter',
 			create: 'create',
 			search: 'search',
-			community: 'community'
+			community: 'communit'
 		}
 	},
 	ru: {

@@ -19,7 +19,7 @@
 		if (token) {
 			$tokenStore = token
 			$session = user
-			$ui.showing = false
+			$ui.authModal = false
 		} else {
 			warnings.push('Ошибка авторизации')
 		}

@@ -1,6 +1,4 @@
 <script lang="ts">
-	// import EditorSSR from 'discours-editor/src/Editor.svelte'
-	import { onMount } from 'svelte'
 	export let props
 	let Editor
 
@@ -8,5 +6,5 @@
 </script>
 
 {#await Editor}
-	<div><Editor {props} /></div>
+	<div><svelte:component this={Editor} {props} /></div>
 {/await}

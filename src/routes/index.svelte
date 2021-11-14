@@ -77,9 +77,9 @@
 	const onlyTopic = (topic) => {
 		// .filter((s) => (s['topics'] || []).includes('culture'))
 		let filtered = []
-		$shoutslist.forEach(
-			(s) => s.topics.map((t) => t.slug).includes(topic) && filtered.push(s)
-		)
+		$shoutslist.forEach((s) => {
+			if (s.topics.map((t) => t.slug).includes(topic)) filtered.push(s)
+		})
 		return filtered
 	}
 </script>
