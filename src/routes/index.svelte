@@ -18,6 +18,7 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { loading, endpoint } from '../stores/app'
+	import { join } from 'path/posix'
 
 	onMount(async () => {
 		$loading = true
@@ -25,11 +26,12 @@
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
-		$recents = (await (await fetch('/data/recents.json')).json()).recents
-		$topMonth = (await (await fetch('/data/top-month.json')).json()).topMonth
-		$topOverall = (await (await fetch('/data/top-overall.json')).json())
-			.topOverall
-		$shoutslist = Array.from(new Set([...$recents, ...$topMonth, ...$topOverall]))
+		$recents = await (await fetch('/data/recents.json')).json()
+		$topMonth = await (await fetch('/data/top-month.json')).json()
+		$topOverall = await (await fetch('/data/top-overall.json')).json()
+		$shoutslist = Array.from(
+			new Set($recents.concat($topMonth).concat($topOverall))
+		) // removing dublicates
 	})
 
 	let topViewed = []
@@ -49,13 +51,15 @@
 	$: authorsMonth = Array.from(authorsMonthSet).sort(
 		(a, b) => a['rating'] - b['rating']
 	)
+
 	let authorsMonthSet = new Set([])
-	$: if ($topMonth) {
+	$: if ($topMonth && authorsMonth === []) {
 		$topMonth.forEach((s) => {
 			s['authors'].forEach((a) => {
 				authorsMonthSet.add($authors[a['slug']])
 			})
 		})
+		$loading = false
 	}
 
 	const onlyTopic = (topic) => {
@@ -69,7 +73,7 @@
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $shoutslist}
+{#if $loading}
 	<div class="home">
 		{#if $topicslist.length > 0}
 			<NavTopics />
@@ -160,7 +164,7 @@
 		</div>
 
 		<div class="floor floor--7">
-			{#if $recents}
+			{#if $recents.length > 0}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
 					{#each $recents.slice(0, 4) as article}
