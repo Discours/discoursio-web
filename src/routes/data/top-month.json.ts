@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import { api as graphql } from '../../stores/common'
+import { api as graphql } from '../../stores/app'
 import { get as getStore } from 'svelte/store'
 import { TOP_MONTH } from '../../graphql/queries'
 

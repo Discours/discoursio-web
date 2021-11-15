@@ -4,8 +4,8 @@
 	import { initLocalizationContext } from '../i18n/index'
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
-	import { token, session } from '../stores/auth'
-	import { api } from '../stores/common'
+	import { token, session } from '../stores/user'
+	import { api } from '../stores/app'
 	import { GET_ME } from '../graphql/queries'
 	import { onMount } from 'svelte'
 

@@ -17,61 +17,45 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
-	import { api, endpoint } from '../stores/common'
-	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries'
+	import { loading, endpoint } from '../stores/app'
 
 	onMount(async () => {
+		$loading = true
 		if (window.location.hostname !== 'build.discours.io') {
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
-		console.log('homepage: getting mainpage shouts')
-		await $api
-		let r = await $api.request(RECENT_SHOUTS, { limit: 100 })
-		$recents = r.recents
-		r = await $api.request(TOP_MONTH, { limit: 100 })
-		$topMonth = r.topMonth
-		r = await $api.request(TOP_OVERALL, { limit: 100 })
-		$topOverall = r.topOverall
-		$shoutslist = [...$recents, ...$topMonth, ...$topOverall]
-		console.debug($shoutslist)
-		console.log(`homepage: loaded ${$shoutslist.length} shouts`)
+		$recents = (await (await fetch('/data/recents.json')).json()).recents
+		$topMonth = (await (await fetch('/data/top-month.json')).json()).topMonth
+		$topOverall = (await (await fetch('/data/top-overall.json')).json())
+			.topOverall
+		$shoutslist = Array.from(new Set([...$recents, ...$topMonth, ...$topOverall]))
 	})
 
-	const recent = () => {
-		// returns recently updated articles (default)
-		return $shoutslist
-	}
+	let topViewed = []
+	$: topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
 
-	const topViewed = () => {
-		// returns top viewed
-		return $shoutslist.sort((a, b) => a['views'] - b['views'])
-	}
+	let topRated = []
+	$: topRated = $shoutslist.sort((a, b) => a['rating'] - b['rating'])
 
-	const topRated = () => {
-		// now: top by rating
-		return $shoutslist.sort((a, b) => a['rating'] - b['rating'])
-	}
+	let topCommented = []
+	$: topCommented = $shoutslist.sort(
+		(a, b) =>
+			($comments[a['slug']] ? $comments[a['slug']].length : 0) -
+			($comments[b['slug']] ? $comments[b['slug']].length : 0)
+	)
 
-	const topCommented = () => {
-		// now: serving важное
-		return $shoutslist.sort(
-			(a, b) =>
-				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
-				($comments[b['slug']] ? $comments[b['slug']].length : 0)
-		)
-	}
-
-	const topAuthors = () => {
-		// top 4 authors in last month
-		let authorsMonth = new Set([])
+	let authorsMonth = []
+	$: authorsMonth = Array.from(authorsMonthSet).sort(
+		(a, b) => a['rating'] - b['rating']
+	)
+	let authorsMonthSet = new Set([])
+	$: if ($topMonth) {
 		$topMonth.forEach((s) => {
 			s['authors'].forEach((a) => {
-				authorsMonth.add($authors[a['slug']])
+				authorsMonthSet.add($authors[a['slug']])
 			})
 		})
-		console.log(authorsMonth)
-		return Array.from(authorsMonth).sort((a, b) => a['rating'] - b['rating'])
 	}
 
 	const onlyTopic = (topic) => {
@@ -120,7 +104,7 @@
 				</div>
 				<div class="col-md-6">
 					<h4>Самое читаемое</h4>
-					{#each topViewed().slice(0, 4) as shout}
+					{#each topViewed.slice(0, 4) as shout}
 						<ShoutCard {shout} />
 					{/each}
 				</div>
@@ -166,7 +150,7 @@
 				<div class="col-md-4">
 					<h4>Авторы месяца</h4>
 
-					{#each topAuthors().slice(0, 4) as user}
+					{#each authorsMonth.slice(0, 4) as user}
 						<UserCard {user} hasSubscribeButton={true} />
 					{/each}
 
@@ -176,20 +160,22 @@
 		</div>
 
 		<div class="floor floor--7">
-			<div class="wide-container row">
-				<h2 class="col-12">Коротко</h2>
-				{#each recent().slice(0, 4) as article}
-					<div class="col-md-6 col-lg-3">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
-			</div>
+			{#if $recents}
+				<div class="wide-container row">
+					<h2 class="col-12">Коротко</h2>
+					{#each $recents.slice(0, 4) as article}
+						<div class="col-md-6 col-lg-3">
+							<ShoutCard shout={article} />
+						</div>
+					{/each}
+				</div>
+			{/if}
 		</div>
 
 		<div class="floor floor--important">
 			<div class="wide-container row">
 				<h2 class="col-12"><span>Избранное</span></h2>
-				{#each topRated().slice(0, 4) as article}
+				{#each topRated.slice(0, 4) as article}
 					<div class="col-md-3">
 						<ShoutCard shout={article} />
 					</div>

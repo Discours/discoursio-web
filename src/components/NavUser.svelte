@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { ui, session } from '../stores/auth'
+	import { ui, session, notices } from '../stores/user'
 	import Icon from './DiscoursIcon.svelte'
 	import Auth from './Auth.svelte'
 	import Userpic from './Userpic.svelte'
 	import { fade } from 'svelte/transition'
 	import { getLocalization } from '../i18n'
 	import { onMount } from 'svelte'
+	import { messageslist } from '../stores/inbox'
 
 	const { t } = getLocalization()
 
 	let res = ''
 	let newMessages = 0 // FIXME: get with query
 	let newNotices = 0
-	export let notices = []
 
 	onMount(() => (res = window.location.pathname))
+
 	const toggleLogin = () => {
 		$ui.authModal = !$ui.authModal
 	}
@@ -31,6 +32,9 @@
 		console.log('nav: showing notifications')
 		$ui.showNotices = !$ui.showNotices
 	}
+
+	$: newNotices = $notices.filter((n) => !n.seen).length
+	$: newMessages = $messageslist.length
 </script>
 
 <svelte:window
@@ -50,7 +54,7 @@
 		transition:fade
 		on:click|preventDefault={() => ($ui.showNotices = false)}
 	>
-		{#each notices as notice}
+		{#each $notices as notice}
 			<div class="notice" class:error={notice.type === 'error'}>{notice.text}</div>
 		{/each}
 	</div>
@@ -58,7 +62,7 @@
 {#if $session}
 	<div class="usercontrol inline-flex">
 		<a href="/inbox">
-			<div>
+			<div class:entered={res === '/inbox'}>
 				<Icon name="inbox-white" counter={newMessages} />
 			</div>
 		</a>

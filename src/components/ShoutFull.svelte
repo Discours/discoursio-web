@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Shout } from '../graphql/codegen'
-	import { roles, AS, session } from '../stores/auth'
+	import { roles, AS, session } from '../stores/user'
 	// import { authors } from '../stores/zine'
 	import ShoutComment from '../components/ShoutComment.svelte'
 	import MD from 'markdown-it'
@@ -34,6 +34,7 @@
 	$: if (!body && shout) {
 		// let tokens: any[] = mit.parse(shout.body, options)
 		// tokens.forEach(console.debug)
+		body = shout.body
 	}
 
 	const handleInput = (ev) => {

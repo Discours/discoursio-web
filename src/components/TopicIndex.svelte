@@ -9,7 +9,7 @@
 	let shouts = []
 
 	onMount(() => {
-		;[
+		[
 			...Object.values($recents),
 			...Object.values($topMonth),
 			...Object.values($topOverall)

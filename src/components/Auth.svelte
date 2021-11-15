@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores'
 	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-	import { api } from '../stores/common'
+	import { api } from '../stores/app'
 	import Icon from './DiscoursIcon.svelte'
-	import { session, ui, token as tokenStore } from '../stores/auth'
+	import { session, ui, token as tokenStore } from '../stores/user'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 

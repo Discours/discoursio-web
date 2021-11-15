@@ -8,4 +8,7 @@ export interface Shout {
 	layout: string
 	title: string
 	subtitle: string
+	views: number
+	rating: number
+	createdAt?: Date
 }

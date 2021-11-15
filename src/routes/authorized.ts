@@ -1,5 +1,5 @@
-import { api as graphql } from '../stores/common'
-import { token, session } from '../stores/auth'
+import { api as graphql } from '../stores/app'
+import { token, session } from '../stores/user'
 import { get as getStore } from 'svelte/store'
 import { GET_ME } from '../graphql/queries'
 
