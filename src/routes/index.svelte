@@ -1,3 +1,23 @@
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit'
+
+	// see https://kit.svelte.dev/docs#loading
+	export const load: Load = async ({ fetch }) => {
+		const res = await fetch('/data/recents.json')
+		if (res.ok) {
+			console.log(res)
+			const { recents } = await res.json()
+			return {
+				props: { recents }
+			}
+		}
+		const { message } = await res.json()
+		return {
+			error: new Error(message)
+		}
+	}
+</script>
+
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
@@ -18,7 +38,10 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { loading, endpoint } from '../stores/app'
-	import { join } from 'path/posix'
+
+	export let props
+
+	$: $recents = props.recents
 
 	onMount(async () => {
 		$loading = true
@@ -26,9 +49,10 @@
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
-		$recents = await (await fetch('/data/recents.json')).json()
-		$topMonth = await (await fetch('/data/top-month.json')).json()
-		$topOverall = await (await fetch('/data/top-overall.json')).json()
+
+		// $recents = await (await fetch('/data/recents.json')).json()
+		// $topMonth = await (await fetch('/data/top-month.json')).json()
+		// $topOverall = await (await fetch('/data/top-overall.json')).json()
 		$shoutslist = Array.from(
 			new Set($recents.concat($topMonth).concat($topOverall))
 		) // removing dublicates
