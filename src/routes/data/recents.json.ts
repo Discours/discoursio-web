@@ -6,6 +6,7 @@ import { RECENT_SHOUTS } from '../../graphql/queries'
 
 export const get = async () => {
 	const api = getStore(graphql)
+	await api
 	const r = await api.request(RECENT_SHOUTS, { limit: 100 })
 	console.debug(r)
 	return r
