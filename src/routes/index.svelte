@@ -7,7 +7,7 @@
 		authors,
 		topicslist,
 		shoutslist,
-		communitieslist,
+		communitieslist
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -22,12 +22,25 @@
 		}
 	})
 
-	let recents = [], topCommented = [], topMonth = [], topOverall = [], topRated = [], topViewed = [], authorsMonth = [], authorsMonthSet = new Set([]) 
+	let recents = [],
+		topCommented = [],
+		topMonth = [],
+		topOverall = [],
+		topRated = [],
+		topViewed = [],
+		authorsMonth = [],
+		authorsMonthSet = new Set([])
 
-	$: (async () => recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents'])()
-	$: (async () => topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth'])()
-	$: (async () => topOverall = await $api.request(TOP_OVERALL, { limit: 100 })['topOverall'])()
-	$: if(recents && topMonth && topOverall) $shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
+	$: (async () =>
+		(recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents']))()
+	$: (async () =>
+		(topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth']))()
+	$: (async () =>
+		(topOverall = await $api.request(TOP_OVERALL, { limit: 100 })[
+			'topOverall'
+		]))()
+	$: if (recents && topMonth && topOverall)
+		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 	$: topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
 	$: topRated = $shoutslist.sort((a, b) => a['rating'] - b['rating'])
 	$: topCommented = $shoutslist.sort(
@@ -35,7 +48,9 @@
 			($comments[a['slug']] ? $comments[a['slug']].length : 0) -
 			($comments[b['slug']] ? $comments[b['slug']].length : 0)
 	)
-	$: authorsMonth = Array.from(authorsMonthSet).sort( (a, b) => a['rating'] - b['rating'])
+	$: authorsMonth = Array.from(authorsMonthSet).sort(
+		(a, b) => a['rating'] - b['rating']
+	)
 	$: if (topMonth && authorsMonth == []) {
 		topMonth.forEach((s) => {
 			s['authors'].forEach((a) => {
