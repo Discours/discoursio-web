@@ -13,16 +13,16 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { endpoint, api } from '../stores/app'
-	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries';
+	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries'
 
-	onMount(async () => {
+	onMount(() => {
 		if (window.location.hostname !== 'build.discours.io') {
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
 	})
 
-	let recents = [], topMonth = [], topOverall = [], topRated = [], topViewed = [], authorsMonth = [], authorsMonthSet = new Set([]) 
+	let recents = [], topCommented = [], topMonth = [], topOverall = [], topRated = [], topViewed = [], authorsMonth = [], authorsMonthSet = new Set([]) 
 
 	$: (async () => recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents'])()
 	$: (async () => topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth'])()
