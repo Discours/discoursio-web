@@ -20,6 +20,10 @@
 	import { loading, endpoint, api } from '../stores/app'
 	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries';
 
+	export let props
+
+	$: $recents = props.recents
+
 	onMount(async () => {
 		$loading = true
 		if (window.location.hostname !== 'build.discours.io') {
@@ -49,13 +53,15 @@
 	$: authorsMonth = Array.from(authorsMonthSet).sort(
 		(a, b) => a['rating'] - b['rating']
 	)
+
 	let authorsMonthSet = new Set([])
-	$: if ($topMonth) {
+	$: if ($topMonth && authorsMonth === []) {
 		$topMonth.forEach((s) => {
 			s['authors'].forEach((a) => {
 				authorsMonthSet.add($authors[a['slug']])
 			})
 		})
+		$loading = false
 	}
 
 	const onlyTopic = (topic) => {
@@ -69,7 +75,7 @@
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $shoutslist}
+{#if $loading}
 	<div class="home">
 		{#if $topicslist.length > 0}
 			<NavTopics />
@@ -160,7 +166,7 @@
 		</div>
 
 		<div class="floor floor--7">
-			{#if $recents}
+			{#if $recents.length > 0}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
 					{#each $recents.slice(0, 4) as article}
