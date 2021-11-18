@@ -72,9 +72,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
 	<div class="home">
-		{#if $topicslist.length > 0}
-			<NavTopics />
-		{/if}
+		<NavTopics />
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
@@ -161,7 +159,7 @@
 		</div>
 
 		<div class="floor floor--7">
-			{#if recents.length > 0}
+			{#if recents && recents.length > 0}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as article}
