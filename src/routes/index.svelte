@@ -5,63 +5,43 @@
 	import {
 		comments,
 		authors,
-		topics,
 		topicslist,
-		shouts,
 		shoutslist,
 		communitieslist,
-		topMonth,
-		topOverall,
-		recents
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
-	import { loading, endpoint, api } from '../stores/app'
+	import { endpoint, api } from '../stores/app'
 	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries';
 
-	export let props
-
-	$: $recents = props.recents
-
 	onMount(async () => {
-		$loading = true
 		if (window.location.hostname !== 'build.discours.io') {
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
-		$recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents']
-		$topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth']
-		$topOverall = await $api.request(TOP_OVERALL, { limit: 100 })['topOverall']
-		$shoutslist = Array.from(new Set([...$recents, ...$topMonth, ...$topOverall]))
 	})
 
-	let topViewed = []
+	let recents = [], topMonth = [], topOverall = [], topRated = [], topViewed = [], authorsMonth = [], authorsMonthSet = new Set([]) 
+
+	$: (async () => recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents'])()
+	$: (async () => topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth'])()
+	$: (async () => topOverall = await $api.request(TOP_OVERALL, { limit: 100 })['topOverall'])()
+	$: if(recents && topMonth && topOverall) $shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 	$: topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-
-	let topRated = []
 	$: topRated = $shoutslist.sort((a, b) => a['rating'] - b['rating'])
-
-	let topCommented = []
 	$: topCommented = $shoutslist.sort(
 		(a, b) =>
 			($comments[a['slug']] ? $comments[a['slug']].length : 0) -
 			($comments[b['slug']] ? $comments[b['slug']].length : 0)
 	)
-
-	let authorsMonth = []
-	$: authorsMonth = Array.from(authorsMonthSet).sort(
-		(a, b) => a['rating'] - b['rating']
-	)
-
-	let authorsMonthSet = new Set([])
-	$: if ($topMonth && authorsMonth === []) {
-		$topMonth.forEach((s) => {
+	$: authorsMonth = Array.from(authorsMonthSet).sort( (a, b) => a['rating'] - b['rating'])
+	$: if (topMonth && authorsMonth == []) {
+		topMonth.forEach((s) => {
 			s['authors'].forEach((a) => {
 				authorsMonthSet.add($authors[a['slug']])
 			})
 		})
-		$loading = false
 	}
 
 	const onlyTopic = (topic) => {
@@ -75,7 +55,7 @@
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $loading}
+{#if $shoutslist}
 	<div class="home">
 		{#if $topicslist.length > 0}
 			<NavTopics />
@@ -166,10 +146,10 @@
 		</div>
 
 		<div class="floor floor--7">
-			{#if $recents.length > 0}
+			{#if recents.length > 0}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
-					{#each $recents.slice(0, 4) as article}
+					{#each recents.slice(0, 4) as article}
 						<div class="col-md-6 col-lg-3">
 							<ShoutCard shout={article} />
 						</div>

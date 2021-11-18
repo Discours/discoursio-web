@@ -4,10 +4,6 @@ import type { Writable } from 'svelte/store'
 import type { User, Topic, Community, Comment } from '../graphql/codegen'
 import type { Shout } from '../lib/types'
 
-export const topMonth: Writable<Shout[]> = writable([])
-export const topOverall: Writable<Shout[]> = writable([])
-export const recents: Writable<Shout[]> = writable([])
-
 export const authorslist: Writable<User[]> = writable([])
 export const communitieslist: Writable<Community[]> = writable([])
 export const shoutslist: Writable<Shout[]> = writable([])
