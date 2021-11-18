@@ -31,6 +31,8 @@ const scssOptions = {
 	outputStyle: 'expanded' // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
+// TODO: graphql queries for prerender
+
 let articles = {} // require('./src/data/articles.json')
 let topics = {} // require('./src/data/topics.json')
 let communities = {
@@ -79,11 +81,7 @@ const config = {
 			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],
-				noExternal:[
-					'y-webrtc',
-					'y-indexeddb',
-					'y-prosemirror',					
-				] + Object.keys(pkg.dependencies || [])
+				noExternal: Object.keys(pkg.dependencies || {})
 			}
 		}
 	},

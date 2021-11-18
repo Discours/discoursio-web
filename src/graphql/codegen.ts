@@ -35,8 +35,8 @@ export type Comment = {
 	id: Scalars['Int']
 	old_id?: Maybe<Scalars['String']>
 	old_thread?: Maybe<Scalars['String']>
-	ratigns?: Maybe<Array<Maybe<CommentRating>>>
 	rating?: Maybe<Scalars['Int']>
+	ratings?: Maybe<Array<Maybe<CommentRating>>>
 	replyTo: Scalars['Int']
 	shout: Scalars['Int']
 	updatedAt?: Maybe<Scalars['DateTime']>
@@ -310,8 +310,8 @@ export type Shout = {
 	old_id?: Maybe<Scalars['String']>
 	publishedAt?: Maybe<Scalars['DateTime']>
 	publishedBy?: Maybe<Scalars['Int']>
-	ratigns?: Maybe<Array<Maybe<Rating>>>
 	rating?: Maybe<Scalars['Int']>
+	ratings?: Maybe<Array<Maybe<Rating>>>
 	slug: Scalars['String']
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>

@@ -17,7 +17,8 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
-	import { loading, endpoint } from '../stores/app'
+	import { loading, endpoint, api } from '../stores/app'
+	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries';
 
 	onMount(async () => {
 		$loading = true
@@ -25,10 +26,9 @@
 			console.log('app: using testing graphql endpoint')
 			$endpoint = 'http://localhost:8000' // testing only
 		}
-		$recents = (await (await fetch('/data/recents.json')).json()).recents
-		$topMonth = (await (await fetch('/data/top-month.json')).json()).topMonth
-		$topOverall = (await (await fetch('/data/top-overall.json')).json())
-			.topOverall
+		$recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents']
+		$topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth']
+		$topOverall = await $api.request(TOP_OVERALL, { limit: 100 })['topOverall']
 		$shoutslist = Array.from(new Set([...$recents, ...$topMonth, ...$topOverall]))
 	})
 

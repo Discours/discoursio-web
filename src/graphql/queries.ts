@@ -2,8 +2,10 @@ import { gql } from 'graphql-request'
 
 // email
 export const IS_EMAIL_FREE = gql`
-	query isEmailFreeQuery($email: String!) {
-		isEmailFree(email: $email)
+query isEmailFreeQuery($email: String!) {
+		isEmailFree(email: $email) {
+			error
+		}
 	}
 `
 
@@ -32,7 +34,7 @@ export const SIGN_UP = gql`
 				slug
 				userpic
 				bio
-				links
+				# links
 			}
 		}
 	}
@@ -40,16 +42,15 @@ export const SIGN_UP = gql`
 
 // uses Auth header
 export const SIGN_OUT = gql`
-	query {
+	query SignOutQuery {
 		signOut {
 			error
-			result
 		}
 	}
 `
 // uses Auth header
 export const GET_ME = gql`
-	query {
+	query GetCurrentUserQuery {
 		getCurrentUser {
 			error
 			user {
@@ -65,7 +66,7 @@ export const GET_ME = gql`
 
 // TODO: joined with comments, topics, ratings and authors
 export const GET_SHOUT = gql`
-	query getShoutBySlug($slug: String!) {
+	query GetShoutBySlugQuery($slug: String!) {
 		getShoutBySlug(slug: $slug) {
 			title
 			subtitle
@@ -84,33 +85,44 @@ export const GET_SHOUT = gql`
 				body
 				pic
 			}
-			replyTo
-			versionOf
 			createdAt
 			updatedAt
-			published
 			publishedAt
 			views
-			rating
-			ratings
-			comments
+			ratings {
+				value
+				createdBy
+			}
+			comments {
+				body
+				author
+				createdAt
+			}
 		}
 	}
 ` // TODO: fix views as sum for all days by shout_id
 
 export const GET_AUTHOR = gql`
-	query getUserBySlug($slug: String!) {
+	query GetUserBySlugQuery($slug: String!) {
 		getUserBySlug(slug: $slug) {
-			slug
-			name
-			bio
-			roles
-			userpic
-			communities
-			links
-			createdAt
-			wasOnlineAt
-			ratings
+			user {
+				slug
+				name
+				bio
+				roles {
+					community
+					name
+				}
+				userpic
+				communities
+				links
+				createdAt
+				wasOnlineAt
+				ratings {
+					createdBy
+					value
+				}
+			}
 		}
 	}
 `
@@ -131,7 +143,7 @@ export const GET_COMMUNITIES = gql`
 `
 
 export const RECENT_SHOUTS = gql`
-	query ($limit: Int) {
+	query RecentShoutsQuery($limit: Int) {
 		recents(limit: $limit) {
 			title
 			subtitle
@@ -157,7 +169,7 @@ export const RECENT_SHOUTS = gql`
 `
 
 export const TOP_OVERALL = gql`
-	query ($limit: Int) {
+	query TopOverallShoutsQuery($limit: Int) {
 		topOverall(limit: $limit) {
 			title
 			subtitle
@@ -183,7 +195,7 @@ export const TOP_OVERALL = gql`
 `
 
 export const TOP_MONTH = gql`
-	query ($limit: Int) {
+	query TopMonthShoutsQuery($limit: Int) {
 		topMonth(limit: $limit) {
 			title
 			subtitle
@@ -209,7 +221,7 @@ export const TOP_MONTH = gql`
 `
 
 export const SHOUTS_BY_COMMUNITY = gql`
-	query shoutsByCommunity($community: String!, $limit: Int) {
+	query ShoutsByCommunityQuery($community: String!, $limit: Int!) {
 		shoutsByCommunity(community: $community, limit: $limit) {
 			title
 			subtitle
@@ -235,7 +247,7 @@ export const SHOUTS_BY_COMMUNITY = gql`
 `
 
 export const SHOUTS_BY_AUTHOR = gql`
-	query shoutsByAuthor($author: Int!, $limit: Int) {
+	query ShoutsByAuthorQuery($author: String!, $limit: Int!) {
 		shoutsByAuthor(author: $author, limit: $limit) {
 			title
 			subtitle
@@ -261,7 +273,7 @@ export const SHOUTS_BY_AUTHOR = gql`
 `
 
 export const SHOUTS_BY_TOPIC = gql`
-	query shoutsByTopic($topic: String!, $limit: Int) {
+	query ShoutsByTopicQuery($topic: String!, $limit: Int!) {
 		shoutsByTopic(topic: $topic, limit: $limit) {
 			title
 			subtitle
@@ -286,34 +298,8 @@ export const SHOUTS_BY_TOPIC = gql`
 	}
 `
 
-export const SHOUTS_BY_RATING = gql`
-	query topicsByRating($limit: Int) {
-		topShoutsByRating(limit: $limit) {
-			title
-			subtitle
-			layout
-			cover
-			community
-			topics {
-				slug
-				title
-				body
-				pic
-			}
-			authors {
-				name
-				slug
-				userpic
-			}
-			publishedAt
-			views
-			rating
-		}
-	}
-`
-
 export const TOPICS_BY_SLUGS = gql`
-	query topicsBySlugs($slugs: [String]!) {
+	query TopicsBySlugsQuery($slugs: [String]!) {
 		topicsBySlugs(slugs: $slugs) {
 			title
 			body
@@ -321,12 +307,12 @@ export const TOPICS_BY_SLUGS = gql`
 			pic
 			parents
 			children
-			community
+			# community
 		}
 	}
 `
 export const TOPICS_BY_COMMUNITY = gql`
-	query topicsByCommunity($community: String!) {
+	query TopicsByCommunityQuery($community: String!) {
 		topicsByCommunity(community: $community) {
 			title
 			body
@@ -334,13 +320,13 @@ export const TOPICS_BY_COMMUNITY = gql`
 			pic
 			parents
 			children
-			community
+			# community
 		}
 	}
 `
 
 export const TOPICS_BY_AUTHOR = gql`
-	query topicsByAuthor($author: String!) {
+	query TopicsByAuthorQuery($author: String!) {
 		topicsByAuthor(author: $author) {
 			title
 			body
@@ -348,7 +334,7 @@ export const TOPICS_BY_AUTHOR = gql`
 			pic
 			parents
 			children
-			community
+			# community
 		}
 	}
 `
