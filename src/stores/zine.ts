@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { User, Topic, Community, Comment } from '../graphql/codegen'
+import type { User, Topic, Community, Comment } from '../lib/codegen'
 import type { Shout } from '../lib/types'
 
 export const authorslist: Writable<User[]> = writable([])

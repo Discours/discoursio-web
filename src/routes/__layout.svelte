@@ -5,13 +5,13 @@
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { token, session } from '../stores/user'
-	import { api } from '../stores/app'
-	import { GET_ME } from '../graphql/queries'
+	import { GET_ME } from '../lib/queries'
 	import { onMount } from 'svelte'
+	import { client } from '../lib/client'
 
 	$: if ($token) {
 		try {
-			$api.request(GET_ME).then((user) => ($session = user))
+			client.request(GET_ME).then((user) => ($session = user))
 		} catch (e) {
 			console.error('graphql request failed')
 		}

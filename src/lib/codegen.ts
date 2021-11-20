@@ -1,4 +1,7 @@
+import type { GraphQLClient } from 'graphql-request'
+
 export type Maybe<T> = T | null
+export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
 	[K in keyof T]: T[K]
 }
@@ -35,8 +38,8 @@ export type Comment = {
 	id: Scalars['Int']
 	old_id?: Maybe<Scalars['String']>
 	old_thread?: Maybe<Scalars['String']>
+	ratigns?: Maybe<Array<Maybe<CommentRating>>>
 	rating?: Maybe<Scalars['Int']>
-	ratings?: Maybe<Array<Maybe<CommentRating>>>
 	replyTo: Scalars['Int']
 	shout: Scalars['Int']
 	updatedAt?: Maybe<Scalars['DateTime']>
@@ -107,7 +110,7 @@ export type MutationConfirmPasswordResetArgs = {
 
 export type MutationCreateMessageArgs = {
 	body: Scalars['String']
-	replyTo?: Maybe<Scalars['Int']>
+	replyTo?: InputMaybe<Scalars['Int']>
 }
 
 export type MutationCreateShoutArgs = {
@@ -129,7 +132,7 @@ export type MutationRateShoutArgs = {
 
 export type MutationRegisterUserArgs = {
 	email: Scalars['String']
-	password?: Maybe<Scalars['String']>
+	password?: InputMaybe<Scalars['String']>
 }
 
 export type MutationRequestPasswordResetArgs = {
@@ -170,9 +173,9 @@ export type Notification = {
 }
 
 export type ProfileInput = {
-	email?: Maybe<Scalars['String']>
-	username?: Maybe<Scalars['String']>
-	userpic?: Maybe<Scalars['String']>
+	email?: InputMaybe<Scalars['String']>
+	username?: InputMaybe<Scalars['String']>
+	userpic?: InputMaybe<Scalars['String']>
 }
 
 export type Proposal = {
@@ -207,8 +210,8 @@ export type Query = {
 }
 
 export type QueryGetMessagesArgs = {
-	count?: Maybe<Scalars['Int']>
-	page?: Maybe<Scalars['Int']>
+	count?: InputMaybe<Scalars['Int']>
+	page?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryGetShoutBySlugArgs = {
@@ -224,7 +227,7 @@ export type QueryIsEmailFreeArgs = {
 }
 
 export type QueryRecentsArgs = {
-	limit?: Maybe<Scalars['Int']>
+	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryShoutsByAuthorArgs = {
@@ -244,23 +247,23 @@ export type QueryShoutsByTopicArgs = {
 
 export type QuerySignInArgs = {
 	email: Scalars['String']
-	password?: Maybe<Scalars['String']>
+	password?: InputMaybe<Scalars['String']>
 }
 
 export type QueryTopAuthorsArgs = {
-	limit?: Maybe<Scalars['Int']>
+	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryTopMonthArgs = {
-	limit?: Maybe<Scalars['Int']>
+	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryTopOverallArgs = {
-	limit?: Maybe<Scalars['Int']>
+	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryTopViewedArgs = {
-	limit?: Maybe<Scalars['Int']>
+	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryTopicsByAuthorArgs = {
@@ -272,7 +275,7 @@ export type QueryTopicsByCommunityArgs = {
 }
 
 export type QueryTopicsBySlugsArgs = {
-	slugs: Array<Maybe<Scalars['String']>>
+	slugs: Array<InputMaybe<Scalars['String']>>
 }
 
 export type Rating = {
@@ -310,8 +313,8 @@ export type Shout = {
 	old_id?: Maybe<Scalars['String']>
 	publishedAt?: Maybe<Scalars['DateTime']>
 	publishedBy?: Maybe<Scalars['Int']>
+	ratigns?: Maybe<Array<Maybe<Rating>>>
 	rating?: Maybe<Scalars['Int']>
-	ratings?: Maybe<Array<Maybe<Rating>>>
 	slug: Scalars['String']
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>
@@ -327,12 +330,12 @@ export type Shout = {
 export type ShoutInput = {
 	body: Scalars['String']
 	slug: Scalars['String']
-	subtitle?: Maybe<Scalars['String']>
-	title?: Maybe<Scalars['String']>
-	topic_ids?: Maybe<Array<Maybe<Scalars['Int']>>>
-	versionOf?: Maybe<Scalars['String']>
-	visibleForRoles?: Maybe<Array<Maybe<Scalars['String']>>>
-	visibleForUsers?: Maybe<Array<Maybe<Scalars['Int']>>>
+	subtitle?: InputMaybe<Scalars['String']>
+	title?: InputMaybe<Scalars['String']>
+	topic_ids?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+	versionOf?: InputMaybe<Scalars['String']>
+	visibleForRoles?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
+	visibleForUsers?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
 }
 
 export type ShoutResult = {
@@ -416,3 +419,18 @@ export type UserResult = {
 	error?: Maybe<Scalars['String']>
 	user?: Maybe<User>
 }
+
+export type SdkFunctionWrapper = <T>(
+	action: (requestHeaders?: Record<string, string>) => Promise<T>,
+	operationName: string
+) => Promise<T>
+
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action()
+
+export function getSdk(
+	client: GraphQLClient,
+	withWrapper: SdkFunctionWrapper = defaultWrapper
+) {
+	return {}
+}
+export type Sdk = ReturnType<typeof getSdk>

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { SIGN_IN, SIGN_UP } from '../graphql/queries'
-	import { api } from '../stores/app'
+	import { SIGN_IN, SIGN_UP } from '../lib/queries'
+	import { client } from '../lib/client'
 	import Icon from './DiscoursIcon.svelte'
 	import { session, ui, token as tokenStore } from '../stores/user'
 	import { onMount } from 'svelte'
@@ -38,7 +38,7 @@
 		console.log('auth: signing in with discours.io account')
 		let q, r
 		try {
-			q = await $api.request(SIGN_IN, {
+			q = await client.request(SIGN_IN, {
 				email: $ui.email,
 				password: $ui.password
 			})
@@ -60,7 +60,7 @@
 
 	const register = async () => {
 		console.log('auth: register with discours.io account ')
-		const q = await $api.request(SIGN_UP, {
+		const q = await client.request(SIGN_UP, {
 			email: $ui.email,
 			password: $ui.password
 		})

@@ -2,7 +2,7 @@ import { gql } from 'graphql-request'
 
 // email
 export const IS_EMAIL_FREE = gql`
-query isEmailFreeQuery($email: String!) {
+	query isEmailFreeQuery($email: String!) {
 		isEmailFree(email: $email) {
 			error
 		}

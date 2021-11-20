@@ -1,62 +1,51 @@
+<script context="module">
+	export const load = async ({ fetch }) => {
+		let props = {}
+		const recents = await fetch('/data/recents.json')
+		const topMonth = await fetch('/data/top-month.json')
+		const topOverall = await fetch('/data/top-overall.json')
+		props = recents.ok ? { ...(await recents.json()), ...props } : props
+		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
+		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
+		return { props }
+	}
+</script>
+
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
 	import UserCommunity from '../components/UserCommunity.svelte'
-	import {
-		comments,
-		authors,
-		topicslist,
-		shoutslist,
-		communitieslist
-	} from '../stores/zine'
+	import { comments, authors, shoutslist, communitieslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
-	import { onMount } from 'svelte'
-	import { endpoint, api } from '../stores/app'
-	import { RECENT_SHOUTS, TOP_MONTH, TOP_OVERALL } from '../graphql/queries'
 
-	onMount(() => {
-		if (window.location.hostname !== 'build.discours.io') {
-			console.log('app: using testing graphql endpoint')
-			$endpoint = 'http://localhost:8000' // testing only
-		}
-	})
+	export let recents = []
+	export let topMonth = []
+	export let topOverall = []
 
-	let recents = [],
-		topCommented = [],
-		topMonth = [],
-		topOverall = [],
-		topRated = [],
+	let topCommented = [],
 		topViewed = [],
 		authorsMonth = [],
 		authorsMonthSet = new Set([])
 
-	$: (async () =>
-		(recents = await $api.request(RECENT_SHOUTS, { limit: 100 })['recents']))()
-	$: (async () =>
-		(topMonth = await $api.request(TOP_MONTH, { limit: 100 })['topMonth']))()
-	$: (async () =>
-		(topOverall = await $api.request(TOP_OVERALL, { limit: 100 })[
-			'topOverall'
-		]))()
-	$: if (recents && topMonth && topOverall)
+	$: if (recents && topMonth && topOverall && !$shoutslist) {
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
-	$: topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-	$: topRated = $shoutslist.sort((a, b) => a['rating'] - b['rating'])
-	$: topCommented = $shoutslist.sort(
-		(a, b) =>
-			($comments[a['slug']] ? $comments[a['slug']].length : 0) -
-			($comments[b['slug']] ? $comments[b['slug']].length : 0)
-	)
-	$: authorsMonth = Array.from(authorsMonthSet).sort(
-		(a, b) => a['rating'] - b['rating']
-	)
-	$: if (topMonth && authorsMonth == []) {
-		topMonth.forEach((s) => {
-			s['authors'].forEach((a) => {
-				authorsMonthSet.add($authors[a['slug']])
+		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
+		topCommented = $shoutslist.sort(
+			(a, b) =>
+				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
+				($comments[b['slug']] ? $comments[b['slug']].length : 0)
+		)
+		authorsMonth = Array.from(authorsMonthSet).sort(
+			(a, b) => a['rating'] - b['rating']
+		)
+		if (topMonth && authorsMonth == []) {
+			topMonth.forEach((s) => {
+				s['authors'].forEach((a) => {
+					authorsMonthSet.add($authors[a['slug']])
+				})
 			})
-		})
+		}
 	}
 
 	const onlyTopic = (topic) => {
@@ -174,7 +163,7 @@
 		<div class="floor floor--important">
 			<div class="wide-container row">
 				<h2 class="col-12"><span>Избранное</span></h2>
-				{#each topRated.slice(0, 4) as article}
+				{#each topOverall.slice(0, 4) as article}
 					<div class="col-md-3">
 						<ShoutCard shout={article} />
 					</div>
