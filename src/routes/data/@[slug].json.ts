@@ -11,6 +11,8 @@ export const get = async ({ params }) => {
 				...await client.request(SHOUTS_BY_COMMUNITY, { community: slug }),
 				...await client.request(TOPICS_BY_COMMUNITY, { community: slug })
 			}
+			if(!body) return { status: 404 }
+			else return { status: 200, body }
 		}
 
 		return {

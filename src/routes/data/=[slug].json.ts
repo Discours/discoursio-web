@@ -6,16 +6,15 @@ export const get = async ({ params }) => {
         const { slug } = params
 		let body
         body = await client.request(GET_SHOUT, { slug })
-        if(!body) body = await client.request(SHOUTS_BY_TOPIC, { topic: slug })
-
-		return {
-			status: 200,
-			body
+        if(!body) {
+			body = await client.request(SHOUTS_BY_TOPIC, { topic: slug })
+			if(!body) return { status: 404 }
+			else return { status: 200, body }
 		}
 	} catch (error) {
 		console.error(error)
 		return {
-			status: 500,
+			status: 404,
 			body: { error: 'There was a server error.' }
 		}
 	}
