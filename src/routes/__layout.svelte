@@ -11,19 +11,17 @@
 
 	$: if ($token) {
 		try {
-			client.request(GET_ME).then((user) => ($session = user))
+			console.log('app: found user token')
+			client.request(GET_ME).then((user) => {
+				$session = user
+				console.log('app: session store updated')
+			})
 		} catch (e) {
-			console.error('graphql request failed')
+			console.error('app: graphql request failed')
 		}
 	}
 
-	$: if ($session) {
-		document.cookie = $token
-	}
-
-	onMount(() => {
-		if (!$token) $token = document.cookie
-	})
+	onMount(() => $token = document.cookie)
 
 	initLocalizationContext()
 </script>

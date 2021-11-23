@@ -1,101 +1,132 @@
 <script lang="ts">
-	import type { Shout } from '../graphql/codegen'
-	import { roles, AS, session } from '../stores/user'
-	// import { authors } from '../stores/zine'
-	import ShoutComment from '../components/ShoutComment.svelte'
-	import MD from 'markdown-it'
-	import Author from './UserCard.svelte'
-	import Userpic from './Userpic.svelte'
-	const mit = MD()
+	import UserCard from './UserCard.svelte'
+	import { session } from '../stores/user'
+	import MD from '../components/MD.svelte'
 
-	export let shout: Shout | Partial<Shout>
-	export let canEdit = false
-	export let editMode = false
+	export let props
+	let shout
+	let canEdit = false
+	// TODO: editing logix
+	$: shout = props.shout
+	$: canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
 
-	$: if ($session && shout && shout.authors) {
-		canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
-		// TODO: support editors from community
-	}
-
-	let body = ''
-	let inputs = {
-		title: '',
-		subttitle: '',
-		body: '',
-		cover: '',
-		layout: 'article',
-		topics: [], // TODO: topics selector component
-		authors: [], // TODO: insert yourself automatically
-		createdAt: new Date().toUTCString() // TODO: update on submit
-	} // dynamic binding
-
-	const options: MD.Options = {}
-
-	$: if (!body && shout) {
-		// let tokens: any[] = mit.parse(shout.body, options)
-		// tokens.forEach(console.debug)
-		body = shout.body
-	}
-
-	const handleInput = (ev) => {
-		// event handling when you type something
-	}
-
-	const editSubmit = () => {
-		shout = Object.assign({}, shout, inputs)
-	}
 </script>
 
 <div class="shout">
 	{#if shout}
-		<div
-			class="shout-title"
-			on:input={handleInput}
-			contenteditable={canEdit && editMode}
-		>
-			{shout.title}
-		</div>
-		<div
-			class="shout-body"
-			contenteditable={canEdit && editMode}
-			on:input={handleInput}
-		>
-			{@html body}
-		</div>
-		<div class="shout-controls">
-			{#each shout.authors as user}
-				<div class="shout-author">
-					<a href={`/@${user.slug}`}><Userpic {user} />{user.name}</a>
+	<div class="shout wide-container row">
+		<article class="col-md-6 offset-md-3">
+			<div class="shout__header">
+				<div class="shout__topic article-card__category">
+					{#each shout.topics as topic, index}
+						{#if index > 0},{/if}
+						{topic}
+					{/each}
 				</div>
-			{/each}
-			<div class="shout-rating">
-				{(shout.rating > 0 ? '+' : '') + shout.rating.toString()}
+
+				<h1>{shout.title}</h1>
+				{#if shout.subtitle}<h4>{shout.subtitle}</h4>{/if}
+
+				<div class="shout__author">
+					{#each shout.authors as author, index}
+						{#if index > 0}, {/if}
+						{author.name}
+					{/each}
+				</div>
+
+				<div
+					class="shout__cover"
+					style={`background-image: url('${shout.cover}')`}
+				/>
 			</div>
-			<a
-				class="modeswitch"
-				href={''}
-				on:click|preventDefault={() => (editMode = !editMode)}
-			>
-				{editMode ? '👀' : '✍🏻'}
-			</a>
-			{#if canEdit}
-				<a class="updatelink" href={''} on:click|preventDefault={editSubmit}
-					>Отправить</a
-				>
-			{/if}
-		</div>
-		<div class="shout-comments">
-			{#each shout.comments as comment}
-				<ShoutComment {comment} canEdit={comment.author === $session.id} />
-			{/each}
-		</div>
+
+			<div class="shout__body">
+				{#if shout.body.slice(0, 1) === '<'}
+					{@html shout.body}
+				{:else}
+					<MD body={shout.body} />
+				{/if}
+			</div>
+
+			<div class="shout__authors-list">
+				<h4>Авторы</h4>
+
+				{#each shout.authors as user, index}
+					{#if index > 0},{/if}
+					<UserCard {user} hasSubscribeButton={false} />
+				{/each}
+			</div>
+		</article>
+	</div>
 	{/if}
 </div>
 
+
 <style lang="scss">
-	:global(mark) {
-		text-decoration: none;
-		background-color: transparent;
-		font-weight: 800;
+	h1 {
+		@include font-size(4rem);
+		line-height: 1.1;
+		margin-top: 0.5em;
+	}
+
+	:global(img) {
+		max-width: 100%;
+	}
+
+	.shout__header {
+		margin: 0 -16.6666% 2em;
+	}
+
+	.article-card__category {
+		font-size: 1.2rem;
+		margin-bottom: 0.8rem;
+		text-transform: uppercase;
+	}
+
+	.shout__cover {
+		background-size: cover;
+		height: 0;
+		padding-bottom: 56.2%;
+	}
+
+	.shout__body {
+		font-size: 1.7rem;
+		line-height: 1.6;
+
+		:global(img) {
+			display: block;
+			margin-bottom: 0.5em;
+		}
+
+		:global(blockquote) {
+			border-left: 4px solid;
+			font-size: 2rem;
+			font-weight: 500;
+			font-style: italic;
+			line-height: 1.4;
+			margin: 1.5em 0 1.5em -16.6666%;
+			padding: 0 0 0 1em;
+		}
+
+		:global(mark) {
+			background: none;
+			font-size: 2rem;
+			font-weight: bold;
+			line-height: 1.4;
+		}
+	}
+
+	.shout__author {
+		margin-bottom: 2em;
+	}
+
+	.shout__authors-list {
+		margin-top: 2em;
+
+		:global(h4) {
+			color: #696969;
+			font-size: 1.5rem;
+			font-weight: normal;
+		}
 	}
 </style>

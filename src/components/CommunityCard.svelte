@@ -1,11 +1,5 @@
 <script lang="ts">
-	import type { Community } from '../graphql/codegen'
-	import { communities } from '../stores/zine'
-
-	export let slug: string
-	let community: Community | Partial<Community>
-
-	$: if ($communities && !community) community = $communities[slug]
+	export let community
 </script>
 
 <div class="community">

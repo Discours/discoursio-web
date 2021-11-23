@@ -1,9 +1,7 @@
 import cookie from 'cookie'
 
-export async function handle({ request, resolve }) {
-	const cookies = cookie.parse(request.headers.cookie || '')
-	// code here happends before the endpoint or page is called
+export async function handle({ request, resolve, redirect }) {
+	request.locals.cookies = await cookie.parse(request.headers.cookie || '')
 	const response = await resolve(request)
-	// code here happens after the endpoint or page is called
 	return response
 }

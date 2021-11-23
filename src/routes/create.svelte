@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DiscoursEditor from '../components/DiscoursEditor.svelte'
-	import type { Shout } from '../graphql/codegen'
+	import type { Shout } from '../lib/codegen'
 
 	let shout: Shout
 </script>

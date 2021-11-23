@@ -1,6 +1,12 @@
 [0.0.8]
 [+] isolated editor codebase
 [+] sveo
+[+] SSG first
+[+] svelte-kit caching fixes
+[+] isolated MD component
+[-] code cleanup
+[-] /auth route
+[-] top nav changes
 
 [0.0.7]
 [+] nav refactoring /[what] /@[who]

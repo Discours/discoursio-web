@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { User } from '../graphql/codegen'
+	import type { User } from '../lib/codegen'
 	import Userpic from './Userpic.svelte'
 
 	export let user: User | Partial<User>

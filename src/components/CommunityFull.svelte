@@ -1,21 +1,26 @@
 <script lang="ts">
-	import type { Topic } from '../lib/codegen'
-	export let topic: Topic | Partial<Topic>
+	export let props
+    let community
+    $: community = props.community
+    // TODO: full community view
 </script>
 
-<div class="topic">
-	{#if topic}
-		<div class="topic__avatar">
-			<a href={topic.slug}>
-				<img src={topic.pic} alt={topic.title} />
+<div class="community">
+	{#if community}
+		<div class="community__avatar">
+			<a href={community.slug}>
+				<img src={community.pic} alt={community.name} />
 			</a>
 		</div>
-		<div class="topic__details">
-			<div class="topic__name">
-				<a href={topic.slug}>{topic.title}</a>
+
+		<div class="community__details">
+			<div class="community__name">
+				<a href={community.slug}>{community.name}</a>
 			</div>
-			<div class="topic__about">{@html topic.body}</div>
-			<div class="topic__subscribe">
+
+			<div class="community__about">{@html community.desc}</div>
+
+			<div class="community__subscribe">
 				<button class="button button--subscribe">Подписаться</button>
 			</div>
 		</div>
@@ -23,7 +28,7 @@
 </div>
 
 <style lang="scss">
-	.topic {
+	.community {
 		align-items: flex-start;
 		display: flex;
 		margin-bottom: 2.4rem;
@@ -33,7 +38,7 @@
 		}
 	}
 
-	.topic__avatar {
+	.community__avatar {
 		border-radius: 100%;
 		height: 64px;
 		margin-right: 1.2rem;
@@ -50,22 +55,22 @@
 		}
 	}
 
-	.topic__details {
+	.community__details {
 		flex: 1;
 		padding-right: 1.2rem;
 	}
 
-	.topic__name {
+	.community__name {
 		font-size: 1.7rem;
 		margin-bottom: 0.8rem;
 	}
 
-	.topic__about {
+	.community__about {
 		font-size: 1.5rem;
 		color: rgba(0, 0, 0, 0.3);
 	}
 
-	.topic__subscribe {
+	.community__subscribe {
 		margin-top: 0.8rem;
 	}
 </style>

@@ -18,12 +18,8 @@
 			href: '/feed'
 		},
 		{
-			title: 'сообщество',
-			href: '/community'
-		},
-		{
-			title: 'форум',
-			href: '/forum'
+			title: 'темы',
+			href: '/topics'
 		}
 	]
 </script>

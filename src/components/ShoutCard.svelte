@@ -1,14 +1,15 @@
 <script lang="ts">
-	import type { Shout } from '../lib/types'
+	import type { Shout } from '../lib/codegen'
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
 </script>
 
-<section class="shout-card">
+<section class="shout-card" class:withcover={shout && shout.cover}>
 	{#if shout}
 		<div class="shout-card__cover-container">
-			<div class="shout-card__cover">
+			
+			`<div class="shout-card__cover">
 				<img src={shout.cover} alt={shout.title} />
 			</div>
 
@@ -163,13 +164,9 @@
 		font-size: 1.7rem;
 		font-weight: 400;
 		margin-bottom: 0.8rem;
-
-		a {
-			color: #696969;
-		}
 	}
 
-	.shout-card--with-cover {
+	.shout-card.withcover {
 		padding: 2.4rem;
 
 		&,

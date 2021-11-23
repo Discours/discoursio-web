@@ -311,6 +311,7 @@ export const TOPICS_BY_SLUGS = gql`
 		}
 	}
 `
+
 export const TOPICS_BY_COMMUNITY = gql`
 	query TopicsByCommunityQuery($community: String!) {
 		topicsByCommunity(community: $community) {

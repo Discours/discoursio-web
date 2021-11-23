@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-var-requires */
 import { join } from 'path'
 import { readFileSync } from 'fs'
 import { cwd } from 'process'
@@ -8,13 +5,15 @@ import { typescript } from 'svelte-preprocess-esbuild'
 // import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
 // import vercel from '@sveltejs/adapter-vercel'
-import node from '@sveltejs/adapter-node'
-import prerender from '@sveltejs/adapter-static'
+// import node from '@sveltejs/adapter-node'
+import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const { scss, globalStyle } = require('svelte-preprocess')
 // const { default: windiVite } = require('vite-plugin-windicss')
+
+require('dotenv').config()
 
 const ignoreWarns = [
 	'a11y-distracting-elements',
@@ -60,7 +59,7 @@ const config = {
 			'/',
 			'/create',
 			'/feed',
-			'/forum',
+			'/topics',
 			'/search',
 			...Object.keys(articles).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
 			...Object.keys(topics).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
@@ -75,7 +74,7 @@ const config = {
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
-		adapter: process.env.SSR ? prerender() : node(),
+		adapter: ssg(),
 		target: '#svelte',
 		vite: {
 			// plugins: [windiVite({})],

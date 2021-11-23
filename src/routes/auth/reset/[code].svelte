@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Auth from '../../components/Auth.svelte'
+	import Auth from '../../../components/Auth.svelte'
 	import { page } from '$app/stores'
 	import { goto } from '$app/navigation'
 </script>

@@ -14,7 +14,7 @@
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
-	import UserCommunity from '../components/UserCommunity.svelte'
+	import CommunityCard from '../components/CommunityCard.svelte';
 	import { comments, authors, shoutslist, communitieslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -176,7 +176,7 @@
 				<div class="col-md-4">
 					<h4>Популярные сообщества</h4>
 					{#each $communitieslist as community}
-						<UserCommunity slug={community['slug']} />
+						<CommunityCard {community} />
 					{/each}
 				</div>
 				<div class="col-md-8">

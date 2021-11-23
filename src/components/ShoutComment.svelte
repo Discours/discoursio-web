@@ -1,26 +1,20 @@
 <script lang="ts">
-	import type { Comment } from '../graphql/codegen'
+	import type { Comment } from '../lib/codegen'
 	import { authors } from '../stores/zine'
-	import MD from 'markdown-it'
-
-	const mit = new MD()
-	const { parse } = mit
+	import MD from './MD.svelte'
 
 	export let comment: Comment
-	export let canEdit: boolean
-
-	let body = ''
-	$: if (!body && comment) body = parse(comment.body)
+	export let canEdit: boolean // FIXME
 
 	const edit = () => {
-		console.log('TODO: comment editing...')
+		console.log('// TODO: comment editing...')
 	}
 </script>
 
 <div class="comment">
 	{#if comment}
 		<div class="shout-body" contenteditable={canEdit}>
-			{@html body}
+			<MD body={comment.body} />
 		</div>
 		<div class="shout-controls">
 			<div class="shout-author">{$authors[comment.author].name}</div>
