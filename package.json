@@ -29,6 +29,7 @@
 		"@popperjs/core": "^2.10.2",
 		"@sveltejs/adapter-node": "next",
 		"@sveltejs/adapter-static": "next",
+		"@sveltejs/adapter-vercel": "next",
 		"@sveltejs/kit": "next",
 		"@tsconfig/svelte": "^2.0.1",
 		"@types/markdown-it": "^12.2.3",

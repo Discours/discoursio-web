@@ -4,8 +4,8 @@ import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 // import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
-// import vercel from '@sveltejs/adapter-vercel'
-// import node from '@sveltejs/adapter-node'
+import vercel from '@sveltejs/adapter-vercel'
+import node from '@sveltejs/adapter-node'
 import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
@@ -74,7 +74,7 @@ const config = {
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
-		adapter: ssg(),
+		adapter: process.env.VERCEL ? vercel() : node(),
 		target: '#svelte',
 		vite: {
 			// plugins: [windiVite({})],
