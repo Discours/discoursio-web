@@ -29,6 +29,7 @@
 		authorsMonthSet = new Set([])
 
 	$: if (recents && topMonth && topOverall && !$shoutslist) {
+		console.log('app: mainpage data is ready, preparing...')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
 		topCommented = $shoutslist.sort(

@@ -5,7 +5,7 @@
 		const { slug } = page.params
 		let props = { slug }
 		if(slug.startsWith('@')) {
-			const sign = await fetch(`/data/@${slug}.json`)
+			const sign = await fetch(`/data/@${slug.slice(1)}.json`)
 			props = sign.ok ? { ...(await sign.json()), ...props } : props
 		} else {
 			const content = await fetch(`/data/=${slug}.json`)
