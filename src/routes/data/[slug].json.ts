@@ -6,7 +6,7 @@ export const get = async ({ params }) => {
 	try {
         const { slug } = params
 		const content = !slug.startsWith('@')
-		let body
+		let body, shout, community, author, shouts, topics
         body = await client.request(content ? GET_SHOUT : GET_AUTHOR, { slug: content ? slug : slug.slice(1) })
         if(!body) {
 			body = content ? { ...await client.request(SHOUTS_BY_TOPIC, { topic: slug }) } : {

@@ -215,13 +215,13 @@
 
 				<div class="social-provider">
 					<div class="social">
-						<a href="/graphql/oauth/facebook" class="facebook-auth">
+						<a href="/graphql/oauth/facebook" rel="external" class="facebook-auth">
 							<Icon name="facebook" />
 						</a>
-						<a href="/graphql/oauth/google" class="google-auth">
+						<a href="/graphql/oauth/google" rel="external" class="google-auth">
 							<Icon name="google" />
 						</a>
-						<a href="/graphql/oauth/vk" class="vk-auth">
+						<a href="/graphql/oauth/vk" rel="external" class="vk-auth">
 							<Icon name="vk" />
 						</a>
 					</div>
