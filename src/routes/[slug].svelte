@@ -4,17 +4,13 @@
 	export const load = async ({ page, fetch }) => {
 		const { slug } = page.params
 		let props = { slug }
-		if(slug.startsWith('@')) {
-			const sign = await fetch(`/data/@${slug.slice(1)}.json`)
-			const data = sign.ok ? { ...(await sign.json()), ...props } : props
+		const fq = await fetch(`/data/${slug}.json`)
+		if(fq.ok) {
+			const data = await fq.json()
 			console.log(data)
-			return { props: Object.values(data)[0] }
-		} else {
-			const content = await fetch(`/data/=${slug}.json`)
-			const data = content.ok ? { ...(await content.json()), ...props} : props
-			console.log(data)
-			return { props: Object.values(data)[0] }
+			props = { ...data, slug }
 		}
+		return props
 	}
 </script>
 
