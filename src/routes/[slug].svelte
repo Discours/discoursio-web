@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import type { Shout, Topic, User } from '../lib/codegen';
+	import type { Shout, Topic, User } from '../lib/codegen'
 	export const prerender = true
 
 	interface SlugProps {
@@ -34,7 +34,6 @@
 	import ShoutFull from '../components/ShoutFull.svelte'
 	import TopicFull from '../components/TopicFull.svelte'
 	import UserFull from '../components/UserFull.svelte'
-	// import CommunityFull from '../components/CommunityFull.svelte'
 
 	export let props
 	let title
@@ -53,6 +52,7 @@
 			: props.user
 			? UserFull
 			: null
+		console.info(title)
 	}
 </script>
 
