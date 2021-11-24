@@ -1,8 +1,8 @@
 <script lang="ts">
 	export let props
-    let community
-    $: community = props.community
-    // TODO: full community view
+	let community
+	$: community = props.community
+	// TODO: full community view
 </script>
 
 <div class="community">

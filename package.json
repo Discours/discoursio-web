@@ -9,6 +9,7 @@
 	},
 	"scripts": {
 		"dev": "svelte-kit dev",
+		"ssg": "SSG=1 svelte-kit build",
 		"build": "svelte-kit build",
 		"gen": "node precompiler.js",
 		"preview": "svelte-kit preview",

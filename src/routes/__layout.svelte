@@ -21,7 +21,7 @@
 		}
 	}
 
-	onMount(() => $token = document.cookie)
+	onMount(() => ($token = document.cookie))
 
 	initLocalizationContext()
 </script>

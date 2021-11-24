@@ -9,58 +9,56 @@
 	// TODO: editing logix
 	$: shout = props.shout
 	$: canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
-
 </script>
 
 <div class="shout">
 	{#if shout}
-	<div class="shout wide-container row">
-		<article class="col-md-6 offset-md-3">
-			<div class="shout__header">
-				<div class="shout__topic article-card__category">
-					{#each shout.topics as topic, index}
+		<div class="shout wide-container row">
+			<article class="col-md-6 offset-md-3">
+				<div class="shout__header">
+					<div class="shout__topic article-card__category">
+						{#each shout.topics as topic, index}
+							{#if index > 0},{/if}
+							{topic}
+						{/each}
+					</div>
+
+					<h1>{shout.title}</h1>
+					{#if shout.subtitle}<h4>{shout.subtitle}</h4>{/if}
+
+					<div class="shout__author">
+						{#each shout.authors as author, index}
+							{#if index > 0}, {/if}
+							{author.name}
+						{/each}
+					</div>
+
+					<div
+						class="shout__cover"
+						style={`background-image: url('${shout.cover}')`}
+					/>
+				</div>
+
+				<div class="shout__body">
+					{#if shout.body.slice(0, 1) === '<'}
+						{@html shout.body}
+					{:else}
+						<MD body={shout.body} />
+					{/if}
+				</div>
+
+				<div class="shout__authors-list">
+					<h4>Авторы</h4>
+
+					{#each shout.authors as user, index}
 						{#if index > 0},{/if}
-						{topic}
+						<UserCard {user} hasSubscribeButton={false} />
 					{/each}
 				</div>
-
-				<h1>{shout.title}</h1>
-				{#if shout.subtitle}<h4>{shout.subtitle}</h4>{/if}
-
-				<div class="shout__author">
-					{#each shout.authors as author, index}
-						{#if index > 0}, {/if}
-						{author.name}
-					{/each}
-				</div>
-
-				<div
-					class="shout__cover"
-					style={`background-image: url('${shout.cover}')`}
-				/>
-			</div>
-
-			<div class="shout__body">
-				{#if shout.body.slice(0, 1) === '<'}
-					{@html shout.body}
-				{:else}
-					<MD body={shout.body} />
-				{/if}
-			</div>
-
-			<div class="shout__authors-list">
-				<h4>Авторы</h4>
-
-				{#each shout.authors as user, index}
-					{#if index > 0},{/if}
-					<UserCard {user} hasSubscribeButton={false} />
-				{/each}
-			</div>
-		</article>
-	</div>
+			</article>
+		</div>
 	{/if}
 </div>
-
 
 <style lang="scss">
 	h1 {

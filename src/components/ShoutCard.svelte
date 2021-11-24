@@ -8,8 +8,8 @@
 <section class="shout-card" class:withcover={shout && shout.cover}>
 	{#if shout}
 		<div class="shout-card__cover-container">
-			
-			`<div class="shout-card__cover">
+			`
+			<div class="shout-card__cover">
 				<img src={shout.cover} alt={shout.title} />
 			</div>
 

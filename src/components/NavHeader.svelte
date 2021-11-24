@@ -19,7 +19,7 @@
 		},
 		{
 			title: 'темы',
-			href: '/topics'
+			href: '/topic'
 		}
 	]
 </script>

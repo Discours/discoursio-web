@@ -1,9 +1,9 @@
 <script context="module">
 	export const load = async ({ fetch }) => {
 		let props = {}
-		const recents = await fetch('/data/recents.json')
-		const topMonth = await fetch('/data/top-month.json')
-		const topOverall = await fetch('/data/top-overall.json')
+		const recents = await fetch('/feed/recents.json')
+		const topMonth = await fetch('/feed/top-month.json')
+		const topOverall = await fetch('/feed/top-overall.json')
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -14,7 +14,7 @@
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
-	import CommunityCard from '../components/CommunityCard.svelte';
+	import CommunityCard from '../components/CommunityCard.svelte'
 	import { comments, authors, shoutslist, communitieslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'

@@ -32,17 +32,6 @@ const scssOptions = {
 
 // TODO: graphql queries for prerender
 
-let articles = {} // require('./src/data/articles.json')
-let topics = {} // require('./src/data/topics.json')
-let communities = {
-	discours: {
-		slug: 'discours',
-		title: 'Дискурс',
-		pic: 'https://discours.io/images/logo.svg'
-	}
-}
-let authors = {} // require('./src/data/authors.json')
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	logger: console,
@@ -54,19 +43,7 @@ const config = {
 		globalStyle()
 		// mdsvex(),
 	],
-	prerender: {
-		entries: [
-			'/',
-			'/create',
-			'/feed',
-			'/topics',
-			'/search',
-			...Object.keys(articles).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
-			...Object.keys(topics).reduce((_pv, cv, _ci, _all) => '/' + cv, ''),
-			...Object.keys(communities).reduce((_pv, cv, _ci, _all) => '/@' + cv, ''),
-			...Object.keys(authors).reduce((_pv, cv, _ci, _all) => '/@' + cv, '')
-		]
-	},
+	prerender: true,
 	compilerOptions: {
 		enableSourcemap: true,
 		cssHash: ({ hash, css }) => 's' + hash(css)
@@ -74,7 +51,7 @@ const config = {
 	onwarn: (w, cb) =>
 		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
-		adapter: process.env.VERCEL ? vercel() : node(),
+		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
 		vite: {
 			// plugins: [windiVite({})],

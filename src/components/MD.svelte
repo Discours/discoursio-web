@@ -16,8 +16,9 @@
 	})
 	// mit.use(hl)
 </script>
+
 <script>
-    export let body
+	export let body
 </script>
 
 {@html mit.render(body)}
