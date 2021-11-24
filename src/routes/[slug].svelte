@@ -6,13 +6,15 @@
 		let props = { slug }
 		if(slug.startsWith('@')) {
 			const sign = await fetch(`/data/@${slug.slice(1)}.json`)
-			props = sign.ok ? { ...(await sign.json()), ...props } : props
+			const data = sign.ok ? { ...(await sign.json()), ...props } : props
+			console.log(data)
+			return { props: Object.values(data)[0] }
 		} else {
 			const content = await fetch(`/data/=${slug}.json`)
-			props = content.ok ? { ...(await content.json()), ...props} : props
+			const data = content.ok ? { ...(await content.json()), ...props} : props
+			console.log(data)
+			return { props: Object.values(data)[0] }
 		}
-		console.log(props)
-		return { props }
 	}
 </script>
 

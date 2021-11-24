@@ -14,7 +14,7 @@ export const get = async ({ params }) => {
 	} catch (error) {
 		console.error(error)
 		return {
-			status: 404,
+			status: 500,
 			body: { error: 'There was a server error.' }
 		}
 	}
