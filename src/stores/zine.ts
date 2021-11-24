@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { User, Topic, Community, Comment } from '../lib/codegen'
-import type { Shout } from '../lib/types'
+import type { User, Topic, Community, Comment, Shout } from '../lib/codegen'
 
 export const authorslist: Writable<User[]> = writable([])
 export const communitieslist: Writable<Community[]> = writable([])

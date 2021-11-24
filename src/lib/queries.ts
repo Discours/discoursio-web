@@ -142,6 +142,21 @@ export const GET_COMMUNITIES = gql`
 	}
 `
 
+export const GET_COMMUNITY = gql`
+	query {
+		getCommunity($slug: String) {
+			slug
+			pic
+			value
+			desc
+			parents
+			children
+			createdAt
+			createdBy
+		}
+	}
+`
+
 export const RECENT_SHOUTS = gql`
 	query RecentShoutsQuery($limit: Int) {
 		recents(limit: $limit) {

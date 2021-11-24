@@ -1,6 +1,6 @@
-import type { Writable, Readable } from 'svelte/store'
-import { writable, derived } from 'svelte/store'
-import type { User } from '../graphql/codegen'
+import type { Writable } from 'svelte/store'
+import { writable } from 'svelte/store'
+import type { User } from '../lib/codegen'
 
 // counted UI-related role states
 export enum AS {
@@ -24,22 +24,7 @@ export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable()
 export const session: Writable<User> = writable()
-export const roles: Readable<Role[]> = derived(
-	[session],
-	([$session]): {
-		community: number // discours.io
-		level: AS
-	}[] => {
-		$session && console.log(`roles: ${$session.roles}`)
-		return [
-			{
-				community: 0, // discours.io
-				level: AS.ADMIN
-			}
-		]
-	}
-)
-
+export const roles: Writable<Role[]> = writable([]) // FIXME: get roles somehow
 // ui form needs
 export const ui: Writable<{
 	email: string
