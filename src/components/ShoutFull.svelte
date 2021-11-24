@@ -8,7 +8,9 @@
 	let canEdit = false
 	// TODO: editing logix
 	$: shout = props.shout
-	$: canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
+	$: if ($session) {
+		canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
+	}
 </script>
 
 <div class="shout">
@@ -18,8 +20,7 @@
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
 						{#each shout.topics as topic, index}
-							{#if index > 0},{/if}
-							{topic}
+							<a href={`/${topic.slug}`}>#{topic.title}</a>
 						{/each}
 					</div>
 
