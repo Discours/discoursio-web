@@ -1,21 +1,29 @@
-<script context="module">
+<script context="module" lang="ts">
+	import type { Shout, Topic, User } from '../lib/codegen';
 	export const prerender = true
 
-	export const load = async ({ page, fetch }) => {
+	interface SlugProps {
+		slug: string
+		shout?: Shout
+		user?: User
+		topic?: Topic
+	}
+
+	export const load = async ({ page, fetch }): Promise<SlugProps> => {
 		const { slug } = page.params
-		let props = { slug }
+		let props: SlugProps = { slug }
 		const content = !slug.startsWith('@')
 		const fq =  await fetch(content? `/${slug}.json`: `/user/${slug.slice(1)}.json`)
 		if (fq.ok) {
-			const data = await fq.json()
-			console.log(data)
-			props = { ...data, slug }
+			const { getShoutBySlug: shout, getUserBySlug: user} = await fq.json()
+			console.log( { shout, user })
+			props = { shout, user, slug }
 		} else if(content) {
 			const sq = await fetch(`/topic/${slug}.json`)
 			if (sq.ok) {
-				const data = await fq.json()
-				console.log(data)
-				props = { ...data, slug }
+				const { topicsBySlugs: [topic] } = await fq.json()
+				console.log(topic)
+				props = { topic, slug }
 			}
 		}
 		return props
@@ -26,21 +34,17 @@
 	import ShoutFull from '../components/ShoutFull.svelte'
 	import TopicFull from '../components/TopicFull.svelte'
 	import UserFull from '../components/UserFull.svelte'
-	import CommunityFull from '../components/CommunityFull.svelte'
+	// import CommunityFull from '../components/CommunityFull.svelte'
 
 	export let props
 	let title
 	let component
 	$: if (props) {
+		// TODO: add community using subdomain
 		title =
-			'shout' in props
-				? props.shout.title
-				: 'topic' in props
-				? props.topic.title
-				: 'user' in props
-				? props.user.name
-				: 'community' in props
-				? props.community.title
+			props.shout ? props.shout.title
+				: props.topic ? props.topic.title
+				: props.user ? props.user.name
 				: ''
 		component = props.shout
 			? ShoutFull
@@ -48,8 +52,6 @@
 			? TopicFull
 			: props.user
 			? UserFull
-			: props.community
-			? CommunityFull
 			: null
 	}
 </script>
