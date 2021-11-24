@@ -147,6 +147,7 @@ export const RECENT_SHOUTS = gql`
 		recents(limit: $limit) {
 			title
 			subtitle
+			slug
 			layout
 			cover
 			authors {
@@ -173,6 +174,7 @@ export const TOP_OVERALL = gql`
 		topOverall(limit: $limit) {
 			title
 			subtitle
+			slug
 			layout
 			cover
 			community
@@ -200,6 +202,7 @@ export const TOP_MONTH = gql`
 			title
 			subtitle
 			layout
+			slug
 			cover
 			community
 			topics {
@@ -226,6 +229,7 @@ export const SHOUTS_BY_COMMUNITY = gql`
 			title
 			subtitle
 			layout
+			slug
 			cover
 			community
 			topics {
@@ -252,6 +256,7 @@ export const SHOUTS_BY_AUTHOR = gql`
 			title
 			subtitle
 			layout
+			slug
 			cover
 			community
 			topics {
@@ -278,6 +283,7 @@ export const SHOUTS_BY_TOPIC = gql`
 			title
 			subtitle
 			layout
+			slug
 			cover
 			community
 			topics {
