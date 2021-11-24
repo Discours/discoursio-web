@@ -5,7 +5,7 @@
 </script>
 
 <div class="icon">
-	<img src={'icons/' + name + '.svg'} alt={title ?? name} />
+	<img src={'/icons/' + name + '.svg'} alt={title ?? name} />
 	{#if counter != 0}<div class="counter">{counter.toString()}</div>{/if}
 </div>
 
