@@ -1,4 +1,18 @@
-<script lang="ts">
+<script context="module">
+	// import { metadata } from '@didiercatz/sveo'
+
+	export const load = async ({ page }) => {
+	  try { 
+		  const seo = {} // FIXME: await metadata(page) 
+	  	return { props: { seo } }
+	  } catch(e) {
+		  console.error(e)
+		  return {}
+		  // return { props: { seo: null } }
+	  }
+	}
+  </script>
+  <script lang="ts">
 	import '../app.scss'
 	// import 'virtual:windi.css'
 	import { initLocalizationContext } from '../i18n/index'
@@ -8,6 +22,9 @@
 	import { GET_ME } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
+	import Sveo from '@didiercatz/sveo'
+  
+	export let seo
 
 	$: if ($token) {
 		try {
@@ -26,6 +43,7 @@
 	initLocalizationContext()
 </script>
 
+<Sveo {seo}/>
 <header><NavHeader /></header>
 <main><slot /></main>
 <DiscoursFooter />

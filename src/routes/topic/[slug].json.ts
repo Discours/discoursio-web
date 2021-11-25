@@ -4,15 +4,13 @@ import { SHOUTS_BY_TOPIC, TOPICS_BY_SLUGS  } from '../../lib/queries'
 export const get = async ({ params }) => {
 	try {
         const { slug } = params
-		const { topics } = await client.request(TOPICS_BY_SLUGS, { slugs: [slug] })
-		let body 
-		if(topics) {
-			body = {
-				...topics,
-				...await client.request(SHOUTS_BY_TOPIC, { topic: slug })
-			}
+		const { topicsBySlugs: [topic] } = await client.request(TOPICS_BY_SLUGS, { slugs: [slug] })
+		let body
+		if(topic) {
+			const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, { topic: slug })
+			body = { topic, shouts }
 		}
-		return { status: topics? 200: 404, body }
+		return { status: topic? 200: 404, body }
 	} catch (error) {
 		console.error(error)
 		return {

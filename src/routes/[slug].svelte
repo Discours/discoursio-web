@@ -29,7 +29,7 @@
 				}
 			}
 		}
-		console.log(Object.keys(props))
+		// console.log(Object.keys(props))
 		return { props }
 	}
 </script>

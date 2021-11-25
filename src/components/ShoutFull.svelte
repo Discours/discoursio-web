@@ -41,11 +41,7 @@
 				</div>
 
 				<div class="shout__body">
-					{#if shout.body.slice(0, 1) === '<'}
-						{@html shout.body}
-					{:else}
-						<MD body={shout.body} />
-					{/if}
+					<MD body={shout.body} />
 				</div>
 
 				<div class="shout__authors-list">

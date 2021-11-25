@@ -319,6 +319,19 @@ export const SHOUTS_BY_TOPIC = gql`
 	}
 `
 
+
+export const AUTHORS_BY_SLUGS = gql`
+	query AuthorsBySlugsQuery($slugs: [String]!) {
+		authorsBySlugs(slugs: $slugs) {
+			name
+			slug
+			userpic
+			bio
+			links
+	}
+`
+
+
 export const TOPICS_BY_SLUGS = gql`
 	query TopicsBySlugsQuery($slugs: [String]!) {
 		topicsBySlugs(slugs: $slugs) {
