@@ -21,7 +21,7 @@
     import NavTopics from '../../components/NavTopics.svelte'
 	import FeedAuthors from '../../components/FeedAuthors.svelte';
 
-    export let topics: Topic[] // slugs
+    export let topics: Topic[]
 	export let shouts: Shout[]
 	export let authors: User[]
 </script>

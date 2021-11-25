@@ -3,7 +3,7 @@
 	import Userpic from './Userpic.svelte'
 
 	export let user: User | Partial<User>
-	export let hasSubscribeButton
+	export let hasSubscribeButton = true
 </script>
 
 <div class="author">

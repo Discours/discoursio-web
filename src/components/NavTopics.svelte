@@ -3,34 +3,41 @@
 	import { page } from "$app/stores"
 	import { topics as topicsStore } from '../stores/zine'
 	import type { Topic } from '../lib/codegen'
+	import { onMount } from 'svelte'
 
-	export let topics: Topic[] = []
+	export let topics: Topic[]
 	export let slugs: string[] = []
 
-	$: if($page && topics.length === 0 && slugs.length > 0) {
-		const community = $page.host ? $page.host.split('.')[0] : 'discours'
-		fetch(`/topic/community.json?slug=${community}`)
-			.then(data => data.json())
-			.then(({ topics: ttt }) => $topicsStore = { ...$topicsStore, ...ttt })
+	const setTopic = (slug: string) => {
+		if (slug) {
+			$filterTopic = slug
+			window.location.hash = '#' + slug
+		}
 	}
 
-	const setTopic = (slug: string) => ($filterTopic = slug)
-
-	const onHashRoute = (ev) => {
-		console.log(ev)
-	}
+	onMount(async () => {
+		const data = await fetch(`/feed/topics.json`)
+		const payload = await data.json()
+		topics = payload.topics
+		console.log(payload.community)
+		console.log(topics)
+	})
 </script>
-<svelte:window on:hashchange={onHashRoute} />
+
 <nav class="subnavigation wide-container text-2xl">
 	<ul class="topics">
-		{#each topics as t}
-			<li class="item" class:selected={$filterTopic === t.slug}>
-				<a href={'#' + t.slug} on:click={() => setTopic($filterTopic === t.slug ? '' : t.slug)}>
-					<span class:transparent={$filterTopic !== t.slug}>#</span>
-					{t.title.toLowerCase()}
-				</a>
-			</li>
-		{/each}
+		{#if topics}
+			{#each topics as t}
+				{#if t.slug in slugs}
+				<li class="item" class:selected={$filterTopic === t.slug}>
+					<a href={'#' + t.slug} on:click|preventDefault={() => setTopic($filterTopic === t.slug ? '' : t.slug)}>
+						<span class:transparent={$filterTopic !== t.slug}>#</span>
+						{t.title.toLowerCase()}
+					</a>
+				</li>
+				{/if}
+			{/each}
+		{/if}
 	</ul>
 </nav>
 

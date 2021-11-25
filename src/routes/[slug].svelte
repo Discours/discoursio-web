@@ -48,8 +48,6 @@
 
 	$: if (topic) {
 		console.log('[slug]: is topic')
-		// console.log(topic)
-		// TODO: add community using subdomain
 		title = topic.title
 		component = TopicFull
 	}

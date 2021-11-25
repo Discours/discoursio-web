@@ -1,6 +1,6 @@
 <script lang="ts">
 	// import { session } from '../stores/auth'
-	import type { User } from '../graphql/codegen'
+	import type { User } from '../lib/codegen'
 
 	export let user: User | Partial<User>
 

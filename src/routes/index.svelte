@@ -18,6 +18,7 @@
 	import { comments, authors, shoutslist, communitieslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
+	import { onMount } from 'svelte'
 
 	export let recents = []
 	export let topMonth = []
@@ -28,9 +29,14 @@
 		authorsMonth = [],
 		authorsMonthSet = new Set([])
 
-	$: if (recents && topMonth && topOverall && !$shoutslist) {
+	let topicslugs
+
+	$: if (!$shoutslist) {
 		console.log('app: mainpage data is ready, preparing...')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
+		topicslugs = new Set([])
+		$shoutslist.forEach(s => s.topics.forEach(t => topicslugs.add(t.slug)))
+		topicslugs = Array.from(topicslugs)
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
 		topCommented = $shoutslist.sort(
 			(a, b) =>
@@ -49,6 +55,8 @@
 		}
 	}
 
+	onMount(() => $shoutslist = null) // force to update reactive code on mount
+
 	const onlyTopic = (topic) => {
 		// .filter((s) => (s['topics'] || []).includes('culture'))
 		let filtered = []
@@ -62,7 +70,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
 	<div class="home">
-		<NavTopics />
+		<NavTopics slugs={topicslugs} />
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
@@ -140,7 +148,7 @@
 					<h4>Авторы месяца</h4>
 
 					{#each authorsMonth.slice(0, 4) as user}
-						<UserCard {user} hasSubscribeButton={true} />
+						<UserCard {user} />
 					{/each}
 
 					<button class="button">Еще авторы</button>
