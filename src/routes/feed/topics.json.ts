@@ -6,9 +6,12 @@ export const get = async (payload) => {
 	// console.debug(payload)
 	try {
 		const community = 'discours' // FIXME
-		const { topicsByCommunity: topics } = await client.request(TOPICS_BY_COMMUNITY, { community })
+		const { topicsByCommunity: topics } = await client.request(
+			TOPICS_BY_COMMUNITY,
+			{ community }
+		)
 		// console.debug(topics)
-		return { status: topics? 200 : 404, body: { topics, community } }
+		return { status: topics ? 200 : 404, body: { topics, community } }
 	} catch (error) {
 		console.error(error)
 		return {

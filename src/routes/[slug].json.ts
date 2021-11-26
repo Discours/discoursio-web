@@ -3,10 +3,9 @@ import { GET_SHOUT } from '../lib/queries'
 
 export const get = async ({ params }) => {
 	try {
-        const { slug } = params
-		let body
-		body = await client.request(GET_SHOUT, { slug })
-		return { status: body ? 200 : 404, body }
+		const { slug } = params
+		const { getShoutBySlug: shout } = await client.request(GET_SHOUT, { slug })
+		return { status: shout ? 200 : 404, body: { shout } }
 	} catch (error) {
 		console.error(error)
 		return {

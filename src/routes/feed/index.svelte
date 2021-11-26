@@ -5,8 +5,8 @@
 
 	let topics = new Set([])
 
-	$: $shoutslist.forEach(s => {
-		s.topics.forEach(t => topics.add(t.slug))
+	$: $shoutslist.forEach((s) => {
+		s.topics.forEach((t) => topics.add(t.slug))
 	})
 </script>
 

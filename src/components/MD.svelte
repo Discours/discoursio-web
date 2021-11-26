@@ -7,7 +7,7 @@
 	const mit = MD({
 		html: true,
 		linkify: true,
-		typographer: true,
+		typographer: true
 	})
 	mit.use(mdmark)
 	// mit.use(mdcustom)
@@ -17,12 +17,13 @@
 	})
 	mit.use(mdlinks)
 </script>
+
 <script lang="ts">
 	export let body: string
 </script>
 
 {#if body.startsWith('<')}
-{@html body}
+	{@html body}
 {:else}
-{@html mit.render(body)}
+	{@html mit.render(body)}
 {/if}

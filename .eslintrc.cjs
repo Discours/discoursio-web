@@ -27,7 +27,6 @@ module.exports = {
 		{
 			files: ['*.ts'],
 			extends: [
-				'plugin:@typescript-eslint/recommended',
 				'plugin:prettier/recommended'
 			]
 		},

@@ -26,36 +26,41 @@
 
 	let topCommented = [],
 		topViewed = [],
-		authorsMonth = [],
-		authorsMonthSet = new Set([])
+		authorsMonth = []
 
 	let topicslugs
 
 	$: if (!$shoutslist) {
 		console.log('app: mainpage data is ready, preparing...')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
+		console.log($shoutslist)
+		// what topics are present
 		topicslugs = new Set([])
-		$shoutslist.forEach(s => s.topics.forEach(t => topicslugs.add(t.slug)))
+		$shoutslist.forEach((s) => s.topics.forEach((t) => topicslugs.add(t.slug)))
 		topicslugs = Array.from(topicslugs)
+
+		// authors of the month
+		console.log(topMonth)
+		if (topMonth) {
+			let authorsMonthSet = new Set([])
+			topMonth.forEach((s) =>
+				s.authors.forEach((a) => authorsMonthSet.add($authors[a['slug']]))
+			)
+			authorsMonth = Array.from(authorsMonthSet).sort(
+				(a, b) => a['rating'] - b['rating']
+			)
+		}
+
+		// top viwed and commented
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
 		topCommented = $shoutslist.sort(
 			(a, b) =>
 				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
 				($comments[b['slug']] ? $comments[b['slug']].length : 0)
 		)
-		authorsMonth = Array.from(authorsMonthSet).sort(
-			(a, b) => a['rating'] - b['rating']
-		)
-		if (topMonth && authorsMonth == []) {
-			topMonth.forEach((s) => {
-				s['authors'].forEach((a) => {
-					authorsMonthSet.add($authors[a['slug']])
-				})
-			})
-		}
 	}
 
-	onMount(() => $shoutslist = null) // force to update reactive code on mount
+	onMount(() => ($shoutslist = null)) // force to update reactive code on mount
 
 	const onlyTopic = (topic) => {
 		// .filter((s) => (s['topics'] || []).includes('culture'))
