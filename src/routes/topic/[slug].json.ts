@@ -4,7 +4,9 @@ import { SHOUTS_BY_TOPIC } from '../../lib/queries'
 export const get = async ({ params }) => {
 	try {
 		const { slug } = params
-		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, { topic: slug })
+		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, {
+			topic: slug
+		})
 		const body = { shouts }
 		return { status: shouts ? 200 : 404, body }
 	} catch (error) {

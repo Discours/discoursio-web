@@ -6,20 +6,25 @@
 	export let topic: Topic
 	export let subscribed = false
 
-	// NOTE: cookie-based no auth requering subscriptions 
+	// NOTE: cookie-based no auth requering subscriptions
 
-	onMount(async () => subscribed = (await cookie.parse(document.cookie)).authors.includes(topic.slug))
+	onMount(
+		async () =>
+			(subscribed = (await cookie.parse(document.cookie)).authors.includes(
+				topic.slug
+			))
+	)
 
 	const subscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
-		if(!coo.topics.includes(topic.slug)) coo.topics.push(topic.slug)
+		if (!coo.topics.includes(topic.slug)) coo.topics.push(topic.slug)
 		document.cookie = cookie.serialize(coo)
 	}
 
 	const unsubscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
 		const idx = coo.topics.indexOf(topic.slug)
-		if(idx !=-1) coo.topics.splice(idx, 1)
+		if (idx != -1) coo.topics.splice(idx, 1)
 		document.cookie = cookie.serialize(coo)
 	}
 </script>
@@ -38,9 +43,13 @@
 			<div class="topic__about">{@html topic.body}</div>
 			<div class="topic__subscribe">
 				{#if subscribed}
-				<button on:click={unsubscribe} class="button button--subscribe">Отписаться</button>
+					<button on:click={unsubscribe} class="button button--subscribe"
+						>Отписаться</button
+					>
 				{:else}
-				<button on:click={subscribe} class="button button--subscribe">Подписаться</button>
+					<button on:click={subscribe} class="button button--subscribe"
+						>Подписаться</button
+					>
 				{/if}
 			</div>
 		</div>

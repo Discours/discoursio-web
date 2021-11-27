@@ -8,8 +8,8 @@
 
 <div class="feed-shouts">
 	{#each shouts as shout}
-		{#if shout.topics.filter(t => t.slug === $filterTopic)}
-		<ShoutCard {shout} />
+		{#if shout.topics.filter((t) => t.slug === $filterTopic)}
+			<ShoutCard {shout} />
 		{/if}
 	{/each}
 </div>

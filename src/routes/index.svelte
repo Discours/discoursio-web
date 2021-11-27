@@ -5,7 +5,7 @@
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
 		const topicsAll = await fetch(`/feed/topics.json`)
-		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props} : props
+		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -17,7 +17,15 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
 	import CommunityCard from '../components/CommunityCard.svelte'
-	import { comments, authors, shouts, shoutslist, communitieslist, topicslist, filterTopic } from '../stores/zine'
+	import {
+		comments,
+		authors,
+		shouts,
+		shoutslist,
+		communitieslist,
+		topicslist,
+		filterTopic
+	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
@@ -33,15 +41,15 @@
 
 	let topicslugs
 
-	$: if(!$topicslist && topicslugs) {
+	$: if (!$topicslist && topicslugs) {
 		console.log('mainpage: updating topics list')
-		$topicslist = topicsAll.filter(t => topicslugs.includes(t.slug))
+		$topicslist = topicsAll.filter((t) => topicslugs.includes(t.slug))
 	}
 
 	$: if (!$shoutslist) {
 		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
-		$shoutslist.forEach(s => $shouts[s.slug] = s)
+		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
 		console.log($shoutslist)
 		// what topics are present
 		topicslugs = new Set([])
@@ -68,9 +76,8 @@
 				($comments[b['slug']] ? $comments[b['slug']].length : 0)
 		)
 	}
-	
-	onMount(() => ($shoutslist = null)) // force to update reactive code on mount
 
+	onMount(() => ($shoutslist = null)) // force to update reactive code on mount
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -247,7 +254,9 @@
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<h4>Культура</h4>
-					{#each $shoutslist.filter((s) => s.topics.map((t) => t.slug).includes('culture')).slice(0, 4) as article}
+					{#each $shoutslist
+						.filter((s) => s.topics.map((t) => t.slug).includes('culture'))
+						.slice(0, 4) as article}
 						<ShoutCard shout={article} />
 					{/each}
 				</div>

@@ -61,8 +61,8 @@
 {/if}
 {#if $session}
 	<div class="usercontrol inline-flex">
-		<a href="/inbox">
-			<div class:entered={res === '/inbox'}>
+		<a href="/user/inbox">
+			<div class:entered={res === '/user/inbox'}>
 				<Icon name="inbox-white" counter={newMessages} />
 			</div>
 		</a>
@@ -71,8 +71,8 @@
 				<Icon name="bell-white" counter={newNotices} />
 			</div>
 		</a>
-		<a href="/profile">
-			<div class:entered={res === '/profile'}>
+		<a href="/user">
+			<div class:entered={res === '/user'}>
 				<Userpic user={$session} />
 			</div>
 		</a>

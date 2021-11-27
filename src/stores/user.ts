@@ -22,8 +22,8 @@ interface Role {
 export const FACEBOOK_APP_ID = '1809443122683615'
 export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
-export const token: Writable<string> = writable()
-export const session: Writable<User> = writable()
+export const token: Writable<string> = writable('')
+export const session: Writable<Partial<User>> = writable({})
 export const roles: Writable<Role[]> = writable([]) // FIXME: get roles somehow
 // ui form needs
 export const ui: Writable<{

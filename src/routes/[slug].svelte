@@ -2,6 +2,14 @@
 	import type { Shout, User } from '../lib/codegen'
 	export const prerender = true
 
+	const routes: string[] = [
+		'inbox',
+		'rules',
+		'agreement',
+		'search',
+		'create'
+	]
+
 	interface SlugProps {
 		slug: string
 		shout?: Shout
@@ -13,7 +21,8 @@
 		const { slug } = page.params
 		let props: SlugProps = { slug }
 		const at = slug.startsWith('@')
-		console.log(`[slug]: ${at?'user':'shout'} ${slug}`)
+		console.log(`[slug]: ${at ? 'user' : 'shout'} ${slug}`)
+		if(routes.includes(slug) && !at) return { props }
 		const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
 		if (fq.ok) props = { ...(await fq.json()), ...props }
 		return { props }

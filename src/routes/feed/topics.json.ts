@@ -6,11 +6,11 @@ export const get = async ({ request }) => {
 		// console.log(request)
 		let shouts, authors
 		const { topics } = (request && request.locals && request.locals.cookies) || {} // TODO: debug cookie-based subscriptions
-		if(authors) shouts = await client.request(SHOUTS_BY_TOPIC, {
-						limit: 100,
-						topics
-					}
-				)['shoutsByTopic']
+		if (authors)
+			shouts = await client.request(SHOUTS_BY_TOPIC, {
+				limit: 100,
+				topics
+			})['shoutsByTopic']
 		return {
 			status: 200,
 			body: { authors, shouts }

@@ -9,20 +9,23 @@
 		topics?: string[]
 	}
 
-	export const load = async ({ locals, fetch }): Promise<{ props: MyFeedProps }> => {
+	export const load = async ({
+		locals,
+		fetch
+	}): Promise<{ props: MyFeedProps }> => {
 		let props: MyFeedProps = {}
-		if(locals && locals.cookies) {
+		if (locals && locals.cookies) {
 			const { topics, authors } = locals.cookies
-			if(authors) {
+			if (authors) {
 				const fq = await fetch(`/feed/authors.json`)
 				if (fq.ok) props = await fq.json()
 			}
-			if(topics) {
+			if (topics) {
 				const sq = await fetch(`/feed/topics.json`)
 				if (sq.ok) {
 					const data = await sq.json()
 					props = {
-						users: props.users, 
+						users: props.users,
 						shouts: { ...props.shouts, ...data.shouts },
 						topics
 						// authors
@@ -39,11 +42,12 @@
 	import NavTopics from '../../components/NavTopics.svelte'
 	import FeedAuthors from '../../components/FeedAuthors.svelte'
 
-	export let topics: string[]  // slugs
+	export let topics: string[] // slugs
 	// export let authors: string[] // slugs
 	export let users: User[]
 	export let shouts: Shout[]
 </script>
+
 {#if topics}<NavTopics slugs={topics} />{/if}
 {#if shouts}<FeedShouts {shouts} />{/if}
 {#if users}<FeedAuthors authors={users} />{/if}

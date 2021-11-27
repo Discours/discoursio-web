@@ -26,9 +26,7 @@ module.exports = {
 		},
 		{
 			files: ['*.ts'],
-			extends: [
-				'plugin:prettier/recommended'
-			]
+			extends: ['plugin:prettier/recommended']
 		},
 		{
 			files: ['*.js'],
