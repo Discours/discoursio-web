@@ -358,6 +358,21 @@ export const TOPICS_BY_COMMUNITY = gql`
 	}
 `
 
+
+export const TOPICS_ALL = gql`
+	query TopicsAll() {
+		topicsAll() {
+			title
+			body
+			slug
+			pic
+			parents
+			children
+			# community
+		}
+	}
+`
+
 export const TOPICS_BY_AUTHOR = gql`
 	query TopicsByAuthorQuery($author: String!) {
 		topicsByAuthor(author: $author) {
