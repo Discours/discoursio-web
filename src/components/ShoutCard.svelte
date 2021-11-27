@@ -5,10 +5,9 @@
 	export let shout: Shout
 </script>
 
-<section class="shout-card" class:withcover={shout && shout.cover}>
+<section class="shout-card">
 	{#if shout}
 		<div class="shout-card__cover-container">
-			`
 			<div class="shout-card__cover">
 				<img src={shout.cover} alt={shout.title} />
 			</div>
@@ -69,9 +68,9 @@
 				margin-bottom: 2.4rem;
 			}
 
-			//.shout-card__cover-container {
-			// @include make-col(4);
-			//}
+			.shout-card__cover-container {
+			 @include make-col(4);
+			}
 
 			.shout-card__cover {
 				margin-bottom: 0;
