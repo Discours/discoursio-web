@@ -2,15 +2,16 @@ import { client } from '../lib/client'
 import { GET_SHOUT } from '../lib/queries'
 
 export const get = async ({ params }) => {
+	let res, body, status
+	const { slug } = params
 	try {
-		const { slug } = params
-		const { getShoutBySlug: shout } = await client.request(GET_SHOUT, { slug })
-		return { status: shout ? 200 : 404, body: { shout } }
+		res = await client.request(GET_SHOUT, { slug })
+		const { getShoutBySlug: shout } = res
+		body = { shout }
+		status = 200
 	} catch (error) {
-		console.error(error)
-		return {
-			status: 500,
-			body: { error: 'There was a server error.' }
-		}
+		body = { error }
+		status = res && res.ok ? 404 : 500
 	}
+	return { status, body }
 }

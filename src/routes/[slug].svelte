@@ -1,22 +1,21 @@
 <script context="module" lang="ts">
-	import type { Shout, Topic, User } from '../lib/codegen'
+	import type { Shout, User } from '../lib/codegen'
 	export const prerender = true
 
 	interface SlugProps {
 		slug: string
 		shout?: Shout
-		shouts?: Shout[]
 		user?: User
 	}
 
 	export const load = async ({ page, fetch }): Promise<{ props: SlugProps }> => {
-		console.info('app: preloading root slug entity')
+		console.info('[slug]: preloading')
 		const { slug } = page.params
 		let props: SlugProps = { slug }
 		const at = slug.startsWith('@')
-		!at && console.log(`app: slug ${slug} is content`)
-		const fq = await fetch(!at ? `/${slug}.json` : `/user/${slug.slice(1)}.json`)
-		if (fq.ok) props = { ...await fq.json(), ...props }
+		console.log(`[slug]: ${at?'user':'shout'} ${slug}`)
+		const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
+		if (fq.ok) props = { ...(await fq.json()), ...props }
 		return { props }
 	}
 </script>

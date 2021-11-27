@@ -1,11 +1,20 @@
 import { client } from '../../lib/client'
-import { TOPICS_ALL } from '../../lib/queries'
+import { SHOUTS_BY_TOPIC } from '../../lib/queries'
 
-export const get = async ({}) => {
+export const get = async ({ request }) => {
 	try {
-		const { topicsAll: topics } = await client.request(TOPICS_ALL)
-		console.debug(topics)
-		return { status: topics ? 200 : 404, body: { topics } }
+		// console.log(request)
+		let shouts, authors
+		const { topics } = (request && request.locals && request.locals.cookies) || {} // TODO: debug cookie-based subscriptions
+		if(authors) shouts = await client.request(SHOUTS_BY_TOPIC, {
+						limit: 100,
+						topics
+					}
+				)['shoutsByTopic']
+		return {
+			status: 200,
+			body: { authors, shouts }
+		}
 	} catch (error) {
 		console.error(error)
 		return {

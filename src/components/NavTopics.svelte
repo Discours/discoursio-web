@@ -5,9 +5,12 @@
 	const setTopic = (slug: string) => {
 		if (slug) {
 			$filterTopic = slug
-			window.location.hash = '#' + slug
+			window.location.hash = slug
 		}
 	}
+
+	$: if($filterTopic) window.location.hash = $filterTopic
+	$: if(window && window.location.hash && !$filterTopic) $filterTopic = window.location.hash
 </script>
 
 <nav class="subnavigation wide-container text-2xl">

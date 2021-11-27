@@ -5,7 +5,7 @@
 	export let user: User | Partial<User>
 
 	const letters = () => {
-		const names = user.name.split(' ')
+		const names = user && user.name ? user.name.split(' ') : []
 		return names[0][0] + (names.length > 1 ? names[1][0] : '')
 	}
 </script>

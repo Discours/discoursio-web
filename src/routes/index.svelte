@@ -4,6 +4,8 @@
 		const recents = await fetch('/feed/recents.json')
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
+		const topicsAll = await fetch(`/feed/topics.json`)
+		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props} : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -15,7 +17,7 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
 	import CommunityCard from '../components/CommunityCard.svelte'
-	import { comments, authors, shoutslist, communitieslist } from '../stores/zine'
+	import { comments, authors, shouts, shoutslist, communitieslist, topicslist, filterTopic } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
@@ -23,6 +25,7 @@
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
+	export let topicsAll = []
 
 	let topCommented = [],
 		topViewed = [],
@@ -30,9 +33,15 @@
 
 	let topicslugs
 
+	$: if(!$topicslist && topicslugs) {
+		console.log('mainpage: updating topics list')
+		$topicslist = topicsAll.filter(t => topicslugs.includes(t.slug))
+	}
+
 	$: if (!$shoutslist) {
-		console.log('app: mainpage data is ready, preparing...')
+		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
+		$shoutslist.forEach(s => $shouts[s.slug] = s)
 		console.log($shoutslist)
 		// what topics are present
 		topicslugs = new Set([])
@@ -59,17 +68,9 @@
 				($comments[b['slug']] ? $comments[b['slug']].length : 0)
 		)
 	}
-
+	
 	onMount(() => ($shoutslist = null)) // force to update reactive code on mount
 
-	const onlyTopic = (topic) => {
-		// .filter((s) => (s['topics'] || []).includes('culture'))
-		let filtered = []
-		$shoutslist.forEach((s) => {
-			if (s.topics.map((t) => t.slug).includes(topic)) filtered.push(s)
-		})
-		return filtered
-	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -162,7 +163,7 @@
 		</div>
 
 		<div class="floor floor--7">
-			{#if recents && recents.length > 0}
+			{#if recents}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as article}
@@ -246,7 +247,7 @@
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<h4>Культура</h4>
-					{#each onlyTopic('culture').slice(0, 4) as article}
+					{#each $shoutslist.filter((s) => s.topics.map((t) => t.slug).includes('culture')).slice(0, 4) as article}
 						<ShoutCard shout={article} />
 					{/each}
 				</div>

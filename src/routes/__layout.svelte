@@ -1,18 +1,11 @@
 <script context="module">
-	// import { metadata } from '@didiercatz/sveo'
-
 	export const load = async ({ page }) => {
-		try {
-			const seo = {} // FIXME: await metadata(page)
-			let props = { seo }
-			const q = await fetch(`/feed/topics.json`)
-			if (q.ok) props = { ...await q.json(), ...props }
-			return { props }
-		} catch (e) {
-			console.error(e)
-			return {}
-			// return { props: { seo: null } }
-		}
+		// const { metadata } = await import('@didiercatz/sveo')
+		// FIXME
+		let props
+		// try { props = { seo: await metadata(page) } }
+		// catch (e) { console.error(e) }
+		return { props }
 	}
 </script>
 
@@ -46,7 +39,7 @@
 		}
 	}
 
-	$: if(topics && !$topicslist) $topicslist = topics
+	$: if (topics && !$topicslist) $topicslist = topics
 
 	onMount(() => ($token = document.cookie))
 </script>

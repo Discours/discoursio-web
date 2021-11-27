@@ -1,5 +1,6 @@
 import type { GraphQLClient } from 'graphql-request'
-
+import * as Dom from 'graphql-request/dist/types.dom'
+import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -70,6 +71,12 @@ export type Community = {
 	slug: Scalars['String']
 }
 
+export type CommunityInput = {
+	desc?: InputMaybe<Scalars['String']>
+	pic?: InputMaybe<Scalars['String']>
+	title: Scalars['String']
+}
+
 export type Message = {
 	__typename?: 'Message'
 	author: Scalars['Int']
@@ -104,9 +111,11 @@ export type Mutation = {
 	confirmEmail: AuthResult
 	confirmPasswordReset: Scalars['Boolean']
 	createComment: CommentResult
+	createCommunity: Community
 	createMessage: MessageResult
 	createShout: ShoutResult
 	deleteComment: Result
+	deleteCommunity: Result
 	deleteMessage: Result
 	deleteShout: Result
 	rateComment: Result
@@ -116,6 +125,7 @@ export type Mutation = {
 	topicSubscribe: Result
 	topicUnsubscribe: Result
 	updateComment: CommentResult
+	updateCommunity: Community
 	updateMessage: MessageResult
 	updateProfile: Result
 	updateShout: ShoutResult
@@ -136,6 +146,11 @@ export type MutationCreateCommentArgs = {
 	shout: Scalars['Int']
 }
 
+export type MutationCreateCommunityArgs = {
+	desc: Scalars['String']
+	title: Scalars['String']
+}
+
 export type MutationCreateMessageArgs = {
 	body: Scalars['String']
 	replyTo?: InputMaybe<Scalars['Int']>
@@ -146,6 +161,10 @@ export type MutationCreateShoutArgs = {
 }
 
 export type MutationDeleteCommentArgs = {
+	id: Scalars['Int']
+}
+
+export type MutationDeleteCommunityArgs = {
 	id: Scalars['Int']
 }
 
@@ -187,6 +206,10 @@ export type MutationTopicUnsubscribeArgs = {
 export type MutationUpdateCommentArgs = {
 	body: Scalars['String']
 	id: Scalars['Int']
+}
+
+export type MutationUpdateCommunityArgs = {
+	community: CommunityInput
 }
 
 export type MutationUpdateMessageArgs = {
@@ -243,6 +266,9 @@ export type Proposal = {
 
 export type Query = {
 	__typename?: 'Query'
+	authorsBySlugs: Array<Maybe<User>>
+	getCommunities: Array<Maybe<Community>>
+	getCommunity: Community
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
@@ -258,10 +284,19 @@ export type Query = {
 	topMonth: Array<Maybe<Shout>>
 	topOverall: Array<Maybe<Shout>>
 	topViewed: Array<Maybe<Shout>>
+	topicsAll: Array<Maybe<Topic>>
 	topicsByAuthor: Array<Maybe<Topic>>
 	topicsByCommunity: Array<Maybe<Topic>>
 	topicsBySlugs: Array<Maybe<Topic>>
 	userRoles: Array<Maybe<Role>>
+}
+
+export type QueryAuthorsBySlugsArgs = {
+	slugs: Array<InputMaybe<Scalars['String']>>
+}
+
+export type QueryGetCommunityArgs = {
+	slug?: InputMaybe<Scalars['String']>
 }
 
 export type QueryGetMessagesArgs = {
@@ -455,7 +490,6 @@ export type User = {
 	old_id?: Maybe<Scalars['String']>
 	password?: Maybe<Scalars['String']>
 	rating?: Maybe<Scalars['Int']>
-	ratings?: Maybe<Array<Maybe<Rating>>>
 	slug: Scalars['String']
 	topics?: Maybe<Array<Maybe<Scalars['String']>>>
 	updatedAt?: Maybe<Scalars['DateTime']>

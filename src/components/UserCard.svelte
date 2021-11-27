@@ -1,9 +1,29 @@
 <script lang="ts">
 	import type { User } from '../lib/codegen'
 	import Userpic from './Userpic.svelte'
+	import cookie from 'cookie'
+import { onMount } from 'svelte';
 
 	export let user: User | Partial<User>
 	export let hasSubscribeButton = true
+	export let subscribed = false
+
+	// NOTE: cookie-based no auth requering subscriptions
+
+	onMount(async () => subscribed = (await cookie.parse(document.cookie)).authors.includes(user.slug))
+
+	const subscribe = async () => {
+		let coo = await cookie.parse(document.cookie)
+		if(!coo.authors.includes(user.slug)) coo.authors.push(user.slug)
+		document.cookie = cookie.serialize(coo)
+	}
+
+	const unsubscribe = async () => {
+		let coo = await cookie.parse(document.cookie)
+		const idx = coo.authors.indexOf(user.slug)
+		if(idx !=-1) coo.authors.splice(idx, 1)
+		document.cookie = cookie.serialize(coo)
+	}
 </script>
 
 <div class="author">
@@ -22,7 +42,11 @@
 
 		{#if hasSubscribeButton}
 			<div class="author__subscribe">
-				<button class="button button--subscribe">Подписаться</button>
+				{#if subscribed}
+				<button on:click={unsubscribe} class="button button--subscribe">Отписаться</button>
+				{:else}
+				<button on:click={subscribe} class="button button--subscribe">Подписаться</button>
+				{/if}
 			</div>
 		{/if}
 	{/if}

@@ -34,7 +34,7 @@
 	}
 
 	$: newNotices = $notices.filter((n) => !n.seen).length
-	$: newMessages = $messageslist.length
+	$: newMessages = $messageslist ? $messageslist.length : 0
 </script>
 
 <svelte:window
