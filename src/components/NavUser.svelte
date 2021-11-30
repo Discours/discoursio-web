@@ -61,21 +61,27 @@
 {/if}
 {#if $session}
 	<div class="usercontrol inline-flex">
-		<a href="/user/inbox">
-			<div class:entered={res === '/user/inbox'}>
-				<Icon name="inbox-white" counter={newMessages} />
-			</div>
-		</a>
-		<a href={''} on:click|preventDefault={toggleNotices}>
-			<div>
-				<Icon name="bell-white" counter={newNotices} />
-			</div>
-		</a>
-		<a href="/user">
-			<div class:entered={res === '/user'}>
-				<Userpic user={$session} />
-			</div>
-		</a>
+    <div>
+      <a href="/user/inbox">
+    			<div class:entered={res === '/user/inbox'}>
+    				<Icon name="inbox-white" counter={newMessages} />
+    			</div>
+    		</a>
+    </div>
+    <div>
+      <a href={''} on:click|preventDefault={toggleNotices}>
+        <div>
+          <Icon name="bell-white" counter={newNotices} />
+        </div>
+      </a>
+    </div>
+    <div>
+      <a href="/user">
+        <div class:entered={res === '/user'}>
+          <Userpic user={$session} />
+        </div>
+      </a>
+    </div>
 	</div>
 {:else}
 	<div class="loginbtn inline-flex">
@@ -84,6 +90,17 @@
 {/if}
 
 <style lang="scss">
+  .usercontrol {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+
+    :global(.icon) {
+      height: 2em;
+      width: 2em;
+    }
+  }
+
 	.notice {
 		width: auto;
 	}
