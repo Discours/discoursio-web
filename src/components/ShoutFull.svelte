@@ -64,9 +64,17 @@
 		margin-top: 0.5em;
 	}
 
+  :global(h2) {
+    line-height: 1.1;
+  }
+
 	:global(img) {
 		max-width: 100%;
 	}
+
+  .shout {
+    padding-top: 2em;
+  }
 
 	.shout__header {
 		margin: 0 -16.6666% 2em;
