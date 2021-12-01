@@ -1,11 +1,17 @@
 <script lang="ts">
 	import UserCard from './UserCard.svelte'
 	import { session } from '../stores/user'
+	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
 
 	export let props
 	let shout
 	let canEdit = false
+
+	onMount(() => {
+		console.log(shout.comments)
+	})
+
 	// TODO: editing logix
 	$: shout = props.shout
 	$: if ($session) {
