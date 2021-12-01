@@ -1,5 +1,6 @@
 <script lang="ts">
 	import UserCard from './UserCard.svelte'
+	import ShoutComment from './ShoutComment.svelte'
 	import { session } from '../stores/user'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
@@ -59,6 +60,23 @@
 					{/each}
 				</div>
 			</article>
+
+      <div class="col-md-8 offset-md-3">
+        <h2>Комментарии {shout.comments.length}</h2>
+
+        {#each shout.comments as comment}
+          <ShoutComment {comment}/>
+        {/each}
+
+        <div class="comment-warning">
+          Чтобы оставить комментарий, необходимо
+          <a href="/">зарегистрироваться</a> или
+          <a href="/">войти</a>
+        </div>
+
+        <textarea class="write-comment" rows="1"
+                  placeholder="Написать комментарий"></textarea>
+      </div>
 		</div>
 	{/if}
 </div>
@@ -138,4 +156,23 @@
 			font-weight: normal;
 		}
 	}
+
+  .write-comment {
+    border: 2px solid #f6f6f6;
+    @include font-size(1.7rem);
+    outline: none;
+    padding: 0.2em 0.4em;
+    width: 100%;
+
+    &::placeholder {
+      color: #858585;
+    }
+  }
+
+  .comment-warning {
+    background: #f6f6f6;
+    @include font-size(2.2rem);
+    margin-bottom: 1em;
+    padding: 2.4rem 1.8rem;
+  }
 </style>
