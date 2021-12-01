@@ -19,6 +19,7 @@
 
 	const subscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
+		if (!coo || !coo.authors) coo.authors = []
 		if (!coo.authors.includes(user.slug)) coo.authors.push(user.slug)
 		document.cookie = cookie.serialize(coo)
 	}
