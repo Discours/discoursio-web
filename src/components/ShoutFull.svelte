@@ -61,22 +61,25 @@
 				</div>
 			</article>
 
-      <div class="col-md-8 offset-md-3">
-        <h2>Комментарии {shout.comments.length}</h2>
+			<div class="col-md-8 offset-md-3">
+				<h2>Комментарии {shout.comments.length}</h2>
 
-        {#each shout.comments as comment}
-          <ShoutComment {comment}/>
-        {/each}
+				{#each shout.comments as comment}
+					<ShoutComment {comment} />
+				{/each}
 
-        <div class="comment-warning">
-          Чтобы оставить комментарий, необходимо
-          <a href="/">зарегистрироваться</a> или
-          <a href="/">войти</a>
-        </div>
+				<div class="comment-warning">
+					Чтобы оставить комментарий, необходимо
+					<a href="/">зарегистрироваться</a> или
+					<a href="/">войти</a>
+				</div>
 
-        <textarea class="write-comment" rows="1"
-                  placeholder="Написать комментарий"></textarea>
-      </div>
+				<textarea
+					class="write-comment"
+					rows="1"
+					placeholder="Написать комментарий"
+				/>
+			</div>
 		</div>
 	{/if}
 </div>
@@ -88,17 +91,17 @@
 		margin-top: 0.5em;
 	}
 
-  :global(h2) {
-    line-height: 1.1;
-  }
+	:global(h2) {
+		line-height: 1.1;
+	}
 
 	:global(img) {
 		max-width: 100%;
 	}
 
-  .shout {
-    padding-top: 2em;
-  }
+	.shout {
+		padding-top: 2em;
+	}
 
 	.shout__header {
 		margin: 0 -16.6666% 2em;
@@ -157,22 +160,22 @@
 		}
 	}
 
-  .write-comment {
-    border: 2px solid #f6f6f6;
-    @include font-size(1.7rem);
-    outline: none;
-    padding: 0.2em 0.4em;
-    width: 100%;
+	.write-comment {
+		border: 2px solid #f6f6f6;
+		@include font-size(1.7rem);
+		outline: none;
+		padding: 0.2em 0.4em;
+		width: 100%;
 
-    &::placeholder {
-      color: #858585;
-    }
-  }
+		&::placeholder {
+			color: #858585;
+		}
+	}
 
-  .comment-warning {
-    background: #f6f6f6;
-    @include font-size(2.2rem);
-    margin-bottom: 1em;
-    padding: 2.4rem 1.8rem;
-  }
+	.comment-warning {
+		background: #f6f6f6;
+		@include font-size(2.2rem);
+		margin-bottom: 1em;
+		padding: 2.4rem 1.8rem;
+	}
 </style>

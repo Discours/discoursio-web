@@ -19,7 +19,7 @@ export type Scalars = {
 	Boolean: boolean
 	Int: number
 	Float: number
-	DateTime: string
+	DateTime: any
 }
 
 export type AuthResult = {
@@ -31,7 +31,7 @@ export type AuthResult = {
 
 export type Comment = {
 	__typename?: 'Comment'
-	author: Scalars['Int']
+	author: User
 	body: Scalars['String']
 	createdAt: Scalars['DateTime']
 	deletedAt?: Maybe<Scalars['DateTime']>

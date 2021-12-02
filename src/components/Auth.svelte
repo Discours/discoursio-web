@@ -206,15 +206,15 @@
 
 			{#if mode !== 'forget' && mode !== 'reset'}
 				<div class="social-provider">
-          <div class="providers-text">
-            {#if mode === 'register'}
-              Или создайте аккаунт с&nbsp;помощью соцсетей
-            {:else if mode === 'login'}
-              Или войдите через соцсети
-            {/if}
-          </div>
+					<div class="providers-text">
+						{#if mode === 'register'}
+							Или создайте аккаунт с&nbsp;помощью соцсетей
+						{:else if mode === 'login'}
+							Или войдите через соцсети
+						{/if}
+					</div>
 
-          <div class="social">
+					<div class="social">
 						<a href="/graphql/oauth/facebook" rel="external" class="facebook-auth">
 							<Icon name="facebook" />
 						</a>
@@ -280,7 +280,7 @@
 
 		:global(h4) {
 			margin-bottom: 0.6em;
-      text-align: left;
+			text-align: left;
 		}
 	}
 
@@ -335,7 +335,7 @@
 		flex-direction: column;
 		justify-content: space-between;
 		position: relative;
-    text-align: left;
+		text-align: left;
 		z-index: 1;
 
 		a {
@@ -398,12 +398,12 @@
 		width: 100%;
 	}
 
-  .social-provider {
-    border-bottom: 1px solid #141414;
-    border-top: 1px solid #141414;
-    margin-top: 1em;
-    padding: 0.8em 0 1em;
-  }
+	.social-provider {
+		border-bottom: 1px solid #141414;
+		border-top: 1px solid #141414;
+		margin-top: 1em;
+		padding: 0.8em 0 1em;
+	}
 
 	.social {
 		background-color: white !important;

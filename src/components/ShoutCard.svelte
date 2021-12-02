@@ -69,7 +69,7 @@
 			}
 
 			.shout-card__cover-container {
-			 @include make-col(4);
+				@include make-col(4);
 			}
 
 			.shout-card__cover {
