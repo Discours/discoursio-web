@@ -32,6 +32,10 @@
 <script lang="ts">
 	import ShoutFull from '../components/ShoutFull.svelte'
 	import UserFull from '../components/UserFull.svelte'
+	import dayjs from "dayjs/esm";
+	import relativeTime from "dayjs/esm/plugin/relativeTime"
+
+	dayjs().format()
 
 	export let shout
 	export let user
