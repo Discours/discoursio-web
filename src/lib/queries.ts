@@ -75,6 +75,7 @@ export const GET_SHOUT = gql`
 			community
 			body
 			authors {
+				id
 				name
 				slug
 				userpic
@@ -94,9 +95,12 @@ export const GET_SHOUT = gql`
 				createdBy
 			}
 			comments {
+				id
 				body
-				author
 				createdAt
+				author # FIXME need { name slug userpic }
+				updatedAt
+				replyTo
 			}
 		}
 	}
