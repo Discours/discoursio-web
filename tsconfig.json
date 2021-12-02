@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"allowJs": true,
+		"allowSyntheticDefaultImports": true,
 		"checkJs": false,
 		"resolveJsonModule": true,
 		"lib": ["dom", "esnext"],
