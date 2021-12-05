@@ -11,11 +11,12 @@
 	// NOTE: cookie-based no auth requering subscriptions
 
 	onMount(
-		async () =>
-			(subscribed = (await cookie.parse(document.cookie)).authors.includes(
-				user.slug
-			))
-	)
+		async () => {
+			const data = await cookie.parse(document.cookie)
+			if(data && data.authors) data.authors.forEach(a => {
+				if( a.slug === user.slug ) subscribed = true
+			})
+	})
 
 	const subscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
