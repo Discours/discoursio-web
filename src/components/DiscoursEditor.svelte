@@ -2,7 +2,7 @@
 	export let props
 	let Editor
 
-	import('discours-editor/src/Editor.svelte').then((sv) => (Editor = sv))
+	import('discours-editor').then((sv) => (Editor = sv))
 </script>
 
 {#await Editor}
