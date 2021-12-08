@@ -98,7 +98,11 @@ export const GET_SHOUT = gql`
 				id
 				body
 				createdAt
-				author # FIXME need { name slug userpic }
+				author {
+					name
+					slug
+					userpic
+				}
 				updatedAt
 				replyTo
 			}

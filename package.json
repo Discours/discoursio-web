@@ -18,8 +18,7 @@
 		"lint": "prettier --ignore-path .gitignore  --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
 		"fix": "eslint --fix --ignore-path .gitignore .",
 		"format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. .",
-		"codegen": "graphql-codegen",
-		"postinstall": "patch-package"
+		"codegen": "graphql-codegen"
 	},
 	"devDependencies": {
 		"@didiercatz/sveo": "^0.1.1",
@@ -57,7 +56,6 @@
 		"markdown-it-mark": "^3.0.1",
 		"markdown-it-replace-link": "^1.1.0",
 		"markdown-it-toc-and-anchor": "^4.2.0",
-		"patch-package": "^6.4.7",
 		"prettier": "^2.4.1",
 		"prettier-eslint": "^13.0.0",
 		"prettier-plugin-svelte": "^2.5.0",
