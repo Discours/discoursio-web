@@ -29,6 +29,20 @@ export type AuthResult = {
 	user?: Maybe<User>
 }
 
+export type ChatRoom = {
+	__typename?: 'ChatRoom'
+	createdAt: Scalars['DateTime']
+	id: Scalars['Int']
+	notes?: Maybe<Scalars['String']>
+	updatedAt: Scalars['DateTime']
+}
+
+export type ChatRoomResult = {
+	__typename?: 'ChatRoomResult'
+	messages: Array<Maybe<Message>>
+	room: ChatRoom
+}
+
 export type Comment = {
 	__typename?: 'Comment'
 	author: User
@@ -81,6 +95,7 @@ export type Message = {
 	__typename?: 'Message'
 	author: Scalars['Int']
 	body: Scalars['String']
+	chatRoom: Scalars['Int']
 	createdAt: Scalars['DateTime']
 	id: Scalars['Int']
 	replyTo?: Maybe<Scalars['Int']>
@@ -118,6 +133,7 @@ export type Mutation = {
 	deleteCommunity: Result
 	deleteMessage: Result
 	deleteShout: Result
+	getRoom: ChatRoomResult
 	rateComment: Result
 	rateShout: Result
 	registerUser: AuthResult
@@ -174,6 +190,10 @@ export type MutationDeleteMessageArgs = {
 
 export type MutationDeleteShoutArgs = {
 	id: Scalars['Int']
+}
+
+export type MutationGetRoomArgs = {
+	chatRoom: Scalars['Int']
 }
 
 export type MutationRateCommentArgs = {
@@ -250,8 +270,9 @@ export type Permission = {
 }
 
 export type ProfileInput = {
-	email?: InputMaybe<Scalars['String']>
-	username?: InputMaybe<Scalars['String']>
+	bio?: InputMaybe<Scalars['String']>
+	links?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
+	name?: InputMaybe<Scalars['String']>
 	userpic?: InputMaybe<Scalars['String']>
 }
 
@@ -272,6 +293,7 @@ export type Query = {
 	getCurrentUser: UserResult
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
+	getShoutComments: Array<Maybe<Comment>>
 	getUserBySlug: UserResult
 	isEmailFree: Result
 	recents: Array<Maybe<Shout>>
@@ -306,6 +328,10 @@ export type QueryGetMessagesArgs = {
 
 export type QueryGetShoutBySlugArgs = {
 	slug: Scalars['String']
+}
+
+export type QueryGetShoutCommentsArgs = {
+	shout: Scalars['Int']
 }
 
 export type QueryGetUserBySlugArgs = {
@@ -442,6 +468,7 @@ export type ShoutResult = {
 
 export type Subscription = {
 	__typename?: 'Subscription'
+	chatUpdated: ChatRoomResult
 	messageChanged: MessageWithStatus
 	onlineUpdated: Array<User>
 	shoutUpdated: Shout

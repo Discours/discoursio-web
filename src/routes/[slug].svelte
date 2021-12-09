@@ -32,6 +32,7 @@
 	dayjs().format()
 
 	export let shout
+	export let comments
 	export let user
 	export let slug
 	let title
@@ -40,6 +41,7 @@
 	$: if (shout) {
 		console.log('[slug]: is shout')
 		title = shout.title
+		shout.comments = comments || []
 		component = ShoutFull
 	}
 
