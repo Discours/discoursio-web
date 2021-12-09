@@ -16,6 +16,10 @@
 	const edit = () => {
 		console.log('// TODO: comment editing...')
 	}
+
+	const remove = () => {
+		console.log('// TODO: comment remove...')
+	}
 </script>
 
 <div class="comment">
@@ -28,11 +32,6 @@
 				{comment.createdAt}
 			</div>
 			<!--      <div class="shout-rating">{comment.rating}</div>-->
-			{#if canEdit}
-				<a class="editlink" href="#edit" on:click={edit}>
-					{'Edit'}
-				</a>
-			{/if}
 		</div>
 		<div class="shout-body" contenteditable={canEdit}>
 			<MD body={comment.body} />
@@ -42,6 +41,18 @@
 				<Icon name="reply" />
 				Ответить</button
 			>
+			{#if canEdit}
+				<button class="comment-control comment-control--edit" on:click={edit}>
+					<Icon name="edit" />
+					Редактировать
+				</button>
+
+				<button class="comment-control comment-control--delete" on:click={remove}>
+					<Icon name="delete" />
+					Удалить
+				</button>
+			{/if}
+
 			<button class="comment-control comment-control--share">Поделиться</button>
 			<button class="comment-control comment-control--complain"
 				>Пожаловаться</button
@@ -61,6 +72,8 @@
 			background-color: #f6f6f6;
 
 			.comment-control--share,
+			.comment-control--delete,
+			.comment-control--edit,
 			.comment-control--complain {
 				opacity: 1;
 			}
@@ -111,6 +124,8 @@
 	}
 
 	.comment-control--share,
+	.comment-control--delete,
+	.comment-control--edit,
 	.comment-control--complain {
 		opacity: 0;
 		transition: opacity 0.3s;
@@ -127,8 +142,17 @@
 		vertical-align: top;
 
 		:global(.icon) {
-			height: 1.2em;
 			margin-right: 0.3em;
+
+			:global(img) {
+				margin-bottom: -0.1em;
+			}
+		}
+	}
+
+	.comment-control--reply {
+		:global(.icon) {
+			height: 1.2em;
 			width: 1.2em;
 		}
 	}
