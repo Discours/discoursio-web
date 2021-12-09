@@ -49,6 +49,12 @@ section {
 	margin: 0;
 }
 
+#svelte {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
 .wide-container {
 	margin: 0 auto;
 	max-width: 1400px;
@@ -77,6 +83,7 @@ h4 {
 
 main {
 	box-sizing: border-box;
+	flex: 1;
 }
 
 body,
