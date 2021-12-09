@@ -1,16 +1,17 @@
 <script lang="ts">
 	import type { Comment } from '../lib/codegen'
 	import UserCard from './UserCard.svelte'
-	import { authors } from '../stores/zine'
+	// import { authors } from '../stores/zine'
 	import MD from './MD.svelte'
 	import Icon from './DiscoursIcon.svelte'
-	import dayjs from 'dayjs'
-	import 'dayjs/locale/ru'
+	// import dayjs from 'dayjs'
+	// import 'dayjs/locale/ru'
 
 	export let comment: Comment
 	export let canEdit: boolean // FIXME
 
-	dayjs.locale('ru')
+	// dayjs.locale('ru')
+	// {dayjs(comment.createdAt).format('D MMMM YYYY в HH:MM')}
 
 	const edit = () => {
 		console.log('// TODO: comment editing...')
@@ -24,7 +25,7 @@
 				<UserCard user={comment.author} hasSubscribeButton={false} />
 			</div>
 			<div class="shout-date">
-				{dayjs(comment.createdAt).format('D MMMM YYYY в HH:MM')}
+				{comment.createdAt}
 			</div>
 			<!--      <div class="shout-rating">{comment.rating}</div>-->
 			{#if canEdit}

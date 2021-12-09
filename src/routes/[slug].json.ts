@@ -1,5 +1,5 @@
 import { client } from '../lib/client'
-import { GET_SHOUT } from '../lib/queries'
+import { GET_SHOUT, GET_COMMENTS } from '../lib/queries'
 
 export const get = async ({ params }) => {
 	let res, body, status
@@ -7,7 +7,9 @@ export const get = async ({ params }) => {
 	try {
 		res = await client.request(GET_SHOUT, { slug })
 		const { getShoutBySlug: shout } = res
-		body = { shout }
+		if (shout) res = await client.request(GET_COMMENTS, { shout: shout.id })
+		const { getShoutComments: comments } = res
+		body = { shout, comments }
 		status = 200
 	} catch (error) {
 		body = { error }

@@ -65,7 +65,7 @@
 				<h2>Комментарии {shout.comments.length}</h2>
 
 				{#each shout.comments as comment}
-					<ShoutComment {comment} canEdit={comment.author.id === $session.id}/>
+					<ShoutComment {comment} canEdit={comment.author.id === $session.id} />
 				{/each}
 
 				<div class="comment-warning">

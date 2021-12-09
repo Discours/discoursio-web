@@ -65,9 +65,28 @@ export const GET_ME = gql`
 `
 
 // TODO: joined with comments, topics, ratings and authors
+export const GET_COMMENTS = gql`
+	query GetShoutComments($shout: Int!) {
+		getShoutComments(shout_id: $shout) {
+			id
+			body
+			createdAt
+			author {
+				name
+				# slug
+				userpic
+			}
+			updatedAt
+			replyTo
+		}
+	}
+`
+
+// TODO: joined with comments, topics, ratings and authors
 export const GET_SHOUT = gql`
 	query GetShoutBySlugQuery($slug: String!) {
 		getShoutBySlug(slug: $slug) {
+			id
 			title
 			subtitle
 			layout
@@ -94,18 +113,7 @@ export const GET_SHOUT = gql`
 				value
 				createdBy
 			}
-			comments {
-				id
-				body
-				createdAt
-				author {
-					name
-					slug
-					userpic
-				}
-				updatedAt
-				replyTo
-			}
+			# comments
 		}
 	}
 ` // TODO: fix views as sum for all days by shout_id

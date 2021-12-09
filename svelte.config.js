@@ -13,14 +13,6 @@ const require = createRequire(import.meta.url)
 const { scss, globalStyle } = require('svelte-preprocess')
 // const { default: windiVite } = require('vite-plugin-windicss')
 
-require('dotenv').config()
-
-const ignoreWarns = [
-	'a11y-distracting-elements',
-	'a11y-missing-attribute',
-	'css-unused-selector'
-]
-
 const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
 
 const scssOptions = {
@@ -34,7 +26,6 @@ const scssOptions = {
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	logger: console,
 	preprocess: [
 		typescript(),
 		scss(scssOptions, { name: 'scss' }),
@@ -43,22 +34,23 @@ const config = {
 		globalStyle()
 		// mdsvex(),
 	],
-	prerender: true,
 	compilerOptions: {
 		enableSourcemap: true,
 		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
-	onwarn: (w, cb) =>
-		ignoreWarns.indexOf(w.code) == -1 && !console.log(w.code) && cb(w),
 	kit: {
 		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
+		prerender: {
+			enabled: false // FIXME
+		},
 		vite: {
 			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],
 				noExternal: Object.keys(pkg.dependencies || {})
-			}
+			},
+			external: ['w3c-keyname']
 		}
 	},
 	skipIntroByDefault: true,
