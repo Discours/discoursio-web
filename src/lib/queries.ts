@@ -80,7 +80,7 @@ export const GET_COMMENTS = gql`
 			replyTo
 			ratings {
 				value
-				rater_id
+				createdBy
 			}
 		}
 	}
