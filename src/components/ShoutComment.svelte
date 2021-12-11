@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class={'comment' + (level ? ' level-' + level.toString() : '')}>
+<div class={'comment' + (level? ' comment--level-' + level.toString() : '')}>
 	{#if comment}
 		<div class="shout-controls">
 			<div class="shout-author">
@@ -110,6 +110,26 @@
 			flex: 1;
 			color: rgba(0, 0, 0, 0.3);
 		}
+	}
+
+	.comment--level-1 {
+		margin-left: 2.4rem;
+	}
+
+	.comment--level-2 {
+		margin-left: 4.8rem;
+	}
+
+	.comment--level-3 {
+		margin-left: 7.2rem;
+	}
+
+	.comment--level-4 {
+		margin-left: 9.6rem;
+	}
+
+	.comment--level-5 {
+		margin-left: 12rem;
 	}
 
 	.shout-controls {
