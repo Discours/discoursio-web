@@ -1,5 +1,10 @@
 import { client } from '../../lib/client'
-import { GET_AUTHOR, SHOUTS_BY_AUTHOR, GET_ROLES, TOPICS_BY_AUTHOR } from '../../lib/queries'
+import {
+	GET_AUTHOR,
+	SHOUTS_BY_AUTHOR,
+	GET_ROLES,
+	TOPICS_BY_AUTHOR
+} from '../../lib/queries'
 
 export const get = async ({ params }) => {
 	try {

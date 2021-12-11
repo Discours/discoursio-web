@@ -1,7 +1,7 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <script lang="ts">
 	// TODO: getMessages graphql query
-import UserCard from '../../components/UserCard.svelte';
+	import UserCard from '../../components/UserCard.svelte'
 	import Icon from '../../components/DiscoursIcon.svelte'
 </script>
 
@@ -13,7 +13,7 @@ import UserCard from '../../components/UserCard.svelte';
 	<div class="row">
 		<div class="chat-list col-md-4">
 			<form class="chat-list__search">
-				<input type="search" placeholder="Поиск"/>
+				<input type="search" placeholder="Поиск" />
 				<button class="button">+</button>
 			</form>
 
@@ -28,14 +28,20 @@ import UserCard from '../../components/UserCard.svelte';
 			<div class="chat-list__users">
 				<ul>
 					<li>
-						<UserCard user="{{}}" hasSubscribeButton="{false}"/>
+						<UserCard user={{}} hasSubscribeButton={false} />
 						<div class="last-message-date">12:15</div>
-						<div class="last-message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+						<div class="last-message-text">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+						</div>
 					</li>
 					<li class="user--online chat-list__user--current">
-						<UserCard user="{{}}" hasSubscribeButton="{false}"/>
+						<UserCard user={{}} hasSubscribeButton={false} />
 						<div class="last-message-date">19:48</div>
-						<div class="last-message-text">Assumenda delectus deleniti dolores doloribus ducimus, et expedita facere iste laborum, nihil similique suscipit, ut voluptatem. Accusantium consequuntur doloremque ex molestiae nemo.</div>
+						<div class="last-message-text">
+							Assumenda delectus deleniti dolores doloribus ducimus, et expedita facere
+							iste laborum, nihil similique suscipit, ut voluptatem. Accusantium
+							consequuntur doloremque ex molestiae nemo.
+						</div>
 					</li>
 				</ul>
 			</div>
@@ -43,13 +49,15 @@ import UserCard from '../../components/UserCard.svelte';
 
 		<div class="col-md-8 conversation">
 			<div class="interlocutor user--online">
-				<UserCard user="{{}}" hasSubscribeButton="{false}"/>
+				<UserCard user={{}} hasSubscribeButton={false} />
 				<div class="user-status">Online</div>
 			</div>
 
 			<div class="conversation__messages">
 				<div class="conversation__messages-container">
-					<div class="conversation__message-container conversation__message-container--other">
+					<div
+						class="conversation__message-container conversation__message-container--other"
+					>
 						<div class="conversation__message">
 							Круто, беру в оборот!
 							<div class="conversation__message-details">
@@ -57,20 +65,25 @@ import UserCard from '../../components/UserCard.svelte';
 							</div>
 
 							<button class="conversation__context-popup-control">
-								<Icon name="ellipsis"/>
+								<Icon name="ellipsis" />
 							</button>
 						</div>
 					</div>
 
-					<div class="conversation__message-container conversation__message-container--own">
+					<div
+						class="conversation__message-container conversation__message-container--own"
+					>
 						<div class="conversation__message">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae earum iste itaque libero perspiciatis possimus quod! Accusamus, aliquam amet consequuntur debitis dolorum esse laudantium magni omnis rerum voluptatem voluptates!
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut beatae
+							earum iste itaque libero perspiciatis possimus quod! Accusamus, aliquam
+							amet consequuntur debitis dolorum esse laudantium magni omnis rerum
+							voluptatem voluptates!
 							<div class="conversation__message-details">
 								<time>14:31</time> Отредактировано
 							</div>
 
 							<button class="conversation__context-popup-control">
-								<Icon name="ellipsis"/>
+								<Icon name="ellipsis" />
 							</button>
 						</div>
 					</div>
@@ -79,18 +92,19 @@ import UserCard from '../../components/UserCard.svelte';
 						<time>12 сентября</time>
 					</div>
 
-					<div class="conversation__message-container conversation__message-container--other">
+					<div
+						class="conversation__message-container conversation__message-container--other"
+					>
 						<div class="conversation__message">
-							Нужна грамотная инфраструктура для сообщений,
-							если ожидается нагрузка - надо опираться на это.
-							Но в целом это несложно сделать, а те кто избегают
+							Нужна грамотная инфраструктура для сообщений, если ожидается нагрузка -
+							надо опираться на это. Но в целом это несложно сделать, а те кто избегают
 							таких задач вообще недостаточно квалифицированы для нас)
 							<div class="conversation__message-details">
 								<time>10:47</time>
 							</div>
 
 							<button class="conversation__context-popup-control">
-								<Icon name="ellipsis"/>
+								<Icon name="ellipsis" />
 							</button>
 						</div>
 					</div>
@@ -98,15 +112,14 @@ import UserCard from '../../components/UserCard.svelte';
 			</div>
 
 			<form class="conversation__message-form">
-				<input type="text" placeholder="Написать сообщение"/>
+				<input type="text" placeholder="Написать сообщение" />
 				<button type="submit">
-					<Icon name="send-message"/>
+					<Icon name="send-message" />
 				</button>
 			</form>
 		</div>
 	</div>
 </div>
-
 
 <style lang="scss">
 	:global(main) {
@@ -266,12 +279,12 @@ import UserCard from '../../components/UserCard.svelte';
 		}
 
 		.last-message-date {
-			color: rgba(0,0,0,0.3);
+			color: rgba(0, 0, 0, 0.3);
 			@include font-size(1rem);
 		}
 
 		.last-message-text {
-			color: rgba(0,0,0,0.3);
+			color: rgba(0, 0, 0, 0.3);
 			flex: 1 100%;
 			margin-left: 4.2rem;
 			overflow: hidden;
