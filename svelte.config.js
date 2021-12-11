@@ -4,9 +4,10 @@ import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 // import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
-import vercel from '@sveltejs/adapter-vercel'
-import node from '@sveltejs/adapter-node'
-import ssg from '@sveltejs/adapter-static'
+import adapter from '@sveltejs/adapter-auto'
+// import vercel from '@sveltejs/adapter-vercel'
+// import node from '@sveltejs/adapter-node'
+// import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
@@ -39,7 +40,7 @@ const config = {
 		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
 	kit: {
-		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
+		adapter: adapter(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
 		prerender: {
 			enabled: false // FIXME

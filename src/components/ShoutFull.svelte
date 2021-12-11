@@ -20,7 +20,7 @@
 		canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
 	}
 
-	$: if(shout.comments.length > 0) {
+	$: if(shout.comments && shout.comments.length > 0) {
 		shout.comments.forEach(c => {
 			commentsById[c.id] = c
 		})
