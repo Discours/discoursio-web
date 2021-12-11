@@ -29,7 +29,7 @@
 	const deepest = 6
 
 	const getCommentLevel = (c, level = 0) => {
-		if(c.replyTo && level < deepest) {
+		if(c && c.replyTo && level < deepest) {
 			level += 1
 			return getCommentLevel(commentsById[c.replyTo], level)
 		} else {
@@ -83,9 +83,7 @@
 				<h2>Комментарии {shout.comments.length}</h2>
 
 				{#each shout.comments as comment}
-					{#if !comment.replyTo}
 					<ShoutComment {comment} level={getCommentLevel(comment)} canEdit={comment.author.id === $session.id} />
-					{/if}
 				{/each}
 
 				<div class="comment-warning">
