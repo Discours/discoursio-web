@@ -295,6 +295,7 @@ export type Query = {
 	getShoutBySlug: Shout
 	getShoutComments: Array<Maybe<Comment>>
 	getUserBySlug: UserResult
+	getUserRoles: Array<Maybe<Role>>
 	isEmailFree: Result
 	recents: Array<Maybe<Shout>>
 	shoutsByAuthor: Array<Maybe<Shout>>
@@ -310,7 +311,6 @@ export type Query = {
 	topicsByAuthor: Array<Maybe<Topic>>
 	topicsByCommunity: Array<Maybe<Topic>>
 	topicsBySlugs: Array<Maybe<Topic>>
-	userRoles: Array<Maybe<Role>>
 }
 
 export type QueryAuthorsBySlugsArgs = {
@@ -331,10 +331,14 @@ export type QueryGetShoutBySlugArgs = {
 }
 
 export type QueryGetShoutCommentsArgs = {
-	shout: Scalars['Int']
+	shout_id: Scalars['Int']
 }
 
 export type QueryGetUserBySlugArgs = {
+	slug: Scalars['String']
+}
+
+export type QueryGetUserRolesArgs = {
 	slug: Scalars['String']
 }
 
@@ -495,6 +499,7 @@ export type Topic = {
 	body?: Maybe<Scalars['String']>
 	cat_id?: Maybe<Scalars['String']>
 	children?: Maybe<Array<Maybe<Scalars['String']>>>
+	community?: Maybe<Scalars['String']>
 	parents?: Maybe<Array<Maybe<Scalars['String']>>>
 	pic?: Maybe<Scalars['String']>
 	slug: Scalars['String']

@@ -78,6 +78,11 @@ export const GET_COMMENTS = gql`
 			}
 			updatedAt
 			replyTo
+			ratings {
+				value
+				createdBy
+				createdAt
+			}
 		}
 	}
 `
@@ -137,8 +142,8 @@ export const GET_AUTHOR = gql`
 `
 
 export const GET_ROLES = gql`
-	query GetUserRolesBySlug ($slug: String!) {
-		getUserRoles(slug: $slug ) {
+	query GetUserRolesBySlug($slug: String!) {
+		getUserRoles(slug: $slug) {
 			id
 			name
 			community
@@ -362,7 +367,6 @@ export const AUTHORS_BY_SLUGS = gql`
 			links
 		}
 	}
-
 `
 
 export const TOPICS_BY_SLUGS = gql`
