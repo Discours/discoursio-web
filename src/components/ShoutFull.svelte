@@ -7,7 +7,8 @@
 
 	export let props
 	let shout
-	let canEdit = false
+	let canEdit
+	let commentsById: { [key: number]: Partial<Comment> } = {}
 
 	onMount(() => {
 		console.log(shout.comments)
@@ -17,6 +18,23 @@
 	$: shout = props.shout
 	$: if ($session) {
 		canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
+	}
+
+	$: if(shout.comments.length > 0) {
+		shout.comments.forEach(c => {
+			commentsById[c.id] = c
+		})
+	}
+
+	const deepest = 6
+
+	const getCommentLevel = (c, level = 0) => {
+		if(c.replyTo && level < deepest) {
+			level += 1
+			return getCommentLevel(commentsById[c.replyTo], level)
+		} else {
+			return level
+		}
 	}
 </script>
 
@@ -66,7 +84,7 @@
 
 				{#each shout.comments as comment}
 					{#if !comment.replyTo}
-					<ShoutComment {comment} canEdit={comment.author.id === $session.id} />
+					<ShoutComment {comment} level={getCommentLevel(comment)} canEdit={comment.author.id === $session.id} />
 					{/if}
 				{/each}
 

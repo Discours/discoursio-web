@@ -7,9 +7,9 @@
 	// import dayjs from 'dayjs'
 	// import 'dayjs/locale/ru'
 
-	export let comment: Comment
+	export let comment: Partial<Comment>
 	export let canEdit: boolean // FIXME
-
+	export let level: number = 0
 	// dayjs.locale('ru')
 	// {dayjs(comment.createdAt).format('D MMMM YYYY в HH:MM')}
 
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class="comment">
+<div class={'comment' + (level? ' level-' + level.toString() : '')}>
 	{#if comment}
 		<div class="shout-controls">
 			<div class="shout-author">

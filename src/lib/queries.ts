@@ -73,7 +73,7 @@ export const GET_COMMENTS = gql`
 			createdAt
 			author {
 				name
-				# slug
+				slug
 				userpic
 			}
 			updatedAt
