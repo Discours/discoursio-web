@@ -355,7 +355,7 @@ export const TOPICS_BY_SLUGS = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -369,7 +369,7 @@ export const TOPICS_BY_COMMUNITY = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -383,7 +383,7 @@ export const TOPICS_ALL = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -397,7 +397,7 @@ export const TOPICS_BY_AUTHOR = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
