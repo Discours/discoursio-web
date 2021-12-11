@@ -20,6 +20,10 @@
 		{
 			title: 'темы',
 			href: '/topic'
+		},
+		{
+			title: 'опубликовать',
+			href: '/create'
 		}
 	]
 </script>

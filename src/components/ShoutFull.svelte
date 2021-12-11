@@ -20,8 +20,8 @@
 		canEdit = !!shout.authors.find((a) => a.slug === $session.slug)
 	}
 
-	$: if(shout.comments && shout.comments.length > 0) {
-		shout.comments.forEach(c => {
+	$: if (shout.comments && shout.comments.length > 0) {
+		shout.comments.forEach((c) => {
 			commentsById[c.id] = c
 		})
 	}
@@ -29,7 +29,7 @@
 	const deepest = 6
 
 	const getCommentLevel = (c, level = 0) => {
-		if(c && c.replyTo && level < deepest) {
+		if (c && c.replyTo && level < deepest) {
 			level += 1
 			return getCommentLevel(commentsById[c.replyTo], level)
 		} else {
@@ -83,7 +83,11 @@
 				<h2>Комментарии {shout.comments.length}</h2>
 
 				{#each shout.comments as comment}
-					<ShoutComment {comment} level={getCommentLevel(comment)} canEdit={comment.author.id === $session.id} />
+					<ShoutComment
+						{comment}
+						level={getCommentLevel(comment)}
+						canEdit={comment.author.id === $session.id}
+					/>
 				{/each}
 
 				<div class="comment-warning">
