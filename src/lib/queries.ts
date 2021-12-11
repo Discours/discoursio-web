@@ -80,8 +80,7 @@ export const GET_COMMENTS = gql`
 			replyTo
 			ratings {
 				value
-				createdBy
-				createdAt
+				rater_id
 			}
 		}
 	}
@@ -116,7 +115,7 @@ export const GET_SHOUT = gql`
 			views
 			ratings {
 				value
-				createdBy
+				rater_id
 			}
 			# comments
 		}
@@ -124,8 +123,8 @@ export const GET_SHOUT = gql`
 ` // TODO: fix views as sum for all days by shout_id
 
 export const GET_AUTHOR = gql`
-	query GetUserBySlugQuery($slug: String!) {
-		getUserBySlug(slug: $slug) {
+	query GetUserBySlugQuery($slugs: [String]!) {
+		getUsersBySlugs(slugs: $slugs) {
 			user {
 				slug
 				name
@@ -135,7 +134,10 @@ export const GET_AUTHOR = gql`
 				links
 				createdAt
 				wasOnlineAt
-				rating
+				ratings {
+					rater_id
+					value
+				}
 			}
 		}
 	}

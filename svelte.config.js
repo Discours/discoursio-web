@@ -46,6 +46,9 @@ const config = {
 			enabled: false // FIXME
 		},
 		vite: {
+			build: {
+			  chunkSizeWarningLimit: 777
+			},
 			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],

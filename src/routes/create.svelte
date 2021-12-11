@@ -7,6 +7,3 @@
 
 <svelte:head><title>Дискурс : Редакция</title></svelte:head>
 <DiscoursEditor />
-<div style="margin: 3vw;">
-	Инструмент совместного редактирования находится в разработке.
-</div>
