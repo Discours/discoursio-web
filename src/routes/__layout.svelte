@@ -15,9 +15,9 @@
 	import { initLocalizationContext } from '../i18n/index'
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
-	import { token, session } from '../stores/user'
+	import { token, session, roles } from '../stores/user'
 	import { topicslist } from '../stores/zine'
-	import { GET_ME } from '../lib/queries'
+	import { GET_ME, MY_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
 	import Sveo from '@didiercatz/sveo'
@@ -32,6 +32,10 @@
 			console.log('app: found user token')
 			client.request(GET_ME).then((user) => {
 				$session = user
+				client.request(MY_ROLES).then((data) => {
+					$roles = data
+					console.log('app: my roles store updated')
+				})
 				console.log('app: session store updated')
 			})
 		} catch (e) {

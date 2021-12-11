@@ -125,20 +125,37 @@ export const GET_AUTHOR = gql`
 				slug
 				name
 				bio
-				roles {
-					community
-					name
-				}
 				userpic
 				communities
 				links
 				createdAt
 				wasOnlineAt
-				ratings {
-					createdBy
-					value
-				}
+				rating
 			}
+		}
+	}
+`
+
+export const GET_ROLES = gql`
+	query GetUserRolesBySlug ($slug: String!) {
+		getUserRoles(slug: $slug ) {
+			id
+			name
+			community
+			desc
+			permissions
+		}
+	}
+`
+
+export const MY_ROLES = gql`
+	query {
+		userRoles() {
+			id
+			name
+			community
+			desc
+			permissions
 		}
 	}
 `
@@ -343,7 +360,9 @@ export const AUTHORS_BY_SLUGS = gql`
 			userpic
 			bio
 			links
+		}
 	}
+
 `
 
 export const TOPICS_BY_SLUGS = gql`
@@ -355,7 +374,7 @@ export const TOPICS_BY_SLUGS = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -369,7 +388,7 @@ export const TOPICS_BY_COMMUNITY = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -383,7 +402,7 @@ export const TOPICS_ALL = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `
@@ -397,7 +416,7 @@ export const TOPICS_BY_AUTHOR = gql`
 			pic
 			parents
 			children
-			# community
+			community
 		}
 	}
 `

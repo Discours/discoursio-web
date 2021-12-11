@@ -24,7 +24,7 @@ export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable('')
 export const session: Writable<Partial<User>> = writable({})
-export const roles: Writable<Role[]> = writable([]) // FIXME: get roles somehow
+export const roles: Writable<Role[]> = writable([])
 // ui form needs
 export const ui: Writable<{
 	email: string
