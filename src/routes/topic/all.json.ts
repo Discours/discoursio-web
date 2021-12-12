@@ -10,7 +10,7 @@ export const get = async ({ }) => {
 		console.error(error)
 		return {
 			status: 500,
-			body: { error: 'There was a server error.' }
+			body: { error }
 		}
 	}
 }
