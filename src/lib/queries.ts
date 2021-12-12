@@ -117,7 +117,6 @@ export const GET_SHOUT = gql`
 				value
 				rater_id
 			}
-			# comments
 		}
 	}
 ` // TODO: fix views as sum for all days by shout_id
@@ -146,18 +145,6 @@ export const GET_AUTHOR = gql`
 export const GET_ROLES = gql`
 	query GetUserRolesBySlug($slug: String!) {
 		getUserRoles(slug: $slug) {
-			id
-			name
-			community
-			desc
-			permissions
-		}
-	}
-`
-
-export const MY_ROLES = gql`
-	query {
-		userRoles() {
 			id
 			name
 			community
