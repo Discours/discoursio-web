@@ -388,7 +388,7 @@ export const TOPICS_BY_COMMUNITY = gql`
 
 export const TOPICS_ALL = gql`
 	query TopicsAllQuery {
-		topicsAll {
+		topicsBySlugs {
 			title
 			body
 			slug

@@ -17,7 +17,7 @@
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { token, session, roles } from '../stores/user'
 	import { topicslist } from '../stores/zine'
-	import { GET_ME, MY_ROLES } from '../lib/queries'
+	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
 	import Sveo from '@didiercatz/sveo'
@@ -32,7 +32,7 @@
 			console.log('app: found user token')
 			client.request(GET_ME).then((user) => {
 				$session = user
-				client.request(MY_ROLES).then((data) => {
+				client.request(GET_ROLES, { slug: user.slug }).then((data) => {
 					$roles = data
 					console.log('app: my roles store updated')
 				})
