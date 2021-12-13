@@ -6,7 +6,7 @@
 	import { session, ui, token as tokenStore } from '../stores/user'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
-
+	import { API_ENDPOINT } from '../lib/client'
 	const prefix = 'Ошибка сервера: '
 
 	export let mode = 'login'
@@ -92,6 +92,10 @@
 	}
 
 	onMount(() => $page.query.get('code') && reset())
+
+	const oauth = (provider: string) => {
+		window.open(API_ENDPOINT + `/oauth/${provider}`, provider, 'width=740, height=420'); 
+	} 
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -215,13 +219,13 @@
 					</div>
 
 					<div class="social">
-						<a href="/graphql/oauth/facebook" rel="external" class="facebook-auth">
+						<a href={''} class="facebook-auth" on:click|preventDefault={() => oauth('facebook')}>
 							<Icon name="facebook" />
 						</a>
-						<a href="/graphql/oauth/google" rel="external" class="google-auth">
+						<a href={''} class="google-auth"  on:click|preventDefault={() => oauth('google')}>
 							<Icon name="google" />
 						</a>
-						<a href="/graphql/oauth/vk" rel="external" class="vk-auth">
+						<a href={''} class="vk-auth" on:click|preventDefault={() => oauth('vk')}>
 							<Icon name="vk" />
 						</a>
 					</div>
