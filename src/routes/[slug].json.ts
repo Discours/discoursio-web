@@ -7,7 +7,9 @@ export const get = async ({ params }) => {
 	try {
 		res = await client.request(GET_SHOUT, { slug })
 		const { getShoutBySlug: shout } = res
-		const { getShoutComments: comments } = await client.request(GET_COMMENTS, { shout: slug })
+		const { getShoutComments: comments } = await client.request(GET_COMMENTS, {
+			shout: slug
+		})
 		body = { shout, comments }
 		status = 200
 	} catch (error) {

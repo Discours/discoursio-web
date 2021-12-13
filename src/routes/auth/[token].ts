@@ -6,7 +6,7 @@ import { setCookie } from '../../lib/cookie'
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ params }) {
 	const { token: got } = params
-	if(got) {
+	if (got) {
 		token.set(got)
 		const user = await client.request(GET_ME)
 		session.set(user)

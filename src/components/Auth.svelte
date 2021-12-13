@@ -94,8 +94,12 @@
 	onMount(() => $page.query.get('code') && reset())
 
 	const oauth = (provider: string) => {
-		window.open(API_ENDPOINT + `/oauth/${provider}`, provider, 'width=740, height=420'); 
-	} 
+		window.open(
+			API_ENDPOINT + `/oauth/${provider}`,
+			provider,
+			'width=740, height=420'
+		)
+	}
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
@@ -219,10 +223,18 @@
 					</div>
 
 					<div class="social">
-						<a href={''} class="facebook-auth" on:click|preventDefault={() => oauth('facebook')}>
+						<a
+							href={''}
+							class="facebook-auth"
+							on:click|preventDefault={() => oauth('facebook')}
+						>
 							<Icon name="facebook" />
 						</a>
-						<a href={''} class="google-auth"  on:click|preventDefault={() => oauth('google')}>
+						<a
+							href={''}
+							class="google-auth"
+							on:click|preventDefault={() => oauth('google')}
+						>
 							<Icon name="google" />
 						</a>
 						<a href={''} class="vk-auth" on:click|preventDefault={() => oauth('vk')}>
