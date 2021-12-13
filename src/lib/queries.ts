@@ -66,8 +66,8 @@ export const GET_ME = gql`
 
 // TODO: joined with comments, topics, ratings and authors
 export const GET_COMMENTS = gql`
-	query GetShoutComments($shout: Int!) {
-		getShoutComments(shout_id: $shout) {
+	query GetShoutComments($shout: String!) {
+		getShoutComments(slug: $shout) {
 			id
 			body
 			createdAt
@@ -90,7 +90,6 @@ export const GET_COMMENTS = gql`
 export const GET_SHOUT = gql`
 	query GetShoutBySlugQuery($slug: String!) {
 		getShoutBySlug(slug: $slug) {
-			id
 			title
 			subtitle
 			layout
