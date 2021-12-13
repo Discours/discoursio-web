@@ -2,7 +2,9 @@
 	import type { Topic } from '../../lib/codegen'
 	export const prerender = true
 
-	export const load = async ({ fetch }): Promise<{ props: { topics: Partial<Topic>[] } }> => {
+	export const load = async ({
+		fetch
+	}): Promise<{ props: { topics: Partial<Topic>[] } }> => {
 		console.log('topic/index: fetching all topics')
 		const fq = await fetch(`/topic/all.json`)
 		if (fq.ok) {
@@ -11,21 +13,22 @@
 		} else return { props: { topics: [] } }
 	}
 </script>
+
 <script lang="ts">
-	import {onMount} from "svelte";
+	import { onMount } from 'svelte'
 
 	const groupBy = (arr) => {
-		let firstLetter = null;
+		let firstLetter = null
 
-	  return arr.reduce((acc, currentValue) => {
-			const currentLetter = currentValue.title.slice(0, 1);
-	    if (!acc[currentLetter]) {
-				firstLetter = currentLetter;
-	      acc[firstLetter] = [];
-	    }
-	    acc[currentLetter].push(currentValue);
-	    return acc;
-	  }, {});
+		return arr.reduce((acc, currentValue) => {
+			const currentLetter = currentValue.title.slice(0, 1)
+			if (!acc[currentLetter]) {
+				firstLetter = currentLetter
+				acc[firstLetter] = []
+			}
+			acc[currentLetter].push(currentValue)
+			return acc
+		}, {})
 	}
 
 	export let topics: Partial<Topic>[]
@@ -33,41 +36,44 @@
 	const viewSwitcherItems = {
 		popular: 'Популярные',
 		discussed: 'Обсуждаемые',
-		alphabet: 'По алфавиту',
+		alphabet: 'По алфавиту'
 	}
 
-	let currentSwitcherItem = null;
+	let currentSwitcherItem = null
 
 	const switchView = (view) => {
-		currentSwitcherItem = view;
-	};
+		currentSwitcherItem = view
+	}
 
 	onMount(() => {
-		currentSwitcherItem = window.location.hash.replace('#', '');
-	});
+		currentSwitcherItem = window.location.hash.replace('#', '')
+	})
 
-	const topicsGroupedByAlphabet = groupBy(topics.slice(0));
-	const sortedKeys = Object.keys(topicsGroupedByAlphabet).sort();
+	const topicsGroupedByAlphabet = groupBy(topics.slice(0))
+	const sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
 
-	sortedKeys.forEach(letter => {
-		topicsGroupedByAlphabet[letter] =
-			topicsGroupedByAlphabet[letter].sort((a, b) => {
+	sortedKeys.forEach((letter) => {
+		topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
+			(a, b) => {
 				if (a.title > b.title) {
-					return 1;
-				} else if(a.title < b.title) {
-					return -1;
+					return 1
+				} else if (a.title < b.title) {
+					return -1
 				}
-				return 0;
-			});
-	});
+				return 0
+			}
+		)
+	})
 </script>
 
 <div class="container">
 	<div class="row">
 		<div class="col-md-9">
 			<h1>Темы</h1>
-			<p>Подпишитесь на интересующие вас темы, чтобы настроить вашу персональную
-				летну и моментально узнавать о новых публикациях и обсуждениях</p>
+			<p>
+				Подпишитесь на интересующие вас темы, чтобы настроить вашу персональную
+				летну и моментально узнавать о новых публикациях и обсуждениях
+			</p>
 		</div>
 	</div>
 
@@ -75,8 +81,10 @@
 		<div class="col">
 			<ul class="view-switcher">
 				{#each Object.entries(viewSwitcherItems) as [key, title]}
-					<li class:selected="{currentSwitcherItem === key}"
-							on:click="{() => switchView(key)}">
+					<li
+						class:selected={currentSwitcherItem === key}
+						on:click={() => switchView(key)}
+					>
 						<a href="#{key}">{title}</a>
 					</li>
 				{/each}
@@ -109,9 +117,13 @@
 							<div class="col-md-7">
 								<div class="topic-title">
 									<a href="/{topic.slug}">{topic.title}</a>
-								</div >
-								<p class="topic-description">Цикл монологов об эмиграции из
-									России в Финляндию: о жизни до переезда, причинах расставания с родиной, поиске своего места в новой стране и о том, какие трудности и радости ждут русского человека за линией Маннергейма.</p>
+								</div>
+								<p class="topic-description">
+									Цикл монологов об эмиграции из России в Финляндию: о жизни до переезда,
+									причинах расставания с родиной, поиске своего места в новой стране и о
+									том, какие трудности и радости ждут русского человека за линией
+									Маннергейма.
+								</p>
 								<div class="topic-details">
 									<span class="topic-details__item">36 публикаций</span>
 									<span class="topic-details__item">24563 просмотров</span>

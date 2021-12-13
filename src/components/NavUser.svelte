@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { ui, session, notices } from '../stores/user'
+	import { ui, session, notices, token } from '../stores/user'
 	import Icon from './DiscoursIcon.svelte'
 	import Auth from './Auth.svelte'
 	import Userpic from './Userpic.svelte'
@@ -59,7 +59,7 @@
 		{/each}
 	</div>
 {/if}
-{#if $session}
+{#if $token}
 	<div class="usercontrol inline-flex">
 		<div>
 			<a href="/user/inbox">

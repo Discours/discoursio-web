@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UserCard from './UserCard.svelte'
 	import ShoutComment from './ShoutComment.svelte'
-	import { session } from '../stores/user'
+	import { session, token } from '../stores/user'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
 
@@ -89,18 +89,19 @@
 						canEdit={comment.author.id === $session.id}
 					/>
 				{/each}
-
+				{#if !$token}
 				<div class="comment-warning">
 					Чтобы оставить комментарий, необходимо
 					<a href="/">зарегистрироваться</a> или
 					<a href="/">войти</a>
 				</div>
-
+				{:else}
 				<textarea
 					class="write-comment"
 					rows="1"
 					placeholder="Написать комментарий"
 				/>
+				{/if}
 			</div>
 		</div>
 	{:else}

@@ -47,7 +47,7 @@ const config = {
 		},
 		vite: {
 			build: {
-			  chunkSizeWarningLimit: 777
+				chunkSizeWarningLimit: 777
 			},
 			// plugins: [windiVite({})],
 			ssr: {

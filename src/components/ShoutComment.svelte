@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class={'comment' + (level? ' comment--level-' + level.toString() : '')}>
+<div class={'comment' + (level ? ' comment--level-' + level.toString() : '')}>
 	{#if comment}
 		<div class="shout-controls">
 			<div class="shout-author">

@@ -1,7 +1,7 @@
 import { client } from '../../lib/client'
 import { TOPICS_ALL } from '../../lib/queries'
 
-export const get = async ({ }) => {
+export const get = async ({}) => {
 	try {
 		const { topicsBySlugs: topics } = await client.request(TOPICS_ALL)
 		const body = { topics }
