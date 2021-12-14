@@ -50,22 +50,18 @@
 		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
-		console.log($shoutslist)
+		// console.log($shoutslist)
 		// what topics are present
 		topicslugs = new Set([])
 		$shoutslist.forEach((s) => s.topics.forEach((t) => topicslugs.add(t.slug)))
 		topicslugs = Array.from(topicslugs)
 
 		// authors of the month
-		console.log(topMonth)
 		if (topMonth) {
 			let authorsMonthSet = new Set([])
-			topMonth.forEach((s) =>
-				s.authors.forEach((a) => authorsMonthSet.add($authors[a['slug']]))
-			)
-			authorsMonth = Array.from(authorsMonthSet).sort(
-				(a, b) => a['rating'] - b['rating']
-			)
+			topMonth.forEach((s) => s.authors.forEach((a) => authorsMonthSet.add(a)))
+			// console.log(authorsMonthSet)
+			authorsMonth = Array.from(authorsMonthSet).sort( (a, b) => a['rating'] - b['rating'])
 		}
 
 		// top viwed and commented
