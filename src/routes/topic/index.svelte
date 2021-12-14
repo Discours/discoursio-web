@@ -103,6 +103,7 @@
 					<a href="#alphabet">По алфавиту</a>
 				</li>
 			</ul>
+			
 			{#if mode === 'alphabet'}
 				{#each sortedKeys as letter}
 					<div class="group">
@@ -121,6 +122,7 @@
 						</div>
 					</div>
 				{/each}
+			{/if}
 
 			{#if mode === 'popular' || mode === 'active'}
 				<div class="stats">
