@@ -121,7 +121,6 @@
 						</div>
 					</div>
 				{/each}
-			{/if}
 
 			{#if mode === 'popular' || mode === 'active'}
 				<div class="stats">

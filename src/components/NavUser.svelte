@@ -61,21 +61,29 @@
 {/if}
 {#if $token}
 	<div class="usercontrol inline-flex">
-		<div>
+		<div class="usercontrol__item">
+			<a href="#">опубликовать материал</a>
+		</div>
+		<div class="usercontrol__item">
+			<a href="#">
+				<Icon name="search"/>
+			</a>
+		</div>
+		<div class="usercontrol__item">
 			<a href="/user/inbox">
 				<div class:entered={res === '/user/inbox'}>
 					<Icon name="inbox-white" counter={newMessages} />
 				</div>
 			</a>
 		</div>
-		<div>
+		<div class="usercontrol__item">
 			<a href={''} on:click|preventDefault={toggleNotices}>
 				<div>
 					<Icon name="bell-white" counter={newNotices} />
 				</div>
 			</a>
 		</div>
-		<div>
+		<div class="usercontrol__item">
 			<a href="/user">
 				<div class:entered={res === '/user'}>
 					<Userpic user={$session} />
@@ -84,7 +92,7 @@
 		</div>
 	</div>
 {:else}
-	<div class="loginbtn inline-flex">
+	<div class="usercontrol__item loginbtn inline-flex">
 		<a href={''} on:click|preventDefault={toggleLogin}> войти </a>
 	</div>
 {/if}
@@ -94,10 +102,15 @@
 		display: flex;
 		justify-content: flex-end;
 		width: 100%;
+	}
 
-		:global(.icon) {
-			height: 2em;
-			width: 2em;
+	.usercontrol__item {
+		margin-left: 3.2rem;
+
+		:global(img) {
+			height: 20px;
+			vertical-align: middle;
+			width: auto;
 		}
 	}
 
@@ -118,11 +131,12 @@
 		width: 100%;
 		z-index: 10;
 	}
+
 	a {
-		color: rgba(255, 255, 255, 0.64);
+		color: #000;
 
 		&:hover {
-			color: #fff;
+			color: #000;
 		}
 	}
 </style>

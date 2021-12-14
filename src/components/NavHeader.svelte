@@ -70,7 +70,7 @@
 		text-transform: uppercase;
 
 		a {
-			color: white;
+			color: #000;
 		}
 	}
 
@@ -80,6 +80,7 @@
 
 	.main-navigation {
 		display: inline-flex;
+		@include font-size(1.7rem);
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -93,16 +94,16 @@
 		}
 
 		a {
-			color: rgba(255, 255, 255, 0.64);
+			color: #000;
 
 			&:hover {
-				color: #fff;
+				color: #000;
 			}
 		}
 
 		.selected {
 			border-bottom: 2px solid;
-			color: #fff;
+			color: #000;
 		}
 	}
 
