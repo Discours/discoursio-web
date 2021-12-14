@@ -114,7 +114,7 @@ export const GET_SHOUT = gql`
 			views
 			ratings {
 				value
-				rater_id
+				rater
 			}
 		}
 	}
@@ -133,7 +133,7 @@ export const GET_AUTHOR = gql`
 				createdAt
 				wasOnlineAt
 				ratings {
-					rater_id
+					rater
 					value
 				}
 			}
