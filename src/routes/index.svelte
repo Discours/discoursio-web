@@ -4,7 +4,7 @@
 		const recents = await fetch('/feed/recents.json')
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
-		const topicsAll = await fetch(`/feed/topics.json`)
+		const topicsAll = await fetch(`/topic/all.json`)
 		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props

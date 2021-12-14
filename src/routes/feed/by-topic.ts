@@ -4,13 +4,16 @@ import { SHOUTS_BY_TOPIC } from '../../lib/queries'
 export const get = async ({ request }) => {
 	try {
 		// console.log(request)
-		let shouts, authors
+		let shouts, authors = {}
 		const { topics } = (request && request.locals && request.locals.cookies) || {} // TODO: debug cookie-based subscriptions
-		if (authors)
+		topics.forEach(async (topic) => {
 			shouts = await client.request(SHOUTS_BY_TOPIC, {
 				limit: 100,
-				topics
+				topic
 			})['shoutsByTopic']
+			shouts.forEach(s => s.authors.forEach(a => authors[a.slug] = a))
+		})
+			
 		return {
 			status: 200,
 			body: { authors, shouts }

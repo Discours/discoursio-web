@@ -15,22 +15,24 @@
 	}): Promise<{ props: MyFeedProps }> => {
 		let props: MyFeedProps = {}
 		if (locals && locals.cookies) {
-			const { topics, authors } = locals.cookies
-			if (authors) {
-				const fq = await fetch(`/feed/authors.json`)
-				if (fq.ok) props = await fq.json()
+			const { topics: topicslugs, authors: authorslugs } = locals.cookies
+			let topics, authors, shouts
+			if (authorslugs) {
+				const aq = await fetch(`/feed/authors.json`)
+				if (aq.ok) authors = { ...await aq.json(), ...authors }
 			}
-			if (topics) {
-				const sq = await fetch(`/feed/topics.json`)
-				if (sq.ok) {
-					const data = await sq.json()
-					props = {
-						users: props.users,
-						shouts: { ...props.shouts, ...data.shouts },
-						topics
-						// authors
-					}
-				}
+			if (topicslugs) {
+				const sq = await fetch(`/topic/by-slugs.json`, {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json;charset=utf-8' },
+						body: JSON.stringify({ slugs: topicslugs })
+					})
+				if (sq.ok) props = { ...await sq.json(), authors }
+				topicslugs.forEach(async (topic) => {
+					const tq = await fetch(`/feed/by-topic.json`)
+					if (tq.ok) props = { ...props, ...await tq.json(), authors }
+				})
+				
 			}
 		}
 		return { props }
