@@ -531,6 +531,8 @@ export type TopicStat = {
 	__typename?: 'TopicStat'
 	shouts?: Maybe<Scalars['Int']>
 	views?: Maybe<Scalars['Int']>
+	authors?: Maybe<Scalars['Int']>
+	subscriptions?: Maybe<Scalars['Int']>
 }
 
 export type User = {

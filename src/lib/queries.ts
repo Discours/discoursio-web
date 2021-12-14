@@ -395,6 +395,12 @@ export const TOPICS_ALL = gql`
 			parents
 			children
 			community
+			topicStat {
+				shouts
+				# authors
+				views
+				# subscriptions
+			}
 		}
 	}
 `

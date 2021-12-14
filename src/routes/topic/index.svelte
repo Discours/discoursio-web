@@ -17,9 +17,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 
+	export let topics: Partial<Topic>[]
+	let mode = ''
+	let sortedKeys = []
+	let topicsGroupedByAlphabet = []
+
 	const groupBy = (arr) => {
 		let firstLetter = null
-
 		return arr.reduce((acc, currentValue) => {
 			const currentLetter = currentValue.title.slice(0, 1)
 			if (!acc[currentLetter]) {
@@ -31,40 +35,49 @@
 		}, {})
 	}
 
-	export let topics: Partial<Topic>[]
+	$: if(mode === 'popular') {
+			console.log('topics: sorting by views')
+			topics = topics.sort((a, b) =>  b.topicStat.views - a.topicStat.views)
+			console.log(topics)
+		}
 
-	const viewSwitcherItems = {
-		popular: 'Популярные',
-		discussed: 'Обсуждаемые',
-		alphabet: 'По алфавиту'
+	$: if(mode === 'active') {
+			console.log('topics: sorting by shouts')
+			topics = topics.sort((a, b) =>  b.topicStat.shouts - a.topicStat.shouts)
+			console.log(topics)
+		}
+
+	$: if(mode === 'alphabet') {
+			console.log('topics: sorting by alphabet')
+			topicsGroupedByAlphabet = groupBy(topics.slice(0))
+			sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
+			sortedKeys.forEach((letter) => {
+				topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
+					(a, b) => {
+						if (a.title > b.title) {
+							return 1
+						} else if (a.title < b.title) {
+							return -1
+						}
+						return 0
+					}
+				)
+			})
+		}
+
+	const onSwitch = () => {
+		mode = window.location.hash.replace('#', '')
+		if(!mode) {
+			mode = 'popular'
+			window.location.hash = mode
+		}
 	}
+	onMount(onSwitch)
 
-	let currentSwitcherItem = viewSwitcherItems.popular
-
-	const switchView = (view) => {
-		currentSwitcherItem = view
-	}
-
-	onMount(() => {
-		currentSwitcherItem = window.location.hash.replace('#', '')
-	})
-
-	const topicsGroupedByAlphabet = groupBy(topics.slice(0))
-	const sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
-
-	sortedKeys.forEach((letter) => {
-		topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
-			(a, b) => {
-				if (a.title > b.title) {
-					return 1
-				} else if (a.title < b.title) {
-					return -1
-				}
-				return 0
-			}
-		)
-	})
+	
 </script>
+
+<svelte:window on:hashchange={onSwitch} />
 
 <div class="container">
 	<div class="row">
@@ -80,17 +93,17 @@
 	<div class="row">
 		<div class="col">
 			<ul class="view-switcher">
-				{#each Object.entries(viewSwitcherItems) as [key, title]}
-					<li
-						class:selected={currentSwitcherItem === key}
-						on:click={() => switchView(key)}
-					>
-						<a href="#{key}">{title}</a>
-					</li>
-				{/each}
+				<li class:selected={mode === 'popular'}>
+					<a href="#popular">Популярные</a>
+				</li>
+				<li class:selected={mode === 'active'}>
+					<a href="#active">Активные</a>
+				</li>
+				<li class:selected={mode === 'alphabet'}>
+					<a href="#alphabet">По алфавиту</a>
+				</li>
 			</ul>
-
-			{#if currentSwitcherItem === 'alphabet'}
+			{#if mode === 'alphabet'}
 				{#each sortedKeys as letter}
 					<div class="group">
 						<h2>{letter}</h2>
@@ -110,8 +123,8 @@
 				{/each}
 			{/if}
 
-			{#if currentSwitcherItem === 'popular'}
-				<div class="popular">
+			{#if mode === 'popular' || mode === 'active'}
+				<div class="stats">
 					{#each topics as topic}
 						<div class="topic row">
 							<div class="col-md-7">
@@ -131,12 +144,16 @@
 									<span class="topic-details__item"
 										>{topic.topicStat.views} просмотров</span
 									>
+									{#if topic.topicStat.authors}
 									<span class="topic-details__item"
 										>{topic.topicStat.authors} авторов</span
 									>
+									{/if}
+									{#if topic.topicStat.subscriptions}
 									<span class="topic-details__item"
 										>{topic.topicStat.subscriptions} подписчиков</span
 									>
+									{/if}
 								</div>
 								{/if}
 							</div>
@@ -180,7 +197,7 @@
 	.topic {
 		margin-bottom: 2.4rem;
 
-		.popular & {
+		.stats & {
 			margin-bottom: 6.4rem;
 		}
 
@@ -194,7 +211,7 @@
 	}
 
 	.topic-title {
-		.popular & {
+		.stats & {
 			font-weight: bold;
 			@include font-size(2.6rem);
 		}
