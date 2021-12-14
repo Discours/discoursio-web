@@ -19,20 +19,19 @@
 			let topics, authors, shouts
 			if (authorslugs) {
 				const aq = await fetch(`/feed/authors.json`)
-				if (aq.ok) authors = { ...await aq.json(), ...authors }
+				if (aq.ok) authors = { ...(await aq.json()), ...authors }
 			}
 			if (topicslugs) {
 				const sq = await fetch(`/topic/by-slugs.json`, {
-						method: 'POST',
-						headers: { 'Content-Type': 'application/json;charset=utf-8' },
-						body: JSON.stringify({ slugs: topicslugs })
-					})
-				if (sq.ok) props = { ...await sq.json(), authors }
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json;charset=utf-8' },
+					body: JSON.stringify({ slugs: topicslugs })
+				})
+				if (sq.ok) props = { ...(await sq.json()), authors }
 				topicslugs.forEach(async (topic) => {
 					const tq = await fetch(`/feed/by-topic.json`)
-					if (tq.ok) props = { ...props, ...await tq.json(), authors }
+					if (tq.ok) props = { ...props, ...(await tq.json()), authors }
 				})
-				
 			}
 		}
 		return { props }

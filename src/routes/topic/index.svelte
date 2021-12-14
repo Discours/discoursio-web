@@ -39,7 +39,7 @@
 		alphabet: 'По алфавиту'
 	}
 
-	let currentSwitcherItem = null
+	let currentSwitcherItem = viewSwitcherItems.popular
 
 	const switchView = (view) => {
 		currentSwitcherItem = view
@@ -118,21 +118,30 @@
 								<div class="topic-title">
 									<a href="/{topic.slug}">{topic.title}</a>
 								</div>
+								{#if topic.body}
 								<p class="topic-description">
-									Цикл монологов об эмиграции из России в Финляндию: о жизни до переезда,
-									причинах расставания с родиной, поиске своего места в новой стране и о
-									том, какие трудности и радости ждут русского человека за линией
-									Маннергейма.
+									{topic.body}
 								</p>
+								{/if}
+								{#if topic.topicStat}
 								<div class="topic-details">
-									<span class="topic-details__item">36 публикаций</span>
-									<span class="topic-details__item">24563 просмотров</span>
-									<span class="topic-details__item">12 авторов</span>
-									<span class="topic-details__item">355 подписчиков</span>
+									<span class="topic-details__item"
+										>{topic.topicStat.shouts} публикаций</span
+									>
+									<span class="topic-details__item"
+										>{topic.topicStat.views} просмотров</span
+									>
+									<span class="topic-details__item"
+										>{topic.topicStat.authors} авторов</span
+									>
+									<span class="topic-details__item"
+										>{topic.topicStat.subscriptions} подписчиков</span
+									>
 								</div>
+								{/if}
 							</div>
 							<div class="col-md-3 offset-md-2">
-								<button>Подписаться</button>
+								<button>+ Подписаться</button>
 							</div>
 						</div>
 					{/each}
@@ -176,7 +185,7 @@
 		}
 
 		:global(button) {
-			background: #f6f6f6;
+			background-color: #f6f6f6;
 			border: none;
 			cursor: pointer;
 			margin-top: 0.8rem;

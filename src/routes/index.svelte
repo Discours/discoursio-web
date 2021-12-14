@@ -61,7 +61,9 @@
 			let authorsMonthSet = new Set([])
 			topMonth.forEach((s) => s.authors.forEach((a) => authorsMonthSet.add(a)))
 			// console.log(authorsMonthSet)
-			authorsMonth = Array.from(authorsMonthSet).sort( (a, b) => a['rating'] - b['rating'])
+			authorsMonth = Array.from(authorsMonthSet).sort(
+				(a, b) => a['rating'] - b['rating']
+			)
 		}
 
 		// top viwed and commented

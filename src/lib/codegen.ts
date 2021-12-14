@@ -409,7 +409,7 @@ export type QueryTopicsBySlugsArgs = {
 
 export type Rating = {
 	__typename?: 'Rating'
-	rater_id: Scalars['Int']
+	rater: Scalars['Int']
 	value: Scalars['Int']
 }
 

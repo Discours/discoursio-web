@@ -4,9 +4,11 @@ import { SHOUTS_BY_TOPIC } from '../../lib/queries'
 export const get = async ({ params }) => {
 	try {
 		const { slug: topic } = params
-		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, { topic })
+		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, {
+			topic
+		})
 		let authors = {}
-		shouts.forEach(s => s.authors.forEach(a => authors[a.slug] = a))
+		shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))
 		const body = { shouts, authors }
 		return { status: shouts ? 200 : 404, body }
 	} catch (error) {
