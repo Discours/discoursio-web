@@ -39,14 +39,32 @@
 		alphabet: 'По алфавиту'
 	}
 
-	let currentSwitcherItem = viewSwitcherItems.popular
+	let currentSwitcherItem = Object.keys(viewSwitcherItems)[0];
+	let topicsClone = topics.slice(0);
 
 	const switchView = (view) => {
 		currentSwitcherItem = view
+
+		switch (currentSwitcherItem) {
+			case 'popular': {
+				topicsClone = topicsClone.sort((a, b) => b.topicStat.shouts - a.topicStat.shouts)
+				break;
+			}
+			case 'discussed': {
+				topicsClone = topicsClone.sort((a, b) => b.topicStat.views - a.topicStat.views)
+				break;
+			}
+		}
 	}
 
 	onMount(() => {
-		currentSwitcherItem = window.location.hash.replace('#', '')
+		const hash = window.location.hash.replace('#', '')
+
+		if (hash) {
+			currentSwitcherItem = hash
+		}
+
+		window.location.hash = currentSwitcherItem
 	})
 
 	const topicsGroupedByAlphabet = groupBy(topics.slice(0))
@@ -108,11 +126,10 @@
 						</div>
 					</div>
 				{/each}
-			{/if}
 
-			{#if currentSwitcherItem === 'popular'}
+				{:else}
 				<div class="popular">
-					{#each topics as topic}
+					{#each topicsClone as topic}
 						<div class="topic row">
 							<div class="col-md-7">
 								<div class="topic-title">
