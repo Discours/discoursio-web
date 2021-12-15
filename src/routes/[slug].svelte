@@ -39,22 +39,24 @@
 	let title
 	let component
 
-	$: if (Object.keys($topics).includes(slug)) {
-		console.log('[slug]: is topic')
-		title = topic.title
-		component = TopicFull
-	} else {
+	$: if ($topics) {
+		if (Object.keys($topics).includes(slug)) {
+			console.log('[slug]: is topic')
+			title = topic.title
+			component = TopicFull
+		}
 		if (shout) {
 			console.log('[slug]: is shout')
 			title = shout.title
 			shout.comments = comments || []
 			component = ShoutFull
 		}
-		if (user) {
-			console.log('[slug]: is user')
-			title = slug
-			component = UserFull
-		}
+	}
+
+	$: if (slug.startsWith('@')) {
+		console.log('[slug]: is user')
+		title = slug
+		component = UserFull
 	}
 </script>
 

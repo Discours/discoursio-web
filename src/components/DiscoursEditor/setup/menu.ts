@@ -190,8 +190,7 @@ function wrapListItem(nodeType, options) {
 //   : An array of arrays of menu elements for use as the full menu
 //     for, for example the [menu bar](https://github.com/prosemirror/prosemirror-menu#user-content-menubar).
 export function buildMenuItems(schema) {
-	let r: any = {},
-		type
+	let r: any = {}, type
 	if ((type = schema.marks.strong))
 		r.toggleStrong = markItem(type, {
 			title: 'Toggle strong style',
@@ -205,7 +204,7 @@ export function buildMenuItems(schema) {
 			icon: icons.code
 		})
 	if ((type = schema.marks.link)) r.toggleLink = linkItem(type)
-
+	if ((type = schema.marks.blockquote))
 	if ((type = schema.nodes.image)) r.insertImage = insertImageItem(type)
 	if ((type = schema.nodes.bullet_list))
 		r.wrapBulletList = wrapListItem(type, {
@@ -260,28 +259,31 @@ export function buildMenuItems(schema) {
 			r.insertHorizontalRule,
 			r.toggleStrong,
 			r.toggleEm,
-			r.toggleCode,
-			r.toggleLink,
+			// r.toggleCode,
+			// r.toggleLink,
 			r.makeParagraph,
 			r.makeHead1,
 			r.makeHead2,
 			r.makeHead3,
-			r.makeHead4,
-			r.makeHead5,
-			r.makeHead6
+			// r.makeHead4,
+			// r.makeHead5,
+			// r.makeHead6
 		])
 	]
-	r.blockMenu = [
+	r.listMenu = [
 		cut([
 			r.wrapBulletList,
-			r.wrapOrderedList,
-			r.wrapBlockQuote,
+			r.wrapOrderedList
+		])
+	]
+	/*
+
+			
 			joinUpItem,
 			liftItem,
 			selectParentNodeItem
-		])
-	]
-	r.fullMenu = r.inlineMenu.concat([[undoItem, redoItem]], r.blockMenu)
+	*/
+	r.fullMenu = r.inlineMenu.concat([[r.toggleLink, /* r.toggleFootnote */]], r.listMenu)
 
 	return r
 }

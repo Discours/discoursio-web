@@ -72,8 +72,8 @@
 			window.location.hash = mode
 		}
 	}
+	
 	onMount(onSwitch)
-
 	
 </script>
 
@@ -152,8 +152,7 @@
 									{/if}
 									{#if topic.topicStat.subscriptions}
 									<span class="topic-details__item"
-										>{topic.topicStat.subscriptions} подписчиков</span
-									>
+										>{topic.topicStat.subscriptions} подписчиков</span>
 									{/if}
 								</div>
 								{/if}
