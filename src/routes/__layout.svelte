@@ -1,4 +1,8 @@
 <script context="module">
+	import dayjs from 'dayjs/esm'
+	import relativeTime from 'dayjs/esm/plugin/relativeTime'
+	dayjs().format()
+	
 	export const load = async ({ page }) => {
 		// const { metadata } = await import('@didiercatz/sveo')
 		// FIXME

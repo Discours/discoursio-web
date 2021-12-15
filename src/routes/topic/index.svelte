@@ -36,19 +36,19 @@
 	}
 
 	$: if(mode === 'popular') {
-			console.log('topics: sorting by views')
+			// console.log('topics: sorting by views')
 			topics = topics.sort((a, b) =>  b.topicStat.views - a.topicStat.views)
 			console.log(topics)
 		}
 
 	$: if(mode === 'active') {
-			console.log('topics: sorting by shouts')
+			// console.log('topics: sorting by shouts')
 			topics = topics.sort((a, b) =>  b.topicStat.shouts - a.topicStat.shouts)
 			console.log(topics)
 		}
 
 	$: if(mode === 'alphabet') {
-			console.log('topics: sorting by alphabet')
+			// console.log('topics: sorting by alphabet')
 			topicsGroupedByAlphabet = groupBy(topics.slice(0))
 			sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
 			sortedKeys.forEach((letter) => {
@@ -103,7 +103,7 @@
 					<a href="#alphabet">По алфавиту</a>
 				</li>
 			</ul>
-			
+
 			{#if mode === 'alphabet'}
 				{#each sortedKeys as letter}
 					<div class="group">
