@@ -19,12 +19,10 @@
 	import CommunityCard from '../components/CommunityCard.svelte'
 	import {
 		comments,
-		authors,
 		shouts,
 		shoutslist,
 		communitieslist,
-		topicslist,
-		filterTopic
+		topicslist, topics
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -39,24 +37,22 @@
 		topViewed = [],
 		authorsMonth = []
 
-	let topicslugs
-
-	$: if (!$topicslist && topicslugs) {
-		console.log('mainpage: updating topics list')
-		$topicslist = topicsAll.filter((t) => topicslugs.includes(t.slug))
-	}
-
+	let navtopics
 	$: if (!$shoutslist) {
 		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
 		// console.log($shoutslist)
 		// what topics are present
-		topicslugs = new Set([])
-		$shoutslist.forEach((s) => s.topics.forEach((t) => topicslugs.add(t.slug)))
-		topicslugs = Array.from(topicslugs)
-
+		navtopics = new Set([])
+		$shoutslist.forEach((s) => s.topics.forEach((t) => navtopics.add(t)))
+		// navtopics = Array.from(navtopics)
+		console.log(navtopics)
+		console.log('mainpage: updating topics list')
+		$topicslist = topicsAll.filter((t) => navtopics.includes(t))
+		topicsAll.forEach(t => $topics[t.slug] = t)
 		// authors of the month
+		console.log('mainpage: getting top month authors')
 		if (topMonth) {
 			let authorsMonthSet = new Set([])
 			topMonth.forEach((s) => s.authors.forEach((a) => authorsMonthSet.add(a)))
@@ -81,7 +77,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
 	<div class="home">
-		<NavTopics slugs={topicslugs} />
+		{#if navtopics} <NavTopics topics={navtopics} />{/if}
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
