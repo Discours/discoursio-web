@@ -16,7 +16,7 @@
 		{#each Array.from(slugs) as slug}
 			<li class="item" class:selected={$filterTopic === slug}>
 				<a
-					href={'#' + slug}
+					href={'/topic/' + slug}
 					on:click|preventDefault={() =>
 						setTopic($filterTopic === slug ? '' : slug)}
 				>
