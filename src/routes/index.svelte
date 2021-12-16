@@ -49,7 +49,7 @@
 
 	$: if (!$shoutslist && !$topicslist) {
 		$shoutslist = [...recents, ...topMonth, ...topOverall]
-		$shoutslist.forEach((s) => $shouts[s.slug] = s)
+		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
 		$shoutslist = Object.values($shouts)
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
@@ -64,9 +64,7 @@
 		)
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
-		console.log(
-			'mainpage: ' + topicsAll.length.toString() + ' topics preloaded'
-		)
+		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
 	}
 
 	$: if (topMonth) {
@@ -77,21 +75,23 @@
 					authorsMonth.push(a)
 				}
 			})
-			s.topics.forEach(t => {
-				if(!tslugs.has(t.slug)) {
+			s.topics.forEach((t) => {
+				if (!tslugs.has(t.slug)) {
 					tslugs.add(t.slug)
 					topicsMonth.push($topics[t])
 				}
 			})
 		})
-		topicsMonth = topicsMonth.sort((a, b) => a.topicStat['views'] - b.topicStat['views'])
+		topicsMonth = topicsMonth.sort(
+			(a, b) => a.topicStat['views'] - b.topicStat['views']
+		)
 		authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
 	}
 
 	onMount(() => {
 		$shoutslist = null
 		$topicslist = null
-		}) // force to update reactive code on mount
+	}) // force to update reactive code on mount
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>

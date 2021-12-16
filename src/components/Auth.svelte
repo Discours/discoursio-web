@@ -51,7 +51,7 @@
 				r = await q.json()
 				// console.log(q)
 				if (r && r['error']) authFailure(r)
-				else if(r && r.token) authSuccess(r)
+				else if (r && r.token) authSuccess(r)
 			} catch (e) {
 				authFailure(e)
 			}

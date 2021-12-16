@@ -24,7 +24,7 @@
 				{
 					title: 'Как написать статью',
 					slug: '/'
-				},
+				}
 			]
 		},
 
@@ -50,7 +50,7 @@
 				{
 					title: 'Сотрудничать с Дискурсом',
 					slug: '/'
-				},
+				}
 			]
 		},
 
@@ -76,9 +76,9 @@
 				{
 					title: 'Спецпроекты',
 					slug: '/'
-				},
+				}
 			]
-		},
+		}
 	]
 
 	const SOCIAL = [
@@ -97,7 +97,7 @@
 		{
 			name: 'telegram',
 			href: 'https://t.me/discoursio'
-		},
+		}
 	]
 </script>
 
@@ -111,7 +111,7 @@
 					<ul>
 						{#each group.items as item}
 							<li>
-								<a href="{item.slug}">{item.title}</a>
+								<a href={item.slug}>{item.title}</a>
 							</li>
 						{/each}
 					</ul>
@@ -122,7 +122,7 @@
 				<h5>Подписка</h5>
 				<p>Подпишитесь на&nbsp;наши регулярные рассылки.</p>
 				<form action="." class="subscribe-form">
-					<input type="email" name="email" placeholder="ваш email"/>
+					<input type="email" name="email" placeholder="ваш email" />
 					<button type="submit">Подписаться</button>
 				</form>
 			</div>
@@ -131,13 +131,15 @@
 		<div class="footer-copyright row">
 			<div class="col-md-10">
 				Независимый журнал о&nbsp;культуре, найке и&nbsp;обществе с&nbsp;открытой
-				горизонтальной редакцией. ©&nbsp;дискурс 2015-2020. <a href="/">Terms of&nbsp;use</a>
+				горизонтальной редакцией. ©&nbsp;дискурс 2015-2020. <a href="/"
+					>Terms of&nbsp;use</a
+				>
 			</div>
 			<div class="footer-copyright__social col-md-2">
 				{#each SOCIAL as social}
 					<div class="social__item social__item--{social.name}">
-						<a href="{social.href}">
-							<Icon name="{social.name}-white"/>
+						<a href={social.href}>
+							<Icon name="{social.name}-white" />
 						</a>
 					</div>
 				{/each}
@@ -149,7 +151,7 @@
 <style lang="scss">
 	.discours-footer {
 		background: #000;
-		color: rgba(255,255,255,0.64);
+		color: rgba(255, 255, 255, 0.64);
 		@include font-size(1.7rem);
 		padding: 2.4rem 0 4.2rem;
 
@@ -168,7 +170,7 @@
 			padding: 0;
 
 			a {
-				color: rgba(255,255,255,0.64);
+				color: rgba(255, 255, 255, 0.64);
 				transition: color 0.3s;
 
 				&:hover {
@@ -201,7 +203,7 @@
 			@include font-size(2rem);
 			padding: 0.2em 0.5em 0.3em 0;
 			width: 100%;
-			
+
 			&::placeholder {
 				color: #fff;
 			}

@@ -4,7 +4,7 @@
 	import { session, token } from '../stores/user'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
-	import type { Topic } from '$lib/codegen';
+	import type { Topic } from '$lib/codegen'
 
 	export let props
 	let shout
@@ -12,7 +12,7 @@
 	let commentsById: { [key: number]: Partial<Comment> } = {}
 
 	onMount(() => {
-		if(shout.comments.length === 0) console.log('shout: no comments')
+		if (shout.comments.length === 0) console.log('shout: no comments')
 	})
 
 	// TODO: editing logix
@@ -40,10 +40,10 @@
 
 	let showTopic: Partial<Topic>
 
-	$: if(shout) {
+	$: if (shout) {
 		showTopic = shout.topics[0]
-		if(shout.mainTopic) {
-			showTopic = shout.topics.find(t => {
+		if (shout.mainTopic) {
+			showTopic = shout.topics.find((t) => {
 				if (t === undefined) return
 				else return t.slug === shout.mainTopic
 			})
@@ -59,7 +59,7 @@
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
 						{#each shout.topics as topic}
-						<span class="topic"><a href={`/${topic.slug}`}>#{topic.title}</a></span>
+							<span class="topic"><a href={`/${topic.slug}`}>#{topic.title}</a></span>
 						{/each}
 					</div>
 

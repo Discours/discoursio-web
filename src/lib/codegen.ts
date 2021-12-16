@@ -310,7 +310,6 @@ export type Query = {
 	shoutsByTopic: Array<Maybe<Shout>>
 	signIn: AuthResult
 	signOut: Result
-	topAuthors: Array<Maybe<User>>
 	topMonth: Array<Maybe<Shout>>
 	topOverall: Array<Maybe<Shout>>
 	topViewed: Array<Maybe<Shout>>
@@ -370,10 +369,6 @@ export type QueryShoutsByTopicArgs = {
 export type QuerySignInArgs = {
 	email: Scalars['String']
 	password?: InputMaybe<Scalars['String']>
-}
-
-export type QueryTopAuthorsArgs = {
-	limit?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryTopMonthArgs = {

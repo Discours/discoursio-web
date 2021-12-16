@@ -45,13 +45,13 @@
 	export let slug
 	let title
 	let component
-	
-	$:	if (shout) {
-			console.log('[slug]: is shout')
-			title = shout.title
-			shout.comments = comments || []
-			component = ShoutFull
-		}
+
+	$: if (shout) {
+		console.log('[slug]: is shout')
+		title = shout.title
+		shout.comments = comments || []
+		component = ShoutFull
+	}
 
 	$: if (slug.startsWith('@')) {
 		console.log('[slug]: is user')
