@@ -51,10 +51,9 @@
 			} catch (e) {
 				authFailure(e)
 			}
-			console.log(r)
-			console.log(q)
-			if (r && r.get('error')) authFailure(r)
-			else authSuccess(r)
+			// console.log(q)
+			if (r && r['error']) authFailure(r)
+			else if(r && r.token) authSuccess(r)
 		}
 	}
 
