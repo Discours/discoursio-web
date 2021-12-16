@@ -1,31 +1,32 @@
 <script lang="ts">
-	import { filterTopic } from '../stores/zine'
-	import type { Topic } from '../lib/codegen'
-	export let topics: Set<Topic>
+	import { filterTopic, topics } from '../stores/zine'
+	export let slugs: Set<string>
+
+	const getTitle = (slug: string)=> $topics[slug].title
 
 	const setTopic = (slug: string) => {
-		if (slug) {
-			$filterTopic = slug
-			window.location.hash = slug
-		}
+		$filterTopic = slug || ''
+		if (slug) window.location.hash = slug
 	}
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
 	<ul class="topics">
-		{#each Array.from(topics) as t}
-			<li class="item" class:selected={$filterTopic === t.slug}>
+		{#if Object.keys($topics).length > 0}
+		{#each Array.from(slugs) as slug}
+			<li class="item" class:selected={$filterTopic === slug}>
 				<a
-					href={'#' + t.slug}
+					href={'#' + slug}
 					on:click|preventDefault={() =>
-						setTopic($filterTopic === t.slug ? '' : t.slug)}
+						setTopic($filterTopic === slug ? '' : slug)}
 				>
-					<span class:transparent={$filterTopic !== t.slug}
-						>#{t.title.toLowerCase()}</span
+					<span class:transparent={$filterTopic !== slug}
+						>#{getTitle(slug)}</span
 					>
 				</a>
 			</li>
 		{/each}
+		{/if}
 	</ul>
 </nav>
 

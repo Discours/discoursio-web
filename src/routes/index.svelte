@@ -5,9 +5,9 @@
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
 		const topicsAll = await fetch(`/topic/all.json`)
-		const communitiesAll = await fetch(`/community/all.json`)
+		// const communitiesAll = await fetch(`/community/all.json`)
 		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
-		props = communitiesAll.ok ? { ...(await communitiesAll.json()), ...props } : props
+		// props = communitiesAll.ok ? { ...(await communitiesAll.json()), ...props } : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -18,12 +18,13 @@
 <script lang="ts">
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
-	import CommunityCard from '../components/CommunityCard.svelte'
+	import TopicCard from '../components/TopicCard.svelte'
+	// import CommunityCard from '../components/CommunityCard.svelte'
 	import {
 		comments,
 		shouts,
 		shoutslist,
-		communitieslist,
+		// communitieslist,
 		topicslist,
 		topics
 	} from '../stores/zine'
@@ -35,73 +36,68 @@
 	export let topMonth = []
 	export let topOverall = []
 	export let topicsAll = []
-	export let communitiesAll = []
+	// export let communitiesAll = []
 
 	let topCommented = [],
 		topViewed = [],
-		authorsMonth = []
+		authorsMonth = [],
+		topicsMonth = []
 
-	let navtopics
+	let tslugs: Set<string> = new Set([])
+	let aslugs: Set<string> = new Set([])
+	// $: if(!$communitieslist && communitiesAll) $communitieslist
 
-	$: if(!$communitieslist && communitiesAll) $communitieslist
-
-	$: if (!$shoutslist) {
-		console.log('mainpage: updating shouts list')
+	$: if (!$shoutslist && !$topicslist) {
 		$shoutslist = [...recents, ...topMonth, ...topOverall]
-		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
+		$shoutslist.forEach((s) => $shouts[s.slug] = s)
 		$shoutslist = Object.values($shouts)
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
 		)
-	}
 
-	$: if (topicsAll.length && $shoutslist) {
-		// what topics are present
-		navtopics = new Set([])
-		$shoutslist.forEach((s) => s.topics.forEach((t) => navtopics.add(t)))
-		// navtopics = Array.from(navtopics)
-		console.log(
-			'mainpage: ' + Object.keys(topicsAll).length.toString() + ' topics preloaded'
-		)
-		$topicslist = topicsAll.filter((t) => navtopics.includes(t))
-		topicsAll.forEach((t) => ($topics[t.slug] = t))
-	}
-
-	$: if (topMonth && authorsMonth.length === 0 ) {
-		// authors of the month
-		console.log('mainpage: getting top month authors')
-		if (topMonth) {
-			let aslugs = []
-			topMonth.forEach((s) =>
-				s.authors.forEach((a) => {
-					if (!aslugs.includes(a.slug)) {
-						aslugs.push(a.slug)
-						authorsMonth.push(a)
-					}
-				})
-			)
-			authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
-		}
-	}
-
-	$: if($shoutslist) {
 		// top viwed and commented
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-		
 		topCommented = $shoutslist.sort(
 			(a, b) =>
 				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
 				($comments[b['slug']] ? $comments[b['slug']].length : 0)
 		)
+		topicsAll.forEach((t) => ($topics[t.slug] = t))
+		$topicslist = Object.values($topics)
+		console.log(
+			'mainpage: ' + topicsAll.length.toString() + ' topics preloaded'
+		)
 	}
 
-	onMount(() => ($shoutslist = null)) // force to update reactive code on mount
+	$: if (topMonth) {
+		topMonth.forEach((s) => {
+			s.authors.forEach((a) => {
+				if (!aslugs.has(a.slug)) {
+					aslugs.add(a.slug)
+					authorsMonth.push(a)
+				}
+			})
+			s.topics.forEach(t => {
+				if(!tslugs.has(t.slug)) {
+					tslugs.add(t.slug)
+					topicsMonth.push($topics[t])
+				}
+			})
+		})
+		topicsMonth = topicsMonth.sort((a, b) => a.topicStat['views'] - b.topicStat['views'])
+		authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
+	}
+
+	onMount(() => {
+		$shoutslist = null
+		$topicslist = null
+		}) // force to update reactive code on mount
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
 	<div class="home">
-		{#if navtopics} <NavTopics topics={navtopics} />{/if}
+		{#if tslugs} <NavTopics slugs={tslugs} />{/if}
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
@@ -214,9 +210,9 @@
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<h4>Популярные сообщества</h4>
-					{#each $communitieslist as community}
-						<CommunityCard {community} />
+					<h4>Популярные темы</h4>
+					{#each topicsMonth.slice(0, 4) as topic}
+						<TopicCard {topic} />
 					{/each}
 				</div>
 				<div class="col-md-8">

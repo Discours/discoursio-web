@@ -113,7 +113,7 @@
 								{#each topicsGroupedByAlphabet[letter] as topic}
 									<div class="topic col-3">
 										<div class="topic-title">
-											<a href="/{topic.slug}">{topic.title}</a>
+											<a href="/topic/{topic.slug}">{topic.title}</a>
 										</div>
 									</div>
 								{/each}

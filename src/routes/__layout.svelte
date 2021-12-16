@@ -20,15 +20,15 @@
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { token, session, roles } from '../stores/user'
-	import { topicslist } from '../stores/zine'
+	// import { topicslist } from '../stores/zine'
 	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
 	import Sveo from '@didiercatz/sveo'
-	import type { Topic } from '../lib/codegen'
+	// import type { Topic } from '../lib/codegen'
 
 	export let seo
-	export let topics: Topic[]
+	// export let topics: Topic[]
 	initLocalizationContext()
 
 	$: if ($token) {
@@ -47,7 +47,7 @@
 		}
 	}
 
-	$: if (topics && !$topicslist) $topicslist = topics
+	//$: if (topics && !$topicslist) $topicslist = topics
 
 	onMount(() => ($token = document.cookie))
 </script>

@@ -9,10 +9,10 @@
 	// NOTE: cookie-based no auth requering subscriptions
 
 	onMount(
-		async () =>
-			(subscribed = (await cookie.parse(document.cookie)).authors.includes(
-				topic.slug
-			))
+		async () => {}
+			// (subscribed = (await cookie.parse(document.cookie)).authors.includes(
+			// 	topic.slug
+			// ))
 	)
 
 	const subscribe = async () => {
@@ -31,16 +31,20 @@
 
 <div class="topic">
 	{#if topic}
+		{#if topic.pic}
 		<div class="topic__avatar">
 			<a href={topic.slug}>
 				<img src={topic.pic} alt={topic.title} />
 			</a>
 		</div>
+		{/if}
 		<div class="topic__details">
 			<div class="topic__name">
-				<a href={topic.slug}>{topic.title}</a>
+				<a href={topic.slug}><b>{topic.title}</b></a>
 			</div>
+			{#if topic.body}
 			<div class="topic__about">{@html topic.body}</div>
+			{/if}
 			<div class="topic__subscribe">
 				{#if subscribed}
 					<button on:click={unsubscribe} class="button button--subscribe"
