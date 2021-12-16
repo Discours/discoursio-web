@@ -83,7 +83,7 @@
 			})
 		})
 		topicsMonth = topicsMonth.sort(
-			(a, b) => a.topicStat['views'] - b.topicStat['views']
+			(a, b) => a['topicStat'].authors - b['topicStat'].views
 		)
 		authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
 	}

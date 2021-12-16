@@ -3,11 +3,6 @@
 	export let slugs: Set<string>
 
 	const getTitle = (slug: string) => $topics[slug].title
-
-	const setTopic = (slug: string) => {
-		$filterTopic = slug || ''
-		if (slug) window.location.hash = slug
-	}
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
@@ -17,8 +12,7 @@
 				<li class="item" class:selected={$filterTopic === slug}>
 					<a
 						href={'/topic/' + slug}
-						on:click|preventDefault={() =>
-							setTopic($filterTopic === slug ? '' : slug)}
+						on:click={() => $filterTopic = slug || ''}
 					>
 						<span class:transparent={$filterTopic !== slug}>#{getTitle(slug)}</span>
 					</a>
