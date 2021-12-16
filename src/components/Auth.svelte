@@ -16,13 +16,9 @@
 	let warnTimeout
 
 	const authSuccess = ({ token, user }) => {
-		if (token) {
-			$tokenStore = token
-			$session = user
-			$ui.authModal = false
-		} else {
-			warnings.push('Ошибка авторизации')
-		}
+		$tokenStore = token
+		$session = user
+		$ui.authModal = false
 	}
 
 	const authFailure = ({ error }) => {
@@ -35,24 +31,19 @@
 		)
 	}
 
-	const login = async () => {
-		console.log('auth: signing in with discours.io account')
-		const { signIn: { token, error, user } } = await client.request(SIGN_IN, {
+	const auth = async (q) => {
+		console.log('auth: with discours.io account ')
+		const res = await client.request(q, {
 			email: $ui.email,
 			password: $ui.password
 		})
+		const { token, user, error } = res[q===SIGN_IN?'signIn':'registerUser']
 		if(token) authSuccess({ token, user })
 		else authFailure({ error })
 	}
-
-	const register = async () => {
-		console.log('auth: register with discours.io account ')
-		const { registerUser } = await client.request(SIGN_UP, {
-			email: $ui.email,
-			password: $ui.password
-		})
-		authSuccess(registerUser)
-	}
+	
+	const login = async () => auth(SIGN_IN)
+	const register = async () => auth(SIGN_UP)
 
 	const forget = async () => {
 		console.log('auth: forget password clicked')
