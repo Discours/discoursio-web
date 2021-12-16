@@ -27,6 +27,7 @@
 
 	const authFailure = ({ error }) => {
 		console.log('auth: error handling')
+		console.log(error)
 		warnings.push(prefix + error)
 		warnTimeout = setTimeout(
 			() => (warnings = warnings.filter((w) => w !== prefix + error)),
@@ -48,12 +49,12 @@
 		} finally {
 			try {
 				r = await q.json()
+				// console.log(q)
+				if (r && r['error']) authFailure(r)
+				else if(r && r.token) authSuccess(r)
 			} catch (e) {
 				authFailure(e)
 			}
-			// console.log(q)
-			if (r && r['error']) authFailure(r)
-			else if(r && r.token) authSuccess(r)
 		}
 	}
 
