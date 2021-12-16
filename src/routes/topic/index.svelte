@@ -8,7 +8,7 @@
 		console.log('topic/index: fetching all topics')
 		const fq = await fetch(`/topic/all.json`)
 		if (fq.ok) {
-			const { topics } = await fq.json()
+			const { topicsAll: topics } = await fq.json()
 			return { props: { topics } }
 		} else return { props: { topics: [] } }
 	}
