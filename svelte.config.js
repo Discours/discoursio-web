@@ -47,7 +47,12 @@ const config = {
 		},
 		vite: {
 			build: {
-				chunkSizeWarningLimit: 777
+				chunkSizeWarningLimit: 777,
+				rollupOptions: {
+					output: {
+						manualChunks: undefined
+					}
+				}
 			},
 			// plugins: [windiVite({})],
 			ssr: {

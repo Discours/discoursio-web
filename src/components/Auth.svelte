@@ -37,35 +37,21 @@
 
 	const login = async () => {
 		console.log('auth: signing in with discours.io account')
-		let q, r
-		try {
-			q = await client.request(SIGN_IN, {
-				email: $ui.email,
-				password: $ui.password
-			})
-		} catch (error) {
-			console.error(error)
-			authFailure({ error: 'попробуйте ещё раз' })
-		} finally {
-			try {
-				r = await q.json()
-				// console.log(q)
-				if (r && r['error']) authFailure(r)
-				else if (r && r.token) authSuccess(r)
-			} catch (e) {
-				authFailure(e)
-			}
-		}
+		const { signIn: { token, error, user } } = await client.request(SIGN_IN, {
+			email: $ui.email,
+			password: $ui.password
+		})
+		if(token) authSuccess({ token, user })
+		else authFailure({ error })
 	}
 
 	const register = async () => {
 		console.log('auth: register with discours.io account ')
-		const q = await client.request(SIGN_UP, {
+		const { registerUser } = await client.request(SIGN_UP, {
 			email: $ui.email,
 			password: $ui.password
 		})
-		console.log(q)
-		authSuccess(await q.json())
+		authSuccess(registerUser)
 	}
 
 	const forget = async () => {
