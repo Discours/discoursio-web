@@ -6,16 +6,15 @@ export const get = async ({ params }) => {
 	const { slug } = params
 	try {
 		res = await client.request(GET_SHOUT, { slug })
-		if(res && res.ok) {
-			const { getShoutBySlug: shout } = res
-			if(shout) {
-				const { getShoutComments: comments } = await client.request(GET_COMMENTS, {
-					shout: slug
-				})
-				body = { shout, comments }
-			}
-			status = 200
+		const { getShoutBySlug: shout } = res
+		// console.log(shout)
+		if (shout) {
+			const { getShoutComments: comments } = await client.request(GET_COMMENTS, {
+				shout: slug
+			})
+			body = { shout, comments }
 		}
+		status = 200
 	} catch (error) {
 		body = { error }
 		status = res && res.ok ? 404 : 500

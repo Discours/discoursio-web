@@ -3,8 +3,16 @@
 	export const prerender = true
 
 	const routes: string[] = [
-		'inbox', 'rules', 'agreement', 'search',
-		'create', 'login', 'topic', 'feed', 'user']
+		'inbox',
+		'rules',
+		'agreement',
+		'search',
+		'create',
+		'login',
+		'topic',
+		'feed',
+		'user'
+	]
 
 	interface SlugProps {
 		slug: string
@@ -20,7 +28,10 @@
 		console.log(`[slug]: ${at ? 'author' : 'shout'} ${slug}`)
 		if (routes.includes(slug) && !at) return { props }
 		const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
-		if (fq.ok) props = { ...(await fq.json()), ...props }
+		if (fq.ok) {
+			const data = await fq.json()
+			props = { ...data, ...props }
+		}
 		return { props }
 	}
 </script>
@@ -45,13 +56,14 @@
 			title = topic.title
 			component = TopicFull
 		}
-		if (shout) {
+	}
+	
+	$:	if (shout) {
 			console.log('[slug]: is shout')
 			title = shout.title
 			shout.comments = comments || []
 			component = ShoutFull
 		}
-	}
 
 	$: if (slug.startsWith('@')) {
 		console.log('[slug]: is user')

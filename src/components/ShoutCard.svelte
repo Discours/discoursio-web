@@ -20,15 +20,15 @@
 		</div>
 
 		<div class="shout-card__content">
-			{#if shout.topics}
-				{#each shout.topics as topic}
+			{#each shout.topics as topic}
+				{#if topic.slug === shout.mainTopic}
 					<div class="shout__topic">
 						<a href="/{topic.slug}">
 							{topic.title}
 						</a>
 					</div>
-				{/each}
-			{/if}
+				{/if}
+			{/each}
 
 			<div class="shout-card__title">
 				<a href="/{shout.slug}">

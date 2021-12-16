@@ -22,7 +22,8 @@
 		shouts,
 		shoutslist,
 		communitieslist,
-		topicslist, topics
+		topicslist,
+		topics
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -42,33 +43,37 @@
 		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
-		console.log('mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded')
+		console.log(
+			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
+		)
 	}
 
-	$: if(topicsAll.length && $shoutslist) {
+	$: if (topicsAll.length && $shoutslist) {
 		// what topics are present
 		navtopics = new Set([])
 		$shoutslist.forEach((s) => s.topics.forEach((t) => navtopics.add(t)))
 		// navtopics = Array.from(navtopics)
-		console.log('mainpage: ' + Object.keys(topicsAll).length.toString() + ' topics preloaded')
+		console.log(
+			'mainpage: ' + Object.keys(topicsAll).length.toString() + ' topics preloaded'
+		)
 		$topicslist = topicsAll.filter((t) => navtopics.includes(t))
-		topicsAll.forEach(t => $topics[t.slug] = t)
-	} 
+		topicsAll.forEach((t) => ($topics[t.slug] = t))
+	}
 
 	$: if (topMonth && authorsMonth.length === 0) {
 		// authors of the month
 		console.log('mainpage: getting top month authors')
 		if (topMonth) {
 			let aslugs = []
-			topMonth.forEach((s) => s.authors.forEach((a) => {
-				if( !aslugs.includes(a.slug) ) {
-					aslugs.push(a.slug)
-					authorsMonth.push(a)
-				}
-			}))
-			authorsMonth = authorsMonth.sort(
-				(a, b) => a['rating'] - b['rating']
+			topMonth.forEach((s) =>
+				s.authors.forEach((a) => {
+					if (!aslugs.includes(a.slug)) {
+						aslugs.push(a.slug)
+						authorsMonth.push(a)
+					}
+				})
 			)
+			authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
 		}
 
 		// top viwed and commented

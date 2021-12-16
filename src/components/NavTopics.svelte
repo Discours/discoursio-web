@@ -9,7 +9,6 @@
 			window.location.hash = slug
 		}
 	}
-
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
@@ -18,9 +17,12 @@
 			<li class="item" class:selected={$filterTopic === t.slug}>
 				<a
 					href={'#' + t.slug}
-					on:click|preventDefault={() => setTopic($filterTopic === t.slug ? '' : t.slug)}
+					on:click|preventDefault={() =>
+						setTopic($filterTopic === t.slug ? '' : t.slug)}
 				>
-					<span class:transparent={$filterTopic !== t.slug}>#{t.title.toLowerCase()}</span>
+					<span class:transparent={$filterTopic !== t.slug}
+						>#{t.title.toLowerCase()}</span
+					>
 				</a>
 			</li>
 		{/each}

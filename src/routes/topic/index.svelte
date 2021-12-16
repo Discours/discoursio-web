@@ -35,46 +35,45 @@
 		}, {})
 	}
 
-	$: if(mode === 'popular') {
-			// console.log('topics: sorting by views')
-			topics = topics.sort((a, b) =>  b.topicStat.views - a.topicStat.views)
-			console.log(topics)
-		}
+	$: if (mode === 'popular') {
+		// console.log('topics: sorting by views')
+		topics = topics.sort((a, b) => b.topicStat.views - a.topicStat.views)
+		console.log(topics)
+	}
 
-	$: if(mode === 'active') {
-			// console.log('topics: sorting by shouts')
-			topics = topics.sort((a, b) =>  b.topicStat.shouts - a.topicStat.shouts)
-			console.log(topics)
-		}
+	$: if (mode === 'active') {
+		// console.log('topics: sorting by shouts')
+		topics = topics.sort((a, b) => b.topicStat.shouts - a.topicStat.shouts)
+		console.log(topics)
+	}
 
-	$: if(mode === 'alphabet') {
-			// console.log('topics: sorting by alphabet')
-			topicsGroupedByAlphabet = groupBy(topics.slice(0))
-			sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
-			sortedKeys.forEach((letter) => {
-				topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
-					(a, b) => {
-						if (a.title > b.title) {
-							return 1
-						} else if (a.title < b.title) {
-							return -1
-						}
-						return 0
+	$: if (mode === 'alphabet') {
+		// console.log('topics: sorting by alphabet')
+		topicsGroupedByAlphabet = groupBy(topics.slice(0))
+		sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
+		sortedKeys.forEach((letter) => {
+			topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
+				(a, b) => {
+					if (a.title > b.title) {
+						return 1
+					} else if (a.title < b.title) {
+						return -1
 					}
-				)
-			})
-		}
+					return 0
+				}
+			)
+		})
+	}
 
 	const onSwitch = () => {
 		mode = window.location.hash.replace('#', '')
-		if(!mode) {
+		if (!mode) {
 			mode = 'popular'
 			window.location.hash = mode
 		}
 	}
-	
+
 	onMount(onSwitch)
-	
 </script>
 
 <svelte:window on:hashchange={onSwitch} />
@@ -133,28 +132,25 @@
 									<a href="/{topic.slug}">{topic.title}</a>
 								</div>
 								{#if topic.body}
-								<p class="topic-description">
-									{topic.body}
-								</p>
+									<p class="topic-description">
+										{@html topic.body}
+									</p>
 								{/if}
 								{#if topic.topicStat}
-								<div class="topic-details">
-									<span class="topic-details__item"
-										>{topic.topicStat.shouts} публикаций</span
-									>
-									<span class="topic-details__item"
-										>{topic.topicStat.views} просмотров</span
-									>
-									{#if topic.topicStat.authors}
-									<span class="topic-details__item"
-										>{topic.topicStat.authors} авторов</span
-									>
-									{/if}
-									{#if topic.topicStat.subscriptions}
-									<span class="topic-details__item"
-										>{topic.topicStat.subscriptions} подписчиков</span>
-									{/if}
-								</div>
+									<div class="topic-details">
+										<span class="topic-details__item"
+											>{topic.topicStat.shouts} публикаций</span
+										>
+										<span class="topic-details__item"
+											>{topic.topicStat.views} просмотров</span
+										>
+										<span class="topic-details__item"
+											>{topic.topicStat.authors} авторов</span
+										>
+										<span class="topic-details__item"
+											>{topic.topicStat.subscriptions} подписчиков</span
+										>
+									</div>
 								{/if}
 							</div>
 							<div class="col-md-3 offset-md-2">

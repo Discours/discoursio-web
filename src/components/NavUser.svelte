@@ -66,7 +66,7 @@
 		</div>
 		<div class="usercontrol__item">
 			<a href="#">
-				<Icon name="search"/>
+				<Icon name="search" />
 			</a>
 		</div>
 		<div class="usercontrol__item">

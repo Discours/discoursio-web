@@ -102,6 +102,7 @@ export const GET_SHOUT = gql`
 				slug
 				userpic
 			}
+			mainTopic
 			topics {
 				slug
 				title
@@ -197,6 +198,7 @@ export const RECENT_SHOUTS = gql`
 				userpic
 			}
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -219,6 +221,7 @@ export const TOP_OVERALL = gql`
 			layout
 			cover
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -246,6 +249,7 @@ export const TOP_MONTH = gql`
 			slug
 			cover
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -273,6 +277,7 @@ export const SHOUTS_BY_COMMUNITY = gql`
 			slug
 			cover
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -300,6 +305,7 @@ export const SHOUTS_BY_AUTHOR = gql`
 			slug
 			cover
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -327,6 +333,7 @@ export const SHOUTS_BY_TOPIC = gql`
 			slug
 			cover
 			community
+			mainTopic
 			topics {
 				slug
 				title
@@ -397,9 +404,9 @@ export const TOPICS_ALL = gql`
 			community
 			topicStat {
 				shouts
-				# authors
+				authors
 				views
-				# subscriptions
+				subscriptions
 			}
 		}
 	}

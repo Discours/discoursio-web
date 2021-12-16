@@ -11,7 +11,8 @@
 	let commentsById: { [key: number]: Partial<Comment> } = {}
 
 	onMount(() => {
-		console.log(shout.comments)
+		if(shout.comments) console.log(shout.comments)
+		else console.log('shout: no comments')
 	})
 
 	// TODO: editing logix
@@ -45,7 +46,9 @@
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
 						{#each shout.topics as topic, index}
-							<a href={`/${topic.slug}`}>#{topic.title}</a>
+							{#if topic.slug === shout.mainTopic}
+								<a href={`/${topic.slug}`}>#{topic.title}</a>
+							{/if}
 						{/each}
 					</div>
 

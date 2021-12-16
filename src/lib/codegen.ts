@@ -301,7 +301,6 @@ export type Query = {
 	getMessages: Array<Message>
 	getShoutBySlug: Shout
 	getShoutComments: Array<Maybe<Comment>>
-	getTopicAuthors: Array<Maybe<User>>
 	getUserRoles: Array<Maybe<Role>>
 	getUsersBySlugs: Array<Maybe<User>>
 	isEmailFree: Result
@@ -334,12 +333,6 @@ export type QueryGetShoutBySlugArgs = {
 }
 
 export type QueryGetShoutCommentsArgs = {
-	slug: Scalars['String']
-}
-
-export type QueryGetTopicAuthorsArgs = {
-	count: Scalars['Int']
-	page: Scalars['Int']
 	slug: Scalars['String']
 }
 
@@ -443,6 +436,7 @@ export type Shout = {
 	deletedAt?: Maybe<Scalars['DateTime']>
 	deletedBy?: Maybe<Scalars['Int']>
 	layout?: Maybe<Scalars['String']>
+	mainTopic?: Maybe<Scalars['String']>
 	publishedAt?: Maybe<Scalars['DateTime']>
 	publishedBy?: Maybe<Scalars['Int']>
 	rating?: Maybe<Scalars['Int']>
@@ -529,10 +523,10 @@ export type TopicResult = {
 
 export type TopicStat = {
 	__typename?: 'TopicStat'
-	shouts?: Maybe<Scalars['Int']>
-	views?: Maybe<Scalars['Int']>
-	authors?: Maybe<Scalars['Int']>
-	subscriptions?: Maybe<Scalars['Int']>
+	authors: Scalars['Int']
+	shouts: Scalars['Int']
+	subscriptions: Scalars['Int']
+	views: Scalars['Int']
 }
 
 export type User = {
