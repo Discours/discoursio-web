@@ -156,15 +156,11 @@ export const GET_ROLES = gql`
 
 export const GET_COMMUNITIES = gql`
 	query {
-		getCommunities() {
+		getCommunities {
+			name
 			slug
 			pic
-			value
 			desc
-			parents
-			children
-			createdAt
-			createdBy
 		}
 	}
 `

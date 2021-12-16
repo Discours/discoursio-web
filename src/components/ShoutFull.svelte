@@ -4,6 +4,7 @@
 	import { session, token } from '../stores/user'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
+	import type { Topic } from '$lib/codegen';
 
 	export let props
 	let shout
@@ -11,8 +12,7 @@
 	let commentsById: { [key: number]: Partial<Comment> } = {}
 
 	onMount(() => {
-		if(shout.comments) console.log(shout.comments)
-		else console.log('shout: no comments')
+		if(shout.comments.length === 0) console.log('shout: no comments')
 	})
 
 	// TODO: editing logix
@@ -37,6 +37,19 @@
 			return level
 		}
 	}
+
+	let showTopic: Partial<Topic>
+
+	$: if(shout) {
+		showTopic = shout.topics[0]
+		if(shout.mainTopic) {
+			showTopic = shout.topics.find(t => {
+				if (t === undefined) return
+				else return t.slug === shout.mainTopic
+			})
+		}
+		console.log(showTopic)
+	}
 </script>
 
 <div class="shout">
@@ -45,10 +58,8 @@
 			<article class="col-md-6 offset-md-3">
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
-						{#each shout.topics as topic, index}
-							{#if topic.slug === shout.mainTopic}
-								<a href={`/${topic.slug}`}>#{topic.title}</a>
-							{/if}
+						{#each shout.topics as topic}
+						<span class="topic"><a href={`/${topic.slug}`}>#{topic.title}</a></span>
 						{/each}
 					</div>
 
@@ -205,5 +216,11 @@
 		@include font-size(2.2rem);
 		margin-bottom: 1em;
 		padding: 2.4rem 1.8rem;
+	}
+
+	.topic a {
+		/* white-space: nowrap; */
+		color: black;
+		padding: 1vh;
 	}
 </style>

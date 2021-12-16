@@ -5,7 +5,9 @@
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
 		const topicsAll = await fetch(`/topic/all.json`)
+		const communitiesAll = await fetch(`/community/all.json`)
 		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
+		props = communitiesAll.ok ? { ...(await communitiesAll.json()), ...props } : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -33,12 +35,16 @@
 	export let topMonth = []
 	export let topOverall = []
 	export let topicsAll = []
+	export let communitiesAll = []
 
 	let topCommented = [],
 		topViewed = [],
 		authorsMonth = []
 
 	let navtopics
+
+	$: if(!$communitieslist && communitiesAll) $communitieslist = communitiesAll
+
 	$: if (!$shoutslist) {
 		console.log('mainpage: updating shouts list')
 		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
@@ -60,7 +66,7 @@
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 	}
 
-	$: if (topMonth && authorsMonth.length === 0) {
+	$: if (topMonth && authorsMonth.length === 0 ) {
 		// authors of the month
 		console.log('mainpage: getting top month authors')
 		if (topMonth) {
@@ -75,9 +81,12 @@
 			)
 			authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
 		}
+	}
 
+	$: if($shoutslist) {
 		// top viwed and commented
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
+		
 		topCommented = $shoutslist.sort(
 			(a, b) =>
 				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
