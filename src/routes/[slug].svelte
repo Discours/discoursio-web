@@ -21,11 +21,10 @@
 	}
 
 	export const load = async ({ page, fetch }): Promise<{ props: SlugProps }> => {
-		console.info('[slug]: preloading')
 		const { slug } = page.params
 		let props: SlugProps = { slug }
 		const at = slug.startsWith('@')
-		console.log(`[slug]: ${at ? 'author' : 'shout'} ${slug}`)
+		console.log(`[slug]: preloading ${at ? 'author' : 'shout'} ${slug}`)
 		if (routes.includes(slug) && !at) return { props }
 		const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
 		if (fq.ok) {
@@ -39,24 +38,13 @@
 <script lang="ts">
 	import ShoutFull from '../components/ShoutFull.svelte'
 	import UserFull from '../components/UserFull.svelte'
-	import TopicFull from '../components/TopicFull.svelte'
-	import { topics } from '../stores/zine'
 
 	export let shout
 	export let comments
 	export let user
 	export let slug
-	let topic
 	let title
 	let component
-
-	$: if ($topics) {
-		if (Object.keys($topics).includes(slug)) {
-			console.log('[slug]: is topic')
-			title = topic.title
-			component = TopicFull
-		}
-	}
 	
 	$:	if (shout) {
 			console.log('[slug]: is shout')
@@ -73,4 +61,4 @@
 </script>
 
 <svelte:head><title>Дискурс{title ? ' : ' + title : ''}</title></svelte:head>
-<svelte:component this={component} props={{ shout, user, topic }} />
+<svelte:component this={component} props={{ shout, user }} />

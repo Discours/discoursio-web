@@ -5,7 +5,7 @@ export const get = async ({ params }) => {
 	try {
 		const { slug: topic } = params
 		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, {
-			topic
+			topic, limit: 20
 		})
 		let authors = {}
 		shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))

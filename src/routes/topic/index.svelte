@@ -129,7 +129,7 @@
 						<div class="topic row">
 							<div class="col-md-7">
 								<div class="topic-title">
-									<a href="/{topic.slug}">{topic.title}</a>
+									<a href="/topic/{topic.slug}">{topic.title}</a>
 								</div>
 								{#if topic.body}
 									<p class="topic-description">
