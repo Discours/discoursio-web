@@ -43,12 +43,13 @@
 
 	let navtopics
 
-	$: if(!$communitieslist && communitiesAll) $communitieslist = communitiesAll
+	$: if(!$communitieslist && communitiesAll) $communitieslist
 
 	$: if (!$shoutslist) {
 		console.log('mainpage: updating shouts list')
-		$shoutslist = Array.from(new Set([...recents, ...topMonth, ...topOverall]))
+		$shoutslist = [...recents, ...topMonth, ...topOverall]
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
+		$shoutslist = Object.values($shouts)
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
 		)
