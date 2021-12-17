@@ -52,7 +52,7 @@
 	$: if (!$shoutslist && !$topicslist) {
 		$shoutslist = recents
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
-		$shoutslist = Object.values($shouts)
+		// $shoutslist = Object.values($shouts).sort((a, b) => b.createdAt)
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
 		)
