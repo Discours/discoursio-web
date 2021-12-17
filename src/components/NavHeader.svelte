@@ -32,7 +32,9 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <div class="wide-container">
 	<nav class="row header__inner">
-		<div class="main-logo col-auto"><a href="/">Дискурc</a></div>
+		<div class="main-logo col-auto"><a href="/">
+			<img src="/logo.svg" alt="Дискурс" width="175" height="32" />
+		</a></div>
 
 		<ul class="col main-navigation text-xl inline-flex">
 			{#each MAIN_NAVIGATION as navItem}
@@ -63,14 +65,13 @@
 	.main-logo {
 		align-items: center;
 		display: inline-flex;
-		flex-direction: row;
-		flex: 0;
-		font-size: 36px;
-		font-weight: 700;
 		height: 80px;
 		padding-right: 3.2rem;
 		text-align: center;
-		text-transform: uppercase;
+
+		img {
+			vertical-align: middle;
+		}
 
 		a {
 			color: #000;
