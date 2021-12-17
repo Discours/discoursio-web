@@ -41,10 +41,11 @@
 	export let topicsAll = []
 	// export let communitiesAll = []
 
+	let showedTopics = []
 	let topCommented = [],
 		authorsMonth = [],
 		topicsMonth = []
-
+	let loading
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
 	// $: if(!$communitieslist && communitiesAll) $communitieslist
@@ -56,7 +57,6 @@
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
 		)
-
 		// top commented from recents
 		// topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
 		topCommented = $shoutslist.sort(
@@ -80,6 +80,7 @@
 				}
 			})
 		})
+		showedTopics = shuffle(Array.from(tslugs)).slice(0,12)
 		topicsMonth = topicsMonth.sort(
 			(a, b) => b['topicStat'].authors - a['topicStat'].authors
 		)
@@ -91,13 +92,23 @@
 		$topicslist = null
 	}) // force to update reactive code on mount
 
-	let showedTopics = []
-
-	$: showedTopics = Array.from(tslugs).sort((a,b) => b['topicStat'].views - a['topicStat'].views).slice(0, 12)
-
 	const moreAuthors = () => {
 		console.log('mainpage: show more authors')
 		// TODO: implement me
+	}
+
+	const moreShouts = async () => {
+		loading = true
+		console.log('mainpage: show more shouts')
+		const p = Math.floor($shoutslist.length / 27)
+		const r = await fetch('/feed/recents.json?page=' + p)
+		if(r.ok) {
+			$shoutslist = [
+				...(await r.json()),
+				...$shoutslist
+			]
+			loading = false
+		}
 	}
 </script>
 
@@ -301,6 +312,17 @@
 				{/each}
 			</div>
 		</div>
+		{#each [...Array($shoutslist.length/3).keys()] as r}
+		<div class="floor">
+			<div class="wide-container row">
+				{#each $shoutslist.slice(28 + r*3, 31 + r*3) as article}
+					<div class="col-md-4">
+						<ShoutCard shout={article} />
+					</div>
+				{/each}
+			</div>
+		</div>
+		{/each}
 	</div>
 {/if}
 

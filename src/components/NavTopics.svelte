@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { filterTopic, topics } from '../stores/zine'
 	export let slugs: Set<string>
-
+	$: console.log(slugs)
 	const getTitle = (slug: string) => $topics[slug].title
 </script>
 
