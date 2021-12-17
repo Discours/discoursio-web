@@ -219,16 +219,35 @@ figcaption {
 		margin-right: 1em;
 	}
 
-	a {
+	button {
+		background: none;
+		border: none;
 		border-bottom: 2px solid #fff;
 		color: #696969;
+		cursor: pointer;
+		font-size: inherit;
+		font-weight: inherit;
+		padding: 0;
 	}
 
 	.selected {
-		a {
+		button {
 			border-color: #000;
 			color: #000;
 			cursor: default;
 		}
 	}
+}
+
+.floor {
+	margin-bottom: 6.4rem;
+
+	.wide-container {
+		padding: 0;
+	}
+}
+
+.floor--important {
+	background: #000;
+	color: #fff;
 }

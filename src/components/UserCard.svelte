@@ -3,6 +3,7 @@
 	import Userpic from './Userpic.svelte'
 	import cookie from 'cookie'
 	import { onMount } from 'svelte'
+	import Icon from './DiscoursIcon.svelte'
 
 	export let user: User | Partial<User>
 	export let hasSubscribeButton = true
@@ -55,9 +56,9 @@
 						>Отписаться</button
 					>
 				{:else}
-					<button on:click={subscribe} class="button button--subscribe"
-						>Подписаться</button
-					>
+					<button on:click={subscribe} class="button button--subscribe">
+						<Icon name="author-subscribe"/>
+					</button>
 				{/if}
 			</div>
 		{/if}
@@ -94,6 +95,15 @@
 		.author__subscribe {
 			flex: 1 100%;
 			padding: 0.8rem 0 0 42px;
+		}
+	}
+
+	.button--subscribe {
+		background: #f6f6f6;
+		border-radius: 2.5rem;
+
+		:global(img) {
+			vertical-align: middle;
 		}
 	}
 </style>
