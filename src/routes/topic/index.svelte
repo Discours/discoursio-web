@@ -161,33 +161,6 @@
 		}
 	}
 
-	.topic {
-		margin-bottom: 2.4rem;
-
-		.stats & {
-			margin-bottom: 6.4rem;
-		}
-
-		:global(button) {
-			background-color: #f6f6f6;
-			border: none;
-			cursor: pointer;
-			margin-top: 0.8rem;
-			padding: 0.6rem 1.2rem;
-		}
-	}
-
-	.topic-title {
-		.stats & {
-			font-weight: bold;
-			@include font-size(2.6rem);
-		}
-
-		&:first-letter {
-			text-transform: capitalize;
-		}
-	}
-
 	.group {
 		font-weight: bold;
 		margin-bottom: 9.6rem;
