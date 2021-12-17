@@ -38,6 +38,12 @@ body {
 	line-height: 1.4;
 	min-height: 100%;
 	-webkit-text-size-adjust: 100%;
+
+	&.fixed {
+		height: 100%;
+		overflow: hidden;
+		position: fixed;
+	}
 }
 
 html,
@@ -199,4 +205,30 @@ figure {
 figcaption {
 	color: #9fa1a7;
 	@include font-size(1.2rem);
+}
+
+.view-switcher {
+	@include font-size(2.2rem);
+	font-weight: bold;
+	list-style: none;
+	margin: 0 0 1.5em;
+	padding: 0;
+
+	li {
+		display: inline-block;
+		margin-right: 1em;
+	}
+
+	a {
+		border-bottom: 2px solid #fff;
+		color: #696969;
+	}
+
+	.selected {
+		a {
+			border-color: #000;
+			color: #000;
+			cursor: default;
+		}
+	}
 }
