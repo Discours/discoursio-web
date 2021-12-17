@@ -60,16 +60,19 @@
 	</div>
 {/if}
 {#if $token}
-	<div class="usercontrol inline-flex">
-		<div class="usercontrol__item">
-			<a href="#">опубликовать материал</a>
+	<div class="usercontrol col">
+		<div class="usercontrol__item usercontrol__item--write-post">
+			<a href="#">
+				<span class="text-label">опубликовать материал</span>
+				<Icon name="pencil" />
+			</a>
 		</div>
-		<div class="usercontrol__item">
+		<div class="usercontrol__item usercontrol__item--search">
 			<a href="#">
 				<Icon name="search" />
 			</a>
 		</div>
-		<div class="usercontrol__item">
+		<div class="usercontrol__item usercontrol__item--inbox">
 			<a href="/user/inbox">
 				<div class:entered={res === '/user/inbox'}>
 					<Icon name="inbox-white" counter={newMessages} />
@@ -92,25 +95,61 @@
 		</div>
 	</div>
 {:else}
-	<div class="usercontrol__item loginbtn inline-flex">
+	<div class="usercontrol__item loginbtn">
 		<a href={''} on:click|preventDefault={toggleLogin}> войти </a>
 	</div>
 {/if}
 
 <style lang="scss">
 	.usercontrol {
+		align-items: baseline;
 		display: flex;
+		@include font-size(1.7rem);
 		justify-content: flex-end;
-		width: 100%;
+
+		@include media-breakpoint-down(md) {
+			padding: divide($container-padding-x, 2);
+		}
+
+		:global(.circlewrap) {
+			margin-right: 0;
+		}
 	}
 
 	.usercontrol__item {
-		margin-left: 3.2rem;
+		margin-left: divide($container-padding-x, 2);
+
+		@include media-breakpoint-up(sm) {
+			margin-left: 3.2rem;
+		}
 
 		:global(img) {
 			height: 20px;
 			vertical-align: middle;
 			width: auto;
+		}
+
+		.text-label {
+			display: none;
+		}
+	}
+
+	.usercontrol__item--write-post {
+		@include media-breakpoint-up(md) {
+			:global(.icon) {
+				display: none;
+			}
+
+			.text-label {
+				display: inline;
+			}
+		}
+	}
+
+	.usercontrol__item--inbox,
+	.usercontrol__item--search {
+		@include media-breakpoint-down(sm) {
+			display: none;
 		}
 	}
 
