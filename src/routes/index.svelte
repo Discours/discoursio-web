@@ -166,7 +166,7 @@
 				<div class="col-md-4">
 					<h4>Авторы месяца</h4>
 
-					{#each authorsMonth.slice(0, 4) as user}
+					{#each authorsMonth.slice(0, 8) as user}
 						<UserCard {user} />
 					{/each}
 

@@ -3,6 +3,12 @@
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
+	$: if(shout && !shout.subtitle) {
+		let tt = shout.title.split('.')
+		if(tt.length === 1) tt = shout.title.split(':')
+		shout.title = tt[0]
+		shout.subtitle = tt[1]
+	}
 </script>
 
 <section class="shout-card">
