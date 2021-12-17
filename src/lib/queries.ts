@@ -112,10 +112,12 @@ export const GET_SHOUT = gql`
 			createdAt
 			updatedAt
 			publishedAt
-			views
 			ratings {
 				value
 				rater
+			}
+			stat {
+				views
 			}
 		}
 	}
@@ -203,8 +205,11 @@ export const RECENT_SHOUTS = gql`
 				pic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
@@ -231,8 +236,11 @@ export const TOP_OVERALL = gql`
 				userpic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
@@ -259,8 +267,11 @@ export const TOP_MONTH = gql`
 				userpic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
@@ -287,8 +298,11 @@ export const SHOUTS_BY_COMMUNITY = gql`
 				userpic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
@@ -315,8 +329,11 @@ export const SHOUTS_BY_AUTHOR = gql`
 				userpic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
@@ -343,8 +360,11 @@ export const SHOUTS_BY_TOPIC = gql`
 				userpic
 			}
 			publishedAt
-			views
-			rating
+			stat {
+				views
+				comments
+				ratings
+			}
 		}
 	}
 `
