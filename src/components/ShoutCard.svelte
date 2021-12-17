@@ -34,14 +34,12 @@
 		</div>
 
 		<div class="shout-card__content">
-			{#each shout.topics as topic}
-				{#if topic.slug === shout.mainTopic}
-					<div class="shout__topic">
-						<a href="/{topic.slug}">
-							{topic.title}
-						</a>
-					</div>
-				{/if}
+			{#each shout.topics.filter(t => shout.mainTopic == t.slug) as topic}
+				<div class="shout__topic">
+					<a href="/topic/{topic.slug}">
+						{topic.title}
+					</a>
+				</div>
 			{/each}
 
 			<div class="shout-card__title">
