@@ -23,11 +23,16 @@
 
 	export let shouts
 	export let authors
+	export let slug
 
 	let topic
 
+	$: if(!slug && $page && $page.params.slug) {
+		slug = $page.params.slug
+	}
+
 	$: if (Object.keys($topics).length > 0 && !topic)
-		topic = $topics[$page.params.slug]
+		topic = $topics[slug]
 	onMount(() => (topic = null))
 </script>
 
