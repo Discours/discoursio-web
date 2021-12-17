@@ -57,13 +57,13 @@
 
 		// top viwed and commented
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-		topCommented = $shoutslist // FIXME: .sort((a, b) => a['comments'] - b['comments'])
+		topCommented = topViewed // $shoutslist.sort((a, b) => a['comments'] - b['comments']) // FIXME
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
 	}
 
-	$: if (topMonth) {
+	$: if (topMonth && $topicslist) {
 		topMonth.forEach((s) => {
 			s.authors.forEach((a) => {
 				if (!aslugs.has(a.slug)) {
@@ -74,13 +74,11 @@
 			s.topics.forEach((t) => {
 				if (!tslugs.has(t.slug)) {
 					tslugs.add(t.slug)
-					topicsMonth.push($topics[t])
+					topicsMonth.push($topics[t.slug])
 				}
 			})
 		})
-		topicsMonth = topicsMonth.sort(
-			(a, b) => a['topicStat'].authors - b['topicStat'].views
-		)
+		topicsMonth = topicsMonth.sort((a,b) => a['topicStat'].authors - b['topicStat'].authors)
 		authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
 	}
 
@@ -206,7 +204,7 @@
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<h4>Популярные темы</h4>
+					<h4>Темы месяца</h4>
 					{#each topicsMonth.slice(0, 4) as topic}
 						<TopicCard {topic} />
 					{/each}

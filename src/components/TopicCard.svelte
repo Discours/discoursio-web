@@ -8,39 +8,41 @@
 
 	// NOTE: cookie-based no auth requering subscriptions
 
-	onMount(
-		async () => {}
-		// (subscribed = (await cookie.parse(document.cookie)).authors.includes(
-		// 	topic.slug
-		// ))
-	)
+	onMount(async () => {
+		const { topics } = await cookie.parse(document.cookie)
+		if(topics) subscribed = topics.includes(topic.slug)
+		})
 
 	const subscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
-		if (!coo.topics.includes(topic.slug)) coo.topics.push(topic.slug)
+		if (coo.topics && !coo.topics.includes(topic.slug)) coo.topics.push(topic.slug)
 		document.cookie = cookie.serialize(coo)
 	}
 
 	const unsubscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
+		if(!coo.topics) coo.topics = []
 		const idx = coo.topics.indexOf(topic.slug)
 		if (idx != -1) coo.topics.splice(idx, 1)
 		document.cookie = cookie.serialize(coo)
 	}
+
+	const capitalize = (s) => s.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 </script>
 
 <div class="topic">
 	{#if topic}
 		{#if topic.pic}
+			{topic.slug}
 			<div class="topic__avatar">
 				<a href={topic.slug}>
-					<img src={topic.pic} alt={topic.title} />
+					<img src={topic.pic} alt={capitalize(topic.title)} />
 				</a>
 			</div>
 		{/if}
 		<div class="topic__details">
 			<div class="topic__name">
-				<a href={topic.slug}><b>{topic.title}</b></a>
+				<a href={topic.slug}><b>{capitalize(topic.title)}</b></a>
 			</div>
 			{#if topic.body}
 				<div class="topic__about">{@html topic.body}</div>
