@@ -2,7 +2,7 @@
 	import type { Topic } from '../lib/codegen'
 	import { onMount } from 'svelte'
 	import cookie from 'cookie'
-
+	import { capitalize, plural } from '$lib/utils'
 	export let topic: Topic
 	export let subscribed = false
 
@@ -26,8 +26,6 @@
 		if (idx != -1) coo.topics.splice(idx, 1)
 		document.cookie = cookie.serialize(coo)
 	}
-
-	const capitalize = (s) => s.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 </script>
 
 <div class="topic">
@@ -47,6 +45,17 @@
 			{#if topic.body}
 				<div class="topic__about">{@html topic.body}</div>
 			{/if}
+			<div class="topic-details">
+				<span class="topic-details__item"
+					>{topic.topicStat.shouts} публикаци{plural(topic.topicStat.shouts, 'я', 'и', 'й')}</span
+				>
+				<span class="topic-details__item"
+					>{topic.topicStat.authors} автор{plural(topic.topicStat.authors, '', 'а', 'ов')}</span
+				>
+				<span class="topic-details__item"
+					>{topic.topicStat.views} просмотр{plural(topic.topicStat.views, '', 'а', 'ов')}</span
+				>
+			</div>
 			<div class="topic__subscribe">
 				{#if subscribed}
 					<button on:click={unsubscribe} class="button button--subscribe"
@@ -107,5 +116,11 @@
 
 	.topic__subscribe {
 		margin-top: 0.8rem;
+	}
+
+	.topic-details {
+		@include font-size(1.7rem);
+		color: #9fa1a7;
+		font-size: small;
 	}
 </style>

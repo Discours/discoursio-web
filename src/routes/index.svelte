@@ -61,9 +61,7 @@
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
-	}
-
-	$: if (topMonth && $topicslist) {
+		// console.log($topicslist)
 		topMonth.forEach((s) => {
 			s.authors.forEach((a) => {
 				if (!aslugs.has(a.slug)) {
