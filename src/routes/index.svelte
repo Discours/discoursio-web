@@ -57,11 +57,7 @@
 
 		// top viwed and commented
 		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-		topCommented = $shoutslist.sort(
-			(a, b) =>
-				($comments[a['slug']] ? $comments[a['slug']].length : 0) -
-				($comments[b['slug']] ? $comments[b['slug']].length : 0)
-		)
+		topCommented = $shoutslist // FIXME: .sort((a, b) => a['comments'] - b['comments'])
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
