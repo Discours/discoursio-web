@@ -1,10 +1,10 @@
 import { client } from '../../lib/client'
 import { RECENT_SHOUTS } from '../../lib/queries'
 
-export const get = async () => {
+export const get = async ({ params }) => {
 	try {
-		const { recents } = await client.request(RECENT_SHOUTS, { limit: 100 })
-
+		const { more } = params
+		const { recents } = await client.request(RECENT_SHOUTS, { page: more || 0, size: 27 })
 		return {
 			status: 200,
 			body: { recents }

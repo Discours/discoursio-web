@@ -30,101 +30,101 @@
 	}
 </script>
 
-<div class="topic">
-	{#if topic}
-		<div class="topic row">
-			<div class="col-md-7">
-				<div class="topic-title">
-					<a href="/topic/{topic.slug}">{capitalize(topic.title)}</a>
+{#if topic}
+	<div class="topic row">
+		<div class="col-md-7">
+			<div class="topic-title">
+				<a href="/topic/{topic.slug}">{capitalize(topic.title)}</a>
+			</div>
+			{#if topic.pic}
+				<div class="topic__avatar">
+					<a href={topic.slug}>
+						<img src={topic.pic} alt={topic.title} />
+					</a>
 				</div>
-				{#if topic.pic}
-					<div class="topic__avatar">
-						<a href={topic.slug}>
-							<img src={topic.pic} alt={topic.title} />
-						</a>
-					</div>
-				{/if}
-				{#if topic.body}
-					<p class="topic-description">
-						{@html topic.body}
-					</p>
-				{/if}
-				{#if topic.topicStat}
-					<div class="topic-details">
+			{/if}
+			{#if topic.body}
+				<p class="topic-description">
+					{@html topic.body}
+				</p>
+			{/if}
+			{#if topic.topicStat}
+				<div class="topic-details">
 						<span class="topic-details__item"
-							>{topic.topicStat.shouts} публикаци{plural(
-								topic.topicStat.shouts,
-								'я',
-								'и',
-								'й'
-							)}</span
+						>{topic.topicStat.shouts} публикаци{plural(
+							topic.topicStat.shouts,
+							'я',
+							'и',
+							'й'
+						)}</span
 						>
-						<span class="topic-details__item"
-							>{topic.topicStat.authors} автор{plural(
-								topic.topicStat.authors,
-								'',
-								'а',
-								'ов'
-							)}</span
-						>
-						<span class="topic-details__item"
-							>{topic.topicStat.views} просмотр{plural(
-								topic.topicStat.views,
-								'',
-								'а',
-								'ов'
-							)}</span
-						>
-						<span class="topic-details__item"
-							>{topic.topicStat.subscriptions} подписчик{plural(
-								topic.topicStat.subscriptions,
-								'',
-								'а',
-								'ов'
-							)}</span
-						>
-					</div>
-				{/if}
-			</div>
-			<div class="topic__subscribe">
-				{#if subscribed}
-					<button on:click={unsubscribe} class="button button--subscribe"
-						>Отписаться</button
+					<span class="topic-details__item"
+					>{topic.topicStat.authors} автор{plural(
+						topic.topicStat.authors,
+						'',
+						'а',
+						'ов'
+					)}</span
 					>
-				{:else}
-					<button on:click={subscribe} class="button button--subscribe"
-						>Подписаться</button
+					<span class="topic-details__item"
+					>{topic.topicStat.views} просмотр{plural(
+						topic.topicStat.views,
+						'',
+						'а',
+						'ов'
+					)}</span
 					>
-				{/if}
-			</div>
+					<span class="topic-details__item"
+					>{topic.topicStat.subscriptions} подписчик{plural(
+						topic.topicStat.subscriptions,
+						'',
+						'а',
+						'ов'
+					)}</span
+					>
+				</div>
+			{/if}
 		</div>
-	{/if}
-</div>
+		<div class="col-md-3 offset-md-2">
+			{#if subscribed}
+				<button on:click={unsubscribe} class="button"
+				>Отписаться</button
+				>
+			{:else}
+				<button on:click={subscribe} class="button"
+				>Подписаться</button
+				>
+			{/if}
+		</div>
+	</div>
+{/if}
 
 <style lang="scss">
 	.topic {
 		align-items: flex-start;
 		display: flex;
-		margin-bottom: 2.4rem;
-
-		@include media-breakpoint-down(lg) {
-			flex-wrap: wrap;
-		}
+		margin-top: 6.4rem;
 
 		.stats & {
 			margin-bottom: 6.4rem;
 		}
+
+		.button {
+			background-color: #f6f6f6;
+			color: #000;
+			border: none;
+			cursor: pointer;
+			@include font-size(1.5rem);
+			font-weight: 400;
+			margin-top: 0.6rem;
+			padding: 0.6rem 1.2rem;
+		}
 	}
 
 	.topic-title {
-		.stats & {
-			font-weight: bold;
-			@include font-size(2.6rem);
-		}
-
-		&:first-letter {
-			text-transform: capitalize;
-		}
+		font-weight: bold;
+		@include font-size(2.6rem);
+		margin-bottom: 1.2rem;
 	}
 
 	.topic__avatar {
@@ -144,22 +144,9 @@
 		}
 	}
 
-	.topic__name {
-		font-size: 1.7rem;
-		margin-bottom: 0.8rem;
-	}
-
-	.topic__about {
-		font-size: 1.5rem;
-		color: rgba(0, 0, 0, 0.3);
-	}
-
-	.topic__subscribe {
-		margin-top: 0.8rem;
-	}
-
 	.topic-description {
 		color: #696969;
+		margin-bottom: 2rem;
 	}
 
 	.topic-details {

@@ -184,8 +184,8 @@ export const GET_COMMUNITY = gql`
 `
 
 export const RECENT_SHOUTS = gql`
-	query RecentShoutsQuery($limit: Int) {
-		recents(limit: $limit) {
+	query RecentShoutsQuery($page: Int!, $size: Int!) {
+		recents(page: $page, size: $size) {
 			title
 			subtitle
 			slug
@@ -215,8 +215,8 @@ export const RECENT_SHOUTS = gql`
 `
 
 export const TOP_VIEWED = gql`
-	query TopViewedShoutsQuery($limit: Int) {
-		topViewed(limit: $limit) {
+	query TopViewedShoutsQuery($page: Int!, $size: Int!) {
+		topViewed(page: $page, size: $size) {
 			title
 			subtitle
 			slug
@@ -246,8 +246,8 @@ export const TOP_VIEWED = gql`
 `
 
 export const TOP_OVERALL = gql`
-	query TopOverallShoutsQuery($limit: Int) {
-		topOverall(limit: $limit) {
+	query TopOverallShoutsQuery($page: Int!, $size: Int!) {
+		topOverall(page: $page, size: $size) {
 			title
 			subtitle
 			slug
@@ -277,8 +277,8 @@ export const TOP_OVERALL = gql`
 `
 
 export const TOP_MONTH = gql`
-	query TopMonthShoutsQuery($limit: Int) {
-		topMonth(limit: $limit) {
+	query TopMonthShoutsQuery($page: Int!, $size: Int!) {
+		topMonth(page: $page, size: $size) {
 			title
 			subtitle
 			layout
