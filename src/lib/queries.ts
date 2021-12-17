@@ -124,19 +124,17 @@ export const GET_SHOUT = gql`
 export const GET_AUTHOR = gql`
 	query GetUserBySlugQuery($slugs: [String]!) {
 		getUsersBySlugs(slugs: $slugs) {
-			user {
-				slug
-				name
-				bio
-				userpic
-				communities
-				links
-				createdAt
-				wasOnlineAt
-				ratings {
-					rater
-					value
-				}
+			slug
+			name
+			bio
+			userpic
+			communities
+			links
+			createdAt
+			wasOnlineAt
+			ratings {
+				rater
+				value
 			}
 		}
 	}
@@ -149,7 +147,10 @@ export const GET_ROLES = gql`
 			name
 			community
 			desc
-			permissions
+			permissions {
+				operation_id
+				resource_id
+			}
 		}
 	}
 `
