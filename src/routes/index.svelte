@@ -23,7 +23,7 @@
 	import TopicCard from '../components/TopicCard.svelte'
 	// import CommunityCard from '../components/CommunityCard.svelte'
 	import {
-		comments,
+		// comments,
 		shouts,
 		shoutslist,
 		// communitieslist,
@@ -33,7 +33,7 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
-
+	import { shuffle } from '../lib/utils'
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
@@ -62,8 +62,8 @@
 		topCommented = $shoutslist.sort(
 			(a, b) => b['stat'].comments - a['stat'].comments
 		) // FIXME
-		topicsAll.forEach((t) => ($topics[t.slug] = t))
-		$topicslist = Object.values($topics)
+		$topicslist = topicsAll
+		$topicslist.forEach((t) => ($topics[t.slug] = t))
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
 		// console.log($topicslist)
 		topMonth.forEach((s) => {
@@ -91,6 +91,10 @@
 		$topicslist = null
 	}) // force to update reactive code on mount
 
+	let showedTopics = []
+
+	$: showedTopics = Array.from(tslugs).sort((a,b) => b['topicStat'].views - a['topicStat'].views).slice(0, 12)
+
 	const moreAuthors = () => {
 		console.log('mainpage: show more authors')
 		// TODO: implement me
@@ -100,7 +104,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
 	<div class="home">
-		{#if tslugs} <NavTopics slugs={tslugs} />{/if}
+		{#if tslugs} <NavTopics slugs={new Set(showedTopics)} />{/if}
 
 		<div class="floor floor--1">
 			<div class="wide-container row">

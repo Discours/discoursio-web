@@ -18,7 +18,14 @@
 	import TopicFull from '../../components/TopicFull.svelte'
 	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
+	import ShoutCard from '../../components/ShoutCard.svelte'
+	import UserCard from '../../components/UserCard.svelte'
+
+	export let shouts
+	export let authors
+
 	let topic
+
 	$: if (Object.keys($topics).length > 0 && !topic)
 		topic = $topics[$page.params.slug]
 	onMount(() => (topic = null))
@@ -29,3 +36,13 @@
 	<h3>Тема: {topic.title}</h3>
 	<TopicFull {topic} />
 {/if}
+<div class="topic-shouts">
+	{#each shouts as shout}
+	<ShoutCard {shout} />
+	{/each}
+</div>
+<div class="topic-authors">
+	{#each authors as author}
+	<UserCard user={author} />
+	{/each}
+</div>
