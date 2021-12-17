@@ -3,9 +3,17 @@
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
+
+	const seps = [':', '?', '!']
+
 	$: if(shout && !shout.subtitle) {
 		let tt = shout.title.split('.')
-		if(tt.length === 1) tt = shout.title.split(':')
+		seps.forEach(c => {
+			if(tt.length === 1) {
+				tt = shout.title.split(c)
+				if(tt.length>1) tt[0] = tt[0] + c
+			}
+		})
 		shout.title = tt[0]
 		shout.subtitle = tt[1]
 	}
