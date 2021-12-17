@@ -10,10 +10,7 @@
 		{#if Object.keys($topics).length > 0}
 			{#each Array.from(slugs) as slug}
 				<li class="item" class:selected={$filterTopic === slug}>
-					<a
-						href={'/topic/' + slug}
-						on:click={() => $filterTopic = slug || ''}
-					>
+					<a href={'/topic/' + slug} on:click={() => ($filterTopic = slug || '')}>
 						<span class:transparent={$filterTopic !== slug}>#{getTitle(slug)}</span>
 					</a>
 				</li>

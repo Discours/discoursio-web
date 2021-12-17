@@ -9,15 +9,19 @@ import {
 export const get = async ({ params }) => {
 	try {
 		const { slug } = params
-		const { getUsersBySlugs: users } = await client.request(GET_AUTHOR, { slugs: [slug] })
+		const { getUsersBySlugs: users } = await client.request(GET_AUTHOR, {
+			slugs: [slug]
+		})
 		let body
 		if (users.length > 0) {
 			const user = users[0]
 			const { shoutsByAuthor: shouts } = await client.request(SHOUTS_BY_AUTHOR, {
-				author: slug, limit: 50
+				author: slug,
+				limit: 50
 			})
 			const { topicsByAuthor: topics } = await client.request(TOPICS_BY_AUTHOR, {
-				author: slug, limit: 50
+				author: slug,
+				limit: 50
 			})
 			const { userRoles: roles } = await client.request(GET_ROLES, { slug })
 			user.roles = roles

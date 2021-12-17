@@ -37,11 +37,11 @@
 			email: $ui.email,
 			password: $ui.password
 		})
-		const { token, user, error } = res[q===SIGN_IN?'signIn':'registerUser']
-		if(token) authSuccess({ token, user })
+		const { token, user, error } = res[q === SIGN_IN ? 'signIn' : 'registerUser']
+		if (token) authSuccess({ token, user })
 		else authFailure({ error })
 	}
-	
+
 	const login = async () => auth(SIGN_IN)
 	const register = async () => auth(SIGN_UP)
 

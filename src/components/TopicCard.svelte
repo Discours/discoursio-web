@@ -11,18 +11,19 @@
 
 	onMount(async () => {
 		const { topics } = await cookie.parse(document.cookie)
-		if(topics) subscribed = topics.includes(topic.slug)
-		})
+		if (topics) subscribed = topics.includes(topic.slug)
+	})
 
 	const subscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
-		if (coo.topics && !coo.topics.includes(topic.slug)) coo.topics.push(topic.slug)
+		if (coo.topics && !coo.topics.includes(topic.slug))
+			coo.topics.push(topic.slug)
 		document.cookie = cookie.serialize(coo)
 	}
 
 	const unsubscribe = async () => {
 		let coo = await cookie.parse(document.cookie)
-		if(!coo.topics) coo.topics = []
+		if (!coo.topics) coo.topics = []
 		const idx = coo.topics.indexOf(topic.slug)
 		if (idx != -1) coo.topics.splice(idx, 1)
 		document.cookie = cookie.serialize(coo)
@@ -31,52 +32,72 @@
 
 <div class="topic">
 	{#if topic}
-	<div class="topic row">
-		<div class="col-md-7">
-			<div class="topic-title">
-				<a href="/topic/{topic.slug}">{capitalize(topic.title)}</a>
+		<div class="topic row">
+			<div class="col-md-7">
+				<div class="topic-title">
+					<a href="/topic/{topic.slug}">{capitalize(topic.title)}</a>
+				</div>
+				{#if topic.pic}
+					<div class="topic__avatar">
+						<a href={topic.slug}>
+							<img src={topic.pic} alt={topic.title} />
+						</a>
+					</div>
+				{/if}
+				{#if topic.body}
+					<p class="topic-description">
+						{@html topic.body}
+					</p>
+				{/if}
+				{#if topic.topicStat}
+					<div class="topic-details">
+						<span class="topic-details__item"
+							>{topic.topicStat.shouts} публикаци{plural(
+								topic.topicStat.shouts,
+								'я',
+								'и',
+								'й'
+							)}</span
+						>
+						<span class="topic-details__item"
+							>{topic.topicStat.authors} автор{plural(
+								topic.topicStat.authors,
+								'',
+								'а',
+								'ов'
+							)}</span
+						>
+						<span class="topic-details__item"
+							>{topic.topicStat.views} просмотр{plural(
+								topic.topicStat.views,
+								'',
+								'а',
+								'ов'
+							)}</span
+						>
+						<span class="topic-details__item"
+							>{topic.topicStat.subscriptions} подписчик{plural(
+								topic.topicStat.subscriptions,
+								'',
+								'а',
+								'ов'
+							)}</span
+						>
+					</div>
+				{/if}
 			</div>
-			{#if topic.pic}
-				<div class="topic__avatar">
-					<a href={topic.slug}>
-						<img src={topic.pic} alt={topic.title} />
-					</a>
-				</div>
-			{/if}
-			{#if topic.body}
-				<p class="topic-description">
-					{@html topic.body}
-				</p>
-			{/if}
-			{#if topic.topicStat}
-				<div class="topic-details">
-					<span class="topic-details__item"
-					>{topic.topicStat.shouts} публикаци{plural(topic.topicStat.shouts, 'я', 'и', 'й')}</span
-				>
-				<span class="topic-details__item"
-					>{topic.topicStat.authors} автор{plural(topic.topicStat.authors, '', 'а', 'ов')}</span
-				>
-				<span class="topic-details__item"
-					>{topic.topicStat.views} просмотр{plural(topic.topicStat.views, '', 'а', 'ов')}</span
-				>
-				<span class="topic-details__item"
-					>{topic.topicStat.subscriptions} подписчик{plural(topic.topicStat.subscriptions, '', 'а', 'ов')}</span
-				>
-				</div>
-			{/if}
+			<div class="topic__subscribe">
+				{#if subscribed}
+					<button on:click={unsubscribe} class="button button--subscribe"
+						>Отписаться</button
+					>
+				{:else}
+					<button on:click={subscribe} class="button button--subscribe"
+						>Подписаться</button
+					>
+				{/if}
+			</div>
 		</div>
-		<div class="topic__subscribe">
-			{#if subscribed}
-				<button on:click={unsubscribe} class="button button--subscribe"
-					>Отписаться</button
-				>
-			{:else}
-				<button on:click={subscribe} class="button button--subscribe"
-					>Подписаться</button
-				>
-			{/if}
-		</div>
-	</div>
 	{/if}
 </div>
 
@@ -93,7 +114,6 @@
 		.stats & {
 			margin-bottom: 6.4rem;
 		}
-
 	}
 
 	.topic-title {
@@ -106,7 +126,6 @@
 			text-transform: capitalize;
 		}
 	}
-
 
 	.topic__avatar {
 		border-radius: 100%;

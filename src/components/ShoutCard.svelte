@@ -6,12 +6,12 @@
 
 	const seps = [':', '?', '!']
 
-	$: if(shout && !shout.subtitle) {
+	$: if (shout && !shout.subtitle) {
 		let tt = shout.title.split('.')
-		seps.forEach(c => {
-			if(tt.length === 1) {
+		seps.forEach((c) => {
+			if (tt.length === 1) {
 				tt = shout.title.split(c)
-				if(tt.length>1) tt[0] = tt[0] + c
+				if (tt.length > 1) tt[0] = tt[0] + c
 			}
 		})
 		shout.title = tt[0]
@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="shout-card__content">
-			{#each shout.topics.filter(t => shout.mainTopic == t.slug) as topic}
+			{#each shout.topics.filter((t) => shout.mainTopic == t.slug) as topic}
 				<div class="shout__topic">
 					<a href="/topic/{topic.slug}">
 						{topic.title}

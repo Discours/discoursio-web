@@ -56,8 +56,8 @@
 		)
 
 		// top viwed and commented
-		topViewed = $shoutslist.sort((a, b) => a['views'] - b['views'])
-		topCommented = topViewed // $shoutslist.sort((a, b) => a['comments'] - b['comments']) // FIXME
+		topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
+		topCommented = $shoutslist.sort((a, b) => b['stat'].comments - a['stat'].comments) // FIXME
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
@@ -76,7 +76,9 @@
 				}
 			})
 		})
-		topicsMonth = topicsMonth.sort((a,b) => b['topicStat'].authors - a['topicStat'].authors)
+		topicsMonth = topicsMonth.sort(
+			(a, b) => b['topicStat'].authors - a['topicStat'].authors
+		)
 		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
 	}
 
@@ -145,7 +147,7 @@
 		<div class="floor floor--important">
 			<div class="wide-container row">
 				<h2 class="col-12"><span>Важное</span></h2>
-				{#each $shoutslist.slice(0, 4) as article}
+				{#each $shoutslist.slice(0, 3) as article}
 					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>

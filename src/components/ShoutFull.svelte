@@ -106,7 +106,9 @@
 				{#if !$token}
 					<div class="comment-warning">
 						Чтобы оставить комментарий, необходимо
-						<a href={''} on:click|preventDefault={() => $ui.authModal = true}><i>зарегистрироваться или войти</i></a>
+						<a href={''} on:click|preventDefault={() => ($ui.authModal = true)}
+							><i>зарегистрироваться или войти</i></a
+						>
 					</div>
 				{:else}
 					<textarea

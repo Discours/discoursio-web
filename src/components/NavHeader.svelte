@@ -39,14 +39,12 @@
 				<li class:selected={res === navItem.href}>
 					{#if res === navItem.href}
 						{navItem.title}
+					{:else if navItem.disabled}
+						{navItem.title}
 					{:else}
-						{#if navItem.disabled}
-							{navItem.title}
-						{:else}
 						<a href={navItem.href} on:click={() => (res = navItem.href)}
 							>{navItem.title}</a
 						>
-						{/if}
 					{/if}
 				</li>
 			{/each}

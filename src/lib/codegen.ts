@@ -434,9 +434,9 @@ export type Shout = {
 	mainTopic?: Maybe<Scalars['String']>
 	publishedAt?: Maybe<Scalars['DateTime']>
 	publishedBy?: Maybe<Scalars['Int']>
-	rating?: Maybe<Scalars['Int']>
 	ratings?: Maybe<Array<Maybe<Rating>>>
 	slug: Scalars['String']
+	stat?: Maybe<ShoutStat>
 	subtitle?: Maybe<Scalars['String']>
 	tags?: Maybe<Array<Maybe<Scalars['String']>>>
 	title?: Maybe<Scalars['String']>
@@ -444,7 +444,6 @@ export type Shout = {
 	updatedAt?: Maybe<Scalars['DateTime']>
 	updatedBy?: Maybe<Scalars['Int']>
 	versionOf?: Maybe<Shout>
-	views?: Maybe<Scalars['Int']>
 	visibleFor?: Maybe<Array<Maybe<User>>>
 }
 
@@ -463,6 +462,13 @@ export type ShoutResult = {
 	__typename?: 'ShoutResult'
 	error?: Maybe<Scalars['String']>
 	shout?: Maybe<Shout>
+}
+
+export type ShoutStat = {
+	__typename?: 'ShoutStat'
+	comments: Scalars['Int']
+	ratings: Scalars['Int']
+	views: Scalars['Int']
 }
 
 export type Subscription = {
