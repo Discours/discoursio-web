@@ -16,6 +16,7 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import TopicCard from '../../components/TopicCard.svelte'
 
 	export let topics: Partial<Topic>[]
 	let mode = ''
@@ -126,37 +127,7 @@
 			{#if mode === 'popular' || mode === 'active'}
 				<div class="stats">
 					{#each topics as topic}
-						<div class="topic row">
-							<div class="col-md-7">
-								<div class="topic-title">
-									<a href="/topic/{topic.slug}">{topic.title}</a>
-								</div>
-								{#if topic.body}
-									<p class="topic-description">
-										{@html topic.body}
-									</p>
-								{/if}
-								{#if topic.topicStat}
-									<div class="topic-details">
-										<span class="topic-details__item"
-											>{topic.topicStat.shouts} публикаций</span
-										>
-										<span class="topic-details__item"
-											>{topic.topicStat.views} просмотров</span
-										>
-										<span class="topic-details__item"
-											>{topic.topicStat.authors} авторов</span
-										>
-										<span class="topic-details__item"
-											>{topic.topicStat.subscriptions} подписчиков</span
-										>
-									</div>
-								{/if}
-							</div>
-							<div class="col-md-3 offset-md-2">
-								<button>+ Подписаться</button>
-							</div>
-						</div>
+						<TopicCard {topic} />
 					{/each}
 				</div>
 			{/if}
@@ -214,23 +185,6 @@
 
 		&:first-letter {
 			text-transform: capitalize;
-		}
-	}
-
-	.topic-description {
-		color: #696969;
-	}
-
-	.topic-details {
-		@include font-size(1.7rem);
-		color: #9fa1a7;
-	}
-
-	.topic-details__item {
-		margin-right: 1.6rem;
-
-		&:last-child {
-			margin-right: 0;
 		}
 	}
 

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UserCard from './UserCard.svelte'
 	import ShoutComment from './ShoutComment.svelte'
-	import { session, token } from '../stores/user'
+	import { session, token, ui } from '../stores/user'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
 	import type { Topic } from '$lib/codegen'
@@ -106,8 +106,7 @@
 				{#if !$token}
 					<div class="comment-warning">
 						Чтобы оставить комментарий, необходимо
-						<a href="/">зарегистрироваться</a> или
-						<a href="/">войти</a>
+						<a href={''} on:click|preventDefault={() => $ui.authModal = true}><i>зарегистрироваться или войти</i></a>
 					</div>
 				{:else}
 					<textarea

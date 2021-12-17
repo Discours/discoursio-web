@@ -76,14 +76,19 @@
 				}
 			})
 		})
-		topicsMonth = topicsMonth.sort((a,b) => a['topicStat'].authors - b['topicStat'].authors)
-		authorsMonth = authorsMonth.sort((a, b) => a['rating'] - b['rating'])
+		topicsMonth = topicsMonth.sort((a,b) => b['topicStat'].authors - a['topicStat'].authors)
+		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
 	}
 
 	onMount(() => {
 		$shoutslist = null
 		$topicslist = null
 	}) // force to update reactive code on mount
+
+	const moreAuthors = () => {
+		console.log('mainpage: show more authors')
+		// TODO: implement me
+	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -170,7 +175,7 @@
 						<UserCard {user} />
 					{/each}
 
-					<button class="button">Еще авторы</button>
+					<button class="button" on:click={moreAuthors}>Еще авторы</button>
 				</div>
 			</div>
 		</div>

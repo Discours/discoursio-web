@@ -2,8 +2,9 @@
 	import type { Topic } from '../lib/codegen'
 	import { onMount } from 'svelte'
 	import cookie from 'cookie'
-	import { capitalize, plural } from '$lib/utils'
-	export let topic: Topic
+	import { plural, capitalize } from '../lib/utils'
+
+	export let topic: Topic | Partial<Topic>
 	export let subscribed = false
 
 	// NOTE: cookie-based no auth requering subscriptions
@@ -30,23 +31,26 @@
 
 <div class="topic">
 	{#if topic}
-		{#if topic.pic}
-			{topic.slug}
-			<div class="topic__avatar">
-				<a href={topic.slug}>
-					<img src={topic.pic} alt={capitalize(topic.title)} />
-				</a>
+	<div class="topic row">
+		<div class="col-md-7">
+			<div class="topic-title">
+				<a href="/topic/{topic.slug}">{capitalize(topic.title)}</a>
 			</div>
-		{/if}
-		<div class="topic__details">
-			<div class="topic__name">
-				<a href={topic.slug}><b>{capitalize(topic.title)}</b></a>
-			</div>
-			{#if topic.body}
-				<div class="topic__about">{@html topic.body}</div>
+			{#if topic.pic}
+				<div class="topic__avatar">
+					<a href={topic.slug}>
+						<img src={topic.pic} alt={topic.title} />
+					</a>
+				</div>
 			{/if}
-			<div class="topic-details">
-				<span class="topic-details__item"
+			{#if topic.body}
+				<p class="topic-description">
+					{@html topic.body}
+				</p>
+			{/if}
+			{#if topic.topicStat}
+				<div class="topic-details">
+					<span class="topic-details__item"
 					>{topic.topicStat.shouts} публикаци{plural(topic.topicStat.shouts, 'я', 'и', 'й')}</span
 				>
 				<span class="topic-details__item"
@@ -55,19 +59,24 @@
 				<span class="topic-details__item"
 					>{topic.topicStat.views} просмотр{plural(topic.topicStat.views, '', 'а', 'ов')}</span
 				>
-			</div>
-			<div class="topic__subscribe">
-				{#if subscribed}
-					<button on:click={unsubscribe} class="button button--subscribe"
-						>Отписаться</button
-					>
-				{:else}
-					<button on:click={subscribe} class="button button--subscribe"
-						>Подписаться</button
-					>
-				{/if}
-			</div>
+				<span class="topic-details__item"
+					>{topic.topicStat.subscriptions} подписчик{plural(topic.topicStat.subscriptions, '', 'а', 'ов')}</span
+				>
+				</div>
+			{/if}
 		</div>
+		<div class="topic__subscribe">
+			{#if subscribed}
+				<button on:click={unsubscribe} class="button button--subscribe"
+					>Отписаться</button
+				>
+			{:else}
+				<button on:click={subscribe} class="button button--subscribe"
+					>Подписаться</button
+				>
+			{/if}
+		</div>
+	</div>
 	{/if}
 </div>
 
@@ -80,7 +89,24 @@
 		@include media-breakpoint-down(lg) {
 			flex-wrap: wrap;
 		}
+
+		.stats & {
+			margin-bottom: 6.4rem;
+		}
+
 	}
+
+	.topic-title {
+		.stats & {
+			font-weight: bold;
+			@include font-size(2.6rem);
+		}
+
+		&:first-letter {
+			text-transform: capitalize;
+		}
+	}
+
 
 	.topic__avatar {
 		border-radius: 100%;
@@ -99,11 +125,6 @@
 		}
 	}
 
-	.topic__details {
-		flex: 1;
-		padding-right: 1.2rem;
-	}
-
 	.topic__name {
 		font-size: 1.7rem;
 		margin-bottom: 0.8rem;
@@ -118,9 +139,20 @@
 		margin-top: 0.8rem;
 	}
 
+	.topic-description {
+		color: #696969;
+	}
+
 	.topic-details {
 		@include font-size(1.7rem);
 		color: #9fa1a7;
-		font-size: small;
+	}
+
+	.topic-details__item {
+		margin-right: 1.6rem;
+
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 </style>
