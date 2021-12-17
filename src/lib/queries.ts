@@ -214,7 +214,6 @@ export const RECENT_SHOUTS = gql`
 	}
 `
 
-
 export const TOP_VIEWED = gql`
 	query TopViewedShoutsQuery($page: Int!, $size: Int!) {
 		topViewed(page: $page, size: $size) {
