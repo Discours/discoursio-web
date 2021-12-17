@@ -4,6 +4,7 @@
 		const recents = await fetch('/feed/recents.json')
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
+		const topViewed = await fetch(`/feed/top-viewed.json`)
 		const topicsAll = await fetch(`/topic/all.json`)
 		// const communitiesAll = await fetch(`/community/all.json`)
 		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
@@ -11,6 +12,7 @@
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
+		props = topViewed.ok ? { ...(await topViewed.json()), ...props } : props
 		return { props }
 	}
 </script>
@@ -35,11 +37,11 @@
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
+	export let topViewed = []
 	export let topicsAll = []
 	// export let communitiesAll = []
 
 	let topCommented = [],
-		topViewed = [],
 		authorsMonth = [],
 		topicsMonth = []
 
@@ -48,15 +50,15 @@
 	// $: if(!$communitieslist && communitiesAll) $communitieslist
 
 	$: if (!$shoutslist && !$topicslist) {
-		$shoutslist = [...recents, ...topMonth, ...topOverall]
+		$shoutslist = recents
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
 		$shoutslist = Object.values($shouts)
 		console.log(
 			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
 		)
 
-		// top viwed and commented
-		topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
+		// top commented from recents
+		// topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
 		topCommented = $shoutslist.sort((a, b) => b['stat'].comments - a['stat'].comments) // FIXME
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)

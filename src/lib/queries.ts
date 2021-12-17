@@ -214,6 +214,38 @@ export const RECENT_SHOUTS = gql`
 	}
 `
 
+
+export const TOP_VIEWED = gql`
+	query TopViewedShoutsQuery($limit: Int) {
+		topViewed(limit: $limit) {
+			title
+			subtitle
+			slug
+			layout
+			cover
+			community
+			mainTopic
+			topics {
+				slug
+				title
+				body
+				pic
+			}
+			authors {
+				name
+				slug
+				userpic
+			}
+			publishedAt
+			stat {
+				views
+				comments
+				ratings
+			}
+		}
+	}
+`
+
 export const TOP_OVERALL = gql`
 	query TopOverallShoutsQuery($limit: Int) {
 		topOverall(limit: $limit) {
