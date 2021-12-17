@@ -214,7 +214,6 @@ export const RECENT_SHOUTS = gql`
 	}
 `
 
-
 export const TOP_VIEWED = gql`
 	query TopViewedShoutsQuery($limit: Int) {
 		topViewed(limit: $limit) {

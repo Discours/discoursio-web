@@ -59,7 +59,9 @@
 
 		// top commented from recents
 		// topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
-		topCommented = $shoutslist.sort((a, b) => b['stat'].comments - a['stat'].comments) // FIXME
+		topCommented = $shoutslist.sort(
+			(a, b) => b['stat'].comments - a['stat'].comments
+		) // FIXME
 		topicsAll.forEach((t) => ($topics[t.slug] = t))
 		$topicslist = Object.values($topics)
 		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
@@ -232,7 +234,7 @@
 			</div>
 		</div>
 
-		<div class="floor floor--2">
+		<div class="floor floor--11">
 			<div class="wide-container row">
 				<div class="col-md-6">
 					<ShoutCard shout={$shoutslist[20]} />
@@ -254,7 +256,7 @@
 			</div>
 		</div>
 
-		<div class="floor floor--11">
+		<div class="floor floor--13">
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<ShoutCard shout={$shoutslist[22]} />
@@ -265,7 +267,7 @@
 			</div>
 		</div>
 
-		<div class="floor floor--12">
+		<div class="floor floor--14">
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<h4>Культура</h4>
@@ -286,7 +288,7 @@
 
 		<DiscoursBanner />
 
-		<div class="floor floor--10">
+		<div class="floor floor--15">
 			<div class="wide-container row">
 				{#each $shoutslist.slice(26, 27) as article}
 					<div class="col-md-426">

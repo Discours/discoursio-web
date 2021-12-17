@@ -348,7 +348,8 @@ export type QueryIsEmailFreeArgs = {
 }
 
 export type QueryRecentsArgs = {
-	limit?: InputMaybe<Scalars['Int']>
+	page: Scalars['Int']
+	size: Scalars['Int']
 }
 
 export type QueryShoutsByAuthorArgs = {
@@ -372,15 +373,18 @@ export type QuerySignInArgs = {
 }
 
 export type QueryTopMonthArgs = {
-	limit?: InputMaybe<Scalars['Int']>
+	page: Scalars['Int']
+	size: Scalars['Int']
 }
 
 export type QueryTopOverallArgs = {
-	limit?: InputMaybe<Scalars['Int']>
+	page: Scalars['Int']
+	size: Scalars['Int']
 }
 
 export type QueryTopViewedArgs = {
-	limit?: InputMaybe<Scalars['Int']>
+	page: Scalars['Int']
+	size: Scalars['Int']
 }
 
 export type QueryTopicsByAuthorArgs = {
@@ -449,6 +453,8 @@ export type Shout = {
 
 export type ShoutInput = {
 	body: Scalars['String']
+	community: Scalars['Int']
+	mainTopic?: InputMaybe<Scalars['String']>
 	slug: Scalars['String']
 	subtitle?: InputMaybe<Scalars['String']>
 	title?: InputMaybe<Scalars['String']>
