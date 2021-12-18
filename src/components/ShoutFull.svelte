@@ -65,7 +65,7 @@
 					</div>
 
 					<h1>{shout.title}</h1>
-					{#if shout.subtitle}<h4>{capitalize(shout.subtitle)}</h4>{/if}
+					{#if shout.subtitle}<h4>{capitalize(shout.subtitle, false)}</h4>{/if}
 
 					<div class="shout__author">
 						{#each shout.authors as author, index}

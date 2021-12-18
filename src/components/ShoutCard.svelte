@@ -16,7 +16,7 @@
 			}
 		})
 		shout.title = tt[0]
-		if(tt.length > 1) shout.subtitle = capitalize(tt[1])
+		if(tt.length > 1) shout.subtitle = capitalize(tt[1], false)
 	}
 </script>
 

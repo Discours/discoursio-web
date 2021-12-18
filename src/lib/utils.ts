@@ -1,8 +1,10 @@
-export const capitalize = (s) =>
+export const capitalize = (s, every = true) => every ?
 	s
 		.split(' ')
 		.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
 		.join(' ')
+		:
+	s.charAt(0).toUpperCase() + s.slice(1)
 
 export const plural = (amount, w1, w2, w5) => {
 	const a = amount.toString()

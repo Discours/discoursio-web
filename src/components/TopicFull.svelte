@@ -4,8 +4,7 @@
 </script>
 
 <div class="topic-full container">
-	<!--{#if topic}-->
-	{JSON.stringify(topic)}
+	
 	<div class="row">
 		<div class="topic__header col-md-8 offset-md-2">
 			<h1>#{topic.title}</h1>
@@ -14,15 +13,8 @@
 				<button>Подписаться на тему</button>
 				<button>Написать в тему</button>
 			</div>
-			<!--
-				<img src={topic.pic} />
-				<h1>#{topic.title}</h1>
-				{#if topic.body}
-					<div class="topic-body">
-						{@html topic.body}
-					</div>
-				{/if}
-			--></div>
+			{#if topic.pic}<img src={topic.pic} />{/if}
+		</div>
 	</div>
 
 	<!--{/if}-->

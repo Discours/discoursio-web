@@ -51,7 +51,11 @@
 	// $: if(!$communitieslist && communitiesAll) $communitieslist
 
 	$: if (!$shoutslist && !$topicslist) {
-		$shoutslist = recents
+		update(recents)
+	}
+	
+	const update = async (data) => {
+		$shoutslist = data
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
 		// $shoutslist = Object.values($shouts).sort((a, b) => b.createdAt)
 		console.log(
@@ -92,9 +96,11 @@
 		$topicslist = null
 	}) // force to update reactive code on mount
 
+	let authorsLimit = 8
+
 	const moreAuthors = () => {
 		console.log('mainpage: show more authors')
-		// TODO: implement me
+		authorsLimit += 8
 	}
 
 	const moreShouts = async () => {
@@ -103,8 +109,10 @@
 		const p = Math.floor($shoutslist.length / 27)
 		const r = await fetch('/feed/recents.json?page=' + p)
 		if(r.ok) {
+			const { recents: newData } = await r.json()
+			console.debug(newData)
 			$shoutslist = [
-				...(await r.json()),
+				...newData,
 				...$shoutslist
 			]
 			loading = false
@@ -192,11 +200,12 @@
 				<div class="col-md-4">
 					<h4>Авторы месяца</h4>
 
-					{#each authorsMonth.slice(0, 8) as user}
+					{#each authorsMonth.slice(0, authorsLimit) as user}
 						<UserCard {user} />
 					{/each}
-
+					{#if authorsLimit < authorsMonth.length}
 					<button class="button" on:click={moreAuthors}>Еще авторы</button>
+					{/if}
 				</div>
 			</div>
 		</div>
@@ -324,4 +333,18 @@
 		</div>
 		{/each}
 	</div>
+	<div class="morewrap">
+		<div class="show-more">
+			<button class="button" type="button" on:click={moreShouts}>{loading ? 'Загружаем': 'Показать еще'}</button>
+		</div>
+	</div>
 {/if}
+<style>
+	.morewrap {
+		flex: 1 58.3333%;
+	}
+	.show-more {
+		margin-bottom: 6.4rem;
+		text-align: center;
+	}
+</style>
