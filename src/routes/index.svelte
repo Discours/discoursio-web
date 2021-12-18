@@ -80,7 +80,7 @@
 				}
 			})
 		})
-		showedTopics = shuffle(Array.from(tslugs)).slice(0,12)
+		showedTopics = shuffle(Array.from(tslugs)).slice(0,9)
 		topicsMonth = topicsMonth.sort(
 			(a, b) => b['topicStat'].authors - a['topicStat'].authors
 		)
