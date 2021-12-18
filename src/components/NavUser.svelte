@@ -95,8 +95,10 @@
 		</div>
 	</div>
 {:else}
-	<div class="usercontrol__item loginbtn">
-		<a href={''} on:click|preventDefault={toggleLogin}> войти </a>
+	<div class="usercontrol col">
+		<div class="usercontrol__item loginbtn">
+			<a href={''} on:click|preventDefault={toggleLogin}> войти </a>
+		</div>
 	</div>
 {/if}
 
