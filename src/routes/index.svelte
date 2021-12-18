@@ -325,18 +325,3 @@
 		{/each}
 	</div>
 {/if}
-
-<style lang="scss">
-	.floor {
-		margin-bottom: 6.4rem;
-
-		.wide-container {
-			padding: 0;
-		}
-	}
-
-	.floor--important {
-		background: #000;
-		color: #fff;
-	}
-</style>

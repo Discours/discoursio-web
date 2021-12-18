@@ -26,6 +26,7 @@
 	export let slug
 
 	let topic
+	let currentSwitcher = null;
 
 	$: if(!slug && $page && $page.params.slug) {
 		slug = $page.params.slug
@@ -33,21 +34,260 @@
 
 	$: if (Object.keys($topics).length > 0 && !topic)
 		topic = $topics[slug]
-	onMount(() => (topic = null))
+	onMount(() => {
+		topic = null
+		currentSwitcher = document.querySelector('.view-switcher .selected button');
+	})
+
+
+	const toggleSortSwitcher = (newSelectedControl) => {
+		if (currentSwitcher) {
+			currentSwitcher.parentNode.classList.remove('selected');
+		}
+		currentSwitcher = newSelectedControl;
+		currentSwitcher.parentNode.classList.add('selected');
+	}
+
+	const sortByPopular = (evt) => {
+		if (evt.target !== currentSwitcher) {
+			shouts = shouts.sort((a, b) => b.stat.views - a.stat.views);
+			toggleSortSwitcher(evt.target);
+		}
+	}
+
+	const sortByDiscuss = (evt) => {
+		if (evt.target !== currentSwitcher) {
+			shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments);
+			toggleSortSwitcher(evt.target);
+		}
+	}
+
+	const sortByDate = (evt) => {
+		if (evt.target !== currentSwitcher) {
+			shouts = shouts.sort((a, b) => new Date(b.publishedAt).getMilliseconds() - new Date(a.publishedAt).getMilliseconds());
+			toggleSortSwitcher(evt.target);
+		}
+	}
 </script>
 
 <svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
+<!--{JSON.stringify(topic)}-->
 {#if topic}
-	<h3>Тема: {topic.title}</h3>
 	<TopicFull {topic} />
 {/if}
-<div class="topic-shouts">
-	{#each shouts as shout}
-	<ShoutCard {shout} />
-	{/each}
+
+<div class="container">
+	<div class="row topic__controls">
+		<div class="col-md-8">
+			<ul class="view-switcher">
+				<li class="selected">
+					<button type="button" on:click={sortByDate}>Свежее</button>
+				</li>
+				<li>
+					<button type="button" on:click={sortByPopular}>Популярное</button>
+				</li>
+				<li>
+					<button type="button" on:click={sortByDiscuss}>Обсуждаемое</button>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-md-4">
+			<div class="mode-switcher">
+				Показывать
+				<span class="mode-switcher__control">Все публикации</span>
+			</div>
+		</div>
+	</div>
+
+	<!--{JSON.stringify(shouts[0])}-->
+
+	<div class="row">
+		<div class="floor floor--1 col-12">
+			<div class="row">
+				{#each shouts.slice(0, 1) as shout}
+					<div class="col-12">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				{#each shouts.slice(1, 4) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				{#each shouts.slice(4, 6) as shout}
+					<div class="col-md-6">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				<div class="col-md-4">
+					<h3>Тему поддерживают</h3>
+					{#each Object.keys(authors).slice(0, 5) as key}
+					<UserCard user={authors[key]} />
+					{/each}
+				</div>
+				{#each shouts.slice(6, 8) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor floor--important">
+			<div class="row">
+				<h3 class="col-12">Популярное</h3>
+				{#each shouts.slice(8, 10) as shout}
+					<div class="col-md-6">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				{#each shouts.slice(10, 13) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				{#each shouts.slice(13, 16) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor floor--important">
+			<div class="row">
+				<h3 class="col-12">Избранное</h3>
+				{#each shouts.slice(16, 19) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				<div class="col-md-4">
+					<ShoutCard shout="{shouts[0]}"/>
+				</div>
+				<div class="col-md-8">
+					<ShoutCard shout="{shouts[1]}"/>
+				</div>
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				{#each shouts.slice(2, 6) as shout}
+					<div class="col-md-3">
+						<ShoutCard {shout}/>
+					</div>
+				{/each}
+			</div>
+		</div>
+		<div class="floor col-12">
+			<div class="row">
+				<div class="col-md-8">
+					<ShoutCard shout="{shouts[6]}"/>
+				</div>
+				<div class="col-md-4">
+					<ShoutCard shout="{shouts[7]}"/>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="topic-authors">
-	{#each authors as author}
-	<UserCard user={author} />
-	{/each}
+
+<div class="show-more">
+	<button class="button" type="button">Показать еще</button>
 </div>
+
+
+<style lang="scss">
+	.topic__controls {
+		align-items: baseline;
+		margin-bottom: 7rem;
+		margin-top: 7rem;
+	}
+
+	.view-switcher {
+		margin-bottom: 0;
+	}
+
+	.mode-switcher {
+		@include font-size(1.5rem);
+		text-align: right;
+	}
+
+	.mode-switcher__control {
+		border-bottom: 1px dotted;
+		cursor: pointer;
+		font-weight: bold;
+	}
+
+	.floor--1 {
+		@include media-breakpoint-up(md) {
+			:global(.shout-card) {
+				flex-direction: row;
+			}
+
+			:global(.shout-card__cover) {
+				margin-bottom: 0;
+			}
+
+			:global(.shout-card__cover-container) {
+				flex: 1 58.3333%;
+			}
+
+			:global(.shout-card__content) {
+				display: flex;
+				flex-direction: column;
+				flex: 1 41.6666%;
+				justify-content: space-between;
+				padding-left: 4rem;
+			}
+
+			:global(.shout__topic) {
+				margin-bottom: 3.2rem;
+			}
+
+			:global(.shout-card__title) {
+				margin-bottom: 2.4rem;
+			}
+		}
+
+		:global(.shout-card__title) {
+			@include font-size(4rem);
+			font-weight: 900;
+			line-height: 1.1;
+		}
+
+		:global(.shout-card__subtitle) {
+			color: #696969;
+			flex: 1;
+			@include font-size(2.4rem);
+		}
+	}
+
+	.show-more {
+		margin-bottom: 6.4rem;
+		text-align: center;
+	}
+</style>

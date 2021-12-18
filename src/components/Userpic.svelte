@@ -14,7 +14,9 @@
 	{#if user && user.userpic === ''}
 		<div class="userpic">{letters()}</div>
 	{:else}
-		<img src={user.userpic} alt={user.name} />
+		<img src={user.userpic ? user.userpic : '/static/icons/user-anonymous.svg'}
+				 alt={user.name}
+		class:anonymous={!user.userpic}/>
 	{/if}
 </div>
 
@@ -42,6 +44,10 @@
 			background-color: white;
 			text-align: center;
 			line-height: 32px;
+		}
+
+		.anonymous {
+			object-fit: contain;
 		}
 	}
 </style>
