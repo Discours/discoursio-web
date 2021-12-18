@@ -71,7 +71,6 @@
 </script>
 
 <svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
-<!--{JSON.stringify(topic)}-->
 {#if topic}
 	<TopicFull {topic} />
 {/if}
@@ -99,8 +98,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!--{JSON.stringify(shouts[0])}-->
 
 	<div class="row">
 		<div class="floor floor--1 col-12">
