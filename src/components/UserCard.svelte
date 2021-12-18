@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { User } from '../lib/codegen'
 	import Userpic from './Userpic.svelte'
-	import cookie from 'cookie'
+	import Cookies from 'js-cookie'
 	import { onMount } from 'svelte'
 	import Icon from './DiscoursIcon.svelte'
 
@@ -13,26 +13,25 @@
 	// NOTE: cookie-based no auth requering subscriptions
 
 	onMount(async () => {
-		const data = await cookie.parse(document.cookie)
-		if (data && data.authors)
-			data.authors.forEach((a) => {
-				if (a.slug === user.slug) subscribed = true
-			})
+		let authors = JSON.parse(Cookies.get('authors'))
+		if (authors) subscribed = authors.includes(user.slug)
+		else Cookies.set('authors', '[]')
 	})
 
 	const subscribe = async () => {
-		let coo = await cookie.parse(document.cookie)
-		if (!coo) coo = { authors: [] }
-		if (!coo.authors) coo.authors = []
-		if (!coo.authors.includes(user.slug)) coo.authors.push(user.slug)
-		document.cookie = cookie.serialize(coo)
+		console.log('author: subscribing')
+		let authors = JSON.parse(Cookies.get('authors'))
+		if(!authors.includes(user.slug)) authors.push(user.slug)
+		Cookies.set('authors', JSON.stringify(authors))
+		console.log(document.cookie)
 	}
 
 	const unsubscribe = async () => {
-		let coo = await cookie.parse(document.cookie)
-		const idx = coo.authors.indexOf(user.slug)
-		if (idx != -1) coo.authors.splice(idx, 1)
-		document.cookie = cookie.serialize(coo)
+		console.log('author: unsubscribing')
+		let authors = JSON.parse(Cookies.get('authors'))
+		if(authors.includes(user.slug)) authors = authors.filter(item => item !== user.slug)
+		Cookies.set('authors', JSON.stringify(authors))
+		console.log(document.cookie)
 	}
 </script>
 

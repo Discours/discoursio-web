@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { Topic } from '../lib/codegen'
 	import { onMount } from 'svelte'
-	import cookie from 'cookie'
 	import { plural, capitalize } from '../lib/utils'
 
 	export let topic: Topic | Partial<Topic>
@@ -11,23 +10,19 @@
 	// NOTE: cookie-based no auth requering subscriptions
 
 	onMount(async () => {
-		const { topics } = await cookie.parse(document.cookie)
-		if (topics) subscribed = topics.includes(topic.slug)
+		// let { topics } = JSON.parse(decodeURI(document.cookie))
+		// if (topics) subscribed = topics.includes(topic.slug)
 	})
 
 	const subscribe = async () => {
-		let coo = await cookie.parse(document.cookie)
-		if (coo.topics && !coo.topics.includes(topic.slug))
-			coo.topics.push(topic.slug)
-		document.cookie = cookie.serialize(coo)
+		console.log('topic: subscribing')
+		// TODO
+		console.log(document.cookie)
 	}
 
 	const unsubscribe = async () => {
-		let coo = await cookie.parse(document.cookie)
-		if (!coo.topics) coo.topics = []
-		const idx = coo.topics.indexOf(topic.slug)
-		if (idx != -1) coo.topics.splice(idx, 1)
-		document.cookie = cookie.serialize(coo)
+		console.log('topic: unsubscribing')
+		// TODO
 	}
 </script>
 
