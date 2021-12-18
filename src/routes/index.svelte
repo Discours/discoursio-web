@@ -256,7 +256,7 @@
 				</div>
 				<div class="col-md-6">
 					<h4>Самое обсуждаемое</h4>
-					{#each topCommented as article}
+					{#each topCommented.slice(0,1) as article}
 						<ShoutCard shout={article} />
 					{/each}
 				</div>

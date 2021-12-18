@@ -1,5 +1,6 @@
 <script lang="ts">
-	import type { Shout } from '../lib/codegen'
+	import { capitalize } from '$lib/utils'
+	import type { Shout } from '$lib/codegen'
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
@@ -15,7 +16,7 @@
 			}
 		})
 		shout.title = tt[0]
-		shout.subtitle = tt[1]
+		if(tt.length > 1) shout.subtitle = capitalize(tt[1])
 	}
 </script>
 
