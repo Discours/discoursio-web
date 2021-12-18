@@ -158,10 +158,10 @@
 							лучше.
 							Самые потрясающие истории мы&nbsp;создаём вместе.</em></p>
 					<div class="about-discours__actions">
-						<button class="button" type="button">присоединиться к&nbsp;сообществу</button>
-						<button class="button" type="button">стать автором</button>
-						<button class="button" type="button">о&nbsp;проекте</button>
-						<button class="button" type="button">поддержать платформу</button>
+						<a class="button" href="#post">присоединитьсяк&nbsp;сообществу</a>
+						<a class="button" href="#post">стать автором</a>
+						<a class="button" href="/manifest">о&nbsp;проекте</a>
+						<a class="button" href="/help">поддержать платформу</a>
 					</div>
 				</div>
 			</div>
