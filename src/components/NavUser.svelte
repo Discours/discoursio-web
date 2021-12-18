@@ -62,7 +62,7 @@
 {#if $token}
 	<div class="usercontrol col">
 		<div class="usercontrol__item usercontrol__item--write-post">
-			<a href="#">
+			<a href="/create">
 				<span class="text-label">опубликовать материал</span>
 				<Icon name="pencil" />
 			</a>

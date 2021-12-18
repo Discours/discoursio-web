@@ -53,7 +53,7 @@
 	$: if (!$shoutslist && !$topicslist) {
 		update(recents)
 	}
-	
+
 	const update = async (data) => {
 		$shoutslist = data
 		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
@@ -293,20 +293,14 @@
 
 		<div class="floor floor--14">
 			<div class="wide-container row">
-				<div class="col-md-4">
-					<h4>Культура</h4>
-					{#each $shoutslist
-						.filter((s) => s.topics.map((t) => t.slug).includes('culture'))
-						.slice(0, 4) as article}
+				<h4>Культура</h4>
+				{#each $shoutslist
+					.filter((s) => s.topics.map((t) => t.slug).includes('culture'))
+					.slice(0, 3) as article}
+					<div class="col-md-4">
 						<ShoutCard shout={article} />
-					{/each}
-				</div>
-				<div class="col-md-4">
-					<ShoutCard shout={$shoutslist[24]} />
-				</div>
-				<div class="col-md-4">
-					<ShoutCard shout={$shoutslist[25]} />
-				</div>
+					</div>
+				{/each}
 			</div>
 		</div>
 

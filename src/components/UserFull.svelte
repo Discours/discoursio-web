@@ -76,6 +76,17 @@
 			width: 168px;
 		}
 
+		:global(.circlewrap .userpic) {
+			font-size: 2em;
+			height: 100%;
+			line-height: 168px;
+			width: 100%;
+		}
+
+		:global(.author__subscribe) {
+			margin-top: 2rem;
+		}
+
 		:global(.author__details) {
 			display: block;
 		}

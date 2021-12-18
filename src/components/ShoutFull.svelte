@@ -60,7 +60,7 @@
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
 						{#each shout.topics as topic}
-							<span class="topic"><a href={`/${topic.slug}`}>#{topic.title}</a></span>
+							<span class="topic"><a href={`/topic/${topic.slug}`}>#{topic.title}</a></span>
 						{/each}
 					</div>
 

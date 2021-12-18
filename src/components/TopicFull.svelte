@@ -4,11 +4,13 @@
 </script>
 
 <div class="topic-full container">
-	
+
 	<div class="row">
 		<div class="topic__header col-md-8 offset-md-2">
 			<h1>#{topic.title}</h1>
-			<p>{topic.body}</p>
+			{#if topic.body}
+				<p>{topic.body}</p>
+			{/if}
 			<div class="topic__actions">
 				<button>Подписаться на тему</button>
 				<button>Написать в тему</button>
