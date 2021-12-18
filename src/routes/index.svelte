@@ -230,7 +230,7 @@
 				<div class="col-md-4">
 					<h4>Темы месяца</h4>
 					{#each topicsMonth.slice(0, 4) as topic}
-						<TopicCard {topic} />
+						<TopicCard {topic} compact={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">

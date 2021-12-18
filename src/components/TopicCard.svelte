@@ -6,6 +6,7 @@
 
 	export let topic: Topic | Partial<Topic>
 	export let subscribed = false
+	export let compact
 
 	// NOTE: cookie-based no auth requering subscriptions
 
@@ -43,12 +44,12 @@
 					</a>
 				</div>
 			{/if}
-			{#if topic.body}
+			{#if topic.body && !compact}
 				<p class="topic-description">
 					{@html topic.body}
 				</p>
 			{/if}
-			{#if topic.topicStat}
+			{#if topic.topicStat && !compact}
 				<div class="topic-details">
 						<span class="topic-details__item"
 						>{topic.topicStat.shouts} публикаци{plural(
