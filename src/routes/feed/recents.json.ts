@@ -3,8 +3,8 @@ import { RECENT_SHOUTS } from '../../lib/queries'
 
 export const get = async ({ params }) => {
 	try {
-		const { more } = params
-		const { recents } = await client.request(RECENT_SHOUTS, { page: more || 0, size: 27 })
+		const { page } = params
+		const { recents } = await client.request(RECENT_SHOUTS, { page: page || 0, size: 27 })
 		return {
 			status: 200,
 			body: { recents }

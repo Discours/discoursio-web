@@ -40,6 +40,7 @@
 	import UserFull from '../components/UserFull.svelte'
 
 	export let shout
+	export let shouts
 	export let comments
 	export let user
 	export let slug
@@ -61,4 +62,4 @@
 </script>
 
 <svelte:head><title>Дискурс{title ? ' : ' + title : ''}</title></svelte:head>
-<svelte:component this={component} props={{ shout, user }} />
+<svelte:component this={component} props={{ shout, user, shouts }} />
