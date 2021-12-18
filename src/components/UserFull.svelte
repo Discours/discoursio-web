@@ -1,4 +1,6 @@
 <script>
+	import UserCard from "./UserCard.svelte";
+
 	export let props
 	let user
 	$: user = props.user
@@ -6,5 +8,64 @@
 </script>
 
 {#if user}
-	<h3>{user.name}</h3>
+	<div class="container">
+		<div class="row">
+			<div class="user-details">
+				<UserCard {user} hasFullInfo="{true}"/>
+			</div>
+		</div>
+	</div>
 {/if}
+
+
+<style lang="scss">
+	.user-details {
+		:global(.author__name) {
+			@include font-size(3.4rem);
+			font-weight: 500;
+			margin-bottom: 0;
+		}
+
+		:global(.author__about) {
+			color: #696969;
+			@include font-size(1.7rem);
+		}
+
+		:global(.circlewrap) {
+			margin-right: 4.8rem;
+			max-width: 168px;
+			min-width: 168px;
+			height: 168px;
+			width: 168px;
+		}
+
+		:global(.author__details) {
+			display: block;
+		}
+
+		:global(.button--subscribe) {
+			background-color: #000;
+			border-radius: 2px;
+			padding-bottom: 0.6rem;
+			padding-top: 0.6rem;
+		}
+
+		:global(.button__label) {
+			display: block;
+		}
+
+		:global(.button--subscribe .icon) {
+			filter: invert(1);
+			margin-right: 0.5em;
+		}
+
+		:global(.button--subscribe img) {
+			vertical-align: text-top;
+		}
+
+		:global(.button) {
+			margin-right: 1.6rem;
+			vertical-align: middle;
+		}
+	}
+</style>
