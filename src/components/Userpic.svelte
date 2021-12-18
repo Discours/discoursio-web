@@ -14,7 +14,7 @@
 	{#if user && user.userpic === ''}
 		<div class="userpic">{letters()}</div>
 	{:else}
-		<img src={user.userpic ? user.userpic : '/static/icons/user-anonymous.svg'}
+		<img src={user.userpic ? user.userpic : '/icons/user-anonymous.svg'}
 				 alt={user.name}
 		class:anonymous={!user.userpic}/>
 	{/if}
