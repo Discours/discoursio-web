@@ -24,10 +24,10 @@
 	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
-	import Sveo from '@didiercatz/sveo'
+	// import Sveo from '@didiercatz/sveo'
 	// import type { Topic } from '../lib/codegen'
 
-	export let seo
+	// export let seo
 	// export let topics: Topic[]
 	initLocalizationContext()
 
@@ -52,7 +52,7 @@
 	onMount(() => ($token = document.cookie))
 </script>
 
-<Sveo {seo} />
+<!--Sveo {seo} /-->
 <header><NavHeader /></header>
 <main><slot /></main>
 <DiscoursFooter />

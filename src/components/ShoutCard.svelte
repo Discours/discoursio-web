@@ -12,7 +12,7 @@
 		seps.forEach((c) => {
 			if (tt.length === 1) {
 				tt = shout.title.split(c)
-				if (tt.length > 1) tt[0] = tt[0] + c
+				if (tt.length > 1) tt[0] = tt[0] + (c===':'?'':c)
 			}
 		})
 		shout.title = tt[0]
