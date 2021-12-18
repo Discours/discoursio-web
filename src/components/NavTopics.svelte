@@ -21,8 +21,8 @@
 
 <style lang="scss">
 	.subnavigation {
-		margin-top: 2rem;
-		margin-bottom: 9rem;
+		@include font-size(1.5rem);
+		margin-bottom: 2.4rem;
 
 		.topics {
 			display: flex;
@@ -42,6 +42,10 @@
 
 		.selected {
 			color: black;
+		}
+
+		a {
+			color: #141414;
 		}
 	}
 </style>

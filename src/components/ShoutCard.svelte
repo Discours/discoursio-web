@@ -116,7 +116,7 @@
 		position: relative;
 
 		:global(.floor--1) &:nth-child(2) {
-			border-top: 1px solid rgba(0, 0, 0, 0.1);
+			border-top: 1px solid #141414;
 			margin-top: 2.4rem !important;
 			padding-top: 2.4rem;
 

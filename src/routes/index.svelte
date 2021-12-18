@@ -145,6 +145,28 @@
 			</div>
 		</div>
 
+		<div class="about-discours">
+			<div class="wide-container row">
+				<div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+					<h4>Горизонтальная платформа для коллаборативной журналистики</h4>
+					<p>Дискурс&nbsp;&mdash; это интеллектуальная среда, веб-пространство
+						и&nbsp;инструменты,
+						которые позволяют авторам сотрудничать с&nbsp;читателями и&nbsp;объединяться
+						для совместного создания публикаций и&nbsp;медиа-проектов.
+						<br/>
+						<em>Мы&nbsp;убеждены, один голос хорошо, а&nbsp;много&nbsp;&mdash;
+							лучше.
+							Самые потрясающие истории мы&nbsp;создаём вместе.</em></p>
+					<div class="about-discours__actions">
+						<button class="button" type="button">присоединиться к&nbsp;сообществу</button>
+						<button class="button" type="button">стать автором</button>
+						<button class="button" type="button">о&nbsp;проекте</button>
+						<button class="button" type="button">поддержать платформу</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<div class="floor floor--2">
 			<div class="wide-container row">
 				<div class="col-md-6">
@@ -333,12 +355,44 @@
 		</div>
 	</div>
 {/if}
-<style>
+<style lang="scss">
 	.morewrap {
 		flex: 1 58.3333%;
 	}
 	.show-more {
 		margin-bottom: 6.4rem;
 		text-align: center;
+	}
+
+	.about-discours {
+		background: #000;
+		color: #fff;
+		@include font-size(1.7rem);
+		font-weight: 400;
+		padding: 6.2em 0;
+		margin-bottom: 6.4rem;
+
+		h4 {
+			margin-bottom: 4rem;
+		}
+
+		em {
+			font-weight: inherit;
+		}
+
+		.wide-container {
+			padding: 0;
+		}
+	}
+
+	.about-discours__actions {
+		margin-top: 4.8rem;
+
+		.button {
+			border: 3px solid;
+			border-radius: 1.2em;
+			font-weight: bold;
+			margin-right: 0.3em;
+		}
 	}
 </style>
