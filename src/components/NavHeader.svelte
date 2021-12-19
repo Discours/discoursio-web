@@ -49,8 +49,10 @@
 			</a>
 		</div>
 
-		<ul class="col main-navigation text-xl inline-flex"
-				class:main-navigation--open={!isBurgerHidden}>
+		<ul
+			class="col main-navigation text-xl inline-flex"
+			class:main-navigation--open={!isBurgerHidden}
+		>
 			{#each MAIN_NAVIGATION as navItem}
 				<li class:selected={res === navItem.href}>
 					{#if res === navItem.href}
@@ -69,8 +71,12 @@
 		<NavUser />
 
 		<div class="burger-container">
-			<div class="burger" class:burger--close={!isBurgerHidden} on:click={toggleBurger}>
-				<div></div>
+			<div
+				class="burger"
+				class:burger--close={!isBurgerHidden}
+				on:click={toggleBurger}
+			>
+				<div />
 			</div>
 		</div>
 	</nav>
@@ -258,5 +264,4 @@
 			top: 0.8rem;
 		}
 	}
-
 </style>

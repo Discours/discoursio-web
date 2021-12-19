@@ -1,17 +1,19 @@
 <script>
-	import UserCard from "./UserCard.svelte";
+	import UserCard from './UserCard.svelte'
 	import ShoutCard from '../components/ShoutCard.svelte'
 
 	export let props
 	let user
 	$: user = props.user
 
-	let shouts = [];
+	let shouts = []
 
 	if (props.shouts) {
-		shouts = Array(Math.ceil(props.shouts.length / 5)).fill().map(function(item, index) {
-			return props.shouts.slice(index * 5, index * 5 + 5);
-		});
+		shouts = Array(Math.ceil(props.shouts.length / 5))
+			.fill()
+			.map(function (item, index) {
+				return props.shouts.slice(index * 5, index * 5 + 5)
+			})
 	}
 
 	// TODO: UserFull - public user profile page
@@ -21,7 +23,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="user-details">
-				<UserCard {user} hasFullInfo="{true}"/>
+				<UserCard {user} hasFullInfo={true} />
 			</div>
 		</div>
 	</div>
@@ -33,7 +35,7 @@
 					<div class="row">
 						{#each group.slice(0, 2) as shout}
 							<div class="col-md-6">
-								<ShoutCard {shout}/>
+								<ShoutCard {shout} />
 							</div>
 						{/each}
 					</div>
@@ -42,7 +44,7 @@
 					<div class="row">
 						{#each group.slice(2, 5) as shout}
 							<div class="col-md-4">
-								<ShoutCard {shout}/>
+								<ShoutCard {shout} />
 							</div>
 						{/each}
 					</div>
@@ -51,7 +53,6 @@
 		</div>
 	</div>
 {/if}
-
 
 <style lang="scss">
 	.user-details {

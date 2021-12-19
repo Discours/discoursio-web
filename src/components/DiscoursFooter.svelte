@@ -131,8 +131,8 @@
 		<div class="footer-copyright row">
 			<div class="col-md-10">
 				Независимый журнал о&nbsp;культуре, найке и&nbsp;обществе с&nbsp;открытой
-				горизонтальной редакцией. ©&nbsp;дискурс 2015-2020. <a href="/"
-					>Terms of&nbsp;use</a
+				горизонтальной редакцией. ©&nbsp;дискурс 2015-2021. <a href="/terms-of-use"
+					>Условия&nbsp;использования</a
 				>
 			</div>
 			<div class="footer-copyright__social col-md-2">

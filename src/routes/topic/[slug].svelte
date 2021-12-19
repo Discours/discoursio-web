@@ -26,46 +26,48 @@
 	export let slug
 
 	let topic
-	let currentSwitcher = null;
+	let currentSwitcher = null
 
-	$: if(!slug && $page && $page.params.slug) {
+	$: if (!slug && $page && $page.params.slug) {
 		slug = $page.params.slug
 	}
 
-	$: if (Object.keys($topics).length > 0 && !topic)
-		topic = $topics[slug]
+	$: if (Object.keys($topics).length > 0 && !topic) topic = $topics[slug]
 	onMount(() => {
 		topic = null
-		currentSwitcher = document.querySelector('.view-switcher .selected button');
+		currentSwitcher = document.querySelector('.view-switcher .selected button')
 	})
-
 
 	const toggleSortSwitcher = (newSelectedControl) => {
 		if (currentSwitcher) {
-			currentSwitcher.parentNode.classList.remove('selected');
+			currentSwitcher.parentNode.classList.remove('selected')
 		}
-		currentSwitcher = newSelectedControl;
-		currentSwitcher.parentNode.classList.add('selected');
+		currentSwitcher = newSelectedControl
+		currentSwitcher.parentNode.classList.add('selected')
 	}
 
 	const sortByPopular = (evt) => {
 		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort((a, b) => b.stat.views - a.stat.views);
-			toggleSortSwitcher(evt.target);
+			shouts = shouts.sort((a, b) => b.stat.views - a.stat.views)
+			toggleSortSwitcher(evt.target)
 		}
 	}
 
 	const sortByDiscuss = (evt) => {
 		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments);
-			toggleSortSwitcher(evt.target);
+			shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments)
+			toggleSortSwitcher(evt.target)
 		}
 	}
 
 	const sortByDate = (evt) => {
 		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort((a, b) => new Date(b.publishedAt).getMilliseconds() - new Date(a.publishedAt).getMilliseconds());
-			toggleSortSwitcher(evt.target);
+			shouts = shouts.sort(
+				(a, b) =>
+					new Date(b.publishedAt).getMilliseconds() -
+					new Date(a.publishedAt).getMilliseconds()
+			)
+			toggleSortSwitcher(evt.target)
 		}
 	}
 </script>
@@ -104,7 +106,7 @@
 			<div class="row">
 				{#each shouts.slice(0, 1) as shout}
 					<div class="col-12">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -113,7 +115,7 @@
 			<div class="row">
 				{#each shouts.slice(1, 4) as shout}
 					<div class="col-md-4">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -122,7 +124,7 @@
 			<div class="row">
 				{#each shouts.slice(4, 6) as shout}
 					<div class="col-md-6">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -132,12 +134,12 @@
 				<div class="col-md-4">
 					<h3>Тему поддерживают</h3>
 					{#each Object.keys(authors).slice(0, 5) as key}
-					<UserCard user={authors[key]} />
+						<UserCard user={authors[key]} />
 					{/each}
 				</div>
 				{#each shouts.slice(6, 8) as shout}
 					<div class="col-md-4">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -147,7 +149,7 @@
 				<h3 class="col-12">Популярное</h3>
 				{#each shouts.slice(8, 10) as shout}
 					<div class="col-md-6">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -156,7 +158,7 @@
 			<div class="row">
 				{#each shouts.slice(10, 13) as shout}
 					<div class="col-md-4">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -165,7 +167,7 @@
 			<div class="row">
 				{#each shouts.slice(13, 16) as shout}
 					<div class="col-md-4">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -175,7 +177,7 @@
 				<h3 class="col-12">Избранное</h3>
 				{#each shouts.slice(16, 19) as shout}
 					<div class="col-md-4">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -183,10 +185,10 @@
 		<div class="floor col-12">
 			<div class="row">
 				<div class="col-md-4">
-					<ShoutCard shout="{shouts[0]}"/>
+					<ShoutCard shout={shouts[0]} />
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout="{shouts[1]}"/>
+					<ShoutCard shout={shouts[1]} />
 				</div>
 			</div>
 		</div>
@@ -194,7 +196,7 @@
 			<div class="row">
 				{#each shouts.slice(2, 6) as shout}
 					<div class="col-md-3">
-						<ShoutCard {shout}/>
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -202,10 +204,10 @@
 		<div class="floor col-12">
 			<div class="row">
 				<div class="col-md-8">
-					<ShoutCard shout="{shouts[6]}"/>
+					<ShoutCard shout={shouts[6]} />
 				</div>
 				<div class="col-md-4">
-					<ShoutCard shout="{shouts[7]}"/>
+					<ShoutCard shout={shouts[7]} />
 				</div>
 			</div>
 		</div>
@@ -215,7 +217,6 @@
 <div class="show-more">
 	<button class="button" type="button">Показать еще</button>
 </div>
-
 
 <style lang="scss">
 	.topic__controls {

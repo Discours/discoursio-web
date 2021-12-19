@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { User } from '../lib/codegen'
 	import Userpic from './Userpic.svelte'
-	import Cookies from 'js-cookie'
+	// import Cookies from 'js-cookie'
 	import { onMount } from 'svelte'
 	import Icon from './DiscoursIcon.svelte'
 
@@ -13,24 +13,24 @@
 	// NOTE: cookie-based no auth requering subscriptions
 
 	onMount(async () => {
-		let authors = JSON.parse(Cookies.get('authors'))
-		if (authors) subscribed = authors.includes(user.slug)
-		else Cookies.set('authors', '[]')
+		// let authors = JSON.parse(Cookies.get('authors'))
+		// if (authors) subscribed = authors.includes(user.slug)
+		// else Cookies.set('authors', '[]')
 	})
 
 	const subscribe = async () => {
 		console.log('author: subscribing')
-		let authors = JSON.parse(Cookies.get('authors'))
-		if(!authors.includes(user.slug)) authors.push(user.slug)
-		Cookies.set('authors', JSON.stringify(authors))
+		// let authors = JSON.parse(Cookies.get('authors'))
+		// if(!authors.includes(user.slug)) authors.push(user.slug)
+		// Cookies.set('authors', JSON.stringify(authors))
 		console.log(document.cookie)
 	}
 
 	const unsubscribe = async () => {
 		console.log('author: unsubscribing')
-		let authors = JSON.parse(Cookies.get('authors'))
-		if(authors.includes(user.slug)) authors = authors.filter(item => item !== user.slug)
-		Cookies.set('authors', JSON.stringify(authors))
+		// let authors = JSON.parse(Cookies.get('authors'))
+		// if(authors.includes(user.slug)) authors = authors.filter(item => item !== user.slug)
+		// Cookies.set('authors', JSON.stringify(authors))
 		console.log(document.cookie)
 	}
 </script>
@@ -58,20 +58,20 @@
 						>
 					{:else}
 						<button on:click={subscribe} class="button button--subscribe">
-							<Icon name="author-subscribe"/>
+							<Icon name="author-subscribe" />
 							<span class="button__label">Подписаться</span>
 						</button>
 					{/if}
 
 					{#if hasFullInfo}
 						<button class="button button--write">
-							<Icon name="edit"/>
+							<Icon name="edit" />
 							Написать
 						</button>
 
 						{#if user.links}
 							{#each user.links as link}
-								<a href="{link}"></a>
+								<a href={link} />
 							{/each}
 						{/if}
 					{/if}

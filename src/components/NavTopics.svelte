@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { filterTopic, topics } from '../stores/zine'
 	export let slugs: Set<string>
-	$: console.log(slugs)
 	const getTitle = (slug: string) => $topics[slug].title
 </script>
 
@@ -46,6 +45,9 @@
 
 		a {
 			color: #141414;
+		}
+		a:hover {
+			font-weight: 500;
 		}
 	}
 </style>

@@ -34,6 +34,7 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { shuffle } from '../lib/utils'
+	import { fade } from 'svelte/transition'
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
@@ -44,7 +45,8 @@
 	let showedTopics = []
 	let topCommented = [],
 		authorsMonth = [],
-		topicsMonth = []
+		topicsMonth = [],
+		moreTimes = 0
 	let loading
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
@@ -84,7 +86,7 @@
 				}
 			})
 		})
-		showedTopics = shuffle(Array.from(tslugs)).slice(0,9)
+		showedTopics = shuffle(Array.from(tslugs)).slice(0, 9)
 		topicsMonth = topicsMonth.sort(
 			(a, b) => b['topicStat'].authors - a['topicStat'].authors
 		)
@@ -108,13 +110,13 @@
 		console.log('mainpage: show more shouts')
 		const p = Math.floor($shoutslist.length / 27)
 		const r = await fetch('/feed/recents.json?page=' + p)
-		if(r.ok) {
+		if (r.ok) {
 			const { recents: newData } = await r.json()
-			console.debug(newData)
-			$shoutslist = [
-				...newData,
-				...$shoutslist
-			]
+			console.debug(
+				'mainpage: ' + newData.length.toString() + ' more shouts loaded'
+			)
+			$shoutslist = Array.from(new Set([...newData, ...$shoutslist]))
+			moreTimes += 1
 			loading = false
 		}
 	}
@@ -122,7 +124,7 @@
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist}
-	<div class="home">
+	<div class="home" transition:fade>
 		{#if tslugs} <NavTopics slugs={new Set(showedTopics)} />{/if}
 
 		<div class="floor floor--1">
@@ -149,19 +151,22 @@
 			<div class="wide-container row">
 				<div class="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
 					<h4>Горизонтальная платформа для коллаборативной журналистики</h4>
-					<p>Дискурс&nbsp;&mdash; это интеллектуальная среда, веб-пространство
-						и&nbsp;инструменты,
-						которые позволяют авторам сотрудничать с&nbsp;читателями и&nbsp;объединяться
-						для совместного создания публикаций и&nbsp;медиа-проектов.
-						<br/>
-						<em>Мы&nbsp;убеждены, один голос хорошо, а&nbsp;много&nbsp;&mdash;
-							лучше.
-							Самые потрясающие истории мы&nbsp;создаём вместе.</em></p>
+					<p>
+						Дискурс&nbsp;&mdash; это интеллектуальная среда, веб-пространство
+						и&nbsp;инструменты, которые позволяют авторам сотрудничать
+						с&nbsp;читателями и&nbsp;объединяться для совместного создания публикаций
+						и&nbsp;медиа-проектов.
+						<br />
+						<em
+							>Мы&nbsp;убеждены, один голос хорошо, а&nbsp;много&nbsp;&mdash; лучше.
+							Самые потрясающие истории мы&nbsp;создаём вместе.</em
+						>
+					</p>
 					<div class="about-discours__actions">
 						<a class="button" href="#post">присоединитьсяк&nbsp;сообществу</a>
-						<a class="button" href="#post">стать автором</a>
+						<a class="button" href="#post">стать&nbsp;автором</a>
 						<a class="button" href="/manifest">о&nbsp;проекте</a>
-						<a class="button" href="/help">поддержать платформу</a>
+						<a class="button" href="/help">поддержать&nbsp;платформу</a>
 					</div>
 				</div>
 			</div>
@@ -223,10 +228,10 @@
 					<h4>Авторы месяца</h4>
 
 					{#each authorsMonth.slice(0, authorsLimit) as user}
-						<UserCard {user} />
+						<div transition:fade><UserCard {user} /></div>
 					{/each}
 					{#if authorsLimit < authorsMonth.length}
-					<button class="button" on:click={moreAuthors}>Еще авторы</button>
+						<button class="button" on:click={moreAuthors}>Еще авторы</button>
 					{/if}
 				</div>
 			</div>
@@ -287,7 +292,7 @@
 				</div>
 				<div class="col-md-6">
 					<h4>Самое обсуждаемое</h4>
-					{#each topCommented.slice(0,1) as article}
+					{#each topCommented.slice(0, 1) as article}
 						<ShoutCard shout={article} />
 					{/each}
 				</div>
@@ -337,24 +342,29 @@
 				{/each}
 			</div>
 		</div>
-		{#each [...Array($shoutslist.length/3).keys()] as r}
-		<div class="floor">
-			<div class="wide-container row">
-				{#each $shoutslist.slice(28 + r*3, 31 + r*3) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
+		{#each [...Array(9).keys()] as r}
+			{#if $shoutslist.length >= 27 + r * 3}
+				<div class="floor" transition:fade>
+					<div class="wide-container row">
+						{#each $shoutslist.slice(28 + r * 3, 31 + r * 3) as article}
+							<div class="col-md-4" transition:fade>
+								<ShoutCard shout={article} />
+							</div>
+						{/each}
 					</div>
-				{/each}
-			</div>
-		</div>
+				</div>
+			{/if}
 		{/each}
-	</div>
-	<div class="morewrap">
-		<div class="show-more">
-			<button class="button" type="button" on:click={moreShouts}>{loading ? 'Загружаем': 'Показать еще'}</button>
+		<div class="morewrap" transition:fade>
+			<div class="show-more">
+				<button class="button" type="button" on:click={moreShouts}
+					>{loading ? 'Загружаем' : 'Показать еще'}</button
+				>
+			</div>
 		</div>
 	</div>
 {/if}
+
 <style lang="scss">
 	.morewrap {
 		flex: 1 58.3333%;

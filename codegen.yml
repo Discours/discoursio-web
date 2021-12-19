@@ -1,6 +1,6 @@
 overwrite: true
 schema:
- - 'api/schema.graphql'
+ - 'server/schema.graphql'
 generates:
  src/lib/codegen.ts:
   plugins:

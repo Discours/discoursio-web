@@ -46,50 +46,46 @@
 			{/if}
 			{#if topic.topicStat && !compact}
 				<div class="topic-details">
-						<span class="topic-details__item"
+					<span class="topic-details__item"
 						>{topic.topicStat.shouts} публикаци{plural(
 							topic.topicStat.shouts,
 							'я',
 							'и',
 							'й'
 						)}</span
-						>
-					<span class="topic-details__item"
-					>{topic.topicStat.authors} автор{plural(
-						topic.topicStat.authors,
-						'',
-						'а',
-						'ов'
-					)}</span
 					>
 					<span class="topic-details__item"
-					>{topic.topicStat.views} просмотр{plural(
-						topic.topicStat.views,
-						'',
-						'а',
-						'ов'
-					)}</span
+						>{topic.topicStat.authors} автор{plural(
+							topic.topicStat.authors,
+							'',
+							'а',
+							'ов'
+						)}</span
 					>
 					<span class="topic-details__item"
-					>{topic.topicStat.subscriptions} подписчик{plural(
-						topic.topicStat.subscriptions,
-						'',
-						'а',
-						'ов'
-					)}</span
+						>{topic.topicStat.views} просмотр{plural(
+							topic.topicStat.views,
+							'',
+							'а',
+							'ов'
+						)}</span
+					>
+					<span class="topic-details__item"
+						>{topic.topicStat.subscriptions} подписчик{plural(
+							topic.topicStat.subscriptions,
+							'',
+							'а',
+							'ов'
+						)}</span
 					>
 				</div>
 			{/if}
 		</div>
-		<div class="col-md-3 offset-md-2">
+		<div class="col-md-3">
 			{#if subscribed}
-				<button on:click={unsubscribe} class="button"
-				>Отписаться</button
-				>
+				<button on:click={unsubscribe} class="button">Отписаться</button>
 			{:else}
-				<button on:click={subscribe} class="button"
-				>Подписаться</button
-				>
+				<button on:click={subscribe} class="button">Подписаться</button>
 			{/if}
 		</div>
 	</div>

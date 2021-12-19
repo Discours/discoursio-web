@@ -25,17 +25,20 @@
 
 	const groupBy = (arr) => {
 		let firstLetter = null
-		return arr.reduce((acc, currentValue) => {
-			let currentLetter = currentValue.title.slice(0, 1)
-			if (/[a-zA-Z0-9]/.test(currentLetter)) {
-				currentLetter = 'A-Z';
-			} else if (!acc[currentLetter]) {
-				firstLetter = currentLetter
-				acc[firstLetter] = []
-			}
-			acc[currentLetter].push(currentValue)
-			return acc
-		}, {'A-Z': []})
+		return arr.reduce(
+			(acc, currentValue) => {
+				let currentLetter = currentValue.title.slice(0, 1)
+				if (/[a-zA-Z0-9]/.test(currentLetter)) {
+					currentLetter = 'A-Z'
+				} else if (!acc[currentLetter]) {
+					firstLetter = currentLetter
+					acc[firstLetter] = []
+				}
+				acc[currentLetter].push(currentValue)
+				return acc
+			},
+			{ 'A-Z': [] }
+		)
 	}
 
 	$: if (mode === 'popular') {

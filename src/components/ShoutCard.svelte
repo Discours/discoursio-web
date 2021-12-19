@@ -12,11 +12,11 @@
 		seps.forEach((c) => {
 			if (tt.length === 1) {
 				tt = shout.title.split(c)
-				if (tt.length > 1) tt[0] = tt[0] + (c===':'?'':c)
+				if (tt.length > 1) tt[0] = tt[0] + (c === ':' ? '' : c)
 			}
 		})
 		shout.title = tt[0]
-		if(tt.length > 1) shout.subtitle = capitalize(tt[1], false)
+		if (tt.length > 1) shout.subtitle = capitalize(tt[1], true)
 	}
 </script>
 

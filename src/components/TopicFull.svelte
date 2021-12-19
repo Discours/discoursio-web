@@ -4,7 +4,6 @@
 </script>
 
 <div class="topic-full container">
-
 	<div class="row">
 		<div class="topic__header col-md-8 offset-md-2">
 			<h1>#{topic.title}</h1>
@@ -24,7 +23,7 @@
 
 <style lang="scss">
 	h1 {
-		color: #2638D9;
+		color: #2638d9;
 		@include font-size(2rem);
 		letter-spacing: 0.08em;
 		margin-bottom: 4rem;

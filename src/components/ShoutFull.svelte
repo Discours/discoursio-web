@@ -60,7 +60,11 @@
 				<div class="shout__header">
 					<div class="shout__topic article-card__category">
 						{#each shout.topics as topic}
-							<span class="topic"><a href={`/topic/${topic.slug}`}>#{topic.title}</a></span>
+							<span class="topic"
+								><a href={`/topic/${topic.slug}`}
+									>#{@html topic.title.replace(' ', '&nbsp;')}</a
+								></span
+							>
 						{/each}
 					</div>
 
@@ -220,9 +224,16 @@
 		padding: 2.4rem 1.8rem;
 	}
 
+	.topic {
+		display: inline-flex;
+	}
+
 	.topic a {
 		/* white-space: nowrap; */
 		color: black;
-		padding: 1vh;
+		padding: 0.3vh;
+	}
+	.topic a:hover {
+		font-weight: 500;
 	}
 </style>

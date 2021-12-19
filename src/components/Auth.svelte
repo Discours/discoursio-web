@@ -80,7 +80,11 @@
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div class="row view" class:view--registration={mode === 'register'}>
+<div
+	class="row view"
+	class:view--registration={mode === 'register'}
+	transition:fade
+>
 	<div class="col-sm-6 d-md-none login-image">
 		<div class="login-image__text" class:show={mode === 'register'}>
 			<h2>Дискурс</h2>
@@ -103,7 +107,7 @@
 			</p>
 		</div>
 	</div>
-	<form class="col-sm-6 auth">
+	<form class="col-sm-6 auth" transition:fade>
 		<div class="auth__inner">
 			<h4>
 				{#if mode === 'register'}

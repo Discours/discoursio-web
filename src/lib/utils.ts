@@ -1,10 +1,14 @@
-export const capitalize = (s, every = true) => every ?
-	s
-		.split(' ')
-		.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-		.join(' ')
-		:
-	s.charAt(0).toUpperCase() + s.slice(1)
+export const capitalize = (s, firstonly = false) => {
+	s = s.trim()
+	const r = firstonly
+		? s.charAt(0).toUpperCase() + s.slice(1)
+		: s
+				.split(' ')
+				.map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+				.join(' ')
+	// console.debug(r)
+	return r
+}
 
 export const plural = (amount, w1, w2, w5) => {
 	const a = amount.toString()
@@ -15,12 +19,15 @@ export const plural = (amount, w1, w2, w5) => {
 }
 
 export const shuffle = (items) => {
-    var cached = items.slice(0), temp, i = cached.length, rand;
-    while(--i) {
-        rand = Math.floor(i * Math.random())
-        temp = cached[rand]
-        cached[rand] = cached[i]
-        cached[i] = temp
-    }
-    return cached
+	var cached = items.slice(0),
+		temp,
+		i = cached.length,
+		rand
+	while (--i) {
+		rand = Math.floor(i * Math.random())
+		temp = cached[rand]
+		cached[rand] = cached[i]
+		cached[i] = temp
+	}
+	return cached
 }

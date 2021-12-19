@@ -3,7 +3,10 @@ import { TOP_OVERALL } from '../../lib/queries'
 
 export const get = async () => {
 	try {
-		const { topOverall } = await client.request(TOP_OVERALL, { page: 0, size: 100 })
+		const { topOverall } = await client.request(TOP_OVERALL, {
+			page: 0,
+			size: 100
+		})
 
 		return {
 			status: 200,
