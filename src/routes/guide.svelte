@@ -1,0 +1,252 @@
+<script context="module">
+	export const prerender = true
+</script>
+
+<div class="main-content">
+	<update-meta title="Как устроен Дискурс" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta name="description" content="Горизонтальная редакция: как работает открытый журнал" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta name="keywords" content="Discours.io, правила, terms of use" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta property="og:title" content="Как устроен Дискурс" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta property="og:description" content="Горизонтальная редакция: как работает открытый журнал" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta property="og:image" content="/images/participation.png" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta property="og:image:width" content="1200" class="ng-scope ng-isolate-scope"></update-meta>
+	<update-meta property="og:image:height" content="630" class="ng-scope ng-isolate-scope"></update-meta>
+	<div class="container open-post margin-top-20px ng-scope">
+	  <div class="row">
+		<div class="col-sm-7">
+		  <h1 class="h3 black-bg-heading black-bg-heading-margin">
+			<span>Как устроен Дискурс</span>
+		  </h1>
+		</div>
+		<div class="col-sm-7 col-sm-offset-2 post-body margin-top-30px">
+		  <p>
+			Дискурс — независимый журнал о культуре, науке, искусстве и обществе
+			с&nbsp;<a href="/manifest">открытой редакцией</a>. У&nbsp;нас нет
+			главного редактора, инвестора и&nbsp;вообще никого, кто бы принимал
+			единоличные решения. Вместо традиционных иерархий Дискурс основан на
+			принципах прямой демократии: в нашем горизонтальном сообществе все
+			редакционные вопросы решаются открытым&nbsp;голосованием
+			авторов&nbsp;журнала. Вот&nbsp;как это&nbsp;работает.
+		  </p>
+		  <h3 style="margin-top: 25px; margin-bottom: 15px;">
+			<strong>Как устроен сайт Дискурса</strong>
+		  </h3>
+		  <p>
+			Дискурс состоит из&nbsp;четырех основных разделов:
+		  </p>
+		  <ul>
+			<li>
+			  <p>
+				<a href="/articles/all">Статьи</a>&nbsp;— здесь публикуются
+				исследования, обзоры, эссе, интервью, репортажи, аналитика и другие
+				материалы о&nbsp;культуре, науке, искусстве и&nbsp;обществе.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<a href="/expo/image">Искусство</a>&nbsp;— здесь представлены
+				художественные произведения: литература, живопись, музыка,
+				фотографии, видео. Этот раздел помогает прозвучать новому искусству,
+				которое создают российские художники, писатели, режиссёры и
+				музыканты.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<a href="/events">События</a>&nbsp;— в&nbsp;этом разделе
+				публикуются самые важные, по&nbsp;мнению редакции, культурные
+				события России — выставки, лекции, концерты, кинопоказы, фестивали,
+				художественные и политические&nbsp;акции. Напишите&nbsp;нам
+				на&nbsp;<a href="mailto:welcome@discours.io" target="_blank">почту</a>, если вы
+				хотите разместить объявление. Мы делаем&nbsp;это
+				на&nbsp;безвозмездной основе.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<!-- ngIf: isLoggedIn --><!-- ngIf: !isLoggedIn --><a ng-if="!isLoggedIn" view-modal="#become-author-modal" class="ng-scope" target="_blank">Редакция</a><!-- end ngIf: !isLoggedIn -->&nbsp;— это внутренний раздел, где появляются новые
+				материалы, которые присылают в&nbsp;редакцию. Здесь авторы
+				обсуждают, редактируют и&nbsp;оценивают публикации, определяя таким
+				образом содержание журнала.
+			  </p>
+			</li>
+		  </ul>
+		  <p>
+			Материалы в&nbsp;Дискурсе объединяются по&nbsp;<b>темам</b>
+			—&nbsp;ключевым словам, которые располагаются в&nbsp;конце материалов
+			и&nbsp;связывают материалы по&nbsp;жанрам (например,
+			<a href="https://discours.io/tags/interview">интервью</a>,
+			<a href="https://discours.io/tags/reportage">репортажи</a>,
+			<a href="https://discours.io/tags/essay">эссе</a>,
+			<a href="https://discours.io/tags/likbez">ликбезы</a>), по&nbsp;тематике
+			(<a href="https://discours.io/tags/cinema">кино</a>,
+			<a href="https://discours.io/tags/philosophy">философия</a>,
+			<a href="https://discours.io/tags/history">история</a>,
+			<a href="https://discours.io/tags/absurdism">абсурдизм</a>,
+			<a href="https://discours.io/tags/sex">секс</a> и т.д.) или в&nbsp;серии
+			(как «<a href="https://discours.io/tags/zakony-mira">Законы мира</a>»
+			или «<a href="https://discours.io/tags/za-liniey-mannergeyma">За&nbsp;линией Маннергейма</a>»). Темы объединяют сотни публикаций, помогают ориентироваться
+			в&nbsp;журнале и&nbsp;следить за&nbsp;интересными материалами.
+		  </p>
+		  <!-- ngIf: isLoggedIn -->
+		  <!-- ngIf: isLoggedIn -->
+	
+		  <!-- ngIf: !isLoggedIn --><section ng-if="!isLoggedIn" class="ng-scope">
+			<h3 style="margin-top: 30px; margin-bottom: 15px;">
+			  <strong>Как стать автором журнала</strong>
+			</h3>
+			<p>
+			  Дискурс объединяет журналистов, активистов, музыкантов, художников,
+			  фотографов, режиссеров, философов, ученых и других замечательных
+			  людей. Каждый может
+			  <a href="#post" view-modal="#become-author-modal">прислать</a>
+			  свой материал в журнал. Формат и&nbsp;тематика не&nbsp;имеют значения,
+			  единственное, что важно&nbsp;—
+			  <a href="/articles/theory/how-to-write-a-good-article">хороший</a>
+			  ли материал. Если сообщество поддержит вашу публикацию, она выйдет в
+			  журнале и станет доступна тысячам наших читателей.
+			</p>
+		  </section><!-- end ngIf: !isLoggedIn -->
+	
+		  <h3 id="voting" style="margin-top: 30px; margin-bottom: 15px;">
+			<strong>Как проходит голосование</strong>
+		  </h3>
+		  <p>
+			Все присылаемые в&nbsp;Дискурс материалы попадают
+			в&nbsp;<b>«Редакцию»</b>. Это внутренний раздел сайта, где участники
+			сообщества решают, что будет опубликовано в Дискурсе. Как только работа
+			получает одобрение как минимум пятерых авторов открытой редакции, она
+			немедленно публикуется в&nbsp;журнале. Если&nbsp;же материал набирает
+			более 20% голосов «против», он&nbsp;не&nbsp;выходит и&nbsp;может быть
+			отправлен на&nbsp;доработку. Жестких сроков рассмотрения материалов
+			у&nbsp;нас нет, иногда это занимает час, иногда месяц, обычно&nbsp;—
+			несколько дней.
+		  </p>
+		  <!-- ngIf: !isLoggedIn --><section ng-if="!isLoggedIn" class="ng-scope">
+			<p>
+			  Как только сообщество поддержит публикацию, вы&nbsp;получите
+			  приглашение в&nbsp;интернет-редакцию и&nbsp;сможете голосовать
+			  за&nbsp;новые материалы.
+			</p>
+		  </section><!-- end ngIf: !isLoggedIn -->
+	
+		  <h3 id="editing" style="margin-top: 30px; margin-bottom: 15px;">
+			<strong>Как мы&nbsp;делаем тексты друг друга лучше</strong>
+		  </h3>
+		  <p>
+			Дискурс&nbsp;— журнал с&nbsp;совместным редактированием.
+			Совершенствовать тексты нам помогает <b>система ремарок</b>.
+			Вы&nbsp;можете выделить часть текста в&nbsp;любой статье и&nbsp;оставить
+			к&nbsp;ней замечание, вопрос или предложение&nbsp;— автор текста получит
+			совет на&nbsp;почту и&nbsp;сможет его учесть. Так мы&nbsp;устраняем
+			опечатки, неточности и&nbsp;советуем друг другу, как сделать тексты
+			качественнее и&nbsp;интереснее.
+		  </p>
+		  <p>
+			Среди участников сообщества есть профессиональные редакторы, которые
+			помогают авторам делать тексты лучше. Если вашему материалу потребуется
+			доработка, они помогут отредактировать текст, подобрать иллюстрации,
+			придумать заголовок и красиво сверстать публикацию.
+			Если&nbsp;вы&nbsp;хотите обсудить текст, прежде чем загрузить материал в
+			интернет-редакцию&nbsp;— разместите его в&nbsp;google-документе,
+			откройте доступ к&nbsp;редактированию по&nbsp;ссылке и&nbsp;напишите нам
+			на&nbsp;<a href="mailto:welcome@discours.io" target="_blank">welcome@discours.io</a>.
+		  </p>
+		  <p>
+			Если у&nbsp;вас возникают трудности с&nbsp;тем, чтобы подобрать
+			к&nbsp;своему материалу иллюстрации, тоже пишите на&nbsp;<a href="mailto:welcome@discours.io" target="_blank">почту</a>
+			— наши коллеги-художники могут вам помочь.
+			<!-- ngIf: !isLoggedIn --><a name="together" ng-if="!isLoggedIn" class="ng-scope" target="_blank"></a><!-- end ngIf: !isLoggedIn -->
+		  </p>
+	
+		  <!-- ngIf: isLoggedIn -->
+	
+		  <h3 style="margin-top: 30px; margin-bottom: 15px;">
+			<strong>Что сообщество дает авторам</strong>
+		  </h3>
+		  <ul>
+			<li>
+			  <p>
+				<strong>Право определять, каким будет журнал</strong>. Дискурс — это
+				общественная институция, созданная людьми и&nbsp;ради людей,
+				функционирующая на&nbsp;условиях прямой демократии. Авторы публикуют
+				статьи и&nbsp;художественные проекты, участвуют в&nbsp;обсуждениях,
+				голосуют за&nbsp;работы коллег и&nbsp;таким образом вносят свой
+				вклад в&nbsp;развитие проекта, определяя содержание и направление
+				журнала.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<strong>Возможность обратиться к&nbsp;широкой аудитории</strong>.
+				Дискурс читают десятки тысяч людей, и&nbsp;с&nbsp;каждым днем
+				их&nbsp;становится больше.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<strong>Поддержка редакции</strong>. Дискурс предоставляет авторам
+				аккредитацию на&nbsp;мероприятия, базу контактов, юридическую
+				поддержку, ознакомление с&nbsp;книжными, кино- и&nbsp;музыкальными
+				новинками до&nbsp;их&nbsp;выхода в&nbsp;свет. Если что-то
+				из&nbsp;этого вам понадобится, пишите на&nbsp;почту
+				<a href="mailto:welcome@discours.io" target="_blank">welcome@discours.io</a>&nbsp;—
+				поможем.
+			  </p>
+			  <!-- ngIf: isLoggedIn -->
+			</li>
+			<li>
+			  <p>
+				<strong>Пресс-карты для корреспондентов</strong>. Три опубликованные
+				статьи позволяют авторам Дискурса получить официальные удостоверения
+				журналистов (пресс-карты) на&nbsp;следующий&nbsp;год. Пресс-карты
+				удостоверяют, что вы&nbsp;журналист и&nbsp;можете пользоваться всеми
+				теми правами, которые гарантирует Закон о&nbsp;СМИ. Кроме того,
+				многие культурные институции (музеи, галереи и&nbsp;др.)
+				предоставляют журналистам право свободного входа.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<strong>Помощь сотен специалистов в&nbsp;разных областях</strong>.
+				В&nbsp;основе Дискурса лежит идея совместного редактирования.
+				Участники редакционного сообщества&nbsp;— несколько сотен
+				журналистов, исследователей, художников, литераторов из&nbsp;разных
+				стран&nbsp;— изучают материалы друг друга до&nbsp;публикации
+				и&nbsp;помогают сделать их&nbsp;качественнее и&nbsp;интереснее. Так,
+				в&nbsp;редакции нередко складываются творческие союзы: например,
+				авторов текстов и&nbsp;художников, создающих для них иллюстрации.
+			  </p>
+			</li>
+			<li>
+			  <p>
+				<strong>Пространство общения полное выдающихся людей</strong>.
+				Дискурс&nbsp;— большое живое сообщество интеллектуалов,
+				разбросанных по&nbsp;всему земному шару. Вступив в&nbsp;редакцию,
+				вы&nbsp;сможете познакомиться со&nbsp;множеством интересных людей,
+				которые определяют повестку завтрашнего дня, вдохновляют окружающих,
+				создают новое и&nbsp;изучают старое, ищут знания и&nbsp;готовы ими
+				делиться, чтобы менять мир в&nbsp;соответствии со&nbsp;своими
+				идеалами.
+			  </p>
+			</li>
+		  </ul>
+	
+		  <h3 style="margin-top: 30px; margin-bottom: 15px;">
+			<strong>Как быть в&nbsp;курсе</strong>
+		  </h3>
+		  <p>
+			За&nbsp;свежими публикациями Дискурса можно следить не&nbsp;только
+			на&nbsp;сайте, но&nbsp;и&nbsp;на&nbsp;страницах в&nbsp;<a href="https://facebook.com/discoursio/" target="_blank">Фейсбуке</a>, <a href="https://vk.com/discoursio" target="_blank">ВКонтакте</a> и&nbsp;<a href="https://t.me/discoursio" target="_blank">Телеграме</a>. А&nbsp;ещё раз в&nbsp;месяц мы&nbsp;отправляем
+			<a view-modal="#subscribe-modal" target="_blank">почтовую рассылку</a>
+			с&nbsp;дайджестом лучших материалов.
+		  </p>
+		  <!-- ngIf: isLoggedIn -->
+		  <p>
+			Если вы хотите сотрудничать, что-то обсудить или предложить&nbsp;—
+			пожалуйста, пишите на&nbsp;<a href="mailto:welcome@discours.io" target="_blank">welcome@discours.io</a>. Мы обязательно ответим.
+		  </p>
+		</div>
+	  </div>
+	</div>
+</div>

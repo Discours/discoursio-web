@@ -109,6 +109,7 @@
 		loading = true
 		console.log('mainpage: show more shouts')
 		const p = Math.floor($shoutslist.length / 27)
+		$shoutslist = Array.from(new Set([ ...$shoutslist, ...topOverall.slice(4, topOverall.length), topViewed.slice(4,topViewed.length)]))
 		const r = await fetch('/feed/recents.json?page=' + p)
 		if (r.ok) {
 			const { recents: newData } = await r.json()
@@ -292,9 +293,7 @@
 				</div>
 				<div class="col-md-6">
 					<h4>Самое обсуждаемое</h4>
-					{#each topCommented.slice(0, 1) as article}
-						<ShoutCard shout={article} />
-					{/each}
+					<ShoutCard shout={topCommented[0]} />
 				</div>
 			</div>
 		</div>
@@ -346,7 +345,7 @@
 			{#if $shoutslist.length >= 27 + r * 3}
 				<div class="floor" transition:fade>
 					<div class="wide-container row">
-						{#each $shoutslist.slice(28 + r * 3, 31 + r * 3) as article}
+						{#each $shoutslist.slice(27 + r * 3, 30 + r * 3) as article}
 							<div class="col-md-4" transition:fade>
 								<ShoutCard shout={article} />
 							</div>

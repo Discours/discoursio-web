@@ -4,8 +4,12 @@
 
 	const routes: string[] = [
 		'inbox',
-		'rules',
-		'agreement',
+		'guide',
+		'terms-of-use',
+		'manifest',
+		'help',
+		'dogma',
+		'thanks',
 		'search',
 		'create',
 		'login',
