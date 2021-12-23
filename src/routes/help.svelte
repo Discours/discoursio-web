@@ -11,7 +11,7 @@
     }
 </script>
 
-<update-meta title="Поддержите Дискурс"></update-meta>
+<!-- update-meta title="Поддержите Дискурс"></update-meta>
 <update-meta
   name="description"
   content="Здесь можно поддержать Дискурс материально."
@@ -25,7 +25,7 @@
   property="og:description"
   content="Здесь можно поддержать Дискурс материально."
 ></update-meta>
-<!-- update-meta(property="og:image" content="/images/logo.png") -->
+<update-meta(property="og:image" content="/images/logo.png") -->
 <div class="container">
   <div class="row">
     <div class="col-sm-6">

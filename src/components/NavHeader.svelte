@@ -6,7 +6,6 @@
 	const { t } = getLocalization()
 
 	let res = ''
-	onMount(() => (res = window.location.pathname))
 	let isBurgerHidden = true
 	let body = null
 
@@ -36,7 +35,8 @@
 	]
 
 	onMount(() => {
-		body = document.querySelector('body')
+		body = document.body
+		res = window.location.pathname
 	})
 </script>
 
