@@ -159,6 +159,12 @@
 				background-image: url(/icons/telegram-white.svg);
 			}
 		}
+
+		a[href*='vk.com/'] {
+			&:before {
+				background-image: url(/icons/vk-white.svg);
+			}
+		}
 	}
 
 	.button--subscribe {
