@@ -79,7 +79,7 @@
 
 		:global(.circlewrap .userpic) {
 			font-size: 2em;
-			height: 100%;
+			height: 20px;
 			line-height: 168px;
 			width: 100%;
 		}
