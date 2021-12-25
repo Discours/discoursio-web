@@ -16,7 +16,9 @@
 		'topic',
 		'feed',
 		'user',
-		'community'
+		'community',
+		'partners',
+		'projects'
 	]
 
 	interface SlugProps {
