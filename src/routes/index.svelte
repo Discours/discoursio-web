@@ -5,10 +5,6 @@
 		const topMonth = await fetch('/feed/top-month.json')
 		const topOverall = await fetch('/feed/top-overall.json')
 		const topViewed = await fetch(`/feed/top-viewed.json`)
-		const topicsAll = await fetch(`/topic/all.json`)
-		// const communitiesAll = await fetch(`/community/all.json`)
-		props = topicsAll.ok ? { ...(await topicsAll.json()), ...props } : props
-		// props = communitiesAll.ok ? { ...(await communitiesAll.json()), ...props } : props
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
 		props = topMonth.ok ? { ...(await topMonth.json()), ...props } : props
 		props = topOverall.ok ? { ...(await topOverall.json()), ...props } : props
@@ -21,14 +17,11 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
 	import TopicCard from '../components/TopicCard.svelte'
-	// import CommunityCard from '../components/CommunityCard.svelte'
 	import {
-		// comments,
-		shouts,
+		shouts, 
+		topics,
 		shoutslist,
-		// communitieslist,
-		topicslist,
-		topics
+		topicslist
 	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -39,8 +32,6 @@
 	export let topMonth = []
 	export let topOverall = []
 	export let topViewed = []
-	export let topicsAll = []
-	// export let communitiesAll = []
 
 	let showedTopics = []
 	let topCommented = [],
@@ -50,11 +41,6 @@
 	let loading
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
-	// $: if(!$communitieslist && communitiesAll) $communitieslist
-
-	$: if (!$shoutslist && !$topicslist) {
-		update(recents)
-	}
 
 	const update = async (data) => {
 		$shoutslist = data
@@ -67,11 +53,7 @@
 		// topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
 		topCommented = $shoutslist.sort(
 			(a, b) => b['stat'].comments - a['stat'].comments
-		) // FIXME
-		$topicslist = topicsAll
-		$topicslist.forEach((t) => ($topics[t.slug] = t))
-		console.log('mainpage: ' + topicsAll.length.toString() + ' topics preloaded')
-		// console.log($topicslist)
+		)
 		topMonth.forEach((s) => {
 			s.authors.forEach((a) => {
 				if (!aslugs.has(a.slug)) {
@@ -93,9 +75,10 @@
 		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
 	}
 
+	$: if (!$shoutslist && $topicslist) update(recents)
+
 	onMount(() => {
 		$shoutslist = null
-		$topicslist = null
 	}) // force to update reactive code on mount
 
 	let authorsLimit = 8

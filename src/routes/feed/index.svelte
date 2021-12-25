@@ -49,6 +49,6 @@
 	export let shouts: Shout[]
 </script>
 
-{#if topics}<NavTopics slugs={topics} />{/if}
+{#if topics}<NavTopics slugs={new Set(topics)} />{/if}
 {#if shouts}<FeedShouts {shouts} />{/if}
 {#if users}<FeedAuthors authors={users} />{/if}

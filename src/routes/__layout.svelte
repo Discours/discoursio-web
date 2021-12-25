@@ -3,12 +3,9 @@
 	import relativeTime from 'dayjs/esm/plugin/relativeTime'
 	dayjs().format()
 
-	export const load = async ({ page }) => {
-		// const { metadata } = await import('@didiercatz/sveo')
-		// FIXME
-		let props
-		// try { props = { seo: await metadata(page) } }
-		// catch (e) { console.error(e) }
+	export const load = async ({ page, fetch }) => {
+		const topicsAll = await fetch(`/topic/all.json`)
+		const props = topicsAll.ok ? { ...(await topicsAll.json()) } : { ...topicsAll}
 		return { props }
 	}
 </script>
@@ -20,36 +17,49 @@
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { token, session, roles } from '../stores/user'
-	// import { topicslist } from '../stores/zine'
+	import { topicslist, topics } from '../stores/zine'
 	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
-	// import Sveo from '@didiercatz/sveo'
-	// import type { Topic } from '../lib/codegen'
 
-	// export let seo
-	// export let topics: Topic[]
 	initLocalizationContext()
 
-	$: if ($token) {
-		try {
-			console.log('app: found user token')
-			client.request(GET_ME).then((user) => {
-				$session = user
-				client.request(GET_ROLES, { slug: user.slug }).then((data) => {
-					$roles = data
-					console.log('app: my roles store updated')
+	export let topicsAll = []
+	$: {
+		if ($token) {
+			try {
+				console.log('app: found user token')
+				client.request(GET_ME).then((user) => {
+					$session = user
+					client.request(GET_ROLES, { slug: user.slug }).then( async (data) => {
+						console.log(data)
+						$roles = data
+						console.log('app: my roles store updated')
+					})
+					console.log('app: session store updated')
 				})
-				console.log('app: session store updated')
-			})
-		} catch (e) {
-			console.error('app: graphql request failed')
+			} catch (e) {
+				console.error('app: graphql request failed')
+			}
+		}
+		if(!$topicslist && topicsAll) {
+			console.log('preload: ' + topicsAll.length.toString() +' topics')
+			$topicslist = topicsAll
+			window.localStorage['topics'] = $topicslist
+			$topicslist.forEach(t => $topics[t.slug] = t)
+			console.debug('layout: topics udpated')
 		}
 	}
 
-	//$: if (topics && !$topicslist) $topicslist = topics
-
-	onMount(() => ($token = document.cookie))
+	onMount(() => {
+		console.debug('layout: mounted')
+		$token = document.cookie
+		if(!topicsAll) {
+			$topicslist = window.localStorage['topics']
+			$topicslist.forEach(t => $topics[t.slug] = t)
+		}
+		$topicslist = null
+	})
 </script>
 
 <!--Sveo {seo} /-->

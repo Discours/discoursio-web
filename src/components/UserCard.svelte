@@ -71,7 +71,7 @@
 
 						{#if user.links}
 							{#each user.links as link}
-								<a href={link} />
+								<a href={link}>{link}</a>
 							{/each}
 						{/if}
 					{/if}

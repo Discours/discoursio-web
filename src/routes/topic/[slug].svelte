@@ -26,49 +26,32 @@
 	export let slug
 
 	let topic
-	let currentSwitcher = null
+	let mode = 'fresh'
 
-	$: if (!slug && $page && $page.params.slug) {
-		slug = $page.params.slug
-	}
+	$: if (!slug && $page && $page.params.slug) slug = $page.params.slug
+	$: if (slug && !topic && $topics) topic = $topics[slug]
 
-	$: if (Object.keys($topics).length > 0 && !topic) topic = $topics[slug]
 	onMount(() => {
 		topic = null
-		currentSwitcher = document.querySelector('.view-switcher .selected button')
 	})
 
-	const toggleSortSwitcher = (newSelectedControl) => {
-		if (currentSwitcher) {
-			currentSwitcher.parentNode.classList.remove('selected')
-		}
-		currentSwitcher = newSelectedControl
-		currentSwitcher.parentNode.classList.add('selected')
+	const sortByPopular = () => {
+		shouts = shouts.sort((a, b) => b.stat.views - a.stat.views)
+		mode = 'popular'
 	}
 
-	const sortByPopular = (evt) => {
-		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort((a, b) => b.stat.views - a.stat.views)
-			toggleSortSwitcher(evt.target)
-		}
+	const sortByDiscuss = () => {
+		shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments)
+		mode = 'discuss'
 	}
 
-	const sortByDiscuss = (evt) => {
-		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments)
-			toggleSortSwitcher(evt.target)
-		}
-	}
-
-	const sortByDate = (evt) => {
-		if (evt.target !== currentSwitcher) {
-			shouts = shouts.sort(
-				(a, b) =>
-					new Date(b.publishedAt).getMilliseconds() -
-					new Date(a.publishedAt).getMilliseconds()
-			)
-			toggleSortSwitcher(evt.target)
-		}
+	const sortByDate = () => {
+		shouts = shouts.sort(
+			(a, b) =>
+				new Date(b.publishedAt).getMilliseconds() -
+				new Date(a.publishedAt).getMilliseconds()
+		)
+		mode = 'fresh'
 	}
 </script>
 
@@ -81,13 +64,13 @@
 	<div class="row topic__controls">
 		<div class="col-md-8">
 			<ul class="view-switcher">
-				<li class="selected">
-					<button type="button" on:click={sortByDate}>Свежее</button>
+				<li class:selected={mode === 'fresh'}>
+					<button type="button" on:click={() => sortByDate()} >Свежее</button>
 				</li>
-				<li>
+				<li class:selected={mode === 'popular'}>
 					<button type="button" on:click={sortByPopular}>Популярное</button>
 				</li>
-				<li>
+				<li class:selected={mode === 'discuss'}>
 					<button type="button" on:click={sortByDiscuss}>Обсуждаемое</button>
 				</li>
 			</ul>

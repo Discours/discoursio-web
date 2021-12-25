@@ -15,7 +15,8 @@
 		'login',
 		'topic',
 		'feed',
-		'user'
+		'user',
+		'community'
 	]
 
 	interface SlugProps {
@@ -28,14 +29,16 @@
 		const { slug } = page.params
 		let props: SlugProps = { slug }
 		const at = slug.startsWith('@')
-		console.log(`[slug]: preloading ${at ? 'author' : 'shout'} ${slug}`)
 		if (routes.includes(slug) && !at) return { props }
-		const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
-		if (fq.ok) {
-			const data = await fq.json()
-			props = { ...data, ...props }
+		else {
+			console.log(`[slug]: ${slug}`)
+			const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)
+			if (fq.ok) {
+				const data = await fq.json()
+				props = { ...data, ...props }
+			}
+			return { props }
 		}
-		return { props }
 	}
 </script>
 
@@ -52,14 +55,14 @@
 	let component
 
 	$: if (shout) {
-		console.log('[slug]: is shout')
+		// console.log('[slug]: is shout')
 		title = shout.title
 		shout.comments = comments || []
 		component = ShoutFull
 	}
 
 	$: if (slug.startsWith('@')) {
-		console.log('[slug]: is user')
+		// console.log('[slug]: is user')
 		title = slug
 		component = UserFull
 	}

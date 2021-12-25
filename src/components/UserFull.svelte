@@ -3,12 +3,13 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 
 	export let props
+	
 	let user
 	$: user = props.user
 
 	let shouts = []
 
-	if (props.shouts) {
+	$: if (props.shouts) {
 		shouts = Array(Math.ceil(props.shouts.length / 5))
 			.fill()
 			.map(function (item, index) {
@@ -79,7 +80,7 @@
 
 		:global(.circlewrap .userpic) {
 			font-size: 2em;
-			height: 100%;
+			height: 20px;
 			line-height: 168px;
 			width: 100%;
 		}

@@ -49,7 +49,7 @@
 				else return t.slug === shout.mainTopic
 			})
 		}
-		console.log(showTopic)
+		// console.log(showTopic)
 	}
 </script>
 

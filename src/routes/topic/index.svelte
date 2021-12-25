@@ -1,24 +1,14 @@
 <script lang="ts" context="module">
-	import type { Topic } from '../../lib/codegen'
 	export const prerender = true
-
-	export const load = async ({
-		fetch
-	}): Promise<{ props: { topics: Partial<Topic>[] } }> => {
-		console.log('topic/index: fetching all topics')
-		const fq = await fetch(`/topic/all.json`)
-		if (fq.ok) {
-			const { topicsAll: topics } = await fq.json()
-			return { props: { topics } }
-		} else return { props: { topics: [] } }
-	}
 </script>
 
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import type { Topic } from '../../lib/codegen'
+	import { topicslist } from '../../stores/zine'
 	import TopicCard from '../../components/TopicCard.svelte'
 
-	export let topics: Partial<Topic>[]
+	let topics: Partial<Topic>[]
 	let mode = ''
 	let sortedKeys = []
 	let topicsGroupedByAlphabet = []
@@ -41,42 +31,36 @@
 		)
 	}
 
-	$: if (mode === 'popular') {
-		// console.log('topics: sorting by views')
-		topics = topics.sort((a, b) => b.topicStat.views - a.topicStat.views)
-		console.log(topics)
-	}
-
-	$: if (mode === 'active') {
-		// console.log('topics: sorting by shouts')
-		topics = topics.sort((a, b) => b.topicStat.shouts - a.topicStat.shouts)
-		console.log(topics)
-	}
-
-	$: if (mode === 'alphabet') {
-		// console.log('topics: sorting by alphabet')
-		topicsGroupedByAlphabet = groupBy(topics.slice(0))
-		sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
-		sortedKeys.forEach((letter) => {
-			topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
-				(a, b) => {
-					if (a.title > b.title) {
-						return 1
-					} else if (a.title < b.title) {
-						return -1
+	$: if($topicslist) {
+		if (mode === 'popular') {
+			// console.log('topics: sorting by views')
+			topics = $topicslist.sort((a, b) => b.topicStat.views - a.topicStat.views)
+			// console.log(topics)
+		} else if (mode === 'active') {
+			// console.log('topics: sorting by shouts')
+			topics = $topicslist.sort((a, b) => b.topicStat.shouts - a.topicStat.shouts)
+			// console.log(topics)
+		} else if (mode === 'alphabet') {
+			// console.log('topics: sorting by alphabet')
+			topicsGroupedByAlphabet = groupBy(topics.slice(0))
+			sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
+			sortedKeys.forEach((letter) => {
+				topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
+					(a, b) => {
+						if (a.title > b.title) {
+							return 1
+						} else if (a.title < b.title) {
+							return -1
+						}
+						return 0
 					}
-					return 0
-				}
-			)
-		})
+				)
+			})
+		}
 	}
 
 	const onSwitch = () => {
-		mode = window.location.hash.replace('#', '')
-		if (!mode) {
-			mode = 'popular'
-			window.location.hash = mode
-		}
+		mode = window.location.hash.replace('#', '') || 'popular'
 	}
 
 	onMount(onSwitch)
@@ -132,7 +116,7 @@
 			{#if mode === 'popular' || mode === 'active'}
 				<div class="stats">
 					{#each topics as topic}
-						<TopicCard {topic} />
+						<TopicCard {topic} compact={false} />
 					{/each}
 				</div>
 			{/if}

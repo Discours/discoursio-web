@@ -35,8 +35,8 @@
 	]
 
 	onMount(() => {
-		body = document.body
 		res = window.location.pathname
+		body = document.querySelector('body')
 	})
 </script>
 
@@ -55,10 +55,8 @@
 		>
 			{#each MAIN_NAVIGATION as navItem}
 				<li class:selected={res === navItem.href}>
-					{#if res === navItem.href}
+					{#if res === navItem.href && !navItem.disabled}
 						<strong>{navItem.title}</strong>
-					{:else if navItem.disabled}
-						{navItem.title}
 					{:else}
 						<a href={navItem.href} on:click={() => (res = navItem.href)}
 							>{navItem.title}</a
