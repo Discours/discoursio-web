@@ -23,8 +23,6 @@ const scssOptions = {
 	outputStyle: 'expanded' // Dart Sass recognizes 'expanded' and 'compressed'
 }
 
-// TODO: graphql queries for prerender
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	preprocess: [
@@ -42,8 +40,11 @@ const config = {
 	kit: {
 		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
+		hydrate: true,
+		ssr: true,
 		prerender: {
-			enabled: false // FIXME
+			enabled: false // ready to be true! 
+			// FIXME: https://github.com/Discours/discoursio-web/issues/30
 		},
 		vite: {
 			build: {

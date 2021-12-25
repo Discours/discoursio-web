@@ -12,7 +12,6 @@ export const shouts: Writable<{ [slug: string]: Shout }> = writable({})
 export const topics: Writable<{ [slug: string]: Topic }> = writable({})
 export const authors: Writable<{ [slug: string]: User }> = writable({})
 export const communities: Writable<{ [slug: string]: Community }> = writable({})
-export const comments: Writable<{ [slug: string]: Comment[] }> = writable({})
 
 // TODO: hash navigation
 export const filterTopic: Writable<string> = writable('')

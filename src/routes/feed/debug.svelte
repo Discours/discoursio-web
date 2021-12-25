@@ -1,16 +1,15 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import NavTopics from '../../components/NavTopics.svelte'
 	import { shoutslist } from '../../stores/zine'
 
 	let topics = new Set([])
 
-	$: $shoutslist.forEach((s) => {
+	$: if($shoutslist) $shoutslist.forEach((s) => {
 		s.topics.forEach((t) => topics.add(t.slug))
 	})
 </script>
 
 <svelte:head><title>Дискурс : Лента</title></svelte:head>
 
-<NavTopics slugs={Array.from(topics)} />
+<NavTopics slugs={topics} />
 <pre>{JSON.stringify($shoutslist, null, 2)}</pre>

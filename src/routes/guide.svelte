@@ -37,23 +37,23 @@
 		  <ul>
 			<li>
 			  <p>
-				<a href="/articles/all">Статьи</a>&nbsp;— здесь публикуются
+				<a href="/topic">Темы</a>&nbsp;— у нас публикуются
 				исследования, обзоры, эссе, интервью, репортажи, аналитика и другие
 				материалы о&nbsp;культуре, науке, искусстве и&nbsp;обществе.
 			  </p>
 			</li>
 			<li>
 			  <p>
-				<a href="/expo/image">Искусство</a>&nbsp;— здесь представлены
+				<a href="/topic/art">Искусство</a>&nbsp;— здесь представлены
 				художественные произведения: литература, живопись, музыка,
 				фотографии, видео. Этот раздел помогает прозвучать новому искусству,
 				которое создают российские художники, писатели, режиссёры и
 				музыканты.
 			  </p>
 			</li>
-			<li>
+			<!-- li>
 			  <p>
-				<a href="/events">События</a>&nbsp;— в&nbsp;этом разделе
+				<a href="/topic/events">События</a>&nbsp;— в&nbsp;этом разделе
 				публикуются самые важные, по&nbsp;мнению редакции, культурные
 				события России — выставки, лекции, концерты, кинопоказы, фестивали,
 				художественные и политические&nbsp;акции. Напишите&nbsp;нам
@@ -61,10 +61,10 @@
 				хотите разместить объявление. Мы делаем&nbsp;это
 				на&nbsp;безвозмездной основе.
 			  </p>
-			</li>
+			</li -->
 			<li>
 			  <p>
-				<!-- ngIf: isLoggedIn --><!-- ngIf: !isLoggedIn --><a ng-if="!isLoggedIn" view-modal="#become-author-modal" class="ng-scope" target="_blank">Редакция</a><!-- end ngIf: !isLoggedIn -->&nbsp;— это внутренний раздел, где появляются новые
+				<a href="/create" class="ng-scope" target="_blank">Редакция</a>&nbsp;— это внутренний раздел, где появляются новые
 				материалы, которые присылают в&nbsp;редакцию. Здесь авторы
 				обсуждают, редактируют и&nbsp;оценивают публикации, определяя таким
 				образом содержание журнала.
@@ -75,17 +75,17 @@
 			Материалы в&nbsp;Дискурсе объединяются по&nbsp;<b>темам</b>
 			—&nbsp;ключевым словам, которые располагаются в&nbsp;конце материалов
 			и&nbsp;связывают материалы по&nbsp;жанрам (например,
-			<a href="https://discours.io/tags/interview">интервью</a>,
-			<a href="https://discours.io/tags/reportage">репортажи</a>,
-			<a href="https://discours.io/tags/essay">эссе</a>,
-			<a href="https://discours.io/tags/likbez">ликбезы</a>), по&nbsp;тематике
-			(<a href="https://discours.io/tags/cinema">кино</a>,
-			<a href="https://discours.io/tags/philosophy">философия</a>,
-			<a href="https://discours.io/tags/history">история</a>,
-			<a href="https://discours.io/tags/absurdism">абсурдизм</a>,
-			<a href="https://discours.io/tags/sex">секс</a> и т.д.) или в&nbsp;серии
-			(как «<a href="https://discours.io/tags/zakony-mira">Законы мира</a>»
-			или «<a href="https://discours.io/tags/za-liniey-mannergeyma">За&nbsp;линией Маннергейма</a>»). Темы объединяют сотни публикаций, помогают ориентироваться
+			<a href="/topic/interview">интервью</a>,
+			<a href="/topic/reportage">репортажи</a>,
+			<a href="/topic/essay">эссе</a>,
+			<a href="/topic/likbez">ликбезы</a>), по&nbsp;тематике
+			(<a href="/topic/cinema">кино</a>,
+			<a href="/topic/philosophy">философия</a>,
+			<a href="/topic/history">история</a>,
+			<a href="/topic/absurdism">абсурдизм</a>,
+			<a href="/topic/sex">секс</a> и т.д.) или в&nbsp;серии
+			(как «<a href="/topic/zakony-mira">Законы мира</a>»
+			или «<a href="/topic/za-liniey-mannergeyma">За&nbsp;линией Маннергейма</a>»). Темы объединяют сотни публикаций, помогают ориентироваться
 			в&nbsp;журнале и&nbsp;следить за&nbsp;интересными материалами.
 		  </p>
 		  <!-- ngIf: isLoggedIn -->
@@ -102,7 +102,7 @@
 			  <a href="#post" view-modal="#become-author-modal">прислать</a>
 			  свой материал в журнал. Формат и&nbsp;тематика не&nbsp;имеют значения,
 			  единственное, что важно&nbsp;—
-			  <a href="/articles/theory/how-to-write-a-good-article">хороший</a>
+			  <a href="/how-to-write-a-good-article">хороший</a>
 			  ли материал. Если сообщество поддержит вашу публикацию, она выйдет в
 			  журнале и станет доступна тысячам наших читателей.
 			</p>

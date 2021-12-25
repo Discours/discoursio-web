@@ -24,7 +24,7 @@
 	{#if shout}
 		<div class="shout-card__cover-container">
 			<div class="shout-card__cover">
-				<img src={shout.cover} alt={shout.title} />
+				<img src={shout.cover} alt={shout.title} loading="lazy" />
 			</div>
 
 			{#if shout.layout && shout.layout !== 'article'}

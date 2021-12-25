@@ -59,7 +59,7 @@
 			items: [
 				{
 					title: 'Авторы',
-					slug: '/authors'
+					slug: '/'
 				},
 				{
 					title: 'Темы',
