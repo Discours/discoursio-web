@@ -39,7 +39,7 @@
 					</a>
 				</div>
 			{/if}
-			{#if topic.body && !compact}
+			{#if topic.body}
 				<p class="topic-description">
 					{@html topic.body}
 				</p>
@@ -80,13 +80,15 @@
 					>
 				</div>
 			{/if}
-		</div>
-		<div class="col-md-3">
+
 			{#if subscribed}
 				<button on:click={unsubscribe} class="button">Отписаться</button>
 			{:else}
 				<button on:click={subscribe} class="button">Подписаться</button>
 			{/if}
+		</div>
+		<div class="col-md-3">
+			<!-- TODO: make avatar -->
 		</div>
 	</div>
 {/if}
@@ -95,10 +97,10 @@
 	.topic {
 		align-items: flex-start;
 		display: flex;
-		margin-top: 6.4rem;
+		margin-top: 3.2rem;
 
 		.stats & {
-			margin-bottom: 6.4rem;
+			margin-bottom: 3.2rem;
 		}
 
 		.button {
@@ -115,8 +117,8 @@
 
 	.topic-title {
 		font-weight: bold;
-		@include font-size(2.6rem);
-		margin-bottom: 1.2rem;
+		@include font-size(1.7rem);
+		margin-bottom: 0.8rem;
 	}
 
 	.topic__avatar {
@@ -137,8 +139,9 @@
 	}
 
 	.topic-description {
+		@include font-size(1.5rem);
 		color: #696969;
-		margin-bottom: 2rem;
+		margin: 0 0 0.8rem;
 	}
 
 	.topic-details {

@@ -4,6 +4,10 @@
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
+	export let additionalClass: ''
+	export let isShort: false
+	export let isGroup: false
+	export let photoBottom: false
 
 	const seps = [':', '?', '!']
 
@@ -20,8 +24,12 @@
 	}
 </script>
 
-<section class="shout-card">
+<section class="shout-card {additionalClass}"
+				 class:shout-card--short={isShort}
+				 class:shout-card--photo-bottom={photoBottom}
+>
 	{#if shout}
+		{#if !isShort}
 		<div class="shout-card__cover-container">
 			<div class="shout-card__cover">
 				<img src={shout.cover} alt={shout.title} loading="lazy" />
@@ -33,15 +41,18 @@
 				</div>
 			{/if}
 		</div>
+		{/if}
 
 		<div class="shout-card__content">
-			{#each shout.topics.filter((t) => shout.mainTopic == t.slug) as topic}
-				<div class="shout__topic">
-					<a href="/topic/{topic.slug}">
-						{topic.title}
-					</a>
-				</div>
-			{/each}
+			{#if !isGroup}
+				{#each shout.topics.filter((t) => shout.mainTopic == t.slug) as topic}
+					<div class="shout__topic">
+						<a href="/topic/{topic.slug}">
+							{topic.title}
+						</a>
+					</div>
+				{/each}
+			{/if}
 
 			<div class="shout-card__title">
 				<a href="/{shout.slug}">
@@ -49,7 +60,7 @@
 				</a>
 			</div>
 
-			{#if shout.subtitle}
+			{#if !isShort && shout.subtitle}
 				<div class="shout-card__subtitle">{@html shout.subtitle}</div>
 			{/if}
 
@@ -68,43 +79,15 @@
 <style lang="scss">
 	@import '../styles/imports';
 
-	:global(.floor--2 .col-md-6) {
-		&:first-child {
-			.shout-card__cover {
-				padding-bottom: 50%;
-			}
+	:global(.col-md-6),
+	:global(.col-md-8) {
+		.shout-card__title {
+			font-size: 3.2rem;
 		}
 
-		&:last-child {
-			.shout-card {
-				flex-direction: row;
-				margin-bottom: 2.4rem;
-			}
-
-			.shout-card__cover-container {
-				@include make-col(4);
-			}
-
-			.shout-card__cover {
-				margin-bottom: 0;
-			}
-
-			.shout-card__content {
-				padding-left: 1.6rem;
-			}
-
-			.shout-card__title {
-				font-size: 1.7rem;
-			}
-
-			.shout-card__title,
-			.shout-card__subtitle {
-				display: inline;
-			}
-
-			.shout__author {
-				margin-top: 0.4rem;
-			}
+		.shout-card__subtitle {
+			color: #696969;
+			font-size: 2rem;
 		}
 	}
 
@@ -155,11 +138,10 @@
 	.shout-card__title {
 		font-size: 2.2rem;
 		font-weight: 700;
+		line-height: 1.1;
 		margin-bottom: 0.8rem;
 
 		a {
-			color: $default-color;
-
 			&:before {
 				content: '';
 				height: 100%;
@@ -232,57 +214,66 @@
 		}
 	}
 
-	:global(.floor--3 .col-md-4) {
-		.shout-card__cover-container {
-			margin-top: 1.6rem;
-			order: 2;
+	:global(.floor--topics-group) {
+		:global(h3) {
+			&:first-letter {
+				text-transform: uppercase;
+			}
+		}
+
+		:global(.col-md-6 .col-md-6) {
+			.shout-card {
+				border-bottom: 1px solid rgba(255,255,255,0.2);
+				margin: 3.6rem 0 0;
+				padding-bottom: 2rem;
+
+				&:first-child {
+					margin-top: 2rem;
+				}
+
+				&:last-child {
+					border: none;
+					padding-bottom: 0;
+				}
+			}
+
+			.shout-card__cover-container {
+				display: none;
+			}
+
+			.shout-card__title,
+			.shout-card__subtitle {
+				display: inline;
+				@include font-size(2.6rem);
+				line-height: 1.2;
+			}
+
+			.shout-card__subtitle {
+				color: #fff;
+			}
+
+			.shout__author {
+				margin-top: 0.6em;
+			}
 		}
 	}
 
 	:global(.floor--important) {
-		padding-bottom: 0;
+		padding-bottom: $container-padding-x;
 		padding-top: $container-padding-x;
 
 		@include media-breakpoint-up(md) {
+			padding-bottom: $grid-gutter-width;
 			padding-top: $grid-gutter-width;
 		}
 
 		:global(h2) {
-			position: relative;
+			@include font-size(4.4rem);
 			text-align: center;
-
-			&:before {
-				background: #fff;
-				content: '';
-				height: 4px;
-				left: $container-padding-x;
-				position: absolute;
-				top: 50%;
-				width: calc(100% - #{$grid-gutter-width});
-			}
-
-			:global(span) {
-				background: #000;
-				padding: 0 $container-padding-x;
-				position: relative;
-				z-index: 1;
-			}
 		}
 
 		.shout-card {
 			margin-bottom: $grid-gutter-width;
-		}
-
-		.shout__topic,
-		.shout-card__title {
-			a {
-				color: #fff;
-			}
-		}
-
-		.shout-card__title,
-		.shout-card__subtitle {
-			display: inline;
 		}
 
 		.shout__author {
@@ -300,45 +291,85 @@
 		}
 	}
 
-	:global(.floor--6),
-	:global(.floor--7),
-	:global(.floor--teaser),
-	:global(.floor--11 .col-md-8) {
-		.shout-card {
-			&,
-			a,
-			.shout-card__title,
-			.shout-card__subtitle {
-				color: #fff;
-			}
+	.shout-card--with-cover {
+		padding: 56.2% 2.4rem 0;
 
-			.shout-card__cover-container,
-			.shout-card__cover,
-			.shout-card__content {
+		&,
+		a,
+		.shout-card__title,
+		.shout-card__subtitle {
+			color: #fff;
+		}
+
+		.shout-card__cover-container,
+		.shout-card__cover,
+		.shout-card__content {
+			height: 100%;
+			left: 0;
+			margin: 0;
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: -1;
+		}
+
+		.shout-card__content {
+			display: flex;
+			flex-direction: column;
+			justify-content: end;
+			padding: 2.4rem;
+			z-index: 1;
+		}
+
+		.shout-card__cover {
+			padding: 0;
+
+			&:after {
+				background: rgba(0, 0, 0, 0.6);
+				content: '';
 				height: 100%;
-				left: 0;
-				margin: 0;
 				position: absolute;
-				top: 0;
 				width: 100%;
-				z-index: -1;
+				z-index: 1;
 			}
+		}
 
-			.shout-card__content {
-				padding: 2.4rem;
+		.shout-card__title {
+			@include font-size(3.2rem);
+		}
+	}
+
+	.shout-card--content-top {
+		.shout-card__content {
+			justify-content: start;
+		}
+	}
+
+	.shout-card--short {
+		.shout-card__title {
+			@include font-size(1.7rem);
+		}
+	}
+
+	.shout-card--photo-bottom {
+		.shout-card__content {
+			margin-bottom: 1.6rem;
+		}
+
+		.shout-card__cover-container {
+			order: 2;
+		}
+	}
+
+	:global(.floor--slider) {
+		.shout-card {
+			.shout-card__cover-container {
 				z-index: 1;
 			}
 
 			.shout-card__cover {
-				padding: 0;
-
 				&:after {
-					background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
-					content: '';
-					height: 100%;
-					position: absolute;
-					width: 100%;
-					z-index: 1;
+					background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 75%);
 				}
 			}
 		}
@@ -359,7 +390,11 @@
 
 	:global(.floor--7) {
 		.shout-card {
-			padding: 160% 2.4rem 0;
+			padding: 56.2% 2.4rem 0;
+
+			@include media-breakpoint-up(md) {
+				padding-top: 160%;
+			}
 		}
 
 		.shout-card__title {
@@ -436,6 +471,56 @@
 			.shout-card__title {
 				font-size: 1.7rem;
 			}
+		}
+	}
+
+	:global(.floor--one-article) {
+		@include media-breakpoint-up(md) {
+			.shout-card {
+				flex-direction: row;
+			}
+
+			.shout-card__cover {
+				margin-bottom: 0;
+			}
+
+			.shout-card__cover-container {
+				flex: 1 58.3333%;
+			}
+
+			.shout-card__content {
+				display: flex;
+				flex-direction: column;
+				flex: 1 41.6666%;
+				justify-content: space-between;
+				padding-left: 4rem;
+			}
+
+			.shout__topic {
+				margin-bottom: 3.2rem;
+			}
+
+			.shout-card__title {
+				margin-bottom: 2.4rem;
+			}
+
+			.shout__author {
+				align-items: end;
+				display: flex;
+				flex: 1;
+			}
+		}
+
+		.shout-card__title {
+			@include font-size(4rem);
+			font-weight: 900;
+			line-height: 1.1;
+		}
+
+		.shout-card__subtitle {
+			color: #696969;
+			flex: 1;
+			@include font-size(2.4rem);
 		}
 	}
 </style>
