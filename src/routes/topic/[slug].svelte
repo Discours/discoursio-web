@@ -85,7 +85,7 @@
 	</div>
 
 	<div class="row">
-		<div class="floor floor--1 col-12">
+		<div class="floor floor--one-article col-12">
 			<div class="row">
 				{#each shouts.slice(0, 1) as shout}
 					<div class="col-12">
@@ -221,50 +221,6 @@
 		border-bottom: 1px dotted;
 		cursor: pointer;
 		font-weight: bold;
-	}
-
-	.floor--1 {
-		@include media-breakpoint-up(md) {
-			:global(.shout-card) {
-				flex-direction: row;
-			}
-
-			:global(.shout-card__cover) {
-				margin-bottom: 0;
-			}
-
-			:global(.shout-card__cover-container) {
-				flex: 1 58.3333%;
-			}
-
-			:global(.shout-card__content) {
-				display: flex;
-				flex-direction: column;
-				flex: 1 41.6666%;
-				justify-content: space-between;
-				padding-left: 4rem;
-			}
-
-			:global(.shout__topic) {
-				margin-bottom: 3.2rem;
-			}
-
-			:global(.shout-card__title) {
-				margin-bottom: 2.4rem;
-			}
-		}
-
-		:global(.shout-card__title) {
-			@include font-size(4rem);
-			font-weight: 900;
-			line-height: 1.1;
-		}
-
-		:global(.shout-card__subtitle) {
-			color: #696969;
-			flex: 1;
-			@include font-size(2.4rem);
-		}
 	}
 
 	.show-more {

@@ -17,8 +17,14 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 	import UserCard from '../components/UserCard.svelte'
 	import TopicCard from '../components/TopicCard.svelte'
+	// import CommunityCard from '../components/CommunityCard.svelte'
+	import Icon from '../components/DiscoursIcon.svelte'
+	import { Navigation } from 'swiper'
+	import { Swiper, SwiperSlide } from 'swiper/svelte'
+	import 'swiper/css';
+	import 'swiper/css/navigation';
 	import {
-		shouts, 
+		shouts,
 		topics,
 		shoutslist,
 		topicslist
@@ -37,7 +43,8 @@
 	let topCommented = [],
 		authorsMonth = [],
 		topicsMonth = [],
-		moreTimes = 0
+		moreTimes = 0,
+		topicsGroup = []
 	let loading
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
@@ -73,6 +80,9 @@
 			(a, b) => b['topicStat'].authors - a['topicStat'].authors
 		)
 		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
+
+		topicsGroup =
+			$shoutslist.filter(item => item.topics.find(topic => topic.slug === 'culture'));
 	}
 
 	$: if (!$shoutslist && $topicslist) update(recents)
@@ -158,21 +168,38 @@
 
 		<div class="floor floor--2">
 			<div class="wide-container row">
-				<div class="col-md-6">
-					{#each $shoutslist.slice(5, 6) as shout}
-						<ShoutCard {shout} />
-					{/each}
-				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<h4>Самое читаемое</h4>
-					{#each topViewed.slice(0, 4) as shout}
+					<ul class="top-viewed">
+						{#each topViewed.slice(0, 5) as shout}
+							<li>
+								<div>
+									<div class="top-viewed__topic">
+										<a href="/topic/{shout.topics.find((item) => item.slug ===
+									shout.mainTopic).slug}">
+											{shout.topics.find((item) => item.slug === shout.mainTopic).title}
+										</a>
+									</div>
+									<div class="top-viewed__shout">
+										<a href="/{shout.slug}">
+											<h4>{shout.title}</h4>
+											{#if shout.subtitle}{shout.subtitle}{/if}
+										</a>
+									</div>
+								</div>
+							</li>
+						{/each}
+					</ul>
+				</div>
+				<div class="col-md-8">
+					{#each $shoutslist.slice(5, 6) as shout}
 						<ShoutCard {shout} />
 					{/each}
 				</div>
 			</div>
 		</div>
 
-		<div class="floor floor--3">
+		<div class="floor">
 			<div class="wide-container row">
 				{#each $shoutslist.slice(7, 10) as shout}
 					<div class="col-md-4">
@@ -182,42 +209,54 @@
 			</div>
 		</div>
 
-		<div class="floor floor--important">
-			<div class="wide-container row">
-				<h2 class="col-12"><span>Важное</span></h2>
-				{#each $shoutslist.slice(0, 3) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
-			</div>
-		</div>
-
-		<div class="floor floor--5">
-			<div class="wide-container row">
-				{#each $shoutslist.slice(10, 13) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
-			</div>
-		</div>
-
-		<div class="floor floor--6">
+		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-8">
 					<ShoutCard shout={$shoutslist[14]} />
 				</div>
 				<div class="col-md-4">
-					<h4>Авторы месяца</h4>
+					<div class="ratings-header">
+						<h4>Рейтинг авторов</h4>
+						<a href="/rating">Весь рейтинг
+							<Icon name="arrow-right"/>
+						</a>
+					</div>
 
 					{#each authorsMonth.slice(0, authorsLimit) as user}
 						<div transition:fade><UserCard {user} /></div>
 					{/each}
-					{#if authorsLimit < authorsMonth.length}
-						<button class="button" on:click={moreAuthors}>Еще авторы</button>
-					{/if}
 				</div>
+			</div>
+		</div>
+
+		<div class="floor floor--important floor--slider">
+			<div class="wide-container row">
+				<h2 class="col-12">Выбор сообщества</h2>
+				<Swiper
+				    modules={[Navigation]}
+				    spaceBetween={8}
+				    slidesPerView={1.6666}
+				    navigation
+						centeredSlides
+						loop
+				  >
+					{#each $shoutslist.slice(0, 10) as article}
+						<SwiperSlide>
+							<ShoutCard shout={article}
+												 additionalClass="shout-card--with-cover"/>
+						</SwiperSlide>
+					{/each}
+				</Swiper>
+			</div>
+		</div>
+
+		<div class="floor">
+			<div class="wide-container row">
+				{#each $shoutslist.slice(10, 12) as article}
+					<div class="col-md-6">
+						<ShoutCard shout={article} />
+					</div>
+				{/each}
 			</div>
 		</div>
 
@@ -227,28 +266,56 @@
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as article}
 						<div class="col-md-6 col-lg-3">
-							<ShoutCard shout={article} />
+							<ShoutCard shout={article}
+												 additionalClass="shout-card--with-cover shout-card--content-top" />
 						</div>
 					{/each}
 				</div>
 			{/if}
 		</div>
 
-		<div class="floor floor--important">
+		<div class="floor floor--one-article">
 			<div class="wide-container row">
-				<h2 class="col-12"><span>Избранное</span></h2>
-				{#each topOverall.slice(0, 4) as article}
-					<div class="col-md-3">
+				<div class="col-12">
+					<ShoutCard shout={$shoutslist[13]} />
+				</div>
+			</div>
+		</div>
+
+		<div class="floor">
+			<div class="wide-container row">
+				{#each $shoutslist.slice(15, 18) as article}
+					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>
 				{/each}
 			</div>
 		</div>
 
+		<div class="floor floor--important floor--slider">
+			<div class="wide-container row">
+				<h2 class="col-12">Избранное</h2>
+				<Swiper
+				    modules={[Navigation]}
+				    spaceBetween={8}
+				    slidesPerView={1.6666}
+				    navigation
+						centeredSlides
+						loop
+				  >
+					{#each $shoutslist.slice(19, 30) as article}
+						<SwiperSlide>
+							<ShoutCard shout={article} additionalClass="shout-card--with-cover"/>
+						</SwiperSlide>
+					{/each}
+				</Swiper>
+			</div>
+		</div>
+
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<h4>Темы месяца</h4>
+					<h4>Интересные издания</h4>
 					{#each topicsMonth.slice(0, 4) as topic}
 						<TopicCard {topic} compact={true} />
 					{/each}
@@ -269,36 +336,70 @@
 			</div>
 		</div>
 
-		<div class="floor floor--11">
+		{#if topicsGroup.length > 0}
+		<div class="floor floor--important floor--topics-group">
 			<div class="wide-container row">
-				<div class="col-md-6">
-					<ShoutCard shout={$shoutslist[20]} />
+				<div class="topics-group__header">
+					<h3 class="col-6">
+						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
+					</h3>
+					<div class="col-6 all-materials">
+						<a href="/">все материалы
+							<Icon name="arrow-right-white"/>
+						</a>
+					</div>
 				</div>
 				<div class="col-md-6">
-					<h4>Самое обсуждаемое</h4>
-					<ShoutCard shout={topCommented[0]} />
+					<ShoutCard shout={topicsGroup[0]} />
+				</div>
+				<div class="col-md-6">
+					<div class="row">
+						<div class="col-md-6">
+							{#each topicsGroup.slice(1, 4) as article}
+								<ShoutCard shout={article} />
+							{/each}
+						</div>
+						<div class="col-md-6">
+							{#each topicsGroup.slice(4, 7) as article}
+								<ShoutCard shout={article} />
+							{/each}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
+		{/if}
 
-		<div class="floor floor--teaser">
-			<div class="wide-container row">
-				<div class="col-md-12">
-					<ShoutCard shout={$shoutslist[21]} />
-				</div>
-			</div>
-		</div>
-
-		<div class="floor floor--13">
+		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<ShoutCard shout={$shoutslist[22]} />
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[23]} />
+					<ShoutCard shout={$shoutslist[23]} additionalClass="shout-card--with-cover" />
 				</div>
 			</div>
 		</div>
+
+		{#if topicsGroup.length > 0}
+		<div class="floor">
+			<div class="wide-container row">
+				<div class="col-md-4">
+					<h4>
+						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
+					</h4>
+					{#each topicsGroup.slice(4, 7) as article}
+						<ShoutCard shout={article} isShort="{true}" isGroup="{true}" />
+					{/each}
+				</div>
+				{#each $shoutslist.slice(24, 26) as article}
+					<div class="col-md-4">
+						<ShoutCard shout={article} />
+					</div>
+				{/each}
+			</div>
+		</div>
+		{/if}
 
 		<div class="floor floor--14">
 			<div class="wide-container row">
@@ -315,15 +416,51 @@
 
 		<DiscoursBanner />
 
-		<div class="floor floor--15">
+		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(26, 27) as article}
-					<div class="col-md-426">
+				{#each $shoutslist.slice(0, 3) as article}
+					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>
 				{/each}
 			</div>
 		</div>
+
+		{#if topicsGroup.length > 0}
+		<div class="floor floor--topics-group">
+			<div class="wide-container row">
+				<div class="topics-group__header">
+					<h3 class="col-9">
+						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
+					</h3>
+					<div class="col-3 all-materials">
+						<a href="/">все материалы
+							<Icon name="arrow-right"/>
+						</a>
+					</div>
+				</div>
+				{#each topicsGroup.slice(0, 3) as article}
+					<div class="col-md-4">
+						<ShoutCard shout={article} />
+					</div>
+				{/each}
+			</div>
+		</div>
+		{/if}
+
+		<div class="floor">
+			<div class="wide-container row">
+				<div class="col-md-4">
+					{#each $shoutslist.slice(4, 8) as article}
+						<ShoutCard shout={article} isShort="{true}" />
+					{/each}
+				</div>
+				<div class="col-md-8">
+					<ShoutCard shout={$shoutslist[8]} photoBottom="{true}" />
+				</div>
+			</div>
+		</div>
+
 		{#each [...Array(9).keys()] as r}
 			{#if $shoutslist.length >= 27 + r * 3}
 				<div class="floor" transition:fade>
@@ -337,6 +474,7 @@
 				</div>
 			{/if}
 		{/each}
+
 		<div class="morewrap" transition:fade>
 			<div class="show-more">
 				<button class="button" type="button" on:click={moreShouts}
@@ -361,8 +499,12 @@
 		color: #fff;
 		@include font-size(1.7rem);
 		font-weight: 400;
-		padding: 6.2em 0;
+		padding: 3.6rem 0;
 		margin-bottom: 6.4rem;
+
+		@include media-breakpoint-up(md) {
+			padding: 6.2em 0;
+		}
 
 		h4 {
 			margin-bottom: 4rem;
@@ -383,8 +525,128 @@
 		.button {
 			border: 3px solid;
 			border-radius: 1.2em;
+			display: inline-block;
 			font-weight: bold;
 			margin-right: 0.3em;
+			margin-bottom: 0.8em;
+		}
+	}
+
+	.top-viewed {
+		counter-reset: item;
+		list-style-type: none;
+		padding-left: 0;
+
+		li {
+			border-bottom: 1px solid #e1e1e1;
+			display: flex;
+			margin-bottom: 1.6rem;
+			padding-bottom: 1.6rem;
+
+			&:last-child {
+				border: none;
+			}
+
+			&:before {
+				content: counter(item, upper-roman);
+				counter-increment: item;
+				font-size: 1.4em;
+				font-weight: 900;
+				line-height: 1;
+				padding-right: 0.3em;
+				min-width: 2em;
+				text-align: center;
+				width: 2em;
+			}
+		}
+	}
+
+	.top-viewed__topic {
+		font-size: 1.2rem;
+		letter-spacing: 0.08em;
+		margin-bottom: 0.4rem;
+		text-transform: uppercase;
+	}
+
+	.top-viewed__shout {
+		font-size: 1.4rem;
+
+		h4 {
+			display: inline;
+			font-size: 1.4rem;
+		}
+	}
+
+	.ratings-header {
+		align-items: baseline;
+		justify-content: space-between;
+		display: flex;
+
+		:global(.icon) {
+			display: inline-block;
+			height: 1em;
+			vertical-align: middle;
+			width: 1em;
+		}
+
+		a {
+			@include font-size(1.5rem);
+		}
+	}
+
+	:global(.swiper-button-prev),
+	:global(.swiper-button-next) {
+		height: 100%;
+		transform: translate(0);
+		top: 0;
+		width: 21%;
+
+		&:after {
+			color: #fff;
+		}
+	}
+
+	:global(.swiper-button-prev) {
+		background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+		justify-content: flex-start;
+		left: 0;
+
+		&:after {
+			margin-left: 5rem;
+		}
+	}
+
+	:global(.swiper-button-next) {
+		background: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+		justify-content: flex-end;
+		right: 0;
+
+		&:after {
+			margin-right: 5rem;
+		}
+	}
+
+	.floor--topics-group {
+		.all-materials {
+			align-self: baseline;
+			text-align: right;
+			white-space: nowrap;
+
+			:global(.icon) {
+				display: inline-block;
+				height: 0.8em;
+				vertical-align: middle;
+				width: 0.8em;
+			}
+
+			:global(img) {
+				vertical-align: top;
+			}
+		}
+
+		.topics-group__header {
+			display: flex;
+			align-items: baseline;
 		}
 	}
 </style>
