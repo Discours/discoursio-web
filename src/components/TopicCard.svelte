@@ -39,14 +39,14 @@
 					</a>
 				</div>
 			{/if}
-			{#if topic.body && !compact}
-				<p class="topic-description">
+			{#if topic.body}
+				<p class="topic-description" class:compact>
 					{@html topic.body}
 				</p>
 			{/if}
-			{#if topic.topicStat && !compact}
+			{#if topic.topicStat}
 				<div class="topic-details">
-					<span class="topic-details__item"
+					<span class="topic-details__item" class:compact
 						>{topic.topicStat.shouts} публикаци{plural(
 							topic.topicStat.shouts,
 							'я',
@@ -54,7 +54,7 @@
 							'й'
 						)}</span
 					>
-					<span class="topic-details__item"
+					<span class="topic-details__item" class:compact
 						>{topic.topicStat.authors} автор{plural(
 							topic.topicStat.authors,
 							'',
@@ -62,6 +62,7 @@
 							'ов'
 						)}</span
 					>
+					{#if !compact}
 					<span class="topic-details__item"
 						>{topic.topicStat.views} просмотр{plural(
 							topic.topicStat.views,
@@ -78,14 +79,15 @@
 							'ов'
 						)}</span
 					>
+					{/if}
 				</div>
 			{/if}
 		</div>
 		<div class="col-md-3">
 			{#if subscribed}
-				<button on:click={unsubscribe} class="button">Отписаться</button>
+				<button on:click={unsubscribe} class="button">-&nbsp;Отписаться</button>
 			{:else}
-				<button on:click={subscribe} class="button">Подписаться</button>
+				<button on:click={subscribe} class="button">+&nbsp;Подписаться</button>
 			{/if}
 		</div>
 	</div>
@@ -109,7 +111,7 @@
 			@include font-size(1.5rem);
 			font-weight: 400;
 			margin-top: 0.6rem;
-			padding: 0.6rem 1.2rem;
+			padding: 0.6rem 1.2rem 1rem 1rem;
 		}
 	}
 
@@ -139,6 +141,10 @@
 	.topic-description {
 		color: #696969;
 		margin-bottom: 2rem;
+
+		&.compact {
+			font-size: medium;
+		}
 	}
 
 	.topic-details {
@@ -151,6 +157,9 @@
 
 		&:last-child {
 			margin-right: 0;
+		}
+		&.compact {
+			font-size: small;
 		}
 	}
 </style>
