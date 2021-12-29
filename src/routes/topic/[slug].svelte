@@ -65,7 +65,7 @@
 		<div class="col-md-8">
 			<ul class="view-switcher">
 				<li class:selected={mode === 'fresh'}>
-					<button type="button" on:click={() => sortByDate()} >Свежее</button>
+					<button type="button" on:click={() => sortByDate()}>Свежее</button>
 				</li>
 				<li class:selected={mode === 'popular'}>
 					<button type="button" on:click={sortByPopular}>Популярное</button>

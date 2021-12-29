@@ -1,29 +1,12 @@
 <script lang="ts">
 	import type { Topic } from '../lib/codegen'
-	import { onMount } from 'svelte'
 	import { plural, capitalize } from '../lib/utils'
+	import { subscribe, unsubscribe } from '../lib/cookie'
 
 	export let topic: Topic | Partial<Topic>
-	export let subscribed = false
-	export let compact
+	export let subscribed
+	export let compact = false
 
-	// NOTE: cookie-based no auth requering subscriptions
-
-	onMount(async () => {
-		// let { topics } = JSON.parse(decodeURI(document.cookie))
-		// if (topics) subscribed = topics.includes(topic.slug)
-	})
-
-	const subscribe = async () => {
-		console.log('topic: subscribing')
-		// TODO
-		console.log(document.cookie)
-	}
-
-	const unsubscribe = async () => {
-		console.log('topic: unsubscribing')
-		// TODO
-	}
 </script>
 
 {#if topic}
@@ -63,30 +46,30 @@
 						)}</span
 					>
 					{#if !compact}
-					<span class="topic-details__item"
-						>{topic.topicStat.views} просмотр{plural(
-							topic.topicStat.views,
-							'',
-							'а',
-							'ов'
-						)}</span
-					>
-					<span class="topic-details__item"
-						>{topic.topicStat.subscriptions} подписчик{plural(
-							topic.topicStat.subscriptions,
-							'',
-							'а',
-							'ов'
-						)}</span
-					>
+						<span class="topic-details__item"
+							>{topic.topicStat.views} просмотр{plural(
+								topic.topicStat.views,
+								'',
+								'а',
+								'ов'
+							)}</span
+						>
+						<span class="topic-details__item"
+							>{topic.topicStat.subscriptions} подписчик{plural(
+								topic.topicStat.subscriptions,
+								'',
+								'а',
+								'ов'
+							)}</span
+						>
 					{/if}
 				</div>
 			{/if}
 
 			{#if subscribed}
-				<button on:click={unsubscribe} class="button">-&nbsp;Отписаться</button>
+				<button on:click={async () => subscribed = await unsubscribe(topic.slug, 'topics')} class="button">-&nbsp;Отписаться</button>
 			{:else}
-				<button on:click={subscribe} class="button">+&nbsp;Подписаться</button>
+				<button on:click={async () => subscribed = await subscribe(topic.slug, 'topics')} class="button">+&nbsp;Подписаться</button>
 			{/if}
 		</div>
 		<div class="col-md-3">

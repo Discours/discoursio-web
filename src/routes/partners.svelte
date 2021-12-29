@@ -2,6 +2,4 @@
 	export const prerender = true
 </script>
 
-<div class="main-content">
-    Наши Партнёры
-    </div>
+<div class="main-content">Наши Партнёры</div>

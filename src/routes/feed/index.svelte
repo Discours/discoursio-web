@@ -2,20 +2,22 @@
 	import type { Shout, User } from '../../lib/codegen'
 	export const prerender = true
 
-	interface MyFeedProps {
-		shouts?: Shout[]
-		users?: User[]
-		authors?: string[]
-		topics?: string[]
-	}
-
 	export const load = async ({
-		locals,
+		session,
 		fetch
-	}): Promise<{ props: MyFeedProps }> => {
-		let props: MyFeedProps = {}
-		if (locals && locals.cookies) {
-			const { topics: topicslugs, authors: authorslugs } = locals.cookies
+	}): Promise<{
+		props: {
+			shouts?: Shout[]
+			users?: User[]
+			authors?: string[]
+			topics?: string[]
+		}
+	}> => {
+		let props = {}
+		console.debug(session)
+		if (session && session.subscriptions) {
+			const { topics: topicslugs, authors: authorslugs } = session.subscriptions
+			console.debug(session.subscriptions)
 			let topics, authors, shouts
 			if (authorslugs) {
 				const aq = await fetch(`/feed/authors.json`)

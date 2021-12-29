@@ -43,7 +43,7 @@ const config = {
 		hydrate: true,
 		ssr: true,
 		prerender: {
-			enabled: false // ready to be true! 
+			enabled: false // ready to be true!
 			// FIXME: https://github.com/Discours/discoursio-web/issues/30
 		},
 		vite: {

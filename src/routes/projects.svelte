@@ -2,6 +2,4 @@
 	export const prerender = true
 </script>
 
-<h1>
-    Наши Проекты
-</h1>
+<h1>Наши Проекты</h1>

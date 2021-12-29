@@ -2,6 +2,7 @@
 	import NavUser from './NavUser.svelte'
 	import { getLocalization } from '../i18n'
 	import { onMount } from 'svelte'
+import { fade } from 'svelte/transition';
 
 	const { t } = getLocalization()
 
@@ -65,9 +66,7 @@
 				</li>
 			{/each}
 		</ul>
-
-		<NavUser />
-
+		<span class="usernav"><NavUser /></span>
 		<div class="burger-container">
 			<div
 				class="burger"
@@ -125,6 +124,17 @@
 
 	nav {
 		align-items: center;
+
+		.usernav {
+			width: auto;
+			display: inline-flex;
+			opacity: 0;
+			transition: opacity ease .5s;
+		}
+	}
+
+	nav:hover .usernav {
+		opacity: 1;
 	}
 
 	.main-navigation {

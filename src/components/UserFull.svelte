@@ -3,7 +3,7 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 
 	export let props
-	
+
 	let user
 	$: user = props.user
 

@@ -18,7 +18,9 @@
 		'user',
 		'community',
 		'partners',
-		'projects'
+		'projects',
+		'subscribe',
+		'unsubscribe'
 	]
 
 	interface SlugProps {

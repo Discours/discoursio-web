@@ -21,18 +21,14 @@
 	import Icon from '../components/DiscoursIcon.svelte'
 	import { Navigation } from 'swiper'
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
-	import 'swiper/css';
-	import 'swiper/css/navigation';
-	import {
-		shouts,
-		topics,
-		shoutslist,
-		topicslist
-	} from '../stores/zine'
+	import 'swiper/css'
+	import 'swiper/css/navigation'
+	import { shouts, topics, shoutslist, topicslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { shuffle } from '../lib/utils'
+	import { getSubscriptions } from '$lib/cookie'
 	import { fade } from 'svelte/transition'
 	export let recents = []
 	export let topMonth = []
@@ -81,15 +77,21 @@
 		)
 		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
 
-		topicsGroup =
-			$shoutslist.filter(item => item.topics.find(topic => topic.slug === 'culture'));
+		topicsGroup = $shoutslist.filter((item) =>
+			item.topics.find((topic) => topic.slug === 'culture')
+		)
 	}
 
 	$: if (!$shoutslist && $topicslist) update(recents)
 
-	onMount(() => {
-		$shoutslist = null
-	}) // force to update reactive code on mount
+	let subscribedTopics = []
+	let subscribedAuthors = []
+
+	onMount(async () => {
+		$shoutslist = null // force to update reactive store
+		subscribedTopics = await getSubscriptions(document.cookie, 'topics') || []
+		subscribedAuthors = await getSubscriptions(document.cookie, 'authors') || []
+	})
 
 	let authorsLimit = 8
 
@@ -102,7 +104,13 @@
 		loading = true
 		console.log('mainpage: show more shouts')
 		const p = Math.floor($shoutslist.length / 27)
-		$shoutslist = Array.from(new Set([ ...$shoutslist, ...topOverall.slice(4, topOverall.length), topViewed.slice(4,topViewed.length)]))
+		$shoutslist = Array.from(
+			new Set([
+				...$shoutslist,
+				...topOverall.slice(4, topOverall.length),
+				topViewed.slice(4, topViewed.length)
+			])
+		)
 		const r = await fetch('/feed/recents.json?page=' + p)
 		if (r.ok) {
 			const { recents: newData } = await r.json()
@@ -175,8 +183,11 @@
 							<li>
 								<div>
 									<div class="top-viewed__topic">
-										<a href="/topic/{shout.topics.find((item) => item.slug ===
-									shout.mainTopic).slug}">
+										<a
+											href="/topic/{shout.topics.find(
+												(item) => item.slug === shout.mainTopic
+											).slug}"
+										>
 											{shout.topics.find((item) => item.slug === shout.mainTopic).title}
 										</a>
 									</div>
@@ -217,14 +228,16 @@
 				<div class="col-md-4">
 					<div class="ratings-header">
 						<h4>Рейтинг авторов</h4>
-						<a href="/rating">Весь рейтинг
-							<Icon name="arrow-right"/>
+						<a href="/rating"
+							>Весь рейтинг
+							<Icon name="arrow-right" />
 						</a>
 					</div>
-
-					{#each authorsMonth.slice(0, authorsLimit) as user}
-						<div transition:fade><UserCard {user} /></div>
-					{/each}
+					{#key subscribedAuthors}
+						{#each authorsMonth.slice(0, authorsLimit) as user}
+							<div transition:fade><UserCard {user} subscribed={subscribedAuthors && subscribedAuthors.includes(user.slug)} /></div>
+						{/each}
+					{/key}
 				</div>
 			</div>
 		</div>
@@ -233,17 +246,16 @@
 			<div class="wide-container row">
 				<h2 class="col-12">Выбор сообщества</h2>
 				<Swiper
-				    modules={[Navigation]}
-				    spaceBetween={8}
-				    slidesPerView={1.6666}
-				    navigation
-						centeredSlides
-						loop
-				  >
+					modules={[Navigation]}
+					spaceBetween={8}
+					slidesPerView={1.6666}
+					navigation
+					centeredSlides
+					loop
+				>
 					{#each $shoutslist.slice(0, 10) as article}
 						<SwiperSlide>
-							<ShoutCard shout={article}
-												 additionalClass="shout-card--with-cover"/>
+							<ShoutCard shout={article} additionalClass="shout-card--with-cover" />
 						</SwiperSlide>
 					{/each}
 				</Swiper>
@@ -266,8 +278,10 @@
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as article}
 						<div class="col-md-6 col-lg-3">
-							<ShoutCard shout={article}
-												 additionalClass="shout-card--with-cover shout-card--content-top" />
+							<ShoutCard
+								shout={article}
+								additionalClass="shout-card--with-cover shout-card--content-top"
+							/>
 						</div>
 					{/each}
 				</div>
@@ -296,16 +310,16 @@
 			<div class="wide-container row">
 				<h2 class="col-12">Избранное</h2>
 				<Swiper
-				    modules={[Navigation]}
-				    spaceBetween={8}
-				    slidesPerView={1.6666}
-				    navigation
-						centeredSlides
-						loop
-				  >
+					modules={[Navigation]}
+					spaceBetween={8}
+					slidesPerView={1.6666}
+					navigation
+					centeredSlides
+					loop
+				>
 					{#each $shoutslist.slice(19, 30) as article}
 						<SwiperSlide>
-							<ShoutCard shout={article} additionalClass="shout-card--with-cover"/>
+							<ShoutCard shout={article} additionalClass="shout-card--with-cover" />
 						</SwiperSlide>
 					{/each}
 				</Swiper>
@@ -315,10 +329,12 @@
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<h4>Интересные издания</h4>
-					{#each topicsMonth.slice(0, 4) as topic}
-						<TopicCard {topic} compact={true} />
-					{/each}
+					{#key subscribedTopics}
+						<h4>Темы месяца</h4>
+						{#each topicsMonth.slice(0, 4) as topic}
+							<TopicCard {topic} compact={true} subscribed={subscribedTopics && subscribedTopics.includes(topic.slug)} />
+						{/each}
+					{/key}
 				</div>
 				<div class="col-md-8">
 					<ShoutCard shout={$shoutslist[15]} />
@@ -337,37 +353,40 @@
 		</div>
 
 		{#if topicsGroup.length > 0}
-		<div class="floor floor--important floor--topics-group">
-			<div class="wide-container row">
-				<div class="topics-group__header">
-					<h3 class="col-6">
-						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
-					</h3>
-					<div class="col-6 all-materials">
-						<a href="/">все материалы
-							<Icon name="arrow-right-white"/>
-						</a>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<ShoutCard shout={topicsGroup[0]} />
-				</div>
-				<div class="col-md-6">
-					<div class="row">
-						<div class="col-md-6">
-							{#each topicsGroup.slice(1, 4) as article}
-								<ShoutCard shout={article} />
-							{/each}
+			<div class="floor floor--important floor--topics-group">
+				<div class="wide-container row">
+					<div class="topics-group__header">
+						<h3 class="col-6">
+							{topicsGroup[0].topics.find(
+								(item) => item.slug === topicsGroup[0].mainTopic
+							).title}
+						</h3>
+						<div class="col-6 all-materials">
+							<a href="/"
+								>все материалы
+								<Icon name="arrow-right-white" />
+							</a>
 						</div>
-						<div class="col-md-6">
-							{#each topicsGroup.slice(4, 7) as article}
-								<ShoutCard shout={article} />
-							{/each}
+					</div>
+					<div class="col-md-6">
+						<ShoutCard shout={topicsGroup[0]} />
+					</div>
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-6">
+								{#each topicsGroup.slice(1, 4) as article}
+									<ShoutCard shout={article} />
+								{/each}
+							</div>
+							<div class="col-md-6">
+								{#each topicsGroup.slice(4, 7) as article}
+									<ShoutCard shout={article} />
+								{/each}
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
 		{/if}
 
 		<div class="floor">
@@ -376,29 +395,34 @@
 					<ShoutCard shout={$shoutslist[22]} />
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[23]} additionalClass="shout-card--with-cover" />
+					<ShoutCard
+						shout={$shoutslist[23]}
+						additionalClass="shout-card--with-cover"
+					/>
 				</div>
 			</div>
 		</div>
 
 		{#if topicsGroup.length > 0}
-		<div class="floor">
-			<div class="wide-container row">
-				<div class="col-md-4">
-					<h4>
-						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
-					</h4>
-					{#each topicsGroup.slice(4, 7) as article}
-						<ShoutCard shout={article} isShort="{true}" isGroup="{true}" />
+			<div class="floor">
+				<div class="wide-container row">
+					<div class="col-md-4">
+						<h4>
+							{topicsGroup[0].topics.find(
+								(item) => item.slug === topicsGroup[0].mainTopic
+							).title}
+						</h4>
+						{#each topicsGroup.slice(4, 7) as article}
+							<ShoutCard shout={article} isShort={true} isGroup={true} />
+						{/each}
+					</div>
+					{#each $shoutslist.slice(24, 26) as article}
+						<div class="col-md-4">
+							<ShoutCard shout={article} />
+						</div>
 					{/each}
 				</div>
-				{#each $shoutslist.slice(24, 26) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
 			</div>
-		</div>
 		{/if}
 
 		<div class="floor floor--14">
@@ -427,36 +451,39 @@
 		</div>
 
 		{#if topicsGroup.length > 0}
-		<div class="floor floor--topics-group">
-			<div class="wide-container row">
-				<div class="topics-group__header">
-					<h3 class="col-9">
-						{topicsGroup[0].topics.find(item => item.slug === topicsGroup[0].mainTopic).title}
-					</h3>
-					<div class="col-3 all-materials">
-						<a href="/">все материалы
-							<Icon name="arrow-right"/>
-						</a>
+			<div class="floor floor--topics-group">
+				<div class="wide-container row">
+					<div class="topics-group__header">
+						<h3 class="col-9">
+							{topicsGroup[0].topics.find(
+								(item) => item.slug === topicsGroup[0].mainTopic
+							).title}
+						</h3>
+						<div class="col-3 all-materials">
+							<a href="/"
+								>все материалы
+								<Icon name="arrow-right" />
+							</a>
+						</div>
 					</div>
+					{#each topicsGroup.slice(0, 3) as article}
+						<div class="col-md-4">
+							<ShoutCard shout={article} />
+						</div>
+					{/each}
 				</div>
-				{#each topicsGroup.slice(0, 3) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
 			</div>
-		</div>
 		{/if}
 
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
 					{#each $shoutslist.slice(4, 8) as article}
-						<ShoutCard shout={article} isShort="{true}" />
+						<ShoutCard shout={article} isShort={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[8]} photoBottom="{true}" />
+					<ShoutCard shout={$shoutslist[8]} photoBottom={true} />
 				</div>
 			</div>
 		</div>
@@ -607,7 +634,11 @@
 	}
 
 	:global(.swiper-button-prev) {
-		background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+		background: linear-gradient(
+			to left,
+			rgba(0, 0, 0, 0) 0%,
+			rgba(0, 0, 0, 0.9) 100%
+		);
 		justify-content: flex-start;
 		left: 0;
 
@@ -617,7 +648,11 @@
 	}
 
 	:global(.swiper-button-next) {
-		background: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+		background: linear-gradient(
+			to left,
+			rgba(0, 0, 0, 0.9) 0%,
+			rgba(0, 0, 0, 0) 100%
+		);
 		justify-content: flex-end;
 		right: 0;
 

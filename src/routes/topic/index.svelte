@@ -7,11 +7,14 @@
 	import type { Topic } from '../../lib/codegen'
 	import { topicslist } from '../../stores/zine'
 	import TopicCard from '../../components/TopicCard.svelte'
+	import { getSubscriptions } from '$lib/cookie';
 
 	let topics: Partial<Topic>[]
 	let mode = ''
 	let sortedKeys = []
 	let topicsGroupedByAlphabet = []
+
+	let subscribedList = []
 
 	const groupBy = (arr) => {
 		let firstLetter = null
@@ -31,17 +34,8 @@
 		)
 	}
 
-	$: if($topicslist) {
-		if (mode === 'popular') {
-			// console.log('topics: sorting by views')
-			topics = $topicslist.sort((a, b) => b.topicStat.views - a.topicStat.views)
-			// console.log(topics)
-		} else if (mode === 'active') {
-			// console.log('topics: sorting by shouts')
-			topics = $topicslist.sort((a, b) => b.topicStat.shouts - a.topicStat.shouts)
-			// console.log(topics)
-		} else if (mode === 'alphabet') {
-			// console.log('topics: sorting by alphabet')
+	$: if ($topicslist) {
+		if (mode === 'alphabet') {
 			topicsGroupedByAlphabet = groupBy(topics.slice(0))
 			sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
 			sortedKeys.forEach((letter) => {
@@ -56,17 +50,20 @@
 					}
 				)
 			})
+		} else {
+			topics = $topicslist.sort((a, b) => b.topicStat[mode] - a.topicStat[mode])
 		}
 	}
 
-	const onSwitch = () => {
-		mode = window.location.hash.replace('#', '') || 'popular'
-	}
+	const setMode = () => mode = window.location.hash.replace('#', '') || 'views'
 
-	onMount(onSwitch)
+	onMount(async () => {
+		setMode()
+		subscribedList = await getSubscriptions(document.cookie, 'topics')
+	})
 </script>
 
-<svelte:window on:hashchange={onSwitch} />
+<svelte:window on:hashchange={setMode} />
 
 <div class="container">
 	<div class="row">
@@ -82,10 +79,10 @@
 	<div class="row">
 		<div class="col">
 			<ul class="view-switcher">
-				<li class:selected={mode === 'popular'}>
+				<li class:selected={mode === 'views'}>
 					<a href="#popular">Популярные</a>
 				</li>
-				<li class:selected={mode === 'active'}>
+				<li class:selected={mode === 'shouts'}>
 					<a href="#active">Активные</a>
 				</li>
 				<li class:selected={mode === 'alphabet'}>
@@ -111,12 +108,10 @@
 						</div>
 					</div>
 				{/each}
-			{/if}
-
-			{#if mode === 'popular' || mode === 'active'}
+			{:else}
 				<div class="stats">
 					{#each topics as topic}
-						<TopicCard {topic} compact={false} />
+						<TopicCard {topic} compact={false} subscribed={subscribedList && subscribedList.includes(topic.slug)} />
 					{/each}
 				</div>
 			{/if}

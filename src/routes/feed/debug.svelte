@@ -4,9 +4,10 @@
 
 	let topics = new Set([])
 
-	$: if($shoutslist) $shoutslist.forEach((s) => {
-		s.topics.forEach((t) => topics.add(t.slug))
-	})
+	$: if ($shoutslist)
+		$shoutslist.forEach((s) => {
+			s.topics.forEach((t) => topics.add(t.slug))
+		})
 </script>
 
 <svelte:head><title>Дискурс : Лента</title></svelte:head>

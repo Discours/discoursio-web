@@ -5,7 +5,9 @@
 
 	export const load = async ({ page, fetch }) => {
 		const topicsAll = await fetch(`/topic/all.json`)
-		const props = topicsAll.ok ? { ...(await topicsAll.json()) } : { ...topicsAll}
+		const props = topicsAll.ok
+			? { ...(await topicsAll.json()) }
+			: { ...topicsAll }
 		return { props }
 	}
 </script>
@@ -31,7 +33,7 @@
 				console.log('app: found user token')
 				client.request(GET_ME).then((user) => {
 					$session = user
-					client.request(GET_ROLES, { slug: user.slug }).then( async (data) => {
+					client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
 						console.log(data)
 						$roles = data
 						console.log('app: my roles store updated')
@@ -42,21 +44,21 @@
 				console.error('app: graphql request failed')
 			}
 		}
-		if(!$topicslist && topicsAll) {
-			console.log('preload: ' + topicsAll.length.toString() +' topics')
+		if (!$topicslist && topicsAll) {
+			console.log('preload: ' + topicsAll.length.toString() + ' topics')
 			$topicslist = topicsAll
 			window.localStorage['topics'] = $topicslist
-			$topicslist.forEach(t => $topics[t.slug] = t)
+			$topicslist.forEach((t) => ($topics[t.slug] = t))
 			console.debug('layout: topics udpated')
 		}
 	}
 
 	onMount(() => {
 		console.debug('layout: mounted')
-		$token = document.cookie
-		if(!topicsAll) {
+		if(document.cookie.replace('token=', '') !== document.cookie) $token = document.cookie.split('token=')[1].split(';')[0]
+		if (!topicsAll) {
 			$topicslist = window.localStorage['topics']
-			$topicslist.forEach(t => $topics[t.slug] = t)
+			$topicslist.forEach((t) => ($topics[t.slug] = t))
 		}
 		$topicslist = null
 	})

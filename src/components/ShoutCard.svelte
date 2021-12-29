@@ -4,10 +4,10 @@
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
-	export let additionalClass: ''
-	export let isShort: false
-	export let isGroup: false
-	export let photoBottom: false
+	export let additionalClass: string = ''
+	export let isShort: boolean = false
+	export let isGroup: boolean = false
+	export let photoBottom: boolean = false
 
 	const seps = [':', '?', '!']
 
@@ -24,23 +24,24 @@
 	}
 </script>
 
-<section class="shout-card {additionalClass}"
-				 class:shout-card--short={isShort}
-				 class:shout-card--photo-bottom={photoBottom}
+<section
+	class="shout-card {additionalClass}"
+	class:shout-card--short={isShort}
+	class:shout-card--photo-bottom={photoBottom}
 >
 	{#if shout}
 		{#if !isShort}
-		<div class="shout-card__cover-container">
-			<div class="shout-card__cover">
-				<img src={shout.cover} alt={shout.title} loading="lazy" />
-			</div>
-
-			{#if shout.layout && shout.layout !== 'article'}
-				<div class="shout-card__type">
-					<Icon name={shout.layout} />
+			<div class="shout-card__cover-container">
+				<div class="shout-card__cover">
+					<img src={shout.cover} alt={shout.title} loading="lazy" />
 				</div>
-			{/if}
-		</div>
+
+				{#if shout.layout && shout.layout !== 'article'}
+					<div class="shout-card__type">
+						<Icon name={shout.layout} />
+					</div>
+				{/if}
+			</div>
 		{/if}
 
 		<div class="shout-card__content">
@@ -223,7 +224,7 @@
 
 		:global(.col-md-6 .col-md-6) {
 			.shout-card {
-				border-bottom: 1px solid rgba(255,255,255,0.2);
+				border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 				margin: 3.6rem 0 0;
 				padding-bottom: 2rem;
 
@@ -369,7 +370,11 @@
 
 			.shout-card__cover {
 				&:after {
-					background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 75%);
+					background: linear-gradient(
+						0deg,
+						rgba(0, 0, 0, 0.8) 0%,
+						rgba(0, 0, 0, 0) 75%
+					);
 				}
 			}
 		}

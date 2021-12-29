@@ -1,7 +1,6 @@
 import { client } from '../../lib/client'
 import { token, session } from '../../stores/user'
 import { GET_ME } from '../../lib/queries'
-import { setCookie } from '../../lib/cookie'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ params }) {
@@ -10,9 +9,16 @@ export async function get({ params }) {
 		token.set(got)
 		const user = await client.request(GET_ME)
 		session.set(user)
-		setCookie('token', got, 420)
 		window.close()
+		return {
+			headers: { 'Set-Cookie': 'token=' + got },
+			body: { ok: true }
+		}
 	} else {
-		return 'No token was provided'
+		return {
+			body: {
+				error: 'No token was provided'
+			}
+		}
 	}
 }
