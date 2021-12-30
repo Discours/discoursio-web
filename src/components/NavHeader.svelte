@@ -1,10 +1,9 @@
 <script>
 	import NavUser from './NavUser.svelte'
-	import { getLocalization } from '../i18n'
+	// import { getLocalization } from '../i18n'
 	import { onMount } from 'svelte'
-import { fade } from 'svelte/transition';
 
-	const { t } = getLocalization()
+	// const { t } = getLocalization()
 
 	let res = ''
 	let isBurgerHidden = true
@@ -29,9 +28,8 @@ import { fade } from 'svelte/transition';
 			href: '/topic'
 		},
 		{
-			title: 'сообщество',
-			href: '/community',
-			disabled: true
+			title: 'сообщества',
+			href: '/community'
 		}
 	]
 
@@ -56,7 +54,7 @@ import { fade } from 'svelte/transition';
 		>
 			{#each MAIN_NAVIGATION as navItem}
 				<li class:selected={res === navItem.href}>
-					{#if res === navItem.href && !navItem.disabled}
+					{#if res === navItem.href}
 						<strong>{navItem.title}</strong>
 					{:else}
 						<a href={navItem.href} on:click={() => (res = navItem.href)}
@@ -129,7 +127,7 @@ import { fade } from 'svelte/transition';
 			width: auto;
 			display: inline-flex;
 			opacity: 0;
-			transition: opacity ease .5s;
+			transition: opacity ease 0.5s;
 		}
 	}
 

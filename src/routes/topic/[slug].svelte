@@ -14,64 +14,99 @@
 </script>
 
 <script lang="ts">
-	import { topics } from '../../stores/zine'
+	import {
+		topics,
+		subscribedAuthors,
+		subscribedTopics,
+		shoutslist
+	} from '../../stores/zine'
 	import TopicFull from '../../components/TopicFull.svelte'
 	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 	import ShoutCard from '../../components/ShoutCard.svelte'
 	import UserCard from '../../components/UserCard.svelte'
+	import type { Shout, User } from '$lib/codegen'
 
-	export let shouts
-	export let authors
-	export let slug
+	export let shouts: Shout[]
+	export let authors: User[]
+	export let slug: string
 
 	let topic
-	let mode = 'fresh'
+	let mode
 
 	$: if (!slug && $page && $page.params.slug) slug = $page.params.slug
 	$: if (slug && !topic && $topics) topic = $topics[slug]
-
+	$: if (authors) {
+		console.log(authors)
+	}
 	onMount(() => {
 		topic = null
+		mode = window.location.hash
+		console.log(mode)
 	})
 
-	const sortByPopular = () => {
-		shouts = shouts.sort((a, b) => b.stat.views - a.stat.views)
-		mode = 'popular'
+	const sortBy = (by) => {
+		switch (by) {
+			case 'popular':
+				shouts = shouts.sort((a, b) => b.stat.views - a.stat.views)
+				break
+			case 'fresh':
+				shouts = shouts.sort(
+					(a, b) =>
+						new Date(b.publishedAt).getMilliseconds() -
+						new Date(a.publishedAt).getMilliseconds()
+				)
+				break
+			case 'discuss':
+				shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments)
+				break
+			default:
+				mode = 'fresh'
+		}
+		mode = by
 	}
-
-	const sortByDiscuss = () => {
-		shouts = shouts.sort((a, b) => b.stat.comments - a.stat.comments)
-		mode = 'discuss'
-	}
-
-	const sortByDate = () => {
-		shouts = shouts.sort(
-			(a, b) =>
-				new Date(b.publishedAt).getMilliseconds() -
-				new Date(a.publishedAt).getMilliseconds()
-		)
-		mode = 'fresh'
+	let loading = false,
+		moreTimes
+	const moreShouts = async () => {
+		loading = true
+		console.log('topicpage: show more shouts')
+		const p = Math.floor(Object.values(shouts).length / 27)
+		const r = await fetch(`/topic/${slug}.json?page=${p}`)
+		if (r.ok) {
+			const { shouts: newData } = await r.json()
+			console.debug(
+				'topicpage: ' +
+					Object.values(newData).length.toString() +
+					' more shouts loaded'
+			)
+			shouts = [...shouts, ...newData]
+		}
+		loading = false
 	}
 </script>
 
 <svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
-{#if topic}
-	<TopicFull {topic} />
-{/if}
+{#key $subscribedTopics}
+	{#if topic}
+		<TopicFull {topic} subscribed={$subscribedTopics.includes(topic.slug)} />
+	{/if}
+{/key}
 
 <div class="container">
 	<div class="row topic__controls">
 		<div class="col-md-8">
 			<ul class="view-switcher">
 				<li class:selected={mode === 'fresh'}>
-					<button type="button" on:click={() => sortByDate()}>Свежее</button>
+					<button type="button" on:click={() => sortBy('fresh')}>Свежее</button>
 				</li>
 				<li class:selected={mode === 'popular'}>
-					<button type="button" on:click={sortByPopular}>Популярное</button>
+					<button type="button" on:click={() => sortBy('popular')}>Популярное</button
+					>
 				</li>
 				<li class:selected={mode === 'discuss'}>
-					<button type="button" on:click={sortByDiscuss}>Обсуждаемое</button>
+					<button type="button" on:click={() => sortBy('discuss')}
+						>Обсуждаемое</button
+					>
 				</li>
 			</ul>
 		</div>
@@ -116,8 +151,8 @@
 			<div class="row">
 				<div class="col-md-4">
 					<h3>Тему поддерживают</h3>
-					{#each Object.keys(authors).slice(0, 5) as key}
-						<UserCard user={authors[key]} />
+					{#each Object.values(authors).slice(0, 5) as user}
+						<UserCard {user} subscribed={$subscribedAuthors.includes(user.slug)} />
 					{/each}
 				</div>
 				{#each shouts.slice(6, 8) as shout}
@@ -198,7 +233,8 @@
 </div>
 
 <div class="show-more">
-	<button class="button" type="button">Показать еще</button>
+	<button class="button" type="button" on:click={moreShouts}>Показать еще</button
+	>
 </div>
 
 <style lang="scss">

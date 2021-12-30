@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { subscribe, unsubscribe } from '$lib/cookie'
+
+	export let subscribed
 	export let topic
 	// TODO: topic full is a community topic feed index
 </script>
@@ -11,8 +14,20 @@
 				<p>{topic.body}</p>
 			{/if}
 			<div class="topic__actions">
-				<button>Подписаться на тему</button>
-				<button>Написать в тему</button>
+				{#if subscribed}
+					<button
+						on:click={async () =>
+							(subscribed = await unsubscribe(topic.slug, 'topics'))}
+						class="button">Отписаться от темы</button
+					>
+				{:else}
+					<button
+						on:click={async () =>
+							(subscribed = await subscribe(topic.slug, 'topics'))}
+						class="button">Подписаться на тему</button
+					>
+				{/if}
+				<a href={'/create?topic=' + topic.slug}>Написать в тему</a>
 			</div>
 			{#if topic.pic}<img src={topic.pic} />{/if}
 		</div>
@@ -39,7 +54,8 @@
 	.topic__actions {
 		margin-top: 2.8rem;
 
-		button {
+		button,
+		a {
 			background: #000;
 			border: none;
 			border-radius: 2px;

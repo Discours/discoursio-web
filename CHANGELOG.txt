@@ -1,3 +1,13 @@
+[0.1.0]
+
+[0.0.9]
+[+] lots of visual changes for demo
+[+] cookie-based subscriptions
+[+] prerender fix
+[+] refactor queries
+[+] caching topics with localStorage
+[+] added some 'static' routes
+
 [0.0.8]
 [+] isolated editor codebase
 [+] sveo

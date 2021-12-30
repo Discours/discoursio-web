@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let community
+	export let subscribed: boolean
 </script>
 
 <div class="community">
@@ -18,7 +19,9 @@
 			<div class="community__about">{@html community.desc}</div>
 
 			<div class="community__subscribe">
-				<button class="button button--subscribe">Подписаться</button>
+				<button class="button button--subscribe"
+					>{#if subscribed}-&nbsp;От{:else}+&nbsp;Под{/if}писаться</button
+				>
 			</div>
 		</div>
 	{/if}

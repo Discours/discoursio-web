@@ -410,34 +410,6 @@ export const AUTHORS_BY_SLUGS = gql`
 	}
 `
 
-export const TOPICS_BY_SLUGS = gql`
-	query TopicsBySlugsQuery($slugs: [String]!) {
-		topicsBySlugs(slugs: $slugs) {
-			title
-			body
-			slug
-			pic
-			parents
-			children
-			community
-		}
-	}
-`
-
-export const TOPICS_BY_COMMUNITY = gql`
-	query TopicsByCommunityQuery($community: String!) {
-		topicsByCommunity(community: $community) {
-			title
-			body
-			slug
-			pic
-			parents
-			children
-			community
-		}
-	}
-`
-
 export const TOPICS_ALL = gql`
 	query TopicsAllQuery {
 		topicsBySlugs {
@@ -454,20 +426,6 @@ export const TOPICS_ALL = gql`
 				views
 				subscriptions
 			}
-		}
-	}
-`
-
-export const TOPICS_BY_AUTHOR = gql`
-	query TopicsByAuthorQuery($author: String!) {
-		topicsByAuthor(author: $author) {
-			title
-			body
-			slug
-			pic
-			parents
-			children
-			community
 		}
 	}
 `

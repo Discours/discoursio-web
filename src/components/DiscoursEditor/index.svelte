@@ -15,9 +15,24 @@
 <script lang="ts">
 	import P2P from './P2P.svelte'
 	import Editor from './Editor.svelte'
-	import { p2p, ydoc, room, body, webrtc } from '../../stores/editor'
+	import {
+		p2p,
+		ydoc,
+		room,
+		body as bodyStore,
+		webrtc
+	} from '../../stores/editor'
 
-	$: if ($ydoc && $room) $body = $ydoc.getXmlFragment($room + '-body')
+	export let body: any
+	let shared = false
+
+	$: if (shared && $ydoc && $room) {
+		const remote = $ydoc.getXmlFragment($room + '-body')
+		const local = $bodyStore
+		// TODO: conflict solving logix
+	}
+
+	$: if (body) $bodyStore = body
 </script>
 
 <div class="container">

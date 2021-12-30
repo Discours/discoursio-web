@@ -6,7 +6,6 @@
 	export let topic: Topic | Partial<Topic>
 	export let subscribed
 	export let compact = false
-
 </script>
 
 {#if topic}
@@ -67,9 +66,16 @@
 			{/if}
 
 			{#if subscribed}
-				<button on:click={async () => subscribed = await unsubscribe(topic.slug, 'topics')} class="button">-&nbsp;Отписаться</button>
+				<button
+					on:click={async () =>
+						(subscribed = await unsubscribe(topic.slug, 'topics'))}
+					class="button">-&nbsp;Отписаться</button
+				>
 			{:else}
-				<button on:click={async () => subscribed = await subscribe(topic.slug, 'topics')} class="button">+&nbsp;Подписаться</button>
+				<button
+					on:click={async () => (subscribed = await subscribe(topic.slug, 'topics'))}
+					class="button">+&nbsp;Подписаться</button
+				>
 			{/if}
 		</div>
 		<div class="col-md-3">

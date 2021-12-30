@@ -4,7 +4,7 @@ import { GET_COMMUNITIES, SHOUTS_BY_COMMUNITY } from '../../lib/queries'
 export const get = async ({ params }) => {
 	try {
 		const { community: slug } = params
-		if (slug in ['top-month', 'recents', 'top-overall']) return
+		if (slug in ['all']) return
 		const {
 			communities: [community]
 		} = await client.request(GET_COMMUNITIES, { slugs: [slug] })

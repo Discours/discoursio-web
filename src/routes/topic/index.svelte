@@ -5,16 +5,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import type { Topic } from '../../lib/codegen'
-	import { topicslist } from '../../stores/zine'
 	import TopicCard from '../../components/TopicCard.svelte'
-	import { getSubscriptions } from '$lib/cookie';
+	import { topicslist, subscribedTopics } from '../../stores/zine'
 
 	let topics: Partial<Topic>[]
 	let mode = ''
 	let sortedKeys = []
 	let topicsGroupedByAlphabet = []
-
-	let subscribedList = []
 
 	const groupBy = (arr) => {
 		let firstLetter = null
@@ -55,12 +52,9 @@
 		}
 	}
 
-	const setMode = () => mode = window.location.hash.replace('#', '') || 'views'
+	const setMode = () => (mode = window.location.hash.replace('#', '') || 'views')
 
-	onMount(async () => {
-		setMode()
-		subscribedList = await getSubscriptions(document.cookie, 'topics')
-	})
+	onMount(setMode)
 </script>
 
 <svelte:window on:hashchange={setMode} />
@@ -80,10 +74,10 @@
 		<div class="col">
 			<ul class="view-switcher">
 				<li class:selected={mode === 'views'}>
-					<a href="#popular">Популярные</a>
+					<a href="#views">По просмотрам</a>
 				</li>
 				<li class:selected={mode === 'shouts'}>
-					<a href="#active">Активные</a>
+					<a href="#shouts">По публикациям</a>
 				</li>
 				<li class:selected={mode === 'alphabet'}>
 					<a href="#alphabet">По алфавиту</a>
@@ -109,11 +103,17 @@
 					</div>
 				{/each}
 			{:else}
-				<div class="stats">
-					{#each topics as topic}
-						<TopicCard {topic} compact={false} subscribed={subscribedList && subscribedList.includes(topic.slug)} />
-					{/each}
-				</div>
+				{#key $subscribedTopics}
+					<div class="stats">
+						{#each topics as topic}
+							<TopicCard
+								{topic}
+								compact={false}
+								subscribed={$subscribedTopics && $subscribedTopics.includes(topic.slug)}
+							/>
+						{/each}
+					</div>
+				{/key}
 			{/if}
 		</div>
 	</div>

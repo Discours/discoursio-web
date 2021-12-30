@@ -1,11 +1,11 @@
 import {
 	wrapItem,
 	blockTypeItem,
-	joinUpItem,
-	liftItem,
-	selectParentNodeItem,
-	undoItem,
-	redoItem,
+	// joinUpItem,
+	// liftItem,
+	// selectParentNodeItem,
+	// undoItem,
+	// redoItem,
 	icons,
 	MenuItem
 } from 'prosemirror-menu'

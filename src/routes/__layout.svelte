@@ -23,6 +23,8 @@
 	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
 	import { client } from '../lib/client'
+	import { getSubscriptions } from '$lib/cookie'
+	import { subscribedTopics, subscribedAuthors } from '../stores/zine'
 
 	initLocalizationContext()
 
@@ -53,9 +55,13 @@
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		console.debug('layout: mounted')
-		if(document.cookie.replace('token=', '') !== document.cookie) $token = document.cookie.split('token=')[1].split(';')[0]
+		if (document.cookie.replace('token=', '') !== document.cookie)
+			$token = document.cookie.split('token=')[1].split(';')[0]
+		$subscribedTopics = (await getSubscriptions(document.cookie, 'topics')) || []
+		$subscribedAuthors =
+			(await getSubscriptions(document.cookie, 'authors')) || []
 		if (!topicsAll) {
 			$topicslist = window.localStorage['topics']
 			$topicslist.forEach((t) => ($topics[t.slug] = t))

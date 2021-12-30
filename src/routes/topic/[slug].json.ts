@@ -1,21 +1,18 @@
 import { client } from '../../lib/client'
 import { SHOUTS_BY_TOPIC } from '../../lib/queries'
-import { get as getStore } from 'svelte/store'
-import { topics } from '../../stores/zine'
-
-const ttt = getStore(topics)
 
 export const get = async ({ params }) => {
 	try {
 		const { slug: topic } = params
+		if (topic in ['all', 'author']) return
 		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, {
 			topic,
-			limit: 20
+			limit: 27
 		})
 		let authors = {}
 		shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))
 		const body = { shouts, authors }
-		return { status: shouts ? 200 : 404, body, topic: ttt[topic] }
+		return { status: shouts ? 200 : 404, body }
 	} catch (error) {
 		console.error(error)
 		return {

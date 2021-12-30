@@ -28,13 +28,21 @@
 			{#if hasSubscribeButton}
 				<div class="author__subscribe">
 					{#if subscribed}
-						<button on:click={async () => subscribed = await unsubscribe(user.slug, 'authors')} class="button button--subscribe"
-							>Отписаться</button
-						>
+						<button
+							on:click={async () =>
+								(subscribed = await unsubscribe(user.slug, 'authors'))}
+							class="button button--subscribe"
+							><Icon name="author-unsubscribe" />
+							<span class="button__label">-&nbsp;Отписаться</span>
+						</button>
 					{:else}
-						<button on:click={async () => subscribed = await subscribe(user.slug, 'authors')} class="button button--subscribe">
+						<button
+							on:click={async () =>
+								(subscribed = await subscribe(user.slug, 'authors'))}
+							class="button button--subscribe"
+						>
 							<Icon name="author-subscribe" />
-							<span class="button__label">Подписаться</span>
+							<span class="button__label">+&nbsp;Подписаться</span>
 						</button>
 					{/if}
 

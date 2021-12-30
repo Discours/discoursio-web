@@ -23,12 +23,18 @@
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
 	import 'swiper/css'
 	import 'swiper/css/navigation'
-	import { shouts, topics, shoutslist, topicslist } from '../stores/zine'
+	import {
+		shouts,
+		topics,
+		shoutslist,
+		topicslist,
+		subscribedTopics,
+		subscribedAuthors
+	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { onMount } from 'svelte'
 	import { shuffle } from '../lib/utils'
-	import { getSubscriptions } from '$lib/cookie'
 	import { fade } from 'svelte/transition'
 	export let recents = []
 	export let topMonth = []
@@ -84,13 +90,8 @@
 
 	$: if (!$shoutslist && $topicslist) update(recents)
 
-	let subscribedTopics = []
-	let subscribedAuthors = []
-
-	onMount(async () => {
+	onMount(() => {
 		$shoutslist = null // force to update reactive store
-		subscribedTopics = await getSubscriptions(document.cookie, 'topics') || []
-		subscribedAuthors = await getSubscriptions(document.cookie, 'authors') || []
 	})
 
 	let authorsLimit = 8
@@ -227,15 +228,17 @@
 				</div>
 				<div class="col-md-4">
 					<div class="ratings-header">
-						<h4>Рейтинг авторов</h4>
+						<h4>Авторы месяца</h4>
 						<a href="/rating"
-							>Весь рейтинг
+							>Ещё авторы
 							<Icon name="arrow-right" />
 						</a>
 					</div>
-					{#key subscribedAuthors}
+					{#key $subscribedAuthors}
 						{#each authorsMonth.slice(0, authorsLimit) as user}
-							<div transition:fade><UserCard {user} subscribed={subscribedAuthors && subscribedAuthors.includes(user.slug)} /></div>
+							<div transition:fade>
+								<UserCard {user} subscribed={$subscribedAuthors.includes(user.slug)} />
+							</div>
 						{/each}
 					{/key}
 				</div>
@@ -329,11 +332,17 @@
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#key subscribedTopics}
-						<h4>Темы месяца</h4>
-						{#each topicsMonth.slice(0, 4) as topic}
-							<TopicCard {topic} compact={true} subscribed={subscribedTopics && subscribedTopics.includes(topic.slug)} />
-						{/each}
+					{#key $subscribedTopics}
+						{#if topicsMonth}
+							<h4>Темы месяца</h4>
+							{#each topicsMonth.slice(0, 4) as topic}
+								<TopicCard
+									{topic}
+									compact={true}
+									subscribed={$subscribedTopics.includes(topic.slug)}
+								/>
+							{/each}
+						{/if}
 					{/key}
 				</div>
 				<div class="col-md-8">

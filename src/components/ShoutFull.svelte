@@ -6,12 +6,12 @@
 	import MD from '../components/MD.svelte'
 	import type { Topic } from '$lib/codegen'
 	import { capitalize } from '$lib/utils'
+	import { subscribedAuthors } from '../stores/zine'
 
 	export let props
 	let shout
 	let canEdit
 	let commentsById: { [key: number]: Partial<Comment> } = {}
-
 	onMount(() => {
 		if (shout.comments.length === 0) console.log('shout: no comments')
 	})
@@ -93,7 +93,11 @@
 
 					{#each shout.authors as user, index}
 						{#if index > 0},{/if}
-						<UserCard {user} hasSubscribeButton={false} />
+						<UserCard
+							{user}
+							hasSubscribeButton={false}
+							subscribed={$subscribedAuthors.includes(user.slug)}
+						/>
 					{/each}
 				</div>
 			</article>

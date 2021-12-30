@@ -11,10 +11,14 @@ export const capitalize = (s, firstonly = false) => {
 }
 
 export const plural = (amount, w1, w2, w5) => {
-	const a = amount.toString()
-	const x = parseInt(a.charAt(a.length - 1))
-	if (x === 1) return w1
-	if (x > 1 && x < 5) return w2
+	try {
+		const a = amount.toString()
+		const x = parseInt(a.charAt(a.length - 1))
+		const xx = parseInt(a.charAt(a.length - 2) + a.charAt(a.length - 1))
+		if (xx > 5 && xx < 20) return w5
+		if (x === 1) return w1
+		if (x > 1 && x < 5) return w2
+	} catch (e) {}
 	return w5
 }
 

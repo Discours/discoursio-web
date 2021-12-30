@@ -15,3 +15,6 @@ export const communities: Writable<{ [slug: string]: Community }> = writable({})
 
 // TODO: hash navigation
 export const filterTopic: Writable<string> = writable('')
+
+export const subscribedTopics: Writable<string[]> = writable([])
+export const subscribedAuthors: Writable<string[]> = writable([])

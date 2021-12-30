@@ -3,6 +3,7 @@
 	import ShoutCard from '../components/ShoutCard.svelte'
 
 	export let props
+	export let subscribed
 
 	let user
 	$: user = props.user
@@ -24,7 +25,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="user-details">
-				<UserCard {user} hasFullInfo={true} />
+				<UserCard {user} hasFullInfo={true} {subscribed} />
 			</div>
 		</div>
 	</div>

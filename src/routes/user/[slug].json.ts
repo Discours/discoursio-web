@@ -1,10 +1,5 @@
 import { client } from '../../lib/client'
-import {
-	GET_AUTHOR,
-	SHOUTS_BY_AUTHOR,
-	GET_ROLES,
-	TOPICS_BY_AUTHOR
-} from '../../lib/queries'
+import { GET_AUTHOR, SHOUTS_BY_AUTHOR, GET_ROLES } from '../../lib/queries'
 
 export const get = async ({ params }) => {
 	try {
@@ -16,10 +11,6 @@ export const get = async ({ params }) => {
 		if (users.length > 0) {
 			const user = users[0]
 			const { shoutsByAuthor: shouts } = await client.request(SHOUTS_BY_AUTHOR, {
-				author: slug,
-				limit: 50
-			})
-			const { topicsByAuthor: topics } = await client.request(TOPICS_BY_AUTHOR, {
 				author: slug,
 				limit: 50
 			})

@@ -36,5 +36,5 @@
 	export let authors
 </script>
 
-<svelte:head><title>{community.title}</title></svelte:head>
+<svelte:head><title>{community ? community.title : ''}</title></svelte:head>
 <CommunityFull props={{ community, shouts, authors }} />
