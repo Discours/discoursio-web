@@ -1,5 +1,15 @@
 import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
+import { browser } from '$app/env'
+
+export const theme: Writable<string> = writable('default')
+export const openModal: Writable<string> = writable('')
+export const showNotices: Writable<boolean> = writable(false)
+if (browser) {
+	const value = localStorage.theme || 'default'
+	theme.set(value)
+	theme.subscribe((data) => (localStorage.theme = data))
+}
 
 export enum Locale {
 	RU = 'ru',

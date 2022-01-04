@@ -25,21 +25,6 @@ export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable('')
 export const session: Writable<Partial<User>> = writable({})
 export const roles: Writable<Role[]> = writable([])
-// ui form needs
-export const ui: Writable<{
-	email: string
-	password: string
-	remember: boolean
-	authModal: boolean
-	showNotices: boolean
-}> = writable({
-	email: '',
-	password: '',
-	remember: false,
-	authModal: false,
-	showNotices: false
-})
-
 export const notices: Writable<
 	{
 		type: string
