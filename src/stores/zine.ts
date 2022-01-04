@@ -5,7 +5,7 @@ import type { User, Topic, Community, Shout } from '../lib/codegen'
 
 export const authorslist: Writable<User[]> = writable([])
 authorslist.subscribe((tl) => {
-    if (tl) console.debug('store: authorslist updated with ' + tl.length)
+	if (tl) console.debug('store: authorslist updated with ' + tl.length)
 })
 export const communitieslist: Writable<Community[]> = writable([])
 export const shoutslist: Writable<Shout[]> = writable([])
@@ -30,5 +30,5 @@ subscribedTopics.subscribe((tl) =>
 )
 export const subscribedAuthors: Writable<string[]> = writable([])
 subscribedAuthors.subscribe((tl) => {
-    if (tl) console.debug('store: subscribedAuthors updated with ' + tl.length)
+	if (tl) console.debug('store: subscribedAuthors updated with ' + tl.length)
 })

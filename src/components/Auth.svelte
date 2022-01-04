@@ -283,10 +283,6 @@
 			top: 0;
 			width: 100%;
 		}
-
-		.close-control {
-			color: #fff;
-		}
 	}
 
 	.login-image {

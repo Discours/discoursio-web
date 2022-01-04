@@ -7,10 +7,6 @@
 	"repository": {
 		"url": "https://github.com/Discours/discoursio-web"
 	},
-	"engines": {
-		"node": ">=16",
-		"yarn": ">=1.22"
-	},
 	"scripts": {
 		"dev": "svelte-kit dev",
 		"ssg": "SSG=1 svelte-kit build",

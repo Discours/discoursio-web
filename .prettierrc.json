@@ -8,7 +8,6 @@
 	"trailingComma": "none",
 	"svelteSortOrder": "scripts-options-markup-styles",
 	"svelteStrictMode": false,
-	"svelteBracketNewLine": true,
 	"svelteAllowShorthand": true,
 	"plugins": ["prettier-plugin-svelte"],
 	"overrides": [
