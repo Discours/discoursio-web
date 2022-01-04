@@ -29,8 +29,11 @@
 		user?: User
 	}
 
-	export const load = async ({ page, fetch }): Promise<{ props: SlugProps }> => {
-		const { slug } = page.params
+	export const load = async ({
+		params,
+		fetch
+	}): Promise<{ props: SlugProps }> => {
+		const { slug } = params
 		let props: SlugProps = { slug }
 		const at = slug.startsWith('@')
 		if (routes.includes(slug) && !at) return { props }

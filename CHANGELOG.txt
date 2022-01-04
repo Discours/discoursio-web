@@ -1,4 +1,6 @@
 [0.1.0]
+[+] modal components refactoring
+[+] 'static' pages fixes
 
 [0.0.9]
 [+] lots of visual changes for demo

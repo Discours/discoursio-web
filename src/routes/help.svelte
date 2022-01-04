@@ -7,11 +7,11 @@
 	import SvelteSeo from 'svelte-seo'
 
 	let paymentTypeShowing = true
-	let sum = 500
-	let isOnItemPage = true
-	let inputSumrm
-	let inputSum
-	let value = 500
+	// let sum = 500
+	// let isOnItemPage = true
+	// let inputSumrm
+	// let inputSum
+	// let value = 500
 
 	const clickDonate = async () => {
 		console.log('help: donate clicked')
@@ -21,10 +21,6 @@
 		title: 'Поддержите Дискурс',
 		description: 'Здесь можно поддержать Дискурс материально.',
 		keywords: 'Discours.io, помощь, благотворительность'
-	}
-
-	const handleSumButtonClick = () => {
-		//
 	}
 </script>
 
@@ -212,7 +208,9 @@
 						</div>
 
 						<div class="form-group">
-							<button class="btn send-btn donate">Помочь журналу</button>
+							<button class="btn send-btn donate" on:click|preventDefault={clickDonate}
+								>Помочь журналу</button
+							>
 						</div>
 					</form>
 				</div>

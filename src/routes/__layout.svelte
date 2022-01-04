@@ -1,73 +1,86 @@
 <script context="module">
 	import dayjs from 'dayjs/esm'
-	import relativeTime from 'dayjs/esm/plugin/relativeTime'
+	// import relativeTime from 'dayjs/esm/plugin/relativeTime'
 	dayjs().format()
 
-	export const load = async ({ page, fetch }) => {
+	export const load = async ({ fetch }) => {
 		const topicsAll = await fetch(`/topic/all.json`)
 		const props = topicsAll.ok
 			? { ...(await topicsAll.json()) }
 			: { ...topicsAll }
+		console.log(
+			'layout: preloaded ' + props.topicsAll.length.toString() + ' topics'
+		)
 		return { props }
 	}
 </script>
 
 <script lang="ts">
 	import '../app.scss'
-	// import 'virtual:windi.css'
-	import { initLocalizationContext } from '../i18n/index'
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
-	import { token, session, roles } from '../stores/user'
-	import { topicslist, topics } from '../stores/zine'
-	import { GET_ME, GET_ROLES } from '../lib/queries'
 	import { onMount } from 'svelte'
-	import { client } from '../lib/client'
 	import { getSubscriptions } from '$lib/cookie'
-	import { subscribedTopics, subscribedAuthors } from '../stores/zine'
-
-	initLocalizationContext()
+	import {
+		topicslist,
+		topics,
+		subscribedTopics,
+		subscribedAuthors,
+		shoutslist
+	} from '../stores/zine'
+	import { loading } from '../stores/app'
+	import { browser } from '$app/env'
+	// import 'virtual:windi.css'
+	// import { initLocalizationContext } from '../i18n/index'
+	// initLocalizationContext()
 
 	export let topicsAll = []
-	$: {
-		if ($token) {
-			try {
-				console.log('app: found user token')
-				client.request(GET_ME).then((user) => {
-					$session = user
-					client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
-						console.log(data)
-						$roles = data
-						console.log('app: my roles store updated')
-					})
-					console.log('app: session store updated')
-				})
-			} catch (e) {
-				console.error('app: graphql request failed')
-			}
-		}
-		if (!$topicslist && topicsAll) {
-			console.log('preload: ' + topicsAll.length.toString() + ' topics')
-			$topicslist = topicsAll
-			window.localStorage['topics'] = $topicslist
-			$topicslist.forEach((t) => ($topics[t.slug] = t))
-			console.debug('layout: topics udpated')
-		}
+
+	$: if (browser && !topicslist) {
+		fetch(`/topic/all.json`)
+			.then((r) => r.ok && r.json())
+			.then((ttt) => {
+				$topicslist = ttt.topicsAll
+				console.log(
+					'layout: loaded ' +
+						$topicslist.length.toString() +
+						' topics with browser request'
+				)
+			})
 	}
 
+	$: if ($topicslist && $topicslist.length > 0) $shoutslist = null
+
 	onMount(async () => {
-		console.debug('layout: mounted')
-		if (document.cookie.replace('token=', '') !== document.cookie)
-			$token = document.cookie.split('token=')[1].split(';')[0]
+		$topicslist = null // force update, WARN: works only with null!
 		$subscribedTopics = (await getSubscriptions(document.cookie, 'topics')) || []
 		$subscribedAuthors =
 			(await getSubscriptions(document.cookie, 'authors')) || []
-		if (!topicsAll) {
-			$topicslist = window.localStorage['topics']
-			$topicslist.forEach((t) => ($topics[t.slug] = t))
+		if (topicsAll.length > 0) {
+			$topicslist = topicsAll
+		} else {
+			$topicslist = await JSON.parse(window.localStorage.getItem('topics') || '[]')
+			console.log(
+				'layout: loaded ' +
+					$topicslist.length.toString() +
+					' topics from localStorage'
+			)
 		}
-		$topicslist = null
+		$topicslist.forEach((t) => ($topics[t.slug] = t))
+		$loading = false
+		await save()
+		console.log('layout: mounted')
 	})
+
+	const save = async () => {
+		const datastring = await JSON.stringify(topicsAll)
+		if (window.localStorage['topics'] !== datastring) {
+			window.localStorage['topics'] !== datastring
+			console.log(
+				`layout: updated ${$topicslist.length.toString()} topics in localStorage`
+			)
+		}
+	}
 </script>
 
 <!--Sveo {seo} /-->

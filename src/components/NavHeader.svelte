@@ -1,17 +1,19 @@
 <script>
-	import NavUser from './NavUser.svelte'
+	import NavAuth from './NavAuth.svelte'
 	// import { getLocalization } from '../i18n'
 	import { onMount } from 'svelte'
+	import { fade } from 'svelte/transition'
+	import { goto } from '$app/navigation'
 
 	// const { t } = getLocalization()
 
-	let res = ''
+	let res
 	let isBurgerHidden = true
-	let body = null
+	let isMobile = false
 
 	const toggleBurger = () => {
 		isBurgerHidden = !isBurgerHidden
-		body.classList.toggle('fixed', !isBurgerHidden)
+		document.body.classList.toggle('fixed', !isBurgerHidden)
 	}
 
 	const MAIN_NAVIGATION = [
@@ -35,12 +37,13 @@
 
 	onMount(() => {
 		res = window.location.pathname
-		body = document.querySelector('body')
+		isMobile = 'touchdown' in window
+		console.log('nav: header mounted')
 	})
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div class="wide-container">
+<div class="wide-container" transition:fade>
 	<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
 		<div class="main-logo col-auto">
 			<a href="/">
@@ -57,14 +60,26 @@
 					{#if res === navItem.href}
 						<strong>{navItem.title}</strong>
 					{:else}
-						<a href={navItem.href} on:click={() => (res = navItem.href)}
-							>{navItem.title}</a
+						<a
+							href={navItem.href}
+							on:click={() => goto(navItem.href)}>{navItem.title}</a
 						>
 					{/if}
 				</li>
 			{/each}
+			{#if isMobile}
+				<li>
+					<NavAuth />
+				</li>
+			{/if}
 		</ul>
-		<span class="usernav"><NavUser /></span>
+
+		{#if !isMobile}
+			<span class="usernav">
+				<NavAuth />
+			</span>
+		{/if}
+
 		<div class="burger-container">
 			<div
 				class="burger"
@@ -81,6 +96,7 @@
 	.header__inner {
 		background: #fff;
 		flex-wrap: wrap;
+		justify-content: space-between;
 	}
 
 	.header__inner--fixed {
@@ -122,17 +138,11 @@
 
 	nav {
 		align-items: center;
-
-		.usernav {
-			width: auto;
-			display: inline-flex;
-			opacity: 0;
-			transition: opacity ease 0.5s;
-		}
 	}
 
-	nav:hover .usernav {
-		opacity: 1;
+	.usernav {
+		width: auto;
+		display: inline-flex;
 	}
 
 	.main-navigation {
@@ -190,15 +200,10 @@
 		}
 	}
 
-	.float-right {
-		width: 100%;
-		text-align: right;
-		padding-right: 1vw;
-	}
-
 	.burger-container {
 		box-sizing: content-box;
 		display: inline-flex;
+		float: right;
 		padding-left: 0;
 		width: 2.2rem;
 

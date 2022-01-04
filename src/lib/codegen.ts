@@ -1,6 +1,4 @@
 import type { GraphQLClient } from 'graphql-request'
-import * as Dom from 'graphql-request/dist/types.dom'
-import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -19,7 +17,7 @@ export type Scalars = {
 	Boolean: boolean
 	Int: number
 	Float: number
-	DateTime: any
+	DateTime: string
 }
 
 export type AuthResult = {
@@ -578,12 +576,15 @@ export type SdkFunctionWrapper = <T>(
 	operationName: string
 ) => Promise<T>
 
-const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action()
+const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => {
+	console.debug(_operationName)
+	return action()
+}
 
 export function getSdk(
 	client: GraphQLClient,
 	withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
-	return {}
+	return { client, withWrapper }
 }
 export type Sdk = ReturnType<typeof getSdk>

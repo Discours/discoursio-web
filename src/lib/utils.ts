@@ -18,13 +18,15 @@ export const plural = (amount, w1, w2, w5) => {
 		if (xx > 5 && xx < 20) return w5
 		if (x === 1) return w1
 		if (x > 1 && x < 5) return w2
-	} catch (e) {}
+	} catch (e) {
+		console.error(e)
+	}
 	return w5
 }
 
 export const shuffle = (items) => {
-	var cached = items.slice(0),
-		temp,
+	const cached = items.slice(0)
+	let temp,
 		i = cached.length,
 		rand
 	while (--i) {

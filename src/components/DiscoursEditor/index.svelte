@@ -2,12 +2,12 @@
 	import MD from 'markdown-it'
 	import footnotePlugin from 'markdown-it-footnote'
 	import markPlugin from 'markdown-it-mark'
-
 	// import containerPlugin from 'markdown-it-container'
+
 	const mit = new MD()
-		// mit.use(containerPlugin, name [, options])
-		.use(footnotePlugin)
-		.use(markPlugin)
+	mit.use(footnotePlugin)
+	mit.use(markPlugin)
+	// mit.use(containerPlugin, name [, options])
 
 	export const router = false
 </script>
@@ -22,17 +22,28 @@
 		body as bodyStore,
 		webrtc
 	} from '../../stores/editor'
+	import type { YXmlFragment } from 'yjs/dist/src/internals'
+	import { onMount } from 'svelte';
 
-	export let body: any
+	export let body: YXmlFragment | null
 	let shared = false
 
-	$: if (shared && $ydoc && $room) {
-		const remote = $ydoc.getXmlFragment($room + '-body')
-		const local = $bodyStore
-		// TODO: conflict solving logix
+	const sync = () => {
+		if(shared) {
+			const remote: YXmlFragment = $ydoc.getXmlFragment($room + '-body')
+			const local: YXmlFragment = $bodyStore
+			if (remote === local) {
+				console.log('editor: nothing to solve')
+				body = remote
+			} else {
+				// TODO: conflict solving logix
+				// если ты редактор - правишь как обычно
+				// если ты не редактор - все правки становятся предложениями (proposal)
+			}
+		}
 	}
 
-	$: if (body) $bodyStore = body
+	onMount(sync)
 </script>
 
 <div class="container">
@@ -40,7 +51,7 @@
 		<div class="col-12">
 			<P2P password={$webrtc.password} />
 			{#if $p2p && $p2p.awareness}
-				<Editor body={$body} awareness={$p2p.awareness} />
+				<Editor {body} awareness={$p2p.awareness} />
 			{/if}
 		</div>
 	</div>

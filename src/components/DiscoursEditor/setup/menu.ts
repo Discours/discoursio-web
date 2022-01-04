@@ -17,9 +17,9 @@ import { TextField, openPrompt } from './prompt'
 // Helpers to create specific types of items
 
 function canInsert(state, nodeType) {
-	let $from = state.selection.$from
+	const $from = state.selection.$from
 	for (let d = $from.depth; d >= 0; d--) {
-		let index = $from.index(d)
+		const index = $from.index(d)
 		if ($from.node(d).canReplaceWith(index, index, nodeType)) return true
 	}
 	return false
@@ -33,8 +33,8 @@ function insertImageItem(nodeType) {
 			return canInsert(state, nodeType)
 		},
 		run(state, _, view) {
-			let { from, to } = state.selection,
-				attrs = null
+			const { from, to } = state.selection
+			let attrs = null
 			if (
 				state.selection instanceof NodeSelection &&
 				state.selection.node.type == nodeType
@@ -66,11 +66,11 @@ function insertImageItem(nodeType) {
 }
 
 function cmdItem(cmd, options) {
-	let passedOptions = {
+	const passedOptions = {
 		label: options.title,
 		run: cmd
 	}
-	for (let prop in options) passedOptions[prop] = options[prop]
+	for (const prop in options) passedOptions[prop] = options[prop]
 	if ((!options.enable || options.enable === true) && !options.select)
 		passedOptions[options.enable ? 'enable' : 'select'] = (state) => cmd(state)
 
@@ -78,19 +78,19 @@ function cmdItem(cmd, options) {
 }
 
 function markActive(state, type) {
-	let { from, $from, to, empty } = state.selection
+	const { from, $from, to, empty } = state.selection
 	if (empty) return type.isInSet(state.storedMarks || $from.marks())
 	else return state.doc.rangeHasMark(from, to, type)
 }
 
 function markItem(markType, options) {
-	let passedOptions = {
+	const passedOptions = {
 		active(state) {
 			return markActive(state, markType)
 		},
 		enable: true
 	}
-	for (let prop in options) passedOptions[prop] = options[prop]
+	for (const prop in options) passedOptions[prop] = options[prop]
 	return cmdItem(toggleMark(markType), passedOptions)
 }
 
@@ -190,8 +190,8 @@ function wrapListItem(nodeType, options) {
 //   : An array of arrays of menu elements for use as the full menu
 //     for, for example the [menu bar](https://github.com/prosemirror/prosemirror-menu#user-content-menubar).
 export function buildMenuItems(schema) {
-	let r: any = {},
-		type
+	const r: { [key: string]: MenuItem | MenuItem[] } = {}
+	let type
 	if ((type = schema.marks.strong))
 		r.toggleStrong = markItem(type, {
 			title: 'Toggle strong style',
@@ -240,7 +240,7 @@ export function buildMenuItems(schema) {
 				attrs: { level: i }
 			})
 	if ((type = schema.nodes.horizontal_rule)) {
-		let hr = type
+		const hr = type
 		r.insertHorizontalRule = new MenuItem({
 			label: '---',
 			icon: icons.horizontal_rule,
@@ -253,7 +253,7 @@ export function buildMenuItems(schema) {
 		})
 	}
 
-	let cut = (arr) => arr.filter((x) => x)
+	const cut = (arr) => arr.filter((x) => x)
 	r.inlineMenu = [
 		cut([
 			r.insertImage,

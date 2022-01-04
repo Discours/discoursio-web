@@ -1,39 +1,44 @@
 <script lang="ts">
 	import { subscribe, unsubscribe } from '$lib/cookie'
+	import { subscribedTopics, topicslist } from '../stores/zine'
 
-	export let subscribed
+	let subscribed = false
 	export let topic
-	// TODO: topic full is a community topic feed index
+
+	$: if ($subscribedTopics && topic && topic.slug)
+		subscribed = $subscribedTopics.includes(topic.slug)
 </script>
 
 <div class="topic-full container">
 	<div class="row">
 		<div class="topic__header col-md-8 offset-md-2">
-			<h1>#{topic.title}</h1>
-			{#if topic.body}
-				<p>{topic.body}</p>
-			{/if}
-			<div class="topic__actions">
-				{#if subscribed}
-					<button
-						on:click={async () =>
-							(subscribed = await unsubscribe(topic.slug, 'topics'))}
-						class="button">Отписаться от темы</button
-					>
-				{:else}
-					<button
-						on:click={async () =>
-							(subscribed = await subscribe(topic.slug, 'topics'))}
-						class="button">Подписаться на тему</button
-					>
+			{#key $topicslist}
+				{#if topic}
+					<h1>#{topic.title}</h1>
+					{#if topic.body}
+						<p>{topic.body}</p>
+					{/if}
+					<div class="topic__actions">
+						{#if subscribed}
+							<button
+								on:click={async () =>
+									(subscribed = await unsubscribe(topic.slug, 'topics'))}
+								class="button">Отписаться от темы</button
+							>
+						{:else}
+							<button
+								on:click={async () =>
+									(subscribed = await subscribe(topic.slug, 'topics'))}
+								class="button">Подписаться на тему</button
+							>
+						{/if}
+						<a href={'/create?topic=' + topic.slug}>Написать в тему</a>
+					</div>
+					{#if topic.pic}<img src={topic.pic} alt={topic.title} />{/if}
 				{/if}
-				<a href={'/create?topic=' + topic.slug}>Написать в тему</a>
-			</div>
-			{#if topic.pic}<img src={topic.pic} />{/if}
+			{/key}
 		</div>
 	</div>
-
-	<!--{/if}-->
 </div>
 
 <style lang="scss">

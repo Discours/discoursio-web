@@ -1,5 +1,8 @@
 <script lang="ts">
 	import Icon from './DiscoursIcon.svelte'
+	import FeedbackForm from './FeedbackForm.svelte'
+	import Modal from './Modal.svelte'
+	import SubscribeForm from './SubscribeForm.svelte'
 
 	const FOOTER_LINKS = [
 		{
@@ -15,7 +18,7 @@
 				},
 				{
 					title: 'База знаний',
-					slug: '/'
+					slug: '/knowledge-base'
 				},
 				{
 					title: 'Правила сообщества',
@@ -23,7 +26,7 @@
 				},
 				{
 					title: 'Как написать статью',
-					slug: '/'
+					slug: '/how-to-write-a-good-article'
 				}
 			]
 		},
@@ -33,11 +36,11 @@
 			items: [
 				{
 					title: 'Предложить идею',
-					slug: '/'
+					slug: '/#feedback-idea'
 				},
 				{
 					title: 'Стать автором',
-					slug: '/'
+					slug: '/create'
 				},
 				{
 					title: 'Поддержать проект',
@@ -45,11 +48,12 @@
 				},
 				{
 					title: 'Обратная связь',
-					slug: '/'
+					slug: '/#feedback'
 				},
 				{
 					title: 'Сотрудничать с Дискурсом',
-					slug: '/'
+					slug:
+						'https://docs.google.com/forms/d/e/1FAIpQLSeNNvIzKlXElJtkPkYiXl-jQjlvsL9u4-kpnoRjz1O8Wo40xQ/viewform'
 				}
 			]
 		},
@@ -59,7 +63,7 @@
 			items: [
 				{
 					title: 'Авторы',
-					slug: '/'
+					slug: '/user/list'
 				},
 				{
 					title: 'Темы',
@@ -67,15 +71,15 @@
 				},
 				{
 					title: 'Сообщества',
-					slug: '/'
+					slug: '/community'
 				},
 				{
 					title: 'Партнёры',
-					slug: '/'
+					slug: '/partners'
 				},
 				{
 					title: 'Спецпроекты',
-					slug: '/'
+					slug: '/projects'
 				}
 			]
 		}
@@ -101,6 +105,8 @@
 	]
 </script>
 
+<Modal name="feedback"><FeedbackForm /></Modal>
+<Modal name="subscribe"><p>Вы подписаны!</p></Modal>
 <footer class="discours-footer">
 	<div class="wide-container">
 		<div class="row">
@@ -121,10 +127,7 @@
 			<div class="col-md-3">
 				<h5>Подписка</h5>
 				<p>Подпишитесь на&nbsp;наши регулярные рассылки.</p>
-				<form action="." class="subscribe-form">
-					<input type="email" name="email" placeholder="ваш email" />
-					<button type="submit">Подписаться</button>
-				</form>
+				<SubscribeForm />
 			</div>
 		</div>
 
@@ -189,33 +192,6 @@
 		flex-direction: column;
 		justify-content: center;
 		padding-left: $grid-gutter-width;
-	}
-
-	.subscribe-form {
-		display: flex;
-		width: 100%;
-
-		input {
-			background: none;
-			border: none;
-			border-bottom: 1px solid;
-			color: #fff;
-			@include font-size(2rem);
-			padding: 0.2em 0.5em 0.3em 0;
-			width: 100%;
-
-			&::placeholder {
-				color: #fff;
-			}
-		}
-
-		button {
-			background: #f7f7f7;
-			border: none;
-			color: #000;
-			@include font-size(1.5rem);
-			padding: 0 0.5em;
-		}
 	}
 
 	.footer-copyright {

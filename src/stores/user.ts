@@ -19,17 +19,18 @@ interface Role {
 	level: AS
 }
 
+export interface Notice {
+	type: string
+	text: string
+	lead?: string
+	state: string
+	ts: Date
+}
+
 export const FACEBOOK_APP_ID = '1809443122683615'
 export const VK_APP_ID = '7901964'
 export const GOOGLE_APP_ID = ''
 export const token: Writable<string> = writable('')
 export const session: Writable<Partial<User>> = writable({})
 export const roles: Writable<Role[]> = writable([])
-export const notices: Writable<
-	{
-		type: string
-		text: string
-		seen: string
-		ts: Date
-	}[]
-> = writable([])
+export const notices: Writable<Notice[]> = writable([])

@@ -3,7 +3,8 @@
 	import { SIGN_IN, SIGN_UP } from '../lib/queries'
 	import { client } from '../lib/client'
 	import Icon from './DiscoursIcon.svelte'
-	import { session, ui, token as tokenStore } from '../stores/user'
+	import { session, token as tokenStore } from '../stores/user'
+	import { openModal } from '../stores/app'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { API_ENDPOINT } from '../lib/client'
@@ -12,13 +13,15 @@
 	export let mode = 'login'
 	export let code = ''
 	export let warnings = ['']
-	let password2 = ''
+	let email,
+		password,
+		password2 = ''
 	let warnTimeout
 
 	const authSuccess = ({ token, user }) => {
 		$tokenStore = token
 		$session = user
-		$ui.authModal = false
+		$openModal = ''
 	}
 
 	const authFailure = ({ error }) => {
@@ -33,10 +36,7 @@
 
 	const auth = async (q) => {
 		console.log('auth: with discours.io account ')
-		const res = await client.request(q, {
-			email: $ui.email,
-			password: $ui.password
-		})
+		const res = await client.request(q, { email, password })
 		const { token, user, error } = res[q === SIGN_IN ? 'signIn' : 'registerUser']
 		if (token) authSuccess({ token, user })
 		else authFailure({ error })
@@ -62,15 +62,16 @@
 	}
 
 	const renew = () => {
-		if (password2 === $ui.password) {
+		if (password2 === password) {
 			console.log('auth: renewing password')
 		}
 		// TODO: implement me
 	}
 
-	onMount(() => $page.query.get('code') && reset())
+	onMount(() => $page.url.searchParams.get('code') && reset())
 
 	const oauth = (provider: string) => {
+		// $openModal = false
 		window.open(
 			API_ENDPOINT + `/oauth/${provider}`,
 			provider,
@@ -142,7 +143,7 @@
 			{#if mode !== 'reset' && mode !== 'password'}
 				<input
 					autocomplete="username"
-					bind:value={$ui.email}
+					bind:value={email}
 					type="text"
 					placeholder="Почта"
 				/>
@@ -151,18 +152,14 @@
 			{#if mode === 'register' || mode === 'login'}
 				<input
 					autocomplete="current-password"
-					bind:value={$ui.password}
+					bind:value={password}
 					type="password"
 					placeholder="Пароль"
 				/>
 			{:else if mode === 'reset'}
 				<input bind:value={code} type="text" placeholder="Код восстановления" />
 			{:else if mode === 'password'}
-				<input
-					bind:value={$ui.password}
-					type="password"
-					placeholder="Новый пароль"
-				/>
+				<input bind:value={password} type="password" placeholder="Новый пароль" />
 				<input
 					bind:value={password2}
 					type="password"
@@ -189,7 +186,7 @@
 
 			{#if mode === 'login'}
 				<div class="auth-actions">
-					<a href={''} on:click={() => (mode = 'forget')}>Забыли пароль?</a>
+					<a href={''} on:click|preventDefault={() => (mode = 'forget')}>Забыли пароль?</a>
 				</div>
 			{/if}
 
@@ -225,43 +222,30 @@
 				</div>
 			{/if}
 
-			<div class="registration-control">
+			<div class="auth-control">
 				<div class:show={mode === 'register'}>
-					<span class="registration-link" on:click={() => (mode = 'login')}
+					<span class="auth-link" on:click|preventDefault={() => (mode = 'login')}
 						>У&nbsp;меня есть аккаунт</span
 					>
 				</div>
 				<div class:show={mode === 'login'}>
-					<span class="registration-link" on:click={() => (mode = 'register')}
+					<span class="auth-link" on:click|preventDefault={() => (mode = 'register')}
 						>У&nbsp;меня еще нет аккаунта</span
 					>
 				</div>
 				<div class:show={mode === 'forget'}>
-					<span class="registration-link" on:click={() => (mode = 'login')}
+					<span class="auth-link" on:click|preventDefault={() => (mode = 'login')}
 						>Я знаю пароль</span
 					>
 				</div>
 				<div class:show={mode === 'reset'}>
-					<span class="registration-link" on:click={resend}
+					<span class="auth-link" on:click|preventDefault={() => resend()}
 						>Отправить код повторно</span
 					>
 				</div>
 			</div>
 		</div>
 	</form>
-
-	<div class="close-control">
-		<svg
-			width="16"
-			height="18"
-			viewBox="0 0 16 18"
-			xmlns="http://www.w3.org/2000/svg"
-			><path
-				d="M7.99987 7.52552L14.1871 0.92334L15.9548 2.80968L9.76764 9.41185L15.9548 16.014L14.1871 17.9004L7.99987 11.2982L1.81269 17.9004L0.0449219 16.014L6.23211 9.41185L0.0449225 2.80968L1.81269 0.92334L7.99987 7.52552Z"
-				fill="currentColor"
-			/></svg
-		>
-	</div>
 </div>
 
 <style lang="scss">
@@ -424,33 +408,7 @@
 		}
 	}
 
-	.close-control {
-		cursor: pointer;
-		height: 0.8em;
-		opacity: 1;
-		padding: 0;
-		position: absolute;
-		right: 1em;
-		top: 1em;
-		transition: opacity 0.3s;
-		width: 0.8em;
-		z-index: 1;
-
-		svg {
-			pointer-events: none;
-		}
-
-		&:hover {
-			opacity: 0.5;
-		}
-
-		:global(.icon) {
-			height: 100%;
-			width: 100%;
-		}
-	}
-
-	.registration-control {
+	.auth-control {
 		color: $link-color;
 		margin-top: 1em;
 		text-align: center;
@@ -462,7 +420,7 @@
 		}
 	}
 
-	.registration-link {
+	.auth-link {
 		cursor: pointer;
 	}
 

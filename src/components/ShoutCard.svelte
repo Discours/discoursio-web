@@ -4,10 +4,10 @@
 	import Icon from './DiscoursIcon.svelte'
 
 	export let shout: Shout
-	export let additionalClass: string = ''
-	export let isShort: boolean = false
-	export let isGroup: boolean = false
-	export let photoBottom: boolean = false
+	export let additionalClass = ''
+	export let isShort = false
+	export let isGroup = false
+	export let photoBottom = false
 
 	const seps = [':', '?', '!']
 

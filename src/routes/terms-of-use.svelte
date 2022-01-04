@@ -234,13 +234,7 @@
 					направить по электронной почте <a
 						href="mailto:welcome@discours.io"
 						target="_blank">welcome@discours.io</a
-					>
-					или через форму
-					<a
-						view-modal="#send-idea-modal"
-						ng-click="closePartners($event)"
-						target="_blank">«предложить идею»</a
-					>.
+					>или через форму <a href="#feedback-idea">«предложить идею»</a>.
 				</p>
 			</div>
 		</div>

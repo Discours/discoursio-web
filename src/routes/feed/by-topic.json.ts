@@ -2,10 +2,11 @@ import { client } from '../../lib/client'
 import { SHOUTS_BY_TOPIC } from '../../lib/queries'
 
 export const post = async ({ params }) => {
-	let shouts,
-		authors = {}
+	let shouts
+	let authors
 	const { topics: topicslugs } = params
 	if (topicslugs) {
+		authors = {}
 		try {
 			topicslugs.forEach(async (topic) => {
 				const q = await client.request(SHOUTS_BY_TOPIC, { limit: 27, topic })

@@ -23,19 +23,14 @@
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
 	import 'swiper/css'
 	import 'swiper/css/navigation'
-	import {
-		shouts,
-		topics,
-		shoutslist,
-		topicslist,
-		subscribedTopics,
-		subscribedAuthors
-	} from '../stores/zine'
+	import { shouts, topics, shoutslist, subscribedAuthors } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
-	import { onMount } from 'svelte'
+	// import { onMount } from 'svelte'
 	import { shuffle } from '../lib/utils'
 	import { fade } from 'svelte/transition'
+	import { loading } from '../stores/app'
+
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
@@ -47,22 +42,31 @@
 		topicsMonth = [],
 		moreTimes = 0,
 		topicsGroup = []
-	let loading
+	const topicsAmount = 9
+	const authorsLimit = 8
+
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
 
-	const update = async (data) => {
-		$shoutslist = data
-		$shoutslist.forEach((s) => ($shouts[s.slug] = s))
-		// $shoutslist = Object.values($shouts).sort((a, b) => b.createdAt)
+	$: if ($shoutslist === null) {
+		$loading = true
 		console.log(
-			'mainpage: ' + $shoutslist.length.toString() + ' shouts preloaded'
+			`mainpage: loaded ${recents.length.toString()} recent shouts from api`
 		)
-		// top commented from recents
-		// topViewed = $shoutslist.sort((a, b) => b['stat'].views - a['stat'].views)
-		topCommented = $shoutslist.sort(
-			(a, b) => b['stat'].comments - a['stat'].comments
+		// fill up shouts dict store
+		recents.forEach((s) => ($shouts[s.slug] = s))
+		$shoutslist = recents.sort(
+			(a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 		)
+		console.log(
+			`mainpage: loaded ${topMonth.length.toString()} top month shouts from api`
+		)
+		// top commented
+		topCommented = recents
+			.filter((s) => s.stat.comments > 0)
+			.sort((a, b) => b.stat.comments - a.stat.comments)
+		console.log(`mainpage: found ${topCommented.length.toString()} commented`)
+		// prepare top month authors and topics
 		topMonth.forEach((s) => {
 			s.authors.forEach((a) => {
 				if (!aslugs.has(a.slug)) {
@@ -76,33 +80,32 @@
 					topicsMonth.push($topics[t.slug])
 				}
 			})
+			$shouts[s.slug] = s
 		})
-		showedTopics = shuffle(Array.from(tslugs)).slice(0, 9)
+		// shows 9 random of top month topics
+		showedTopics = shuffle(Array.from(tslugs)).slice(0, topicsAmount)
+		console.log(
+			`mainpage: showing ${topicsAmount.toString()}/${tslugs.size.toString()} topics`
+		)
+		// top month topics sorted by authors amount
 		topicsMonth = topicsMonth.sort(
-			(a, b) => b['topicStat'].authors - a['topicStat'].authors
+			(a, b) => b.topicStat.authors - a.topicStat.authors
 		)
-		authorsMonth = authorsMonth.sort((a, b) => b['rating'] - a['rating'])
-
-		topicsGroup = $shoutslist.filter((item) =>
-			item.topics.find((topic) => topic.slug === 'culture')
+		// top month authors
+		authorsMonth = authorsMonth.sort((a, b) => b.rating - a.rating)
+		console.log(`mainpage: found ${authorsMonth.length.toString()} authors`)
+		// one topic filtered
+		topicsGroup = $shoutslist.filter((t) =>
+			t.topics.find((topic) => topic.slug === 'culture')
 		)
+		topOverall.forEach(s => $shouts[s.slug] = s)
+		$loading = false
 	}
 
-	$: if (!$shoutslist && $topicslist) update(recents)
-
-	onMount(() => {
-		$shoutslist = null // force to update reactive store
-	})
-
-	let authorsLimit = 8
-
-	const moreAuthors = () => {
-		console.log('mainpage: show more authors')
-		authorsLimit += 8
-	}
+	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
 
 	const moreShouts = async () => {
-		loading = true
+		$loading = true
 		console.log('mainpage: show more shouts')
 		const p = Math.floor($shoutslist.length / 27)
 		$shoutslist = Array.from(
@@ -120,13 +123,19 @@
 			)
 			$shoutslist = Array.from(new Set([...newData, ...$shoutslist]))
 			moreTimes += 1
-			loading = false
+			$loading = false
 		}
+	}
+	let favs = [], favs1 // , favs2 = []
+	$: if(topOverall && topOverall.length >9) {
+		favs = topOverall.slice(0, 10)
+		favs1 = topOverall.slice(10, 20)
+		// favs2 = topOverall.slice(20, 30)
 	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $shoutslist}
+{#if $shoutslist && $shoutslist.length > 0}
 	<div class="home" transition:fade>
 		{#if tslugs} <NavTopics slugs={new Set(showedTopics)} />{/if}
 
@@ -229,7 +238,7 @@
 				<div class="col-md-4">
 					<div class="ratings-header">
 						<h4>Авторы месяца</h4>
-						<a href="/rating"
+						<a href="/user/list"
 							>Ещё авторы
 							<Icon name="arrow-right" />
 						</a>
@@ -237,7 +246,7 @@
 					{#key $subscribedAuthors}
 						{#each authorsMonth.slice(0, authorsLimit) as user}
 							<div transition:fade>
-								<UserCard {user} subscribed={$subscribedAuthors.includes(user.slug)} />
+								<UserCard {user} />
 							</div>
 						{/each}
 					{/key}
@@ -245,6 +254,7 @@
 			</div>
 		</div>
 
+		{#key favs}
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
 				<h2 class="col-12">Выбор сообщества</h2>
@@ -256,7 +266,7 @@
 					centeredSlides
 					loop
 				>
-					{#each $shoutslist.slice(0, 10) as article}
+					{#each favs as article}
 						<SwiperSlide>
 							<ShoutCard shout={article} additionalClass="shout-card--with-cover" />
 						</SwiperSlide>
@@ -264,6 +274,7 @@
 				</Swiper>
 			</div>
 		</div>
+		{/key}
 
 		<div class="floor">
 			<div class="wide-container row">
@@ -279,10 +290,10 @@
 			{#if recents}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
-					{#each recents.slice(0, 4) as article}
+					{#each recents.slice(0, 4) as shout}
 						<div class="col-md-6 col-lg-3">
 							<ShoutCard
-								shout={article}
+								{shout}
 								additionalClass="shout-card--with-cover shout-card--content-top"
 							/>
 						</div>
@@ -301,9 +312,9 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(15, 18) as article}
+				{#each $shoutslist.slice(15, 18) as shout}
 					<div class="col-md-4">
-						<ShoutCard shout={article} />
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -311,6 +322,7 @@
 
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
+				{#key favs1}
 				<h2 class="col-12">Избранное</h2>
 				<Swiper
 					modules={[Navigation]}
@@ -320,30 +332,25 @@
 					centeredSlides
 					loop
 				>
-					{#each $shoutslist.slice(19, 30) as article}
+					{#each favs1 as shout}
 						<SwiperSlide>
-							<ShoutCard shout={article} additionalClass="shout-card--with-cover" />
+							<ShoutCard {shout} additionalClass="shout-card--with-cover" />
 						</SwiperSlide>
 					{/each}
 				</Swiper>
+				{/key}
 			</div>
 		</div>
 
 		<div class="floor floor--9">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#key $subscribedTopics}
-						{#if topicsMonth}
-							<h4>Темы месяца</h4>
-							{#each topicsMonth.slice(0, 4) as topic}
-								<TopicCard
-									{topic}
-									compact={true}
-									subscribed={$subscribedTopics.includes(topic.slug)}
-								/>
-							{/each}
-						{/if}
-					{/key}
+					<h4>Темы месяца</h4>
+					{#if topicsMonth}
+						{#each topicsMonth.slice(0, 4) as topic}
+							<TopicCard {topic} compact={true} />
+						{/each}
+					{/if}
 				</div>
 				<div class="col-md-8">
 					<ShoutCard shout={$shoutslist[15]} />
@@ -361,7 +368,7 @@
 			</div>
 		</div>
 
-		{#if topicsGroup.length > 0}
+		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header">
@@ -412,7 +419,7 @@
 			</div>
 		</div>
 
-		{#if topicsGroup.length > 0}
+		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor">
 				<div class="wide-container row">
 					<div class="col-md-4">
@@ -514,7 +521,7 @@
 		<div class="morewrap" transition:fade>
 			<div class="show-more">
 				<button class="button" type="button" on:click={moreShouts}
-					>{loading ? 'Загружаем' : 'Показать еще'}</button
+					>{$loading ? 'Загружаем' : 'Показать еще'}</button
 				>
 			</div>
 		</div>

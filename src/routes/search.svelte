@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { shouts } from '../stores/zine'
-	import ShoutTeaser from '../components/ShoutTeaser.svelte'
+	import ShoutCard from '../components/ShoutCard.svelte'
 
 	let teasers = []
 	$: if ($shouts) teasers = Object.keys($shouts)
@@ -13,7 +13,7 @@
 		Загрузка...
 	{:then}
 		{#each teasers as shid}
-			<ShoutTeaser shout={$shouts[shid]} />
+			<ShoutCard shout={$shouts[shid]} />
 		{/each}
 	{/await}
 </div>

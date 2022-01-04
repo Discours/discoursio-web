@@ -3,11 +3,13 @@
 	import Userpic from './Userpic.svelte'
 	import { subscribe, unsubscribe } from '../lib/cookie'
 	import Icon from './DiscoursIcon.svelte'
+	import { subscribedAuthors } from '../stores/zine'
 
 	export let user: User | Partial<User>
 	export let hasSubscribeButton = true
-	export let subscribed
 	export let hasFullInfo = false
+	let subscribed = false
+	$: if ($subscribedAuthors) subscribed = $subscribedAuthors.includes(user.slug)
 </script>
 
 <div class="author">

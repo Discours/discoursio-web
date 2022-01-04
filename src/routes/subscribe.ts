@@ -1,7 +1,7 @@
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ body, session }) {
 	const { slug, what } = body
-	let { subscriptions: subs } = session || { subscriptions: {} }
+	const { subscriptions: subs } = session || { subscriptions: {} }
 	// console.debug(subs)
 	if (!subs[what]) subs[what] = []
 	subs[what].push(slug)

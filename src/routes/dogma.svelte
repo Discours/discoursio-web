@@ -2,32 +2,18 @@
 	export const prerender = true
 </script>
 
-<div class="main-content">
-	<update-meta
-		class="black-link ng-scope ng-isolate-scope"
-		title="Догма Дискурса"
-	/>
-	<update-meta
-		class="black-link ng-scope ng-isolate-scope"
-		name="description"
-		content="Принципы горизонтальной редакции"
-	/>
-	<update-meta
-		class="black-link ng-scope ng-isolate-scope"
-		name="keywords"
-		content="Discours.io, догма, редакционные принципы, этический кодекс"
-	/>
-	<update-meta
-		class="black-link ng-scope ng-isolate-scope"
-		property="og:title"
-		content="Догма Дискурса"
-	/>
-	<update-meta
-		class="black-link ng-scope ng-isolate-scope"
-		property="og:description"
-		content="Принципы горизонтальной редакции"
-	/>
+<script lang="ts">
+	import SvelteSeo from 'svelte-seo'
 
+	const meta = {
+		title: 'Догма Дискурса',
+		description: 'Принципы горизонтальной редакции',
+		keywords: 'Discours.io, догма, редакционные принципы, этический кодекс'
+	}
+</script>
+
+<SvelteSeo {...meta} openGraph={{ ...meta, images: [] }} />
+<div class="main-content">
 	<div class="container open-post margin-top-20px ng-scope">
 		<div class="row">
 			<div class="col-sm-7">

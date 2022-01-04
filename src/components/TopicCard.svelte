@@ -2,10 +2,13 @@
 	import type { Topic } from '../lib/codegen'
 	import { plural, capitalize } from '../lib/utils'
 	import { subscribe, unsubscribe } from '../lib/cookie'
+	import { subscribedTopics } from '../stores/zine'
 
 	export let topic: Topic | Partial<Topic>
-	export let subscribed
+	export let subscribed = false
 	export let compact = false
+	$: if ($subscribedTopics && topic && topic.slug)
+		subscribed = $subscribedTopics.includes(topic.slug)
 </script>
 
 {#if topic}
@@ -90,7 +93,7 @@
 		display: flex;
 		margin-top: 3.2rem;
 
-		.stats & {
+		.stats .topic-details__item {
 			margin-bottom: 3.2rem;
 		}
 

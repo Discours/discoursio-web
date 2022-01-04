@@ -72,10 +72,8 @@
 				<h3 class="not-left"><b>Авторы</b></h3>
 				<p>
 					Мы&nbsp;безмерно благодарны
-					<a
-						href="http://discours.io/authors"
-						target="_blank"
-						rel="noopener noreferrer">каждому автору</a
+					<a href="/user/list" target="_blank" rel="noopener noreferrer"
+						>каждому автору</a
 					>
 					за&nbsp;участие и&nbsp;поддержку проекта. Сегодня, когда для большинства деньги
 					стали целью и&nbsp;основным источником мотивации, бескорыстная помощь и&nbsp;основанный

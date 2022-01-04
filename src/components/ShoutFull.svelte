@@ -1,12 +1,12 @@
 <script lang="ts">
 	import UserCard from './UserCard.svelte'
 	import ShoutComment from './ShoutComment.svelte'
-	import { session, token, ui } from '../stores/user'
+	import { session, token } from '../stores/user'
+	import { openModal } from '../stores/app'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
 	import type { Topic } from '$lib/codegen'
 	import { capitalize } from '$lib/utils'
-	import { subscribedAuthors } from '../stores/zine'
 
 	export let props
 	let shout
@@ -93,11 +93,7 @@
 
 					{#each shout.authors as user, index}
 						{#if index > 0},{/if}
-						<UserCard
-							{user}
-							hasSubscribeButton={false}
-							subscribed={$subscribedAuthors.includes(user.slug)}
-						/>
+						<UserCard {user} hasSubscribeButton={false} />
 					{/each}
 				</div>
 			</article>
@@ -115,7 +111,7 @@
 				{#if !$token}
 					<div class="comment-warning">
 						Чтобы оставить комментарий, необходимо
-						<a href={''} on:click|preventDefault={() => ($ui.authModal = true)}
+						<a href={''} on:click|preventDefault={() => ($openModal = 'auth')}
 							><i>зарегистрироваться или войти</i></a
 						>
 					</div>

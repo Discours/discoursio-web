@@ -2,43 +2,30 @@
 	export const prerender = true
 </script>
 
+<script lang="ts">
+	import FeedbackForm from '../components/FeedbackForm.svelte'
+	import SubscribeForm from '../components/SubscribeForm.svelte'
+	import Modal from '../components/Modal.svelte'
+	import SvelteSeo from 'svelte-seo'
+
+	const meta = {
+		title: 'Манифесит Дискурса',
+		description:
+			'Манифест Дискурса: принципы и миссия первого журнала с горизонтальной редакцией.',
+		keywords: 'Discours.io, журнал, о проекте, манифест, что это?'
+	}
+</script>
+
+<SvelteSeo
+	{...meta}
+	openGraph={{
+		...meta,
+		images: [{ url: '/images/participation.png', width: 1200, height: 630 }]
+	}}
+/>
+<Modal name="feedback"><FeedbackForm /></Modal>
+<Modal name="subscribe"><SubscribeForm /></Modal>
 <div class="main-content">
-	<update-meta title="Манифест Дискурса" class="ng-scope ng-isolate-scope" />
-	<update-meta
-		name="description"
-		content="Манифест Дискурса: принципы и миссия первого журнала с горизонтальной редакцией."
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		name="keywords"
-		content="Discours.io, журнал, о проекте, манифест, что это?"
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		property="og:title"
-		content="Манифест Дискурса"
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		property="og:description"
-		content="Манифест Дискурса: принципы и миссия первого журнала с горизонтальной редакцией."
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		property="og:image"
-		content="/images/participation.png"
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		property="og:image:width"
-		content="1200"
-		class="ng-scope ng-isolate-scope"
-	/>
-	<update-meta
-		property="og:image:height"
-		content="630"
-		class="ng-scope ng-isolate-scope"
-	/>
 	<div class="container open-post margin-top-20px ng-scope">
 		<div class="row">
 			<div class="col-md-2">
@@ -70,9 +57,9 @@
 				<p>
 					Редакция Дискурса открыта для всех: у&nbsp;нас нет цензуры, запретных тем
 					и&nbsp;идеологических рамок. Каждый может
-					<a href="#post" view-modal="#become-author-modal">прислать материал</a>
+					<a href="/create">прислать материал</a>
 					в&nbsp;журнал и
-					<a href="guide" target="_blank">присоединиться к&nbsp;редакции</a>.
+					<a href="/guide" target="_blank">присоединиться к&nbsp;редакции</a>.
 					Предоставляя трибуну для независимой журналистики и&nbsp;художественных
 					проектов, мы&nbsp;помогаем людям рассказывать свои истории так, чтобы они
 					были услышаны. Мы&nbsp;убеждены: чем больше голосов будет звучать
@@ -93,18 +80,18 @@
 			<div class="col-md-7 post-body margin-top-100px">
 				<p>
 					Дискурс создается
-					<a href="guide" target="_blank">открытым сообществом</a> энтузиастов новой независимой
-					журналистики. Участвовать в открытой редакции и помогать журналу можно следующими
-					способами:
+					<a href="/guide" target="_blank">открытым сообществом</a> энтузиастов новой
+					независимой журналистики. Участвовать в открытой редакции и помогать журналу
+					можно следующими способами:
 				</p>
 				<h3 class="not-left"><b>Предлагать материалы</b></h3>
 				<p>
-					<a href="#post" view-modal="#become-author-modal">Присылайте</a>
+					<a href="/create">Создавайте</a>
 					свои статьи и художественные работы — лучшие из них будут опубликованы в журнале.
 					Дискурс — некоммерческое издание, авторы публикуются в журнале на общественных
 					началах, получая при этом
-					<a href="guide#together" target="_blank">поддержку</a> редакции, право голоса,
-					множество других возможностей и&nbsp;читателей по всему миру.
+					<a href="/create?collab=true" target="_blank">поддержку</a> редакции, право
+					голоса, множество других возможностей и&nbsp;читателей по всему миру.
 				</p>
 				<h3 class="not-left"><b>Поддерживать проект</b></h3>
 				<p>
@@ -142,15 +129,12 @@
 					Советуйте нас друзьям и знакомым, в том числе тем, кто занимается
 					просветительской и творческой деятельностью. Делитесь нашими материалами —
 					все наши публикации можно читать и перепечатывать бесплатно. Подпишитесь на
-					Дискурс
-					<a href="https://vk.com/discoursio" target="_blank">ВКонтакте</a>, в
+					Дискурс <a href="https://vk.com/discoursio" target="_blank">ВКонтакте</a>,
+					в
 					<a href="https://facebook.com/discoursio" target="_blank"> Фейсбуке</a>
-					и в
-					<a href="https://t.me/discoursio" target="_blank"> Телеграме</a>, а также
-					на
-					<a view-modal="#subscribe-modal" target="_blank"
-						>рассылку лучших материалов</a
-					>, чтобы не пропустить ничего интересного.
+					и в <a href="https://t.me/discoursio" target="_blank"> Телеграме</a>, а
+					также на <a href="#subscribe">рассылку лучших материалов</a>, чтобы не
+					пропустить ничего интересного.
 				</p>
 			</div>
 		</div>
@@ -165,12 +149,7 @@
 				<p>
 					Если вы&nbsp;хотите предложить материал, сотрудничать, рассказать
 					о&nbsp;проблеме, которую нужно осветить, что-то обсудить или посоветовать,
-					пожалуйста, напишите нам через
-					<a
-						view-modal="#send-idea-modal"
-						ng-click="closePartners($event)"
-						target="_blank">эту форму</a
-					>
+					пожалуйста, напишите нам через <a href="#feedback">эту форму</a>
 					или на почту
 					<a href="mailto:welcome@discours.io" target="_blank">welcome@discours.io</a
 					>. Мы&nbsp;обязательно ответим и&nbsp;постараемся реализовать

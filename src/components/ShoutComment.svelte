@@ -9,7 +9,7 @@
 
 	export let comment: Partial<Comment>
 	export let canEdit: boolean // FIXME
-	export let level: number = 0
+	export let level = 0
 	// dayjs.locale('ru')
 	// {dayjs(comment.createdAt).format('D MMMM YYYY в HH:MM')}
 
@@ -82,7 +82,7 @@
 		.shout-body {
 			@include font-size(1.5rem);
 
-			p:last-child {
+			*:last-child {
 				margin-bottom: 0;
 			}
 		}

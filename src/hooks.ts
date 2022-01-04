@@ -1,10 +1,12 @@
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+const { parse } = require('cookie')
+
 export async function handle({ request, resolve }) {
-	// console.log(request)
-	let subscriptions = {}
-	const parts = decodeURI(request.headers.cookie).split(';')
-	await parts.forEach(async (item) => {
-		const [key, value] = item.split('=')
-		if (value) subscriptions[key] = await JSON.parse(value)
+	const cookies = parse(request.headers.cookie || '')
+	const subscriptions = {}
+	Object.entries(cookies).forEach(async ([what, value]) => {
+		if (value) subscriptions[what] = await JSON.parse(String(value))
 	})
 	let subdomain = request.host && request.host.split('.')[0]
 	if (subdomain == 'discours') subdomain = ''

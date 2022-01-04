@@ -1,64 +1,57 @@
 <script lang="ts">
-	import { ui, session, notices, token } from '../stores/user'
+	import { session, token, roles, notices } from '../stores/user'
+	import { openModal, showNotices } from '../stores/app'
 	import Icon from './DiscoursIcon.svelte'
 	import Auth from './Auth.svelte'
+	import Modal from './Modal.svelte'
 	import Userpic from './Userpic.svelte'
-	import { fade } from 'svelte/transition'
-	import { getLocalization } from '../i18n'
+	import Notifications from './Notifications.svelte'
 	import { onMount } from 'svelte'
 	import { messageslist } from '../stores/inbox'
+	import { client } from '$lib/client'
+	import { GET_ME, GET_ROLES } from '$lib/queries'
 
-	const { t } = getLocalization()
+	// const { t } = getLocalization()
 
 	let res = ''
 	let newMessages = 0 // FIXME: get with query
 	let newNotices = 0
 
-	onMount(() => (res = window.location.pathname))
+	onMount(() => {
+		res = window.location.pathname
+		if (document.cookie.replace('token=', '') !== document.cookie) {
+			$token = document.cookie.split('token=')[1].split(';')[0]
+		} else console.log('navauth: not logged in')
+		console.log('navauth: navbar mounted')
+	})
 
-	const toggleLogin = () => {
-		$ui.authModal = !$ui.authModal
+	$: if ($token) {
+		try {
+			console.log('navauth: found auth token')
+			client.request(GET_ME).then((user) => {
+				$session = user
+				client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
+					// console.log(data)
+					$roles = data
+					console.log('navauth: my roles store updated')
+				})
+				console.log('navauth: session store updated')
+			})
+		} catch (e) {
+			console.error('navauth: graphql request failed')
+		}
 	}
 
-	const closeModal = (ev) => {
-		if (
-			(ev.target && ev.target.classList.contains('modalwrap')) ||
-			ev.target.classList.contains('close-control')
-		)
-			$ui.authModal = false
+	$: if ($messageslist && $messageslist.length > 0) {
+		newMessages = $messageslist.length
+		console.log(`navauth: ${newMessages} new messages`)
 	}
-
-	const toggleNotices = () => {
-		console.log('nav: showing notifications')
-		$ui.showNotices = !$ui.showNotices
-	}
-
-	$: newNotices = $notices.filter((n) => !n.seen).length
-	$: newMessages = $messageslist ? $messageslist.length : 0
+	$: if ($notices && $notices.length > 0)
+		newNotices = $notices.filter((n) => !n.state).length
 </script>
 
-<svelte:window
-	on:keydown={(e) => {
-		if (e.key === 'Escape') $ui.authModal = false
-	}}
-/>
-
-{#if $ui.authModal}
-	<div class="modalwrap" transition:fade on:click|preventDefault={closeModal}>
-		<Auth />
-	</div>
-{/if}
-{#if $ui.showNotices}
-	<div
-		class="noticecorner fixed"
-		transition:fade
-		on:click|preventDefault={() => ($ui.showNotices = false)}
-	>
-		{#each $notices as notice}
-			<div class="notice" class:error={notice.type === 'error'}>{notice.text}</div>
-		{/each}
-	</div>
-{/if}
+<Modal name="auth"><Auth /></Modal>
+<Notifications />
 {#if $token}
 	<div class="usercontrol col">
 		<div class="usercontrol__item usercontrol__item--write-post">
@@ -68,7 +61,7 @@
 			</a>
 		</div>
 		<div class="usercontrol__item usercontrol__item--search">
-			<a href="#">
+			<a href="/search">
 				<Icon name="search" />
 			</a>
 		</div>
@@ -80,7 +73,7 @@
 			</a>
 		</div>
 		<div class="usercontrol__item">
-			<a href={''} on:click|preventDefault={toggleNotices}>
+			<a href={''} on:click|preventDefault={() => ($showNotices = !$showNotices)}>
 				<div>
 					<Icon name="bell-white" counter={newNotices} />
 				</div>
@@ -97,7 +90,7 @@
 {:else}
 	<div class="usercontrol col">
 		<div class="usercontrol__item loginbtn">
-			<a href={''} on:click|preventDefault={toggleLogin}> войти </a>
+			<a href={'#'} on:click|preventDefault={() => ($openModal = 'auth')}>войти</a>
 		</div>
 	</div>
 {/if}
@@ -153,24 +146,6 @@
 		@include media-breakpoint-down(sm) {
 			display: none;
 		}
-	}
-
-	.notice {
-		width: auto;
-	}
-
-	.modalwrap {
-		pointer-events: all;
-		align-items: center;
-		background: rgba(20, 20, 20, 0.7);
-		display: flex;
-		justify-content: center;
-		height: 100%;
-		left: 0;
-		position: fixed;
-		top: 0;
-		width: 100%;
-		z-index: 10;
 	}
 
 	a {

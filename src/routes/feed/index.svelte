@@ -2,7 +2,10 @@
 	export const prerender = true
 
 	const method = 'post'
-	const headers = { 'Content-Type': 'application/json;charset=utf-8' }
+	const headers = {
+		accept: 'application/json',
+		'Content-Type': 'application/json;charset=utf-8'
+	}
 </script>
 
 <script lang="ts">
@@ -14,7 +17,6 @@
 	} from '../../stores/zine'
 	import { fade } from 'svelte/transition'
 	import ShoutCard from '../../components/ShoutCard.svelte'
-	import { onMount } from 'svelte/internal'
 	import UserCard from '../../components/UserCard.svelte'
 	import type { Shout, User } from '$lib/codegen'
 
@@ -72,25 +74,10 @@
 		navTopics = [...$subscribedTopics, ...navTopics]
 		load()
 	}
-
-	onMount(async () => {
-		shouts = null
-		authors = null
-		navTopics = []
-	})
 </script>
 
 <NavTopics slugs={new Set(navTopics)} />
 
-<div class="feed-authors">
-	{#key $subscribedAuthors}
-		{#if $users && authors}
-			{#each authors as user}
-				<UserCard {user} subscribed={$subscribedAuthors.includes(user.slug)} />
-			{/each}
-		{/if}
-	{/key}
-</div>
 <div class="feed-shouts">
 	{#key shouts}
 		{#each [...Array(9).keys()] as r}
@@ -106,5 +93,14 @@
 				</div>
 			{/if}
 		{/each}
+	{/key}
+</div>
+<div class="feed-authors">
+	{#key $subscribedAuthors}
+		{#if $users && authors}
+			{#each authors as user}
+				<UserCard {user} />
+			{/each}
+		{/if}
 	{/key}
 </div>

@@ -1,8 +1,8 @@
 <script context="module" lang="ts">
 	export const prerender = true
 
-	export const load = async ({ page, fetch }) => {
-		const { slug } = page.params
+	export const load = async ({ params, fetch }) => {
+		const { slug } = params
 		let props = { slug }
 		const q = await fetch(`/topic/${slug}.json`)
 		if (q.ok) {
@@ -14,18 +14,14 @@
 </script>
 
 <script lang="ts">
-	import {
-		topics,
-		subscribedAuthors,
-		subscribedTopics,
-		shoutslist
-	} from '../../stores/zine'
+	import { topics, topicslist } from '../../stores/zine'
 	import TopicFull from '../../components/TopicFull.svelte'
 	import { page } from '$app/stores'
 	import { onMount } from 'svelte'
 	import ShoutCard from '../../components/ShoutCard.svelte'
 	import UserCard from '../../components/UserCard.svelte'
 	import type { Shout, User } from '$lib/codegen'
+	import { browser } from '$app/env'
 
 	export let shouts: Shout[]
 	export let authors: User[]
@@ -34,15 +30,12 @@
 	let topic
 	let mode
 
-	$: if (!slug && $page && $page.params.slug) slug = $page.params.slug
-	$: if (slug && !topic && $topics) topic = $topics[slug]
-	$: if (authors) {
-		console.log(authors)
-	}
+	$: if ($topicslist) topic = $topics[slug]
 	onMount(() => {
-		topic = null
+		if (browser) slug = $page.params.slug
+		console.log('topic: [' + slug + ']')
+		topic = $topics[slug]
 		mode = window.location.hash
-		console.log(mode)
 	})
 
 	const sortBy = (by) => {
@@ -65,10 +58,9 @@
 		}
 		mode = by
 	}
-	let loading = false,
-		moreTimes
+	let moreLoading = false
 	const moreShouts = async () => {
-		loading = true
+		moreLoading = true
 		console.log('topicpage: show more shouts')
 		const p = Math.floor(Object.values(shouts).length / 27)
 		const r = await fetch(`/topic/${slug}.json?page=${p}`)
@@ -81,16 +73,12 @@
 			)
 			shouts = [...shouts, ...newData]
 		}
-		loading = false
+		moreLoading = false
 	}
 </script>
 
 <svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
-{#key $subscribedTopics}
-	{#if topic}
-		<TopicFull {topic} subscribed={$subscribedTopics.includes(topic.slug)} />
-	{/if}
-{/key}
+<TopicFull {topic} />
 
 <div class="container">
 	<div class="row topic__controls">
@@ -152,7 +140,7 @@
 				<div class="col-md-4">
 					<h3>Тему поддерживают</h3>
 					{#each Object.values(authors).slice(0, 5) as user}
-						<UserCard {user} subscribed={$subscribedAuthors.includes(user.slug)} />
+						<UserCard {user} />
 					{/each}
 				</div>
 				{#each shouts.slice(6, 8) as shout}

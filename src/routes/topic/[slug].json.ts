@@ -9,7 +9,7 @@ export const get = async ({ params }) => {
 			topic,
 			limit: 27
 		})
-		let authors = {}
+		const authors = {}
 		shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))
 		const body = { shouts, authors }
 		return { status: shouts ? 200 : 404, body }

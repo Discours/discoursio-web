@@ -49,7 +49,7 @@ export { buildMenuItems, buildKeymap, buildInputRules }
 //     menuContent:: [[MenuItem]]
 //     Can be used to override the menu content.
 export function setup(options) {
-	let plugins = [
+	const plugins = [
 		buildInputRules(options.schema),
 		keymap(buildKeymap(options.schema, options.mapKeys)),
 		keymap(baseKeymap),
