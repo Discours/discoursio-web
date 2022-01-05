@@ -126,7 +126,7 @@
 			$loading = false
 		}
 	}
-	let favs = [], favs1 // , favs2 = []
+	let favs = [], favs1 = [] // , favs2 = []
 	$: if(topOverall && topOverall.length >9) {
 		favs = topOverall.slice(0, 10)
 		favs1 = topOverall.slice(10, 20)
@@ -254,10 +254,10 @@
 			</div>
 		</div>
 
-		{#key favs}
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
 				<h2 class="col-12">Выбор сообщества</h2>
+				{#if favs && favs.length > 0}
 				<Swiper
 					modules={[Navigation]}
 					spaceBetween={8}
@@ -266,21 +266,21 @@
 					centeredSlides
 					loop
 				>
-					{#each favs as article}
+					{#each favs as shout}
 						<SwiperSlide>
-							<ShoutCard shout={article} additionalClass="shout-card--with-cover" />
+							<ShoutCard {shout} additionalClass="shout-card--with-cover" />
 						</SwiperSlide>
 					{/each}
 				</Swiper>
+				{/if}
 			</div>
 		</div>
-		{/key}
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(10, 12) as article}
+				{#each $shoutslist.slice(10, 12) as shout}
 					<div class="col-md-6">
-						<ShoutCard shout={article} />
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -292,10 +292,7 @@
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as shout}
 						<div class="col-md-6 col-lg-3">
-							<ShoutCard
-								{shout}
-								additionalClass="shout-card--with-cover shout-card--content-top"
-							/>
+							<ShoutCard {shout} additionalClass="shout-card--with-cover shout-card--content-top" />
 						</div>
 					{/each}
 				</div>
@@ -322,7 +319,7 @@
 
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
-				{#key favs1}
+				{#if favs1 && favs1.length >0}
 				<h2 class="col-12">Избранное</h2>
 				<Swiper
 					modules={[Navigation]}
@@ -338,7 +335,7 @@
 						</SwiperSlide>
 					{/each}
 				</Swiper>
-				{/key}
+				{/if}
 			</div>
 		</div>
 

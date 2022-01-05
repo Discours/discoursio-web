@@ -1,6 +1,5 @@
-import { join } from 'path'
+
 import { readFileSync } from 'fs'
-import { cwd } from 'process'
 import { typescript } from 'svelte-preprocess-esbuild'
 // import { mdsvex } from 'mdsvex'
 // import { windi as windiSvelte } from 'svelte-windicss-preprocess'
@@ -14,7 +13,7 @@ const require = createRequire(import.meta.url)
 const { scss, globalStyle } = require('svelte-preprocess')
 // const { default: windiVite } = require('vite-plugin-windicss')
 
-const pkg = JSON.parse(readFileSync(join(cwd(), 'package.json')))
+const pkg = JSON.parse(readFileSync(new URL('package.json', import.meta.url), 'utf8'))
 
 const scssOptions = {
 	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
@@ -43,7 +42,7 @@ const config = {
 		hydrate: true,
 		ssr: true,
 		prerender: {
-			enabled: false // ready to be true!
+			enabled: true
 			// FIXME: https://github.com/Discours/discoursio-web/issues/30
 		},
 		vite: {

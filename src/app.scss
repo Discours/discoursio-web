@@ -67,11 +67,6 @@ section {
 	padding: 0 $container-padding-x;
 }
 
-header {
-	border-bottom: 4px solid #000;
-	margin-bottom: 2.2rem;
-}
-
 h1 {
 	@include font-size(4.8rem);
 }

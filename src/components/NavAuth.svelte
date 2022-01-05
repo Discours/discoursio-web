@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { session, token, roles, notices } from '../stores/user'
-	import { openModal, showNotices } from '../stores/app'
+	import { showNotices } from '../stores/app'
 	import Icon from './DiscoursIcon.svelte'
 	import Auth from './Auth.svelte'
 	import Modal from './Modal.svelte'
@@ -85,12 +85,6 @@
 					<Userpic user={$session} />
 				</div>
 			</a>
-		</div>
-	</div>
-{:else}
-	<div class="usercontrol col">
-		<div class="usercontrol__item loginbtn">
-			<a href={'#'} on:click|preventDefault={() => ($openModal = 'auth')}>войти</a>
 		</div>
 	</div>
 {/if}

@@ -8,11 +8,18 @@
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { API_ENDPOINT } from '../lib/client'
+	import { goto } from '$app/navigation'
 	const prefix = 'Ошибка сервера: '
 
 	export let mode = 'login'
 	export let code = ''
 	export let warnings = ['']
+
+	const showTerms = () => {
+		$openModal = ''
+		goto('/terms-of-use')
+	}
+
 	let email,
 		password,
 		password2 = ''
@@ -106,10 +113,8 @@
 				истории и&nbsp;ещё много всего интересного!
 			</p>
 			<p class="disclamer">
-				Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a href={'/rules'}
-					>правилами пользования</a
-				>
-				сайтом, на&nbsp;<a href={'/agreement'}>обработку персональных данных</a>
+				Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a href='/terms-of-use' on:click={showTerms}>правилами пользования</a>
+				сайтом, на&nbsp;обработку персональных данных
 				и&nbsp;на&nbsp;получение почтовых уведомлений.
 			</p>
 		</div>

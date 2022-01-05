@@ -18,7 +18,7 @@
 				},
 				{
 					title: 'База знаний',
-					slug: '/knowledge-base'
+					slug: 'https://discours.io/knowledge-base'
 				},
 				{
 					title: 'Правила сообщества',

@@ -1,98 +1,74 @@
 <script>
 	import NavAuth from './NavAuth.svelte'
-	// import { getLocalization } from '../i18n'
-	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
-	import { goto } from '$app/navigation'
+	import { page } from '$app/stores'
+	import { openModal } from '../stores/app'
+	import { token } from '../stores/user'
+	import { onMount } from 'svelte'
 
-	// const { t } = getLocalization()
-
-	let res
 	let isBurgerHidden = true
-	let isMobile = false
-
+	const routes = [
+		{ name: 'журнал', href: '/' },
+		{ name: 'лента', href: '/feed' },
+		{ name: 'темы', href: '/topic' },
+	]
 	const toggleBurger = () => {
 		isBurgerHidden = !isBurgerHidden
 		document.body.classList.toggle('fixed', !isBurgerHidden)
 	}
 
-	const MAIN_NAVIGATION = [
-		{
-			title: 'журнал', // популярное/рекомендованное
-			href: '/'
-		},
-		{
-			title: 'лента', // актуальное
-			href: '/feed'
-		},
-		{
-			title: 'темы',
-			href: '/topic'
-		},
-		{
-			title: 'сообщества',
-			href: '/community'
-		}
-	]
-
 	onMount(() => {
-		res = window.location.pathname
-		isMobile = 'touchdown' in window
-		console.log('nav: header mounted')
+		isBurgerHidden = window.screen.width > 990
 	})
 </script>
-
-<!-- svelte-ignore a11y-missing-attribute -->
-<div class="wide-container" transition:fade>
-	<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
-		<div class="main-logo col-auto">
-			<a href="/">
-				<img src="/logo.svg" alt="Дискурс" />
-			</a>
-		</div>
-
-		<ul
-			class="col main-navigation text-xl inline-flex"
-			class:main-navigation--open={!isBurgerHidden}
-		>
-			{#each MAIN_NAVIGATION as navItem}
-				<li class:selected={res === navItem.href}>
-					{#if res === navItem.href}
-						<strong>{navItem.title}</strong>
+<header>
+	<div class='wide-container'>
+		<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
+			<div class="main-logo col-auto">
+				<a href="/">
+					<img src="/logo.svg" alt="Дискурс" />
+				</a>
+			</div>
+			<ul
+				class="col main-navigation text-xl inline-flex"
+				class:main-navigation--open={!isBurgerHidden}
+			>
+				{#each routes as r}
+				<li class:selected={ $page.url.pathname === r.href }>
+					<a sveltekit:prefetch href={r.href}>{r.name}</a>
+				</li>
+				{/each}
+				<li class="usernav">
+					{#if $token}
+						<NavAuth />
 					{:else}
-						<a
-							href={navItem.href}
-							on:click={() => goto(navItem.href)}>{navItem.title}</a
-						>
+					<div class="usercontrol col">
+						<div class="usercontrol__item loginbtn">
+							<a href={'#'} on:click|preventDefault={() => ($openModal = 'auth')}>войти</a>
+						</div>
+					</div>
 					{/if}
 				</li>
-			{/each}
-			{#if isMobile}
-				<li>
-					<NavAuth />
-				</li>
-			{/if}
-		</ul>
-
-		{#if !isMobile}
-			<span class="usernav">
-				<NavAuth />
-			</span>
-		{/if}
-
-		<div class="burger-container">
-			<div
-				class="burger"
-				class:burger--close={!isBurgerHidden}
-				on:click={toggleBurger}
-			>
-				<div />
+			</ul>
+			<div class="burger-container">
+				<div transition:fade
+					class="burger"
+					class:burger--close={!isBurgerHidden}
+					on:click={toggleBurger}
+				>
+					<div />
+				</div>
 			</div>
-		</div>
-	</nav>
-</div>
+		</nav>
+	</div>
+</header>
 
 <style lang="scss">
+
+	header {
+		border-bottom: 4px solid #000;
+		margin-bottom: 2.2rem;
+	}	
 	.header__inner {
 		background: #fff;
 		flex-wrap: wrap;
@@ -140,10 +116,6 @@
 		align-items: center;
 	}
 
-	.usernav {
-		width: auto;
-		display: inline-flex;
-	}
 
 	.main-navigation {
 		display: inline-flex;
@@ -174,7 +146,8 @@
 			margin-right: 2.4rem;
 
 			&:last-child {
-				margin-right: 0;
+				text-align: right;
+				width: 100%;
 			}
 		}
 
@@ -186,9 +159,11 @@
 			}
 		}
 
-		.selected strong {
+		.selected a {
 			border-bottom: 2px solid;
 			color: #000;
+			pointer-events: none;
+			cursor: default;
 		}
 	}
 
