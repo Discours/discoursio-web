@@ -30,6 +30,7 @@
 	} from '../stores/zine'
 	import { loading } from '../stores/app'
 	import { browser } from '$app/env'
+	import SvelteSeo from 'svelte-seo'
 	// import 'virtual:windi.css'
 	// import { initLocalizationContext } from '../i18n/index'
 	// initLocalizationContext()
@@ -81,9 +82,20 @@
 			)
 		}
 	}
+	const meta = {
+		title: 'Дискурс',
+		description: 'Самоорганизующаяся журналистика',
+		keywords: 'Discours.io, дискурс, самыздат, коллаборативная редакция, авторы'
+	}
 </script>
 
-<!--Sveo {seo} /-->
+<SvelteSeo
+	{...meta}
+	openGraph={{ ...meta, images: [{ url: 'favicon.png' }] }}
+/>
+<svelte:head>
+	<link rel="shortcut icon" href="favicon.png" />
+</svelte:head>
 <header><NavHeader /></header>
 <main><slot /></main>
 <DiscoursFooter />

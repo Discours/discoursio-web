@@ -68,7 +68,13 @@
 		// TODO: implement me
 	}
 
-	onMount(() => $page.url.searchParams.get('code') && reset())
+	onMount(async () => {
+		if ($page && $page.url) {
+			code = await $page.url.searchParams.get('code')
+			if (code) reset()
+			else console.log('auth: mounted without code')
+		}
+	})
 
 	const oauth = (provider: string) => {
 		// $openModal = false
@@ -217,6 +223,9 @@
 						</a>
 						<a href={''} class="vk-auth" on:click|preventDefault={() => oauth('vk')}>
 							<Icon name="vk" />
+						</a>
+						<a href={''} class="github-auth" on:click|preventDefault={() => oauth('github')}>
+							<Icon name="github" />
 						</a>
 					</div>
 				</div>

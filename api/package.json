@@ -1,6 +1,6 @@
 {
 	"dependencies": {
 		"nodemailer": "^6.7.2",
-		"mailchimp-node": "^1.1.7"
+		"mailgun-js": "^0.22.0"
 	}
 }

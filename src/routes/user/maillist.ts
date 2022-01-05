@@ -1,8 +1,3 @@
-import { createRequire } from 'module'
-
-const require = createRequire(import.meta.url)
-const { serialize } = require('cookie')
-
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ params }) {
 	const { email } = params
@@ -16,7 +11,7 @@ export async function get({ params }) {
 	})
 	return {
 		headers: {
-			'set-cookie': serialize('maillist', email, { expires: new Date(0) })
+			'set-cookie': 'maillist=' + email + ';'
 		},
 		body: { ok: r.ok }
 	}

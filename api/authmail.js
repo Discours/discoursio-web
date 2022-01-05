@@ -1,6 +1,6 @@
 const { randomUUID } = require('crypto')
 const { createTransport } = require('nodemailer')
-const redis = require('./redis.js')
+const redis = require('./_redis.js')
 // mail
 const mailer = createTransport({
 	host: process.env.MAIL_HOST,

@@ -1,15 +1,18 @@
-const mailchimp = require('mailchimp-node')(process.env.MAILCHIMP_KEY)
+const mailgun = require('mailgun-js')({
+	apiKey: MAILGUN_API_KEY, 
+	domain: process.env.MAILGUN_DOMAIN
+})
+const list = mailgun.lists('services@discours.io')
 
 export default async function handler(req, res) {
 	const { email } = req.body.data
-	try {
-		mailchimp.list.createMember(
-			process.env.MAILCHIMP_LIST,
-			{ email, status: 'subscribed' },
-			(err, member) => (err ? console.error(err) : console.log(member))
-		)
-		res.status(200).json({ message: 'Successfully subscribed' })
-	} catch (error) {
-		res.status(500)
-	}
+	list.members().create({ subscribed: true, address: email }, (err, data) => {
+		if(err) {
+			console.error(err)
+			res.status(500)
+		}
+		else {
+			res.status(200).json(data)
+		}
+	})
 }

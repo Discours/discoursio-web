@@ -1,4 +1,4 @@
-const redis = require('./redis')
+const redis = require('./_redis.js')
 const cookieKey = 'discours-auth'
 
 export default async function handler(req, res) {

@@ -1,4 +1,4 @@
-const redis = require('./redis.js')
+const redis = require('./_redis.js')
 
 export default async function handler(req, res) {
 	const { token } = req.query
