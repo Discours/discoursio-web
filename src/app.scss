@@ -78,16 +78,19 @@ h1 {
 
 h2 {
 	@include font-size(4rem);
+	line-height: 1.1;
 	margin-bottom: 0.5em;
 }
 
 h3 {
 	@include font-size(3.2rem);
+	line-height: 1.1;
 	margin-bottom: 0.5em;
 }
 
 h4 {
 	@include font-size(2.6rem);
+	line-height: 1.2;
 }
 
 h5 {
