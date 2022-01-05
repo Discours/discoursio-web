@@ -99,6 +99,10 @@
 		position: relative;
 		z-index: 10;
 
+		@include media-breakpoint-down(sm) {
+			padding-left: divide($container-padding-x, 2);
+		}
+
 		@include media-breakpoint-up(lg) {
 			height: 80px;
 		}

@@ -69,18 +69,25 @@ section {
 
 h1 {
 	@include font-size(4.8rem);
+	line-height: 1.1;
 }
 
 h2 {
 	@include font-size(4rem);
+	line-height: 1.1;
+	margin-bottom: 0.5em;
 }
 
 h3 {
 	@include font-size(3.2rem);
+	line-height: 1.1;
+	margin-bottom: 0.5em;
 }
 
 h4 {
 	@include font-size(2.6rem);
+	line-height: 1.2;
+	margin-bottom: 0.5em;
 }
 
 h5 {
@@ -90,6 +97,7 @@ h5 {
 main {
 	box-sizing: border-box;
 	flex: 1;
+	padding-bottom: 2em;
 }
 
 body,
@@ -117,6 +125,10 @@ a:link {
 a {
 	color: #000;
 	transition: color 0.2s;
+}
+
+ul {
+	margin-bottom: 1.5em;
 }
 
 .button {
