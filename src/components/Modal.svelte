@@ -15,19 +15,22 @@ const wrapClick = (ev) => {
 />
 {#if $openModal === name}
 	<div class="modalwrap" transition:fade on:click|preventDefault={wrapClick}>
-		<slot></slot>
-		<div class="close-control" on:click|preventDefault={() => $openModal = ''}>
-			<svg
-				width="16"
-				height="18"
-				viewBox="0 0 16 18"
-				xmlns="http://www.w3.org/2000/svg"
-			>
-				<path
-					d="M7.99987 7.52552L14.1871 0.92334L15.9548 2.80968L9.76764 9.41185L15.9548 16.014L14.1871 17.9004L7.99987 11.2982L1.81269 17.9004L0.0449219 16.014L6.23211 9.41185L0.0449225 2.80968L1.81269 0.92334L7.99987 7.52552Z"
-					fill="currentColor"
-				/>
-			</svg>
+		<div class="modalwrap__inner">
+			<slot></slot>
+			<div class="close-control"
+					 on:click|preventDefault={() => $openModal = ''}>
+				<svg
+					width="16"
+					height="18"
+					viewBox="0 0 16 18"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M7.99987 7.52552L14.1871 0.92334L15.9548 2.80968L9.76764 9.41185L15.9548 16.014L14.1871 17.9004L7.99987 11.2982L1.81269 17.9004L0.0449219 16.014L6.23211 9.41185L0.0449225 2.80968L1.81269 0.92334L7.99987 7.52552Z"
+						fill="currentColor"
+					/>
+				</svg>
+			</div>
 		</div>
 	</div>
 {/if}
@@ -47,15 +50,13 @@ const wrapClick = (ev) => {
 		z-index: 10;
 
 		.close-control {
-			position:absolute;
-			top: calc(5em + 50%);
+			position: absolute;
+			top: 1em;
 			cursor: pointer;
 			height: 0.8em;
 			opacity: 1;
 			padding: 0;
-			position: absolute;
-			float: right;
-			top: 7em;
+			right: 0;
 			transition: opacity 0.3s;
 			width: 0.8em;
 			z-index: 1;
@@ -76,13 +77,12 @@ const wrapClick = (ev) => {
 			@media (min-width: 800px) and (max-width: 991px) {
 				top: 11em;
 			}
-
-			@media screen and (max-width: 800px) {
-				display: none;
-			}
 		}
 	}
-	
-	
 
+	.modalwrap__inner {
+		max-width: 1000px;
+		position: relative;
+		width: 80%;
+	}
 </style>

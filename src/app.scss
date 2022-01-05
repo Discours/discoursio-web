@@ -272,3 +272,15 @@ figcaption {
 		}
 	}
 }
+
+.row > * {
+	@include media-breakpoint-down(sm) {
+		padding-left: divide($container-padding-x, 2);
+		padding-right: divide($container-padding-x, 2);
+
+		.row {
+			margin-left: divide(-$container-padding-x, 2);
+			margin-right: divide(-$container-padding-x, 2);
+		}
+	}
+}

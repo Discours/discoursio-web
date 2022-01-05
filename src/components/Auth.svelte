@@ -260,9 +260,7 @@
 <style lang="scss">
 	.view {
 		background: #fff;
-		max-width: 1000px;
 		position: relative;
-		width: 80%;
 
 		input {
 			font-size: 1.7rem;

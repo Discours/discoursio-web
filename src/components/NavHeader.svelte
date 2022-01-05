@@ -95,7 +95,7 @@
 <style lang="scss">
 	.header__inner {
 		background: #fff;
-		flex-wrap: wrap;
+		//flex-wrap: wrap;
 		justify-content: space-between;
 	}
 
@@ -141,8 +141,13 @@
 	}
 
 	.usernav {
-		width: auto;
 		display: inline-flex;
+		width: auto;
+
+		@include media-breakpoint-down(md) {
+			padding-left: 0;
+			padding-right: 0;
+		}
 	}
 
 	.main-navigation {
@@ -152,7 +157,7 @@
 		margin: 0;
 		padding: 0;
 
-		@include media-breakpoint-down(lg) {
+		@include media-breakpoint-down(md) {
 			background: #fff;
 			bottom: 0;
 			display: none;

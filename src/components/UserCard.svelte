@@ -99,7 +99,6 @@
 
 	.author__subscribe {
 		@include media-breakpoint-down(lg) {
-			flex: 1 100%;
 			padding: 0.8rem 0 0 42px;
 		}
 

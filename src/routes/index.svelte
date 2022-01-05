@@ -371,23 +371,25 @@
 		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
-					<div class="topics-group__header">
-						<h3 class="col-6">
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
-						</h3>
-						<div class="col-6 all-materials">
-							<a href="/"
+					<div class="topics-group__header col-12">
+						<div class="row">
+							<h3 class="col-sm-6">
+								{topicsGroup[0].topics.find(
+									(item) => item.slug === topicsGroup[0].mainTopic
+								).title}
+							</h3>
+							<div class="col-sm-6 all-materials">
+								<a href="/"
 								>все материалы
-								<Icon name="arrow-right-white" />
-							</a>
+									<Icon name="arrow-right-white"/>
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<ShoutCard shout={topicsGroup[0]} />
 					</div>
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div class="row">
 							<div class="col-md-6">
 								{#each topicsGroup.slice(1, 4) as article}
@@ -469,17 +471,19 @@
 		{#if topicsGroup.length > 0}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
-					<div class="topics-group__header">
-						<h3 class="col-9">
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
-						</h3>
-						<div class="col-3 all-materials">
-							<a href="/"
+					<div class="topics-group__header col-12">
+						<div class="row">
+							<h3 class="col-sm-6">
+								{topicsGroup[0].topics.find(
+									(item) => item.slug === topicsGroup[0].mainTopic
+								).title}
+							</h3>
+							<div class="col-sm-6 all-materials">
+								<a href="/"
 								>все материалы
-								<Icon name="arrow-right" />
-							</a>
+									<Icon name="arrow-right"/>
+								</a>
+							</div>
 						</div>
 					</div>
 					{#each topicsGroup.slice(0, 3) as article}
@@ -624,6 +628,7 @@
 		align-items: baseline;
 		justify-content: space-between;
 		display: flex;
+		line-height: 1.1;
 
 		:global(.icon) {
 			display: inline-block;
@@ -634,6 +639,11 @@
 
 		a {
 			@include font-size(1.5rem);
+			white-space: nowrap;
+		}
+
+		h4 {
+			padding-right: 1em;
 		}
 	}
 
@@ -680,8 +690,12 @@
 	.floor--topics-group {
 		.all-materials {
 			align-self: baseline;
-			text-align: right;
+			margin-bottom: 1em;
 			white-space: nowrap;
+
+			@include media-breakpoint-up(sm) {
+				text-align: right;
+			}
 
 			:global(.icon) {
 				display: inline-block;
@@ -695,8 +709,7 @@
 			}
 		}
 
-		.topics-group__header {
-			display: flex;
+		.topics-group__header .row {
 			align-items: baseline;
 		}
 	}

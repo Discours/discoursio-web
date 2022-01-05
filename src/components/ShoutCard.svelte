@@ -83,12 +83,12 @@
 	:global(.col-md-6),
 	:global(.col-md-8) {
 		.shout-card__title {
-			font-size: 3.2rem;
+			@include font-size(3.2rem);
 		}
 
 		.shout-card__subtitle {
 			color: #696969;
-			font-size: 2rem;
+			@include font-size(2rem);
 		}
 	}
 
@@ -396,6 +396,10 @@
 	:global(.floor--7) {
 		.shout-card {
 			padding: 56.2% 2.4rem 0;
+
+			@include media-breakpoint-between(xs, sm) {
+				padding-top: 160%;
+			}
 
 			@include media-breakpoint-up(md) {
 				padding-top: 160%;
