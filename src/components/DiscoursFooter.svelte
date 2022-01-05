@@ -10,11 +10,11 @@
 			items: [
 				{
 					title: 'Манифест',
-					slug: '/manifest'
+					slug: '/about/manifest'
 				},
 				{
 					title: 'Как устроен Дискурс',
-					slug: '/guide'
+					slug: '/about/guide'
 				},
 				{
 					title: 'База знаний',
@@ -22,7 +22,7 @@
 				},
 				{
 					title: 'Правила сообщества',
-					slug: '/terms-of-use'
+					slug: '/about/terms-of-use'
 				},
 				{
 					title: 'Как написать статью',
@@ -44,7 +44,7 @@
 				},
 				{
 					title: 'Поддержать проект',
-					slug: '/help'
+					slug: '/about/help'
 				},
 				{
 					title: 'Обратная связь',
@@ -75,11 +75,11 @@
 				},
 				{
 					title: 'Партнёры',
-					slug: '/partners'
+					slug: '/about/partners'
 				},
 				{
 					title: 'Спецпроекты',
-					slug: '/projects'
+					slug: '/about/projects'
 				}
 			]
 		}
@@ -134,7 +134,7 @@
 		<div class="footer-copyright row">
 			<div class="col-md-10">
 				Независимый журнал о&nbsp;культуре, науке и&nbsp;обществе с&nbsp;открытой
-				горизонтальной редакцией. ©&nbsp;Дискурс 2015-2021. <a href="/terms-of-use"
+				горизонтальной редакцией. ©&nbsp;Дискурс 2015-2021. <a href="/about/terms-of-use"
 					>Условия&nbsp;использования</a
 				>
 			</div>

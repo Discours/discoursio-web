@@ -17,7 +17,7 @@
 
 	const showTerms = () => {
 		$openModal = ''
-		goto('/terms-of-use')
+		goto('/about/terms-of-use')
 	}
 
 	let email,

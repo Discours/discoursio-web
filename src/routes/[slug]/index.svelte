@@ -1,23 +1,13 @@
-<script context="module" lang="ts">
-	import type { Shout, User } from '$lib/codegen'
+<script context="module">
+	import subroutes from './routes.json'
+	
 	export const prerender = true
 
-	interface SlugProps {
-		slug: string
-		shout?: Shout
-		user?: User
-	}
-
-	const routes = process.env.VITE_ROUTES || []
-
-	export const load = async ({
-		params,
-		fetch
-	}): Promise<{ props: SlugProps }> => {
+	export const load = async ({ params, fetch }) => {
 		const { slug } = params
-		let props: SlugProps = { slug }
+		let props = { slug }
 		const at = slug.startsWith('@')
-		if (routes.includes(slug) && !at) return { props }
+		if (subroutes.includes(slug) && !at) return { props }
 		else {
 			console.log(`[slug]: ${slug}`)
 			const fq = await fetch(at ? `/user/${slug.slice(1)}.json` : `/${slug}.json`)

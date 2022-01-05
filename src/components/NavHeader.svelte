@@ -38,7 +38,7 @@
 				class:main-navigation--open={!isBurgerHidden}
 			>
 				{#each routes as r}
-					<li class:selected={$page.url.pathname === r.href}>
+					<li class:selected={$page?.url?.pathname === r.href}>
 						<a sveltekit:prefetch href={r.href}>{r.name}</a>
 					</li>
 				{/each}

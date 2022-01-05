@@ -1,10 +1,10 @@
-import { readdirSync, readFileSync, statSync } from 'fs'
+import { writeFileSync, readdirSync, readFileSync, statSync } from 'fs'
 import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
-import adapter from '@sveltejs/adapter-auto'
-//import vercel from '@sveltejs/adapter-vercel'
-//import node from '@sveltejs/adapter-node'
-//import ssg from '@sveltejs/adapter-static'
+// import adapter from '@sveltejs/adapter-auto'
+import vercel from '@sveltejs/adapter-vercel'
+import node from '@sveltejs/adapter-node'
+import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
@@ -13,9 +13,8 @@ const { scss, globalStyle } = require('svelte-preprocess')
 const routesDir = './src/routes'
 const p = (f) => new URL(f, import.meta.url)
 const onlyDir = (f) => statSync(p(routesDir + '/' + f)).isDirectory()
-const routes = JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir))
-process.stdout.moveCursor(0, -1) // up one line
-console.log('subroutes: ' + routes)
+
+writeFileSync(p(routesDir + '/[slug]/routes.json'), JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir), null, 2))
 
 const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
 
@@ -38,18 +37,12 @@ const config = {
 		enableSourcemap: true,
 		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
-	replace: [
-		[
-			'process.env.VITE_ROUTES',
-			routes
-		]
-	],
 	kit: {
-		adapter: adapter(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
+		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
 		hydrate: true,
 		ssr: true,
-		prerender: { enabled: true },
+		prerender: { enabled: true, entries: ['*'] },
 		vite: {
 			build: {
 				chunkSizeWarningLimit: 777,
