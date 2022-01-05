@@ -113,9 +113,12 @@
 				истории и&nbsp;ещё много всего интересного!
 			</p>
 			<p class="disclamer">
-				Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a href='/terms-of-use' on:click={showTerms}>правилами пользования</a>
-				сайтом, на&nbsp;обработку персональных данных
-				и&nbsp;на&nbsp;получение почтовых уведомлений.
+				Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a
+					href="/about/terms-of-use"
+					on:click={showTerms}>правилами пользования</a
+				>
+				сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых
+				уведомлений.
 			</p>
 		</div>
 	</div>
@@ -197,7 +200,9 @@
 
 			{#if mode === 'login'}
 				<div class="auth-actions">
-					<a href={''} on:click|preventDefault={() => (mode = 'forget')}>Забыли пароль?</a>
+					<a href={''} on:click|preventDefault={() => (mode = 'forget')}
+						>Забыли пароль?</a
+					>
 				</div>
 			{/if}
 
@@ -229,7 +234,11 @@
 						<a href={''} class="vk-auth" on:click|preventDefault={() => oauth('vk')}>
 							<Icon name="vk" />
 						</a>
-						<a href={''} class="github-auth" on:click|preventDefault={() => oauth('github')}>
+						<a
+							href={''}
+							class="github-auth"
+							on:click|preventDefault={() => oauth('github')}
+						>
 							<Icon name="github" />
 						</a>
 					</div>
@@ -265,9 +274,7 @@
 <style lang="scss">
 	.view {
 		background: #fff;
-		max-width: 1000px;
 		position: relative;
-		width: 80%;
 
 		input {
 			font-size: 1.7rem;

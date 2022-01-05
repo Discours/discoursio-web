@@ -32,7 +32,7 @@
 	}
 
 	onMount(() => {
-		// room name from window.location
+		// TODO: generate room name from window.location
 		$room =
 			window.location.hostname +
 			(window.location.pathname.length === 1 ? '' : window.location.pathname)

@@ -13,29 +13,21 @@
 </script>
 
 <script lang="ts">
-	import P2P from './P2P.svelte'
 	import Editor from './Editor.svelte'
-	import {
-		p2p,
-		ydoc,
-		room,
-		body as bodyStore,
-		webrtc
-	} from '../../stores/editor'
-	import type { YXmlFragment } from 'yjs/dist/src/internals'
-	import { onMount } from 'svelte';
+	import { ydoc, room } from '../../stores/editor'
+	import type { XmlFragment } from 'yjs'
+	import { onMount } from 'svelte'
 
-	export let body: YXmlFragment | null
-	let shared = false
+	export let body: XmlFragment
+	export let collab = false
 
 	const sync = () => {
-		if(shared) {
-			const remote: YXmlFragment = $ydoc.getXmlFragment($room + '-body')
-			const local: YXmlFragment = $bodyStore
+		if (collab) {
+			const remote: XmlFragment = $ydoc.getXmlFragment($room + '-body')
+			const local: XmlFragment = body
 			if (remote === local) {
 				console.log('editor: nothing to solve')
 				body = remote
-			} else {
 				// TODO: conflict solving logix
 				// если ты редактор - правишь как обычно
 				// если ты не редактор - все правки становятся предложениями (proposal)
@@ -49,10 +41,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-12">
-			<P2P password={$webrtc.password} />
-			{#if $p2p && $p2p.awareness}
-				<Editor {body} awareness={$p2p.awareness} />
-			{/if}
+			<Editor {body} {collab} />
 		</div>
 	</div>
 </div>

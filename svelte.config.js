@@ -1,19 +1,23 @@
-
-import { readFileSync } from 'fs'
+import { readdirSync, readFileSync, statSync } from 'fs'
 import { typescript } from 'svelte-preprocess-esbuild'
-// import { mdsvex } from 'mdsvex'
-// import { windi as windiSvelte } from 'svelte-windicss-preprocess'
-// import adapter from '@sveltejs/adapter-auto'
-import vercel from '@sveltejs/adapter-vercel'
-import node from '@sveltejs/adapter-node'
-import ssg from '@sveltejs/adapter-static'
+import { mdsvex } from 'mdsvex'
+import adapter from '@sveltejs/adapter-auto'
+//import vercel from '@sveltejs/adapter-vercel'
+//import node from '@sveltejs/adapter-node'
+//import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
 const { scss, globalStyle } = require('svelte-preprocess')
-// const { default: windiVite } = require('vite-plugin-windicss')
 
-const pkg = JSON.parse(readFileSync(new URL('package.json', import.meta.url), 'utf8'))
+const routesDir = './src/routes'
+const p = (f) => new URL(f, import.meta.url)
+const onlyDir = (f) => statSync(p(routesDir + '/' + f)).isDirectory()
+const routes = JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir))
+process.stdout.moveCursor(0, -1) // up one line
+console.log('subroutes: ' + routes)
+
+const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
 
 const scssOptions = {
 	// https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
@@ -27,24 +31,25 @@ const config = {
 	preprocess: [
 		typescript(),
 		scss(scssOptions, { name: 'scss' }),
-		// windiSvelte({}),
-		// postcss(postcssConfig, { name: 'postcss' }),
-		globalStyle()
-		// mdsvex(),
+		globalStyle(),
+		mdsvex()
 	],
 	compilerOptions: {
 		enableSourcemap: true,
 		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
+	replace: [
+		[
+			'process.env.VITE_ROUTES',
+			routes
+		]
+	],
 	kit: {
-		adapter: process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
+		adapter: adapter(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
 		target: '#svelte',
 		hydrate: true,
 		ssr: true,
-		prerender: {
-			enabled: true
-			// FIXME: https://github.com/Discours/discoursio-web/issues/30
-		},
+		prerender: { enabled: true },
 		vite: {
 			build: {
 				chunkSizeWarningLimit: 777,
@@ -54,7 +59,6 @@ const config = {
 					}
 				}
 			},
-			// plugins: [windiVite({})],
 			ssr: {
 				external: ['w3c-keyname'],
 				noExternal: Object.keys(pkg.dependencies || {})

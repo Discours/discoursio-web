@@ -24,7 +24,7 @@
 					</a>
 				</div>
 			{/if}
-			{#if topic.body}
+			{#if topic.body && !compact}
 				<p class="topic-description" class:compact>
 					{@html topic.body}
 				</p>

@@ -1,33 +1,14 @@
 <script context="module" lang="ts">
-	import type { Shout, User } from '../lib/codegen'
+	import type { Shout, User } from '$lib/codegen'
 	export const prerender = true
-
-	const routes: string[] = [
-		'inbox',
-		'guide',
-		'terms-of-use',
-		'manifest',
-		'help',
-		'dogma',
-		'thanks',
-		'search',
-		'create',
-		'login',
-		'topic',
-		'feed',
-		'user',
-		'community',
-		'partners',
-		'projects',
-		'subscribe',
-		'unsubscribe'
-	]
 
 	interface SlugProps {
 		slug: string
 		shout?: Shout
 		user?: User
 	}
+
+	const routes = process.env.VITE_ROUTES || []
 
 	export const load = async ({
 		params,
@@ -50,8 +31,8 @@
 </script>
 
 <script lang="ts">
-	import ShoutFull from '../components/ShoutFull.svelte'
-	import UserFull from '../components/UserFull.svelte'
+	import ShoutFull from '../../components/ShoutFull.svelte'
+	import UserFull from '../../components/UserFull.svelte'
 
 	export let shout
 	export let shouts

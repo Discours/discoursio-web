@@ -3,10 +3,11 @@
 </script>
 
 <script lang="ts">
-	import FeedbackForm from '../components/FeedbackForm.svelte'
-	import SubscribeForm from '../components/SubscribeForm.svelte'
-	import Modal from '../components/Modal.svelte'
+	import FeedbackForm from '../../components/FeedbackForm.svelte'
+	import SubscribeForm from '../../components/SubscribeForm.svelte'
+	import Modal from '../../components/Modal.svelte'
 	import SvelteSeo from 'svelte-seo'
+	import { openModal } from '../../stores/app'
 
 	const meta = {
 		title: 'Манифесит Дискурса',
@@ -90,14 +91,14 @@
 					свои статьи и художественные работы — лучшие из них будут опубликованы в журнале.
 					Дискурс — некоммерческое издание, авторы публикуются в журнале на общественных
 					началах, получая при этом
-					<a href="/create?collab=true" target="_blank">поддержку</a> редакции, право
-					голоса, множество других возможностей и&nbsp;читателей по всему миру.
+					<a href="/create/collab" target="_blank">поддержку</a> редакции, право голоса,
+					множество других возможностей и&nbsp;читателей по всему миру.
 				</p>
 				<h3 class="not-left"><b>Поддерживать проект</b></h3>
 				<p>
 					Дискурс существует на пожертвования читателей. Если вам нравится журнал,
-					пожалуйста, <a href="/help">поддержите</a> нашу работу. Ваши пожертвования пойдут
-					на&nbsp;выпуск новых материалов, оплату серверов,&nbsp;труда программистов,
+					пожалуйста, <a href="/about/help">поддержите</a> нашу работу. Ваши пожертвования
+					пойдут на&nbsp;выпуск новых материалов, оплату серверов,&nbsp;труда программистов,
 					дизайнеров и редакторов.
 				</p>
 				<h3 class="not-left"><b>Сотрудничать с журналом</b></h3>
@@ -149,7 +150,10 @@
 				<p>
 					Если вы&nbsp;хотите предложить материал, сотрудничать, рассказать
 					о&nbsp;проблеме, которую нужно осветить, что-то обсудить или посоветовать,
-					пожалуйста, напишите нам через <a href="#feedback">эту форму</a>
+					пожалуйста, напишите нам через <a
+						href="#feedback"
+						on:click={() => ($openModal = 'feedback')}>эту форму</a
+					>
 					или на почту
 					<a href="mailto:welcome@discours.io" target="_blank">welcome@discours.io</a
 					>. Мы&nbsp;обязательно ответим и&nbsp;постараемся реализовать

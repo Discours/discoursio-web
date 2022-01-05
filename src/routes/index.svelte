@@ -98,7 +98,7 @@
 		topicsGroup = $shoutslist.filter((t) =>
 			t.topics.find((topic) => topic.slug === 'culture')
 		)
-		topOverall.forEach(s => $shouts[s.slug] = s)
+		topOverall.forEach((s) => ($shouts[s.slug] = s))
 		$loading = false
 	}
 
@@ -126,8 +126,9 @@
 			$loading = false
 		}
 	}
-	let favs = [], favs1 = [] // , favs2 = []
-	$: if(topOverall && topOverall.length >9) {
+	let favs = [],
+		favs1 = [] // , favs2 = []
+	$: if (topOverall && topOverall.length > 9) {
 		favs = topOverall.slice(0, 10)
 		favs1 = topOverall.slice(10, 20)
 		// favs2 = topOverall.slice(20, 30)
@@ -175,10 +176,10 @@
 						>
 					</p>
 					<div class="about-discours__actions">
-						<a class="button" href="#post">присоединитьсяк&nbsp;сообществу</a>
-						<a class="button" href="#post">стать&nbsp;автором</a>
-						<a class="button" href="/manifest">о&nbsp;проекте</a>
-						<a class="button" href="/help">поддержать&nbsp;платформу</a>
+						<a class="button" href="/auth">присоединитьсяк&nbsp;сообществу</a>
+						<a class="button" href="/create">стать&nbsp;автором</a>
+						<a class="button" href="/about/manifest">о&nbsp;проекте</a>
+						<a class="button" href="/about/help">поддержать&nbsp;платформу</a>
 					</div>
 				</div>
 			</div>
@@ -258,20 +259,20 @@
 			<div class="wide-container row">
 				<h2 class="col-12">Выбор сообщества</h2>
 				{#if favs && favs.length > 0}
-				<Swiper
-					modules={[Navigation]}
-					spaceBetween={8}
-					slidesPerView={1.6666}
-					navigation
-					centeredSlides
-					loop
-				>
-					{#each favs as shout}
-						<SwiperSlide>
-							<ShoutCard {shout} additionalClass="shout-card--with-cover" />
-						</SwiperSlide>
-					{/each}
-				</Swiper>
+					<Swiper
+						modules={[Navigation]}
+						spaceBetween={8}
+						slidesPerView={1.6666}
+						navigation
+						centeredSlides
+						loop
+					>
+						{#each favs as shout}
+							<SwiperSlide>
+								<ShoutCard {shout} additionalClass="shout-card--with-cover" />
+							</SwiperSlide>
+						{/each}
+					</Swiper>
 				{/if}
 			</div>
 		</div>
@@ -292,7 +293,10 @@
 					<h2 class="col-12">Коротко</h2>
 					{#each recents.slice(0, 4) as shout}
 						<div class="col-md-6 col-lg-3">
-							<ShoutCard {shout} additionalClass="shout-card--with-cover shout-card--content-top" />
+							<ShoutCard
+								{shout}
+								additionalClass="shout-card--with-cover shout-card--content-top"
+							/>
 						</div>
 					{/each}
 				</div>
@@ -319,22 +323,22 @@
 
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
-				{#if favs1 && favs1.length >0}
-				<h2 class="col-12">Избранное</h2>
-				<Swiper
-					modules={[Navigation]}
-					spaceBetween={8}
-					slidesPerView={1.6666}
-					navigation
-					centeredSlides
-					loop
-				>
-					{#each favs1 as shout}
-						<SwiperSlide>
-							<ShoutCard {shout} additionalClass="shout-card--with-cover" />
-						</SwiperSlide>
-					{/each}
-				</Swiper>
+				{#if favs1 && favs1.length > 0}
+					<h2 class="col-12">Избранное</h2>
+					<Swiper
+						modules={[Navigation]}
+						spaceBetween={8}
+						slidesPerView={1.6666}
+						navigation
+						centeredSlides
+						loop
+					>
+						{#each favs1 as shout}
+							<SwiperSlide>
+								<ShoutCard {shout} additionalClass="shout-card--with-cover" />
+							</SwiperSlide>
+						{/each}
+					</Swiper>
 				{/if}
 			</div>
 		</div>
@@ -368,23 +372,25 @@
 		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
-					<div class="topics-group__header">
-						<h3 class="col-6">
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
-						</h3>
-						<div class="col-6 all-materials">
-							<a href="/"
-								>все материалы
-								<Icon name="arrow-right-white" />
-							</a>
+					<div class="topics-group__header col-12">
+						<div class="row">
+							<h3 class="col-sm-6">
+								{topicsGroup[0].topics.find(
+									(item) => item.slug === topicsGroup[0].mainTopic
+								).title}
+							</h3>
+							<div class="col-sm-6 all-materials">
+								<a href={`/topic/${topicsGroup[0].mainTopic}`}
+									>все материалы
+									<Icon name="arrow-right-white" />
+								</a>
+							</div>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<ShoutCard shout={topicsGroup[0]} />
 					</div>
-					<div class="col-md-6">
+					<div class="col-lg-6">
 						<div class="row">
 							<div class="col-md-6">
 								{#each topicsGroup.slice(1, 4) as article}
@@ -466,17 +472,19 @@
 		{#if topicsGroup.length > 0}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
-					<div class="topics-group__header">
-						<h3 class="col-9">
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
-						</h3>
-						<div class="col-3 all-materials">
-							<a href="/"
-								>все материалы
-								<Icon name="arrow-right" />
-							</a>
+					<div class="topics-group__header col-12">
+						<div class="row">
+							<h3 class="col-sm-6">
+								{topicsGroup[0].topics.find(
+									(item) => item.slug === topicsGroup[0].mainTopic
+								).title}
+							</h3>
+							<div class="col-sm-6 all-materials">
+								<a href={`/topic/${topicsGroup[0].mainTopic}`}
+									>все материалы
+									<Icon name="arrow-right" />
+								</a>
+							</div>
 						</div>
 					</div>
 					{#each topicsGroup.slice(0, 3) as article}
@@ -621,6 +629,7 @@
 		align-items: baseline;
 		justify-content: space-between;
 		display: flex;
+		line-height: 1.1;
 
 		:global(.icon) {
 			display: inline-block;
@@ -631,6 +640,11 @@
 
 		a {
 			@include font-size(1.5rem);
+			white-space: nowrap;
+		}
+
+		h4 {
+			padding-right: 1em;
 		}
 	}
 
@@ -677,8 +691,12 @@
 	.floor--topics-group {
 		.all-materials {
 			align-self: baseline;
-			text-align: right;
+			margin-bottom: 1em;
 			white-space: nowrap;
+
+			@include media-breakpoint-up(sm) {
+				text-align: right;
+			}
 
 			:global(.icon) {
 				display: inline-block;
@@ -692,8 +710,7 @@
 			}
 		}
 
-		.topics-group__header {
-			display: flex;
+		.topics-group__header .row {
 			align-items: baseline;
 		}
 	}

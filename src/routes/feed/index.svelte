@@ -1,21 +1,20 @@
 <script context="module" lang="ts">
-export const prerender = true
+	export const prerender = true
 
-const shoutsOnPage = 27
-const method = 'post'
-const headers = {
-	accept: 'application/json',
-	'Content-Type': 'application/json;charset=utf-8'
-}
+	const shoutsOnPage = 27
+	const method = 'post'
+	const headers = {
+		accept: 'application/json',
+		'Content-Type': 'application/json;charset=utf-8'
+	}
 
-export const load = async ({ fetch }) => {
+	export const load = async ({ fetch }) => {
 		let props = {}
 		const r = await fetch('/feed/recents.json')
 		if (r.ok) {
 			const { recents: shouts } = await r.json()
 			return { props: { shouts } }
 		} else return { props: {} }
-		
 	}
 </script>
 
@@ -86,17 +85,17 @@ export const load = async ({ fetch }) => {
 		navTopics = [...$subscribedTopics, ...navTopics]
 		load()
 	}
-	
+
 	onMount(() => {
 		console.log(shouts)
 	})
-	
+
 	const moreShouts = async () => {
 		$loading = true
 		console.log('feed: show more shouts')
 		const p = Math.floor(shouts.length / shoutsOnPage)
-		shouts = Array.from( new Set(shouts) )
-		const r = await fetch('/feed/recents.json?page=' + String(p+1))
+		shouts = Array.from(new Set(shouts))
+		const r = await fetch('/feed/recents.json?page=' + String(p + 1))
 		if (r.ok) {
 			const { recents: newData } = await r.json()
 			shouts = Array.from(new Set([...newData, ...shouts]))
@@ -109,7 +108,6 @@ export const load = async ({ fetch }) => {
 <NavTopics slugs={new Set(navTopics)} />
 
 <div class="feed-shouts">
-
 	{#each [...Array(9).keys()] as r}
 		{#if shouts && shouts.length > 0}
 			<div class="floor" transition:fade>
@@ -125,7 +123,10 @@ export const load = async ({ fetch }) => {
 	{/each}
 	<div class="morewrap" transition:fade>
 		<div class="show-more">
-			<button class="button" type="button" on:click|preventDefault={() => moreShouts()}
+			<button
+				class="button"
+				type="button"
+				on:click|preventDefault={() => moreShouts()}
 				>{$loading ? 'Загружаем' : 'Показать еще'}</button
 			>
 		</div>

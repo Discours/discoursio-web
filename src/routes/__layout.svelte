@@ -6,7 +6,7 @@
 	export const load = async ({ fetch }) => {
 		const r = await fetch(`/topic/all.json`)
 		let topicsAll = []
-		if(r.ok) {
+		if (r.ok) {
 			const data = await r.json()
 			topicsAll = data.topicsAll || []
 		}
@@ -40,9 +40,11 @@
 		fetch(`/topic/all.json`)
 			.then((r) => r.ok && r.json())
 			.then((ttt) => {
-				if($topicslist != ttt.topicsAll) {
+				if ($topicslist != ttt.topicsAll) {
 					$topicslist = ttt.topicsAll
-					console.log(`layout: loaded ${$topicslist.length} topics with browser request`)
+					console.log(
+						`layout: loaded ${$topicslist.length} topics with browser request`
+					)
 				}
 			})
 	}
@@ -82,11 +84,14 @@
 
 <SvelteSeo
 	{...meta}
-	openGraph={{ ...meta, images: [{ url: 'https://new.discours.io/favicon.png' }] }}
+	openGraph={{
+		...meta,
+		images: [{ url: 'https://new.discours.io/favicon.png' }]
+	}}
 />
 <svelte:head>
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>
 <NavHeader />
-<slot></slot>
+<slot />
 <DiscoursFooter />

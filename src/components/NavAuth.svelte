@@ -2,8 +2,6 @@
 	import { session, token, roles, notices } from '../stores/user'
 	import { showNotices } from '../stores/app'
 	import Icon from './DiscoursIcon.svelte'
-	import Auth from './Auth.svelte'
-	import Modal from './Modal.svelte'
 	import Userpic from './Userpic.svelte'
 	import Notifications from './Notifications.svelte'
 	import { onMount } from 'svelte'
@@ -50,7 +48,6 @@
 		newNotices = $notices.filter((n) => !n.state).length
 </script>
 
-<Modal name="auth"><Auth /></Modal>
 <Notifications />
 {#if $token}
 	<div class="usercontrol col">

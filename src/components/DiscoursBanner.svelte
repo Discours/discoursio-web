@@ -3,12 +3,12 @@
 		<div class="discours-banner__content col-md-5">
 			<h3>Дискурс существует благодаря вашему участию</h3>
 			<p>
-				<a href="/help">Помочь журналу</a>
-				<a href="/help">Стать автором</a>
-				<a href="/help">Присоединиться к&nbsp;сообществу</a>
+				<a href="/about/help">Помочь журналу</a>
+				<a href="/create">Стать автором</a>
+				<a href="/auth">Присоединиться к&nbsp;сообществу</a>
 			</p>
 		</div>
-		<div class="col-md-6 offset-md-1">
+		<div class="col-md-6 offset-md-1 discours-banner__image">
 			<img src="/discours-banner.jpg" alt="Дискурс" />
 		</div>
 	</a>
@@ -19,6 +19,10 @@
 		background: #f8f8f8;
 		margin-bottom: 6.4rem;
 		padding: 0.8rem 0 0;
+
+		@include media-breakpoint-down(sm) {
+			font-size: 80%;
+		}
 
 		h3 {
 			font-size: 3.2rem;
@@ -42,11 +46,21 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		padding-left: $grid-gutter-width;
+		padding-left: 0;
+
+		@include media-breakpoint-up(sm) {
+			padding-left: $grid-gutter-width;
+		}
 
 		a {
-			margin-right: 1em;
+			display: inline-block;
+			margin: 0 1em 1em 0;
 			white-space: nowrap;
 		}
+	}
+
+	.discours-banner__image {
+		align-items: flex-end;
+		display: flex;
 	}
 </style>

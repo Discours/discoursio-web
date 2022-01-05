@@ -67,13 +67,13 @@
 		<div class="col">
 			<ul class="view-switcher">
 				<li class:selected={mode === 'views'}>
-					<a href="#views" on:click={() => mode = 'views'}>По просмотрам</a>
+					<a href="#views" on:click={() => (mode = 'views')}>По просмотрам</a>
 				</li>
 				<li class:selected={mode === 'shouts'}>
-					<a href="#shouts" on:click={() => mode = 'shouts'}>По публикациям</a>
+					<a href="#shouts" on:click={() => (mode = 'shouts')}>По публикациям</a>
 				</li>
 				<li class:selected={mode === 'alphabet'}>
-					<a href="#alphabet" on:click={() => mode = 'alphabet'}>По алфавиту</a>
+					<a href="#alphabet" on:click={() => (mode = 'alphabet')}>По алфавиту</a>
 				</li>
 			</ul>
 

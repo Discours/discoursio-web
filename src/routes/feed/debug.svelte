@@ -14,5 +14,5 @@
 
 <NavTopics slugs={topics} />
 {#key $shoutslist}
-<pre>{JSON.stringify($shoutslist, null, 2)}</pre>
+	<pre>{JSON.stringify($shoutslist, null, 2)}</pre>
 {/key}

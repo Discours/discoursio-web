@@ -32,7 +32,7 @@
 								class="button">Подписаться на тему</button
 							>
 						{/if}
-						<a href={'/create?topic=' + topic.slug}>Написать в тему</a>
+						<a href={'/create/' + topic.slug}>Написать в тему</a>
 					</div>
 					{#if topic.pic}<img src={topic.pic} alt={topic.title} />{/if}
 				{/if}

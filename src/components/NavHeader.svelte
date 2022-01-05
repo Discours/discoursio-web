@@ -5,12 +5,14 @@
 	import { openModal } from '../stores/app'
 	import { token } from '../stores/user'
 	import { onMount } from 'svelte'
+	import Auth from './Auth.svelte'
+	import Modal from './Modal.svelte'
 
 	let isBurgerHidden = true
 	const routes = [
 		{ name: 'журнал', href: '/' },
 		{ name: 'лента', href: '/feed' },
-		{ name: 'темы', href: '/topic' },
+		{ name: 'темы', href: '/topic' }
 	]
 	const toggleBurger = () => {
 		isBurgerHidden = !isBurgerHidden
@@ -21,8 +23,10 @@
 		isBurgerHidden = window.screen.width > 990
 	})
 </script>
+
 <header>
-	<div class='wide-container'>
+	<Modal name='auth'><Auth /></Modal>
+	<div class="wide-container">
 		<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
 			<div class="main-logo col-auto">
 				<a href="/">
@@ -34,24 +38,26 @@
 				class:main-navigation--open={!isBurgerHidden}
 			>
 				{#each routes as r}
-				<li class:selected={ $page.url.pathname === r.href }>
-					<a sveltekit:prefetch href={r.href}>{r.name}</a>
-				</li>
+					<li class:selected={$page.url.pathname === r.href}>
+						<a sveltekit:prefetch href={r.href}>{r.name}</a>
+					</li>
 				{/each}
 				<li class="usernav">
 					{#if $token}
 						<NavAuth />
 					{:else}
-					<div class="usercontrol col">
-						<div class="usercontrol__item loginbtn">
-							<a href={'#'} on:click|preventDefault={() => ($openModal = 'auth')}>войти</a>
+						<div class="usercontrol col">
+							<div class="usercontrol__item loginbtn">
+								<a href={'#auth'} on:click={() => ($openModal = 'auth')}
+									>войти</a>
+							</div>
 						</div>
-					</div>
 					{/if}
 				</li>
 			</ul>
 			<div class="burger-container">
-				<div transition:fade
+				<div
+					transition:fade
 					class="burger"
 					class:burger--close={!isBurgerHidden}
 					on:click={toggleBurger}
@@ -64,14 +70,13 @@
 </header>
 
 <style lang="scss">
-
 	header {
 		border-bottom: 4px solid #000;
 		margin-bottom: 2.2rem;
-	}	
+	}
 	.header__inner {
 		background: #fff;
-		flex-wrap: wrap;
+		//flex-wrap: wrap;
 		justify-content: space-between;
 	}
 
@@ -116,6 +121,15 @@
 		align-items: center;
 	}
 
+	.usernav {
+		display: inline-flex;
+		width: auto;
+
+		@include media-breakpoint-down(md) {
+			padding-left: 0;
+			padding-right: 0;
+		}
+	}
 
 	.main-navigation {
 		display: inline-flex;
@@ -124,7 +138,7 @@
 		margin: 0;
 		padding: 0;
 
-		@include media-breakpoint-down(lg) {
+		@include media-breakpoint-down(md) {
 			background: #fff;
 			bottom: 0;
 			display: none;
