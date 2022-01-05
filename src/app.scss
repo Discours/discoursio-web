@@ -78,10 +78,12 @@ h1 {
 
 h2 {
 	@include font-size(4rem);
+	margin-bottom: 0.5em;
 }
 
 h3 {
 	@include font-size(3.2rem);
+	margin-bottom: 0.5em;
 }
 
 h4 {
