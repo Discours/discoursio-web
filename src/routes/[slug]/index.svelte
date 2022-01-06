@@ -1,6 +1,6 @@
 <script context="module">
 	import subroutes from './routes.json'
-	
+
 	export const prerender = true
 
 	export const load = async ({ params, fetch }) => {
