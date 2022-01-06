@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { session, token, roles, notices } from '../stores/user'
-	import { showNotices } from '../stores/app'
+	import { onMount } from 'svelte'
 	import Icon from './DiscoursIcon.svelte'
 	import Userpic from './Userpic.svelte'
 	import Notifications from './Notifications.svelte'
-	import { onMount } from 'svelte'
-	import { messageslist } from '../stores/inbox'
 	import { client } from '$lib/client'
 	import { GET_ME, GET_ROLES } from '$lib/queries'
+	import { session, token, roles, notices } from '../stores/user'
+	import { showNotices } from '../stores/app'
+	import { messageslist } from '../stores/inbox'
 
 	// const { t } = getLocalization()
 
@@ -25,18 +25,24 @@
 
 	$: if ($token) {
 		try {
-			console.log('navauth: found auth token')
-			client.request(GET_ME).then((user) => {
-				$session = user
-				client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
-					// console.log(data)
-					$roles = data
-					console.log('navauth: my roles store updated')
-				})
-				console.log('navauth: session store updated')
+			console.log('navauth: found auth token ' + $token)
+			client.request(GET_ME).then(({ user, error }) => {
+				if (error) $notices = [{ text: error, type: 'error', ts: new Date(), state: 'new' }, ...$notices]
+				if(user) {
+					$session = user
+					client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
+						console.log(data)
+						if(data) {
+							$roles = data
+							console.log('navauth: my roles store updated')
+						}
+					})
+					console.log('navauth: session store updated')
+				}
 			})
 		} catch (e) {
 			console.error('navauth: graphql request failed')
+			$notices = [{ text: e, type: 'error', ts: new Date(), state: 'new' }, ...$notices]
 		}
 	}
 

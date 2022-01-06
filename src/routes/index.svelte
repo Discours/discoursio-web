@@ -30,6 +30,7 @@
 	import { shuffle } from '../lib/utils'
 	import { fade } from 'svelte/transition'
 	import { loading } from '../stores/app'
+	import { notices } from '../stores/user';
 
 	export let recents = []
 	export let topMonth = []
@@ -448,7 +449,10 @@
 			<div class="wide-container row">
 				<h4>Культура</h4>
 				{#each $shoutslist
-					.filter((s) => s.topics.map((t) => t.slug).includes('culture'))
+					.filter((s) => {
+						if(s.topics) s.topics.map((t) => t.slug).includes('culture')
+						else console.error(s)
+					})
 					.slice(0, 3) as article}
 					<div class="col-md-4">
 						<ShoutCard shout={article} />
