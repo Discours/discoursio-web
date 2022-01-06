@@ -1,4 +1,6 @@
 <script context="module">
+	import 'swiper/css'
+	import 'swiper/css/navigation'
 	export const load = async ({ fetch }) => {
 		let props = {}
 		const recents = await fetch('/feed/recents.json')
@@ -21,8 +23,6 @@
 	import Icon from '../components/DiscoursIcon.svelte'
 	import { Navigation } from 'swiper'
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
-	import 'swiper/css'
-	import 'swiper/css/navigation'
 	import { shouts, topics, shoutslist, subscribedAuthors } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
@@ -33,15 +33,14 @@
 	export let topMonth = []
 	export let topOverall = []
 	export let topViewed = []
-
 	let topCommented = [],
 		authorsMonth = [],
 		topicsMonth = [],
 		topicsGroup = []
 	const authorsLimit = 8
-
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
+	let favs = [], favs1 = []
 
 	$: if ($shoutslist === null) {
 		$loading = true
@@ -89,6 +88,11 @@
 			t.topics.find((topic) => topic.slug === 'culture')
 		)
 		topOverall.forEach((s) => ($shouts[s.slug] = s))
+		if (topOverall && topOverall.length > 9) {
+			favs = topOverall.slice(0, 10)
+			favs1 = topOverall.slice(10, 20)
+			// favs2 = topOverall.slice(20, 30)
+		}
 		$loading = false
 	}
 
@@ -116,19 +120,12 @@
 			$loading = false
 		}
 	}
-	let favs = [],
-		favs1 = [] // , favs2 = []
-	$: if (topOverall && topOverall.length > 9) {
-		favs = topOverall.slice(0, 10)
-		favs1 = topOverall.slice(10, 20)
-		// favs2 = topOverall.slice(20, 30)
-	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist && $shoutslist.length > 0}
 	<div class="home" transition:fade>
-		{#if recents} <NavTopics shouts={recents} />{/if}
+		{#key recents} <NavTopics shouts={recents} />{/key}
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
@@ -236,9 +233,7 @@
 					</div>
 					{#key $subscribedAuthors}
 						{#each authorsMonth.slice(0, authorsLimit) as user}
-							<div transition:fade>
-								<UserCard {user} />
-							</div>
+							<UserCard {user} />
 						{/each}
 					{/key}
 				</div>
@@ -504,7 +499,7 @@
 
 		{#each [...Array(9).keys()] as r}
 			{#if $shoutslist.length >= 27 + r * 3}
-				<div class="floor" transition:fade>
+				<div class="floor">
 					<div class="wide-container row">
 						{#each $shoutslist.slice(27 + r * 3, 30 + r * 3) as article}
 							<div class="col-md-4" transition:fade>
@@ -516,7 +511,7 @@
 			{/if}
 		{/each}
 
-		<div class="morewrap" transition:fade>
+		<div class="morewrap">
 			<div class="show-more">
 				<button class="button" type="button" on:click={moreShouts}
 					>{$loading ? 'Загружаем' : 'Показать еще'}</button

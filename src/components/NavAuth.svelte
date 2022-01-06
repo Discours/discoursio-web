@@ -17,6 +17,7 @@
 
 	onMount(() => {
 		res = window.location.pathname
+		console.log('navauth: mounting on ' + res)
 		if (document.cookie.replace('token=', '') !== document.cookie) {
 			$token = document.cookie.split('token=')[1].split(';')[0]
 		} else console.log('navauth: not logged in')

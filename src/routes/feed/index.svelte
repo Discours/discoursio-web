@@ -86,40 +86,40 @@
 </script>
 
 <section class='feed' transition:fade>
-{#if shouts} <NavTopics {shouts} />{/if}
+	{#if shouts} <NavTopics {shouts} />{/if}
 
-<div class="feed-shouts">
-	{#each [...Array(9).keys()] as r}
-		{#if shouts && shouts.length > 0}
-			<div class="floor" transition:fade>
-				<div class="wide-container row">
-					{#each shouts.slice(r * 3, (r + 1) * 3) as shout}
-						<div class="col-md-4" >
-							<ShoutCard {shout} />
-						</div>
-					{/each}
+	<div class="feed-shouts">
+		{#each [...Array(9).keys()] as r}
+			{#if shouts && shouts.length > 0}
+				<div class="floor" transition:fade>
+					<div class="wide-container row">
+						{#each shouts.slice(r * 3, (r + 1) * 3) as shout}
+							<div class="col-md-4" >
+								<ShoutCard {shout} />
+							</div>
+						{/each}
+					</div>
 				</div>
+			{/if}
+		{/each}
+		<div class="morewrap">
+			<div class="show-more">
+				<button
+					class="button"
+					type="button"
+					on:click|preventDefault={() => moreShouts()}
+					>{$loading ? 'Загружаем' : 'Показать еще'}</button
+				>
 			</div>
-		{/if}
-	{/each}
-	<div class="morewrap">
-		<div class="show-more">
-			<button
-				class="button"
-				type="button"
-				on:click|preventDefault={() => moreShouts()}
-				>{$loading ? 'Загружаем' : 'Показать еще'}</button
-			>
 		</div>
 	</div>
-</div>
-<div class="feed-authors" transition:fade>
-	{#key $subscribedAuthors}
-		{#if $users && authors}
-			{#each authors as user}
-				<UserCard {user} />
-			{/each}
-		{/if}
-	{/key}
-</div>
+	<div class="feed-authors" transition:fade>
+		{#key $subscribedAuthors}
+			{#if $users && authors}
+				{#each authors as user}
+					<UserCard {user} />
+				{/each}
+			{/if}
+		{/key}
+	</div>
 </section>

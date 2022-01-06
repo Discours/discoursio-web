@@ -11,7 +11,7 @@ export async function get({ params }) {
 		session.set(user)
 		window.close()
 		return {
-			headers: { 'Set-Cookie': 'token=' + got },
+			headers: { 'Set-Cookie': 'token=' + got + '; path=/' },
 			body: { ok: true }
 		}
 	} else {

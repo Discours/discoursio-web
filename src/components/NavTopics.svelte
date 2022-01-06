@@ -7,21 +7,16 @@ import { filterTopic, subscribedTopics, topics, topicslist } from '../stores/zin
 export let shouts: Shout[]
 let slugs: Set<string> = new Set([])
 let navTopics: string[] = []
-let needUpdate: boolean = false
+let mounted: boolean = false
 const topicsAmount = 9
 const getTitle = (slug: string) => slug && $topics[slug] ? $topics[slug].title : slug || 'ошибка'
-$: if(needUpdate) {
-	console.log('navtopic: updating...')
+$: if(mounted && slugs.size === 0 && $topicslist) {
 	shouts.forEach((s) => s.topics.forEach((t) => slugs.add(t.slug)))
+	$subscribedTopics.forEach(t => slugs.add(t))
 	navTopics = shuffle(Array.from(slugs)).slice(0, topicsAmount)
 	console.log(`navtopics: ${topicsAmount.toString()}/${slugs.size.toString()} topics`)
 }
-$: if($subscribedTopics) {
-	$subscribedTopics.forEach(t => slugs.add(t))
-	needUpdate = true
-} 
-$: if($topicslist) needUpdate = true
-onMount(() => needUpdate = true)
+onMount(() => mounted = true)
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
