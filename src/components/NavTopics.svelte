@@ -1,13 +1,33 @@
 <script lang="ts">
-	import { filterTopic, topics } from '../stores/zine'
-	export let slugs: Set<string>
-	const getTitle = (slug: string) => $topics[slug].title
+import type { Shout } from '$lib/codegen'
+import { shuffle } from '$lib/utils'
+import { onMount } from 'svelte'
+import { filterTopic, subscribedTopics, topics, topicslist } from '../stores/zine'
+
+export let shouts: Shout[]
+let slugs: Set<string> = new Set([])
+let navTopics: string[] = []
+let needUpdate: boolean = false
+const topicsAmount = 9
+const getTitle = (slug: string) => slug && $topics[slug] ? $topics[slug].title : slug || 'ошибка'
+$: if(needUpdate) {
+	console.log('navtopic: updating...')
+	shouts.forEach((s) => s.topics.forEach((t) => slugs.add(t.slug)))
+	navTopics = shuffle(Array.from(slugs)).slice(0, topicsAmount)
+	console.log(`navtopics: ${topicsAmount.toString()}/${slugs.size.toString()} topics`)
+}
+$: if($subscribedTopics) {
+	$subscribedTopics.forEach(t => slugs.add(t))
+	needUpdate = true
+} 
+$: if($topicslist) needUpdate = true
+onMount(() => needUpdate = true)
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
 	<ul class="topics">
-		{#if Object.keys($topics).length > 0}
-			{#each Array.from(slugs) as slug}
+		{#if navTopics}
+			{#each navTopics as slug}
 				<li class="item" class:selected={$filterTopic === slug}>
 					<a href={'/topic/' + slug} on:click={() => ($filterTopic = slug || '')}>
 						<span class:transparent={$filterTopic !== slug}>#{getTitle(slug)}</span>

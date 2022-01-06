@@ -27,6 +27,7 @@
 <header>
 	<Modal name='auth'><Auth /></Modal>
 	<div class="wide-container">
+		{#key isBurgerHidden}
 		<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
 			<div class="main-logo col-auto">
 				<a href="/">
@@ -66,6 +67,7 @@
 				</div>
 			</div>
 		</nav>
+		{/key}
 	</div>
 </header>
 

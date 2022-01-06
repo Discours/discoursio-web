@@ -97,6 +97,7 @@
 				{/each}
 			{:else}
 				<div class="stats">
+				{#if topics}
 					{#each topics as topic}
 						<TopicCard
 							{topic}
@@ -104,6 +105,7 @@
 							subscribed={$subscribedTopics && $subscribedTopics.includes(topic.slug)}
 						/>
 					{/each}
+				{/if}
 				</div>
 			{/if}
 		</div>

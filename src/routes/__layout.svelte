@@ -30,6 +30,7 @@
 	import { loading } from '../stores/app'
 	import { browser } from '$app/env'
 	import SvelteSeo from 'svelte-seo'
+	import { page } from '$app/stores'
 	// import 'virtual:windi.css'
 	// import { initLocalizationContext } from '../i18n/index'
 	// initLocalizationContext()
@@ -93,5 +94,5 @@
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>
 <NavHeader />
-<slot />
+{#key $page.url}<slot></slot>{/key}
 <DiscoursFooter />

@@ -12,7 +12,7 @@
 
 <svelte:head><title>Дискурс : Лента</title></svelte:head>
 
-<NavTopics slugs={topics} />
+<NavTopics shouts={$shoutslist} />
 {#key $shoutslist}
 	<pre>{JSON.stringify($shoutslist, null, 2)}</pre>
 {/key}

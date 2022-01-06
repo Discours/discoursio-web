@@ -9,7 +9,6 @@
 	}
 
 	export const load = async ({ fetch }) => {
-		let props = {}
 		const r = await fetch('/feed/recents.json')
 		if (r.ok) {
 			const { recents: shouts } = await r.json()
@@ -29,16 +28,13 @@
 	import ShoutCard from '../../components/ShoutCard.svelte'
 	import UserCard from '../../components/UserCard.svelte'
 	import type { Shout, User } from '$lib/codegen'
-	import { onMount } from 'svelte'
 	import { loading } from '../../stores/app'
+	import { onMount } from 'svelte'
 
-	export let authors: User[] = []
-	export let shouts: Shout[] = []
+	export let authors: User[] | null = []
+	export let shouts: Shout[]
 
-	const load = async () => {
-		$loading = true
-		console.log('feed: loading subscriptions')
-		if ($subscribedAuthors) {
+	$: if ($subscribedAuthors && authors === null) (async () => {
 			const aq = await fetch(`/feed/authors.json`, {
 				method,
 				headers,
@@ -50,13 +46,16 @@
 				if (data.authors) authors = data.authors
 				console.log(data)
 			}
-		}
-		if ($subscribedTopics) {
+		})()
+
+	$: if($subscribedAuthors && authors) authors = authors.filter((a) => $subscribedAuthors.includes(a.slug))
+
+	$: if ($subscribedTopics) {
 			$subscribedTopics.forEach(async (topic) => {
 				const tq = await fetch(`/feed/by-topic.json`, {
 					method,
 					headers,
-					body: JSON.stringify(topic)
+					body: await JSON.stringify(topic)
 				})
 				if (tq.ok) {
 					const data = await tq.json()
@@ -65,29 +64,10 @@
 				}
 			})
 		}
-		$loading = false
-	}
-
-	let navTopics
-	$: if (authors && authors.length) {
-		authors = authors
-			.filter((a) => $subscribedAuthors.includes(a.slug))
-			.sort((a, b) => a.username.charCodeAt(0) - b.username.charCodeAt(0))
-		console.log('feed: authors filtered and sorted by username')
-	}
-
-	$: if ($subscribedTopics && shouts && navTopics == []) {
-		shouts = shouts.sort(
-			(a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-		)
-		console.log('feed: shouts sorted by created timestamp')
-		shouts.forEach((s) => s.topics.forEach((t) => navTopics.push(t)))
-		navTopics = [...$subscribedTopics, ...navTopics]
-		load()
-	}
 
 	onMount(() => {
-		console.log(shouts)
+		if(!shouts) authors = null // triggs update
+		else shouts.forEach(s => s.authors.forEach(a => authors.push(a)))
 	})
 
 	const moreShouts = async () => {
@@ -97,15 +77,16 @@
 		shouts = Array.from(new Set(shouts))
 		const r = await fetch('/feed/recents.json?page=' + String(p + 1))
 		if (r.ok) {
-			const { recents: newData } = await r.json()
-			shouts = Array.from(new Set([...newData, ...shouts]))
-			console.debug(`feed: total ${newData.length.toString()} shouts loaded`)
+			const { recents: update } = await r.json()
+			shouts = Array.from(new Set([...update, ...shouts]))
+			console.debug(`feed: total ${update.length.toString()} shouts loaded`)
 			$loading = false
 		}
 	}
 </script>
 
-<NavTopics slugs={new Set(navTopics)} />
+<section class='feed' transition:fade>
+{#if shouts} <NavTopics {shouts} />{/if}
 
 <div class="feed-shouts">
 	{#each [...Array(9).keys()] as r}
@@ -113,7 +94,7 @@
 			<div class="floor" transition:fade>
 				<div class="wide-container row">
 					{#each shouts.slice(r * 3, (r + 1) * 3) as shout}
-						<div class="col-md-4" transition:fade>
+						<div class="col-md-4" >
 							<ShoutCard {shout} />
 						</div>
 					{/each}
@@ -121,7 +102,7 @@
 			</div>
 		{/if}
 	{/each}
-	<div class="morewrap" transition:fade>
+	<div class="morewrap">
 		<div class="show-more">
 			<button
 				class="button"
@@ -132,7 +113,7 @@
 		</div>
 	</div>
 </div>
-<div class="feed-authors">
+<div class="feed-authors" transition:fade>
 	{#key $subscribedAuthors}
 		{#if $users && authors}
 			{#each authors as user}
@@ -141,3 +122,4 @@
 		{/if}
 	{/key}
 </div>
+</section>

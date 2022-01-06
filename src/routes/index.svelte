@@ -26,24 +26,18 @@
 	import { shouts, topics, shoutslist, subscribedAuthors } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
-	// import { onMount } from 'svelte'
-	import { shuffle } from '$lib/utils'
 	import { fade } from 'svelte/transition'
 	import { loading } from '../stores/app'
-	import { notices } from '../stores/user';
 
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
 	export let topViewed = []
 
-	let showedTopics = []
 	let topCommented = [],
 		authorsMonth = [],
 		topicsMonth = [],
-		moreTimes = 0,
 		topicsGroup = []
-	const topicsAmount = 9
 	const authorsLimit = 8
 
 	let tslugs: Set<string> = new Set([])
@@ -83,11 +77,6 @@
 			})
 			$shouts[s.slug] = s
 		})
-		// shows 9 random of top month topics
-		showedTopics = shuffle(Array.from(tslugs)).slice(0, topicsAmount)
-		console.log(
-			`mainpage: showing ${topicsAmount.toString()}/${tslugs.size.toString()} topics`
-		)
 		// top month topics sorted by authors amount
 		topicsMonth = topicsMonth.sort(
 			(a, b) => b.topicStat.authors - a.topicStat.authors
@@ -123,7 +112,7 @@
 				'mainpage: ' + newData.length.toString() + ' more shouts loaded'
 			)
 			$shoutslist = Array.from(new Set([...newData, ...$shoutslist]))
-			moreTimes += 1
+			// moreTimes += 1
 			$loading = false
 		}
 	}
@@ -139,7 +128,7 @@
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
 {#if $shoutslist && $shoutslist.length > 0}
 	<div class="home" transition:fade>
-		{#if tslugs} <NavTopics slugs={new Set(showedTopics)} />{/if}
+		{#if recents} <NavTopics shouts={recents} />{/if}
 
 		<div class="floor floor--1">
 			<div class="wide-container row">
