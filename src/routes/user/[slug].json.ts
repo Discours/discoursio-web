@@ -1,5 +1,5 @@
-import { client } from '../../lib/client'
-import { GET_AUTHOR, SHOUTS_BY_AUTHOR, GET_ROLES } from '../../lib/queries'
+import { client } from '$lib/client'
+import { GET_AUTHOR, SHOUTS_BY_AUTHOR, GET_ROLES } from '$lib/queries'
 
 export const get = async ({ params }) => {
 	try {

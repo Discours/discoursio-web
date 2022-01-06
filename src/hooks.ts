@@ -23,9 +23,8 @@ const minification_options = {
 
 export async function handle({ request, resolve }) {
 	const cookies: { [key: string]: string } = {}
-	request.headers?.cookie
-		?.split('=')
-		.forEach((c) => (cookies[c[0]] = c[1].split(';')[0]))
+	const rhc = request.headers && request.headers.cookie
+	if(rhc) rhc.split('=').forEach((c) => (cookies[c[0]] = c[1].split(';')[0]))
 	const subscriptions = {}
 	Object.entries(cookies).forEach(async ([what, value]) => {
 		if (value in subnames) subscriptions[what] = await JSON.parse(String(value))

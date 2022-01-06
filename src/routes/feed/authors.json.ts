@@ -1,5 +1,5 @@
-import { client } from '../../lib/client'
-import { AUTHORS_BY_SLUGS, SHOUTS_BY_AUTHOR } from '../../lib/queries'
+import { client } from '$lib/client'
+import { AUTHORS_BY_SLUGS, SHOUTS_BY_AUTHOR } from '$lib/queries'
 
 export const post = async ({ params }) => {
 	let shouts, authors

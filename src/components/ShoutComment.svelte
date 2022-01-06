@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Comment } from '../lib/codegen'
+	import type { Comment } from '$lib/codegen'
 	import UserCard from './UserCard.svelte'
 	// import { authors } from '../stores/zine'
 	import MD from './MD.svelte'

@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-	import type { Community, Shout, User } from '../../lib/codegen'
+	import type { Community, Shout, User } from '$lib/codegen'
 	export const prerender = true
 
 	interface CommunityProps {

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { User } from '../lib/codegen'
+	import type { User } from '$lib/codegen'
 	import Userpic from './Userpic.svelte'
-	import { subscribe, unsubscribe } from '../lib/cookie'
+	import { subscribe, unsubscribe } from '$lib/cookie'
 	import Icon from './DiscoursIcon.svelte'
 	import { subscribedAuthors } from '../stores/zine'
 

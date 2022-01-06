@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import type { Topic } from '../../lib/codegen'
+	import type { Topic } from '$lib/codegen'
 	import TopicCard from '../../components/TopicCard.svelte'
 	import { topicslist, subscribedTopics } from '../../stores/zine'
 

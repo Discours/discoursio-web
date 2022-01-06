@@ -1,6 +1,6 @@
 import type { Writable } from 'svelte/store'
 import { writable } from 'svelte/store'
-import type { User } from '../lib/codegen'
+import type { User } from '$lib/codegen'
 
 // counted UI-related role states
 export enum AS {

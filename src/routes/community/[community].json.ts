@@ -1,5 +1,5 @@
-import { client } from '../../lib/client'
-import { GET_COMMUNITIES, SHOUTS_BY_COMMUNITY } from '../../lib/queries'
+import { client } from '$lib/client'
+import { GET_COMMUNITIES, SHOUTS_BY_COMMUNITY } from '$lib/queries'
 
 export const get = async ({ params }) => {
 	try {

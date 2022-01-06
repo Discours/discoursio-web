@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import { SIGN_IN, SIGN_UP } from '../lib/queries'
-	import { client } from '../lib/client'
+	import { SIGN_IN, SIGN_UP } from '$lib/queries'
+	import { client } from '$lib/client'
 	import Icon from './DiscoursIcon.svelte'
 	import { session, token as tokenStore } from '../stores/user'
 	import { openModal } from '../stores/app'
 	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
-	import { API_ENDPOINT } from '../lib/client'
+	import { API_ENDPOINT } from '$lib/client'
 	import { goto } from '$app/navigation'
 	const prefix = 'Ошибка сервера: '
 

@@ -27,7 +27,7 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	// import { onMount } from 'svelte'
-	import { shuffle } from '../lib/utils'
+	import { shuffle } from '$lib/utils'
 	import { fade } from 'svelte/transition'
 	import { loading } from '../stores/app'
 	import { notices } from '../stores/user';

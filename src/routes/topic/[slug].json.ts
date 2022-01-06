@@ -1,5 +1,5 @@
-import { client } from '../../lib/client'
-import { SHOUTS_BY_TOPIC } from '../../lib/queries'
+import { client } from '$lib/client'
+import { SHOUTS_BY_TOPIC } from '$lib/queries'
 
 export const get = async ({ params }) => {
 	try {

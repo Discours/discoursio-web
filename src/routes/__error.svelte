@@ -1,21 +1,12 @@
 <script lang="ts">
-import { goto } from "$app/navigation";
-let searchReady = false
-let waitingFrom = Date.now()
+import { goto } from "$app/navigation"
 let q = ''
-const hold = () => {
-  if(q.length < 4) return
-  else {
-    if((Date.now() - waitingFrom) > 3000) searchReady = true // let 3 seconds thinking
-    else return
-  }
-}
-const inputHandler = (ev) => {
-  console.log(ev)
-  hold()
-}
 const keyHandler = (ev) => {
-  if(ev.key === 'Enter') searchReady = true
+  // FIXME: can be better
+  if(ev.key === 'Enter') {
+    ev.preventDefault()
+    goto('/search?q='+q)
+  }
 }
 </script>
 
@@ -34,13 +25,9 @@ const keyHandler = (ev) => {
             </div>
             <div class="col-sm-4">
               <div class="error-explain">
-                <p class="text-left">Вы попали на несуществующую страницу.
-                  {#if searchReady}
-                  <input class='qin' type="text" placeholder="найти&nbsp;по-другому" value={q} name='q' on:change={inputHandler} on:keypress={keyHandler}/>
-                  <a class='search-btn' href={`/search?q=${q}`}><img src='/icons/search.svg' alt='search' /></a>
-                  {:else}
-                  Попробуйте&nbsp<input class='qin' type="text" placeholder="найти&nbsp;по-другому" value={q} name='q' on:change={inputHandler} on:keypress={keyHandler}/>
-                  {/if}
+                <p class="text-left">
+                  Вы попали на несуществующую страницу. Попробуйте&nbsp
+                  <input class='qin' type="text" placeholder="найти&nbsp;по-другому" value={q} name='q' on:keypress={keyHandler}/>
                   или <a href="/">вернуться</a> на главную.
                 </p>
               </div>
@@ -55,12 +42,5 @@ const keyHandler = (ev) => {
   .qin {
     font-size: large;
     text-align: center;
-  }
-  .search-btn {
-    text-decoration: none;
-    font-size: medium;
-    border: 0; outline: 0;
-    height: 46px;
-    box-shadow: 0 0 2px 1px;
   }
 </style>

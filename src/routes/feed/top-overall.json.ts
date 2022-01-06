@@ -1,5 +1,5 @@
-import { client } from '../../lib/client'
-import { TOP_OVERALL } from '../../lib/queries'
+import { client } from '$lib/client'
+import { TOP_OVERALL } from '$lib/queries'
 
 export const get = async () => {
 	try {
