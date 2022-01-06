@@ -5,10 +5,14 @@ export const get = async ({ params }) => {
 	try {
 		const { slug: topic } = params
 		if (topic in ['all', 'author']) return
-		const { shoutsByTopic: shouts } = await client.request(SHOUTS_BY_TOPIC, {
+		const { shoutsByTopic: shouts, errors } = await client.request(SHOUTS_BY_TOPIC, {
 			topic,
 			limit: 27
 		})
+		if (errors) {
+			errors.forEach(console.error)
+			throw 'Error'
+		}
 		const authors = {}
 		shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))
 		const body = { shouts, authors }

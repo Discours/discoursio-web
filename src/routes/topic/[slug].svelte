@@ -62,7 +62,7 @@
 	const moreShouts = async () => {
 		moreLoading = true
 		console.log('topicpage: show more shouts')
-		const p = Math.floor(Object.values(shouts).length / 27)
+		const p = Math.floor((Object.keys(shouts).length - 27 )/ 27) 
 		const r = await fetch(`/topic/${slug}.json?page=${p}`)
 		if (r.ok) {
 			const { shouts: newData } = await r.json()
