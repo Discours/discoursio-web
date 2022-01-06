@@ -94,7 +94,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"dayjs": "^1.10.7",
 		"swiper": "^7.4.1"
 	}
 }

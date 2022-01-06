@@ -1,7 +1,7 @@
 <script context="module">
-	import dayjs from 'dayjs/esm'
+	// import dayjs from 'dayjs/esm'
 	// import relativeTime from 'dayjs/esm/plugin/relativeTime'
-	dayjs().format()
+	// dayjs().format()
 
 	export const load = async ({ fetch }) => {
 		const r = await fetch(`/topic/all.json`)
