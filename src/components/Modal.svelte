@@ -80,8 +80,17 @@
 	}
 
 	.modalwrap__inner {
+		background: #fff;
 		max-width: 1000px;
 		position: relative;
 		width: 80%;
+	}
+
+	.modalwrap__content {
+		padding: $container-padding-x;
+
+		@include media-breakpoint-up(lg) {
+			padding: 10rem 6rem;
+		}
 	}
 </style>

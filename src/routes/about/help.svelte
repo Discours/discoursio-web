@@ -112,18 +112,34 @@
 	openGraph={{ ...meta, images: [{ url: '/images/donate.jpg' }] }}
 />
 <LibLoader src="https://checkout.cloudpayments.ru/checkout.js" />
-<article class="container">
+<article class="container discours-help">
 	<Modal name="donate">
-		{#key widget}
-		<form autocomplete="off" bind:this={container}>
-			<input type="text" data-cp="cardNumber" />
-			<input type="text" data-cp="expDateMonth" />
-			<input type="text" data-cp="expDateYear" />
-			<input type="text" data-cp="cvv" />
-			<input type="text" data-cp="name" />
-			<button type="submit" on:click|preventDefault={submitCard}>Оплатить {amount} р.</button>
-		</form>
-		{/key}
+		<div class="row modalwrap__content">
+			<form class="payment-form" autocomplete="off" bind:this={container}>
+				<input type="text" placeholder="Номер карты" data-cp="cardNumber"/>
+				<div class="row">
+					<div class="col-7">
+						<div class="row">
+							<div class="col-6 delimiter-container">
+								<input type="text" placeholder="ММ" data-cp="expDateMonth" maxlength="2"/>
+								<span class="delimiter">/</span>
+							</div>
+							<div class="col-6">
+								<input type="text" placeholder="ГГ" data-cp="expDateYear" maxlength="2"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-5">
+						<input type="text" placeholder="CVV/CVC" data-cp="cvv" maxlength="3"/>
+					</div>
+				</div>
+				<input type="text" placeholder="Имя держателя карты" data-cp="name"/>
+				<button class="button" type="submit"
+								on:click|preventDefault={submitCard}>
+					{ interval === once ? 'Единоразово' : 'Ежемесячно'} {amount} р.
+				</button>
+			</form>
+		</div>
 	</Modal>
 	<div class="row">
 		<div class="col-md-8 offset-md-2">
@@ -214,7 +230,7 @@
 						</div>
 
 						<div class="form-group">
-							<a href='#donate' class="btn send-btn donate" on:click={() => showCardForm()}
+							<a href="#donate" class="btn send-btn donate" on:click={() => showCardForm()}
 								>Помочь журналу</a
 							>
 						</div>
@@ -311,19 +327,19 @@
 </article>
 
 <style lang="scss">
-	:global(input),
-	:global(label),
-	.btn {
+	.donate-form :global(input),
+	.donate-form :global(label),
+	.donate-form .btn {
 		font-family: 'Muller', Arial, Helvetica, sans-serif;
 		border: solid 1px #595959;
 		border-radius: 3px;
 		font-size: 16px;
 		height: 39px;
-		line-height: 1.5;
+		line-height: 1.8;
 		text-align: center;
 	}
 
-	:global(input) {
+	.donate-form input {
 		&::-webkit-outer-spin-button,
 		&::-webkit-inner-spin-button {
 			-webkit-appearance: none;
@@ -431,14 +447,15 @@
 	}
 
 	.send-btn {
-		font-weight: 700;
-		color: #fff;
 		border: 1px solid #000;
 		background-color: #000;
-		line-height: 1;
+		color: #fff;
+		display: block;
+		font-weight: 700;
+		line-height: 1.8;
 		letter-spacing: 0.05em;
-		width: 100%;
 		text-transform: uppercase;
+		width: 100%;
 	}
 
 	.payment-choose {
@@ -447,5 +464,41 @@
 
 	.form-group:not(:first-child) {
 		margin-top: 20px;
+	}
+
+	.modalwrap__content {
+		background: #fff;
+		padding: 3em $container-padding-x $container-padding-x;
+
+		@include media-breakpoint-up(lg) {
+			padding: 10rem 6rem;
+		}
+	}
+
+	.discours-help :global(.modalwrap__inner) {
+		max-width: 500px;
+	}
+
+	.payment-form {
+		padding: 0 !important;
+
+		.button {
+			display: block;
+			padding-bottom: 1.5rem;
+			padding-top: 1.5rem;
+			width: 100%;
+		}
+	}
+
+	.delimiter-container {
+		position: relative;
+	}
+
+	.delimiter {
+		left: 100%;
+		line-height: 1;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, calc(-50% - 0.8rem));
 	}
 </style>

@@ -385,17 +385,6 @@
 		width: 100%;
 	}
 
-	input[type='text'],
-	input[type='password'] {
-		border: 2px solid #e8e8e8;
-		border-radius: 2px;
-		display: block;
-		font-family: 'Muller', Arial, Helvetica, sans-serif;
-		margin-bottom: 1.6rem;
-		padding: 1.5rem 1.2rem;
-		width: 100%;
-	}
-
 	.social-provider {
 		border-bottom: 1px solid #141414;
 		border-top: 1px solid #141414;
