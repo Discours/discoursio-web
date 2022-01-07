@@ -111,7 +111,7 @@
 	{...meta}
 	openGraph={{ ...meta, images: [{ url: '/images/donate.jpg' }] }}
 />
-<LibLoader src="https://checkout.cloudpayments.ru/checkout.js" />
+<LibLoader src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" />
 <article class="container discours-help">
 	<Modal name="donate">
 		<div class="row modalwrap__content">
