@@ -1,10 +1,13 @@
 import { client } from '$lib/client'
 import { TOP_MONTH } from '$lib/queries'
 
-export const get = async () => {
+export const get = async ({ params }) => {
+	const { page, size } = params
 	try {
-		const { topMonth } = await client.request(TOP_MONTH, { page: 0, size: 100 })
-
+		const { topMonth } = await client.request(TOP_MONTH, {
+			page: page || 0,
+			size: size || 10
+		})
 		return {
 			status: 200,
 			body: { topMonth }

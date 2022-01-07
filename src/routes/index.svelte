@@ -27,7 +27,7 @@
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { fade } from 'svelte/transition'
-	import { loading } from '../stores/app'
+	import { loading, openModal } from '../stores/app'
 	import ShoutFeed from '../components/ShoutFeed.svelte'
 
 	export let recents = []
@@ -148,7 +148,7 @@
 						>
 					</p>
 					<div class="about-discours__actions">
-						<a class="button" href="/auth">присоединитьсяк&nbsp;сообществу</a>
+						<a class="button" href="#auth" on:click={() => $openModal = 'auth'}>присоединитьсяк&nbsp;сообществу</a>
 						<a class="button" href="/create">стать&nbsp;автором</a>
 						<a class="button" href="/about/manifest">о&nbsp;проекте</a>
 						<a class="button" href="/about/help">поддержать&nbsp;платформу</a>

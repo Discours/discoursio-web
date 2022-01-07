@@ -87,7 +87,7 @@
 	{...meta}
 	openGraph={{
 		...meta,
-		images: [{ url: 'https://new.discours.io/favicon.png' }]
+		images: [{ url: 'https://new.discours.io/logo.png' }]
 	}}
 />
 <svelte:head>

@@ -1,10 +1,13 @@
 import { client } from '$lib/client'
 import { TOP_VIEWED } from '$lib/queries'
 
-export const get = async () => {
+export const get = async ({ params }) => {
+	const { page, size } = params
 	try {
-		const { topViewed } = await client.request(TOP_VIEWED, { page: 0, size: 10 })
-
+		const { topViewed } = await client.request(TOP_VIEWED, {
+			page: page || 0,
+			size: size || 10
+		})
 		return {
 			status: 200,
 			body: { topViewed }

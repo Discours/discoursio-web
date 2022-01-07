@@ -3,7 +3,6 @@
 	import 'swiper/css/navigation'
 	export const prerender = true
 
-	const shoutsOnPage = 27
 	const method = 'post'
 	const headers = {
 		accept: 'application/json',
@@ -38,13 +37,9 @@
 	export let recents: Shout[]
 	let topCommented
 
-	$: if ($subscribedAuthors)
+	$: if ($subscribedAuthors && $subscribedAuthors.length > 0) {
 		(async () => {
-			const aq = await fetch(`/feed/authors.json`, {
-				method,
-				headers,
-				body: JSON.stringify({ authors: $subscribedAuthors })
-			})
+			const aq = await fetch(`/feed/by-authors.json?authors=${await JSON.stringify($subscribedAuthors)}`)
 			if (aq.ok) {
 				const data = await aq.json()
 				if (data.shouts) $shoutslist = [...data.shouts, ...$shoutslist]
@@ -52,21 +47,18 @@
 				console.log(data)
 			}
 		})()
+	}
 
-	$: if ($subscribedTopics) {
+	$: if ($subscribedTopics && $subscribedTopics.length > 0) {
 		// NOTE: $topicslist should be preloaded by layout
-		$subscribedTopics.forEach(async (topic) => {
-			const tq = await fetch(`/feed/by-topic.json`, {
-				method,
-				headers,
-				body: await JSON.stringify(topic)
-			})
+		(async () => {
+			const tq = await fetch(`/feed/by-topics.json?topics=${await JSON.stringify($subscribedTopics)}`)
 			if (tq.ok) {
 				const data = await tq.json()
 				if (data.authors) $authorslist = [...data.authors, ...$authorslist]
 				if (data.shouts) $shoutslist = [...data.shouts, ...$shoutslist]
 			}
-		})
+		})()
 	}
 
 	$: if ($shoutslist === null) {
