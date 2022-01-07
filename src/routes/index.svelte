@@ -28,6 +28,7 @@
 	import NavTopics from '../components/NavTopics.svelte'
 	import { fade } from 'svelte/transition'
 	import { loading } from '../stores/app'
+	import ShoutFeed from '../components/ShoutFeed.svelte'
 
 	export let recents = []
 	export let topMonth = []
@@ -99,28 +100,6 @@
 
 	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
 
-	const moreShouts = async () => {
-		$loading = true
-		console.log('mainpage: show more shouts')
-		const p = Math.floor($shoutslist.length / 27)
-		$shoutslist = Array.from(
-			new Set([
-				...$shoutslist,
-				...topOverall.slice(4, topOverall.length),
-				topViewed.slice(4, topViewed.length)
-			])
-		)
-		const r = await fetch('/feed/recents.json?page=' + p)
-		if (r.ok) {
-			const { recents: newData } = await r.json()
-			console.debug(
-				'mainpage: ' + newData.length.toString() + ' more shouts loaded'
-			)
-			$shoutslist = Array.from(new Set([...newData, ...$shoutslist]))
-			// moreTimes += 1
-			$loading = false
-		}
-	}
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -497,40 +476,11 @@
 				</div>
 			</div>
 		</div>
-
-		{#each [...Array(9).keys()] as r}
-			{#if $shoutslist.length >= 27 + r * 3}
-				<div class="floor">
-					<div class="wide-container row">
-						{#each $shoutslist.slice(27 + r * 3, 30 + r * 3) as article}
-							<div class="col-md-4" transition:fade>
-								<ShoutCard shout={article} />
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/if}
-		{/each}
-
-		<div class="morewrap">
-			<div class="show-more">
-				<button class="button" type="button" on:click={moreShouts}
-					>{$loading ? 'Загружаем' : 'Показать еще'}</button
-				>
-			</div>
-		</div>
+		<ShoutFeed start={27} />
 	</div>
 {/if}
 
 <style lang="scss">
-	.morewrap {
-		flex: 1 58.3333%;
-	}
-	.show-more {
-		margin-bottom: 6.4rem;
-		text-align: center;
-	}
-
 	.about-discours {
 		background: #000;
 		color: #fff;

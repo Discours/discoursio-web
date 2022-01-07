@@ -30,10 +30,10 @@
 		topicslist // Topic[]
 	} from '../../stores/zine'
 	import { fade } from 'svelte/transition'
-	import ShoutCard from '../../components/ShoutCard.svelte'
 	import UserCard from '../../components/UserCard.svelte'
 	import type { Shout } from '$lib/codegen'
 	import { loading } from '../../stores/app'
+	import ShoutFeed from '../../components/ShoutFeed.svelte'
 
 	export let recents: Shout[]
 	let topCommented
@@ -100,42 +100,10 @@
 		)
 	}
 
-	const moreShouts = () => {}
 </script>
 
 <section class="feed" transition:fade>
 	{#if $shoutslist} <NavTopics shouts={$shoutslist} />{/if}
 
-	<div class="feed-shouts">
-		{#each [...Array(9).keys()] as r}
-			{#if $shoutslist}
-				<div class="floor" transition:fade>
-					<div class="wide-container row">
-						{#each $shoutslist.slice(r * 3, (r + 1) * 3) as shout}
-							<div class="col-md-4">
-								<ShoutCard {shout} />
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/if}
-		{/each}
-		<div class="morewrap">
-			<div class="show-more">
-				<button
-					class="button"
-					type="button"
-					on:click|preventDefault={() => moreShouts()}
-					>{$loading ? 'Загружаем' : 'Показать еще'}</button
-				>
-			</div>
-		</div>
-	</div>
-	<div class="feed-authors" transition:fade>
-		{#key $subscribedAuthors}
-			{#each $authorslist as user}
-				<UserCard {user} />
-			{/each}
-		{/key}
-	</div>
+	<ShoutFeed start={0} />
 </section>
