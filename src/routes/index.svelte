@@ -407,6 +407,16 @@
 
 		<DiscoursBanner />
 
+		<div class="floor">
+			<div class="wide-container row">
+				{#each $shoutslist.slice(26, 28) as article}
+					<div class="col-md-6">
+						<ShoutCard shout={article} />
+					</div>
+				{/each}
+			</div>
+		</div>
+
 		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
