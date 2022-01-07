@@ -14,7 +14,10 @@ const routesDir = './src/routes'
 const p = (f) => new URL(f, import.meta.url)
 const onlyDir = (f) => statSync(p(routesDir + '/' + f)).isDirectory()
 
-writeFileSync(p(routesDir + '/[slug]/routes.json'), JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir), null, 2))
+writeFileSync(
+	p(routesDir + '/[slug]/routes.json'),
+	JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir), null, 2)
+)
 
 const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
 

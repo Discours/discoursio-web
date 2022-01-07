@@ -5,10 +5,13 @@ export const get = async ({ params }) => {
 	try {
 		const { slug: topic } = params
 		if (topic in ['all', 'author']) return
-		const { shoutsByTopic: shouts, errors } = await client.request(SHOUTS_BY_TOPIC, {
-			topic,
-			limit: 27
-		})
+		const { shoutsByTopic: shouts, errors } = await client.request(
+			SHOUTS_BY_TOPIC,
+			{
+				topic,
+				limit: 27
+			}
+		)
 		if (errors) {
 			errors.forEach(console.error)
 			throw 'Error'

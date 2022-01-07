@@ -28,12 +28,16 @@
 		try {
 			console.log('navauth: found auth token ' + $token)
 			client.request(GET_ME).then(({ user, error }) => {
-				if (error) $notices = [{ text: error, type: 'error', ts: new Date(), state: 'new' }, ...$notices]
-				if(user) {
+				if (error)
+					$notices = [
+						{ text: error, type: 'error', ts: new Date(), state: 'new' },
+						...$notices
+					]
+				if (user) {
 					$session = user
 					client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
 						console.log(data)
-						if(data) {
+						if (data) {
 							$roles = data
 							console.log('navauth: my roles store updated')
 						}
@@ -43,7 +47,10 @@
 			})
 		} catch (e) {
 			console.error('navauth: graphql request failed')
-			$notices = [{ text: e, type: 'error', ts: new Date(), state: 'new' }, ...$notices]
+			$notices = [
+				{ text: e, type: 'error', ts: new Date(), state: 'new' },
+				...$notices
+			]
 		}
 	}
 

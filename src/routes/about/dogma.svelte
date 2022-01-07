@@ -104,8 +104,8 @@
 							>
 							Никто не&nbsp;безгрешен, иногда и&nbsp;мы&nbsp;ошибаемся. Заметили ошибку&nbsp;—
 							отправьте
-							<a href="/about/guide#editing" target="_self">ремарку</a> автору или напишите
-							нам на&nbsp;<a href="mailto:welcome@discours.io" target="_blank"
+							<a href="/about/guide#editing" target="_self">ремарку</a> автору или
+							напишите нам на&nbsp;<a href="mailto:welcome@discours.io" target="_blank"
 								>welcome@discours.io</a
 							>.
 						</p>

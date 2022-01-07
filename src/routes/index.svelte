@@ -40,7 +40,8 @@
 	const authorsLimit = 8
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
-	let favs = [], favs1 = []
+	let favs = [],
+		favs1 = []
 
 	$: if ($shoutslist === null) {
 		$loading = true
@@ -434,7 +435,7 @@
 				<h4>Культура</h4>
 				{#each $shoutslist
 					.filter((s) => {
-						if(s.topics) s.topics.map((t) => t.slug).includes('culture')
+						if (s.topics) s.topics.map((t) => t.slug).includes('culture')
 						else console.error(s)
 					})
 					.slice(0, 3) as article}

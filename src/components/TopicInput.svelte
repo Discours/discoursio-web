@@ -5,6 +5,7 @@
 
 	// TODO: a topic input user control
 </script>
+
 {#if topic}
-<div contenteditable>{topic.slug}</div>
+	<div contenteditable>{topic.slug}</div>
 {/if}

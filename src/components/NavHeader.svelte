@@ -1,46 +1,35 @@
-<script>
+<script lang="ts">
 	import NavAuth from './NavAuth.svelte'
 	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
 	import { openModal } from '../stores/app'
 	import { token } from '../stores/user'
-	import { onMount } from 'svelte'
 	import Auth from './Auth.svelte'
 	import Modal from './Modal.svelte'
 
-	let isBurgerHidden = true
 	const routes = [
 		{ name: 'журнал', href: '/' },
 		{ name: 'лента', href: '/feed' },
 		{ name: 'темы', href: '/topic' }
 	]
-	const toggleBurger = () => {
-		isBurgerHidden = !isBurgerHidden
-		document.body.classList.toggle('fixed', !isBurgerHidden)
-	}
 
-	onMount(() => {
-		isBurgerHidden = window.screen.width > 990
-	})
+	let fixed = false // when mobile menu is shown
+	$: if($openModal) fixed = false
 </script>
-
+<svelte:body class:fixed />
 <header>
-	<Modal name='auth'><Auth /></Modal>
+	<Modal name="auth"><Auth /></Modal>
 	<div class="wide-container">
-		{#key isBurgerHidden}
-		<nav class="row header__inner" class:header__inner--fixed={!isBurgerHidden}>
+		<nav class="row header__inner" class:fixed>
 			<div class="main-logo col-auto">
 				<a href="/">
 					<img src="/logo.svg" alt="Дискурс" />
 				</a>
 			</div>
-			<ul
-				class="col main-navigation text-xl inline-flex"
-				class:main-navigation--open={!isBurgerHidden}
-			>
+			<ul class="col main-navigation text-xl inline-flex" class:fixed transition:fade>
 				{#each routes as r}
 					<li class:selected={$page?.url?.pathname === r.href}>
-						<a sveltekit:prefetch href={r.href}>{r.name}</a>
+						<a sveltekit:prefetch href={r.href} on:click={() => fixed = false}>{r.name}</a>
 					</li>
 				{/each}
 				<li class="usernav">
@@ -49,25 +38,18 @@
 					{:else}
 						<div class="usercontrol col">
 							<div class="usercontrol__item loginbtn">
-								<a href={'#auth'} on:click={() => ($openModal = 'auth')}
-									>войти</a>
+								<a href={'#auth'} on:click={() => ($openModal = 'auth')}>войти</a>
 							</div>
 						</div>
 					{/if}
 				</li>
 			</ul>
 			<div class="burger-container">
-				<div
-					transition:fade
-					class="burger"
-					class:burger--close={!isBurgerHidden}
-					on:click={toggleBurger}
-				>
+				<div class="burger" class:fixed on:click={() => fixed = !fixed}>
 					<div />
 				</div>
 			</div>
 		</nav>
-		{/key}
 	</div>
 </header>
 
@@ -80,17 +62,18 @@
 		background: #fff;
 		//flex-wrap: wrap;
 		justify-content: space-between;
+		&.fixed {
+			border-bottom: 4px solid #000;
+			left: 0;
+			position: fixed;
+			right: 0;
+			top: 0;
+			padding: 0 $container-padding-x;
+			z-index: 10;
+		}
 	}
 
-	.header__inner--fixed {
-		border-bottom: 4px solid #000;
-		left: 0;
-		position: fixed;
-		right: 0;
-		top: 0;
-		padding: 0 $container-padding-x;
-		z-index: 10;
-	}
+	
 
 	.main-logo {
 		align-items: center;
@@ -144,6 +127,7 @@
 		margin: 0;
 		padding: 0;
 
+
 		@include media-breakpoint-down(md) {
 			background: #fff;
 			bottom: 0;
@@ -159,6 +143,13 @@
 
 			li {
 				margin-bottom: 2.4rem;
+			}
+		}
+		&.fixed {
+			display: inline-flex;
+
+			@include media-breakpoint-down(lg) {
+				display: block !important;
 			}
 		}
 
@@ -184,14 +175,6 @@
 			color: #000;
 			pointer-events: none;
 			cursor: default;
-		}
-	}
-
-	.main-navigation--open {
-		display: inline-flex;
-
-		@include media-breakpoint-down(lg) {
-			display: block !important;
 		}
 	}
 
@@ -252,22 +235,24 @@
 		&:before {
 			top: 0;
 		}
+
+		&.fixed {
+			> div {
+				opacity: 0;
+				transition: opacity 0s;
+			}
+
+			&:after {
+				bottom: 0.8rem;
+				transform: rotate(-45deg);
+			}
+
+			&:before {
+				transform: rotate(45deg);
+				top: 0.8rem;
+			}
+		}
 	}
 
-	.burger--close {
-		> div {
-			opacity: 0;
-			transition: opacity 0s;
-		}
-
-		&:after {
-			bottom: 0.8rem;
-			transform: rotate(-45deg);
-		}
-
-		&:before {
-			transform: rotate(45deg);
-			top: 0.8rem;
-		}
-	}
+	
 </style>

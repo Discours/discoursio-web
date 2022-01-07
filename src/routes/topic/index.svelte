@@ -97,15 +97,15 @@
 				{/each}
 			{:else}
 				<div class="stats">
-				{#if topics}
-					{#each topics as topic}
-						<TopicCard
-							{topic}
-							compact={false}
-							subscribed={$subscribedTopics && $subscribedTopics.includes(topic.slug)}
-						/>
-					{/each}
-				{/if}
+					{#if topics}
+						{#each topics as topic}
+							<TopicCard
+								{topic}
+								compact={false}
+								subscribed={$subscribedTopics && $subscribedTopics.includes(topic.slug)}
+							/>
+						{/each}
+					{/if}
 				</div>
 			{/if}
 		</div>
