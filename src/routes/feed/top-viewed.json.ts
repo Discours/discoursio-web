@@ -6,7 +6,7 @@ export const get = async ({ params }) => {
 	try {
 		const { topViewed } = await client.request(TOP_VIEWED, {
 			page: page || 0,
-			size: size || 10
+			size: size || 9
 		})
 		return {
 			status: 200,

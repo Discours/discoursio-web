@@ -392,13 +392,35 @@
 			</div>
 		</div>
 
+		{#if topicsGroup && topicsGroup.length > 0}
+			<div class="floor">
+				<div class="wide-container row">
+					<div class="col-md-4">
+						<h4>
+							{topicsGroup[0].topics.find(
+								(item) => item.slug === topicsGroup[0].mainTopic
+							).title}
+						</h4>
+						{#each topicsGroup.slice(4, 7) as shout}
+							<ShoutCard {shout} nosubtitle={true} noimage={true} isGroup={true} />
+						{/each}
+					</div>
+					{#each $shoutslist.slice(26, 28) as shout}
+						<div class="col-md-4">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
+				</div>
+			</div>
+		{/if}
+
 		{#if oneTopic('culture') && oneTopic('culture').length > 0}
 		<div class="floor floor--14">
 			<div class="wide-container row">
 				<h4>Культура</h4>
-				{#each oneTopic('culture').slice(0, 3) as article}
+				{#each oneTopic('culture').slice(0, 3) as shout}
 					<div class="col-md-4">
-						<ShoutCard shout={article} />
+						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
@@ -409,7 +431,17 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(26, 28) as article}
+				{#each $shoutslist.slice(28, 31) as shout}
+					<div class="col-md-4">
+						<ShoutCard {shout} />
+					</div>
+				{/each}
+			</div>
+		</div>
+
+		<div class="floor">
+			<div class="wide-container row">
+				{#each $shoutslist.slice(31, 33) as article}
 					<div class="col-md-6">
 						<ShoutCard shout={article} />
 					</div>
@@ -447,17 +479,17 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#each $shoutslist.slice(26, 30) as article}
+					{#each $shoutslist.slice(33, 37) as article}
 						<ShoutCard shout={article} noimage={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[30]} photoBottom={true} />
+					<ShoutCard shout={$shoutslist[37]} photoBottom={true} />
 				</div>
 			</div>
 		</div>
 
-		<ShoutFeed start={40} />
+		<ShoutFeed start={38} />
 	</div>
 {/if}
 

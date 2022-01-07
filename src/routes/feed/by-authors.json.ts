@@ -12,7 +12,7 @@ export const get = async ({ params }) => {
 				authors = (await q.json())['authorsBySlugs']
 				const sq = await client.request(SHOUTS_BY_AUTHOR, {
 					page: page || 0,
-					size: size || 10,
+					size: size || 9,
 					authors: authors.map((a) => a.slug)
 				})
 				if (sq.ok) shouts = (await sq.json())['shoutsByAuthor']

@@ -6,8 +6,8 @@
 	import { fade } from 'svelte/transition'
 	import SvelteSeo from 'svelte-seo'
 	import LibLoader from '../../components/LibLoader.svelte'
-	import Modal from '../../components/Modal.svelte'
-	import { openModal } from '../../stores/app'
+	// import Modal from '../../components/Modal.svelte'
+	// import { openModal } from '../../stores/app'
 	import { goto } from '$app/navigation'
 	import { notices } from '../../stores/user'
 
@@ -27,27 +27,26 @@
 		keywords: 'Discours.io, помощь, благотворительность'
 	}
 	let once = '', monthly = 'Monthly'
-	let container: HTMLFormElement
+	// let container: HTMLFormElement
 	let interval: string = monthly
 	let amountSwitchElement: HTMLDivElement
 	let amount: string
 	let customAmount
 	let widget
-	let card: CardData = {
+	/*let card: CardData = {
 		cvv: '',
 		cardNumber: '',
 		expDateMonth: '01',
 		expDateYear: '22'
-	}
+	}*/
 	const description = "Поддержка журнала и развитие Дискурса"
 	const cpOptions = {
 			publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
 			description,
 			currency: "RUB",
 		}
-	const submitCard = () => {
-		console.log('submit')
-	}
+	// const submitCard = () => console.log('submit')
+
 	const showCardForm = () => {
 		console.log('help: donate clicked')
 		// $openModal = 'donate'
@@ -100,7 +99,7 @@
 		}, (opts) => { // success
 			// действие при успешной оплате
 			console.debug(opts)
-			$openModal = ''
+			// $openModal = ''
 			goto('/about/thanks')
 		},
 		function (reason, options) { // fail
@@ -117,7 +116,7 @@
 />
 <LibLoader src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" />
 <article class="container discours-help">
-	<Modal name="donate">
+	<!--Modal name="donate">
 		<div class="row modalwrap__content">
 			<form class="payment-form" autocomplete="off" bind:this={container}>
 				<input type="text" placeholder="Номер карты" data-cp="cardNumber"/>
@@ -144,7 +143,7 @@
 				</button>
 			</form>
 		</div>
-	</Modal>
+	</Modal-->
 	<div class="row">
 		<div class="col-md-8 offset-md-2">
 			<h1>Как вы&nbsp;можете поддержать Дискурс?</h1>
@@ -468,15 +467,6 @@
 
 	.form-group:not(:first-child) {
 		margin-top: 20px;
-	}
-
-	.modalwrap__content {
-		background: #fff;
-		padding: 3em $container-padding-x $container-padding-x;
-
-		@include media-breakpoint-up(lg) {
-			padding: 10rem 6rem;
-		}
 	}
 
 	.discours-help :global(.modalwrap__inner) {

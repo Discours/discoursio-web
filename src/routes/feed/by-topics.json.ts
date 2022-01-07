@@ -9,7 +9,10 @@ export const get = async ({ params }) => {
 		authors = {}
 		try {
 			topicslugs.forEach(async (topic) => {
-				const q = await client.request(SHOUTS_BY_TOPIC, { topic, page, size })
+				const q = await client.request(SHOUTS_BY_TOPIC, { topic, 
+					page: page || 0,
+					size: size || 9
+				})
 				if (q.ok) {
 					shouts = (await q.json())['shoutsByTopic']
 					shouts.forEach((s) => s.authors.forEach((a) => (authors[a.slug] = a)))

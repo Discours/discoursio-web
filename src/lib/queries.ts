@@ -306,8 +306,8 @@ export const TOP_MONTH = gql`
 `
 
 export const SHOUTS_BY_COMMUNITY = gql`
-	query ShoutsByCommunityQuery($community: String!, $limit: Int!) {
-		shoutsByCommunity(community: $community, limit: $limit) {
+	query ShoutsByCommunityQuery($community: String!, $page: Int!, $size: Int!) {
+		shoutsByCommunity(community: $community, page: $page, size: $size) {
 			title
 			subtitle
 			layout
@@ -337,8 +337,8 @@ export const SHOUTS_BY_COMMUNITY = gql`
 `
 
 export const SHOUTS_BY_AUTHOR = gql`
-	query ShoutsByAuthorQuery($author: String!, $limit: Int!) {
-		shoutsByAuthor(author: $author, limit: $limit) {
+	query ShoutsByAuthorQuery($author: String!, $page: Int!, $size: Int!) {
+		shoutsByAuthor(author: $author, page: $page, size: $size) {
 			title
 			subtitle
 			layout

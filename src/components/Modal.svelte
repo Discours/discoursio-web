@@ -15,7 +15,7 @@
 />
 {#if $openModal === name}
 	<div class="modalwrap" transition:fade on:click|preventDefault={wrapClick}>
-		<div class="modalwrap__inner">
+		<div class="row modalwrap__content">
 			<slot />
 			<div class="close-control" on:click|preventDefault={() => ($openModal = '')}>
 				<svg
@@ -78,16 +78,9 @@
 			}
 		}
 	}
-
-	.modalwrap__inner {
+	:global(.modalwrap__content) {
 		background: #fff;
-		max-width: 1000px;
-		position: relative;
-		width: 80%;
-	}
-
-	.modalwrap__content {
-		padding: $container-padding-x;
+		padding: 3em $container-padding-x $container-padding-x;
 
 		@include media-breakpoint-up(lg) {
 			padding: 10rem 6rem;
