@@ -39,24 +39,24 @@
 		expDateMonth: '01',
 		expDateYear: '22'
 	}
-
+	const description = "Поддержка журнала и развитие Дискурса"
 	const cpOptions = {
 			publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
-			description: "Поддержка журнала и развитие Дискурса",
+			description,
 			currency: "RUB",
 		}
-	
+	const submitCard = () => {
+		console.log('submit')
+	}
 	const showCardForm = () => {
 		console.log('help: donate clicked')
-		$openModal = 'donate'
+		// $openModal = 'donate'
 		let choice: HTMLInputElement = amountSwitchElement.querySelector('input[type=radio]:checked')
 		amount = customAmount || choice.value
 		console.log('help: input amount ' + amount)
 		widget = new (window as any).cp.CloudPayments() // Checkout(cpOptions)
 		console.log('help: payments initiated')
-	}
-
-	const submitCard = () => {
+		cpOptions.description = description + '. ' + (interval === once ? '' : 'Ежемесячно')
 		const CustomerReciept = {
             Items: [//товарные позиции
                  {
@@ -83,6 +83,10 @@
         }
 		widget.charge({ // options
 			...cpOptions,
+			amount: parseInt(amount),
+			skin: 'classic',
+			requireEmail: true,
+			retryPayment: true,
 			// invoiceId: '1234567', //номер заказа  (необязательно)
 			// accountId: 'user@example.com', //идентификатор плательщика (обязательно для создания подписки)
 			data: { CloudPayments: {
