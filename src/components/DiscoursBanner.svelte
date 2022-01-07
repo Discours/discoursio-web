@@ -50,6 +50,7 @@ import { openModal } from "../stores/app"
 		flex-direction: column;
 		justify-content: center;
 		padding-left: 0;
+		padding-top: 1em;
 
 		@include media-breakpoint-up(sm) {
 			padding-left: $grid-gutter-width;

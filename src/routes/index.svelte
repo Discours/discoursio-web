@@ -102,7 +102,7 @@
 						if (s.topics) s.topics.map((t) => t.slug).includes(topic)
 						else console.error(s)
 					})
-	
+
 
 	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
 </script>
@@ -186,7 +186,7 @@
 					</ul>
 				</div>
 				<div class="col-md-8">
-					{#each $shoutslist.slice(10, 11) as shout}
+					{#each $shoutslist.slice(5, 6) as shout}
 						<ShoutCard {shout} />
 					{/each}
 				</div>
@@ -195,7 +195,7 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(11, 14) as shout}
+				{#each $shoutslist.slice(6, 9) as shout}
 					<div class="col-md-4">
 						<ShoutCard {shout} />
 					</div>
@@ -206,7 +206,7 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[15]} />
+					<ShoutCard shout={$shoutslist[9]} />
 				</div>
 				<div class="col-md-4">
 					<div class="ratings-header">
@@ -249,7 +249,7 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(16, 18) as shout}
+				{#each $shoutslist.slice(10, 12) as shout}
 					<div class="col-md-6">
 						<ShoutCard {shout} />
 					</div>
@@ -261,7 +261,7 @@
 			{#if recents}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
-					{#each recents.slice(18, 22) as shout}
+					{#each recents.slice(12, 16) as shout}
 						<div class="col-md-6 col-lg-3">
 							<ShoutCard
 								{shout}
@@ -276,14 +276,14 @@
 		<div class="floor floor--one-article">
 			<div class="wide-container row">
 				<div class="col-12">
-					<ShoutCard shout={$shoutslist[22]} />
+					<ShoutCard shout={$shoutslist[16]} />
 				</div>
 			</div>
 		</div>
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(23, 26) as shout}
+				{#each $shoutslist.slice(17, 20) as shout}
 					<div class="col-md-4">
 						<ShoutCard {shout} />
 					</div>
@@ -324,14 +324,14 @@
 					{/if}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[27]} />
+					<ShoutCard shout={$shoutslist[20]} />
 				</div>
 			</div>
 		</div>
 
-		<div class="floor floor--10">
+		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(28, 31) as article}
+				{#each $shoutslist.slice(21, 24) as article}
 					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>
@@ -364,12 +364,12 @@
 						<div class="row">
 							<div class="col-md-6">
 								{#each topicsGroup.slice(1, 4) as article}
-									<ShoutCard shout={article} />
+									<ShoutCard shout={article} noimage={true} />
 								{/each}
 							</div>
 							<div class="col-md-6">
 								{#each topicsGroup.slice(4, 7) as article}
-									<ShoutCard shout={article} />
+									<ShoutCard shout={article} noimage={true} />
 								{/each}
 							</div>
 						</div>
@@ -381,18 +381,18 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<ShoutCard shout={$shoutslist[32]} />
+					<ShoutCard shout={$shoutslist[24]} />
 				</div>
 				<div class="col-md-8">
 					<ShoutCard
-						shout={$shoutslist[33]}
+						shout={$shoutslist[25]}
 						additionalClass="shout-card--with-cover"
 					/>
 				</div>
 			</div>
 		</div>
-		
-		{#if oneTopic('culture')}
+
+		{#if oneTopic('culture') && oneTopic('culture').length > 0}
 		<div class="floor floor--14">
 			<div class="wide-container row">
 				<h4>Культура</h4>
@@ -437,12 +437,12 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#each $shoutslist.slice(34, 38) as article}
+					{#each $shoutslist.slice(26, 30) as article}
 						<ShoutCard shout={article} noimage={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[39]} photoBottom={true} />
+					<ShoutCard shout={$shoutslist[30]} photoBottom={true} />
 				</div>
 			</div>
 		</div>
