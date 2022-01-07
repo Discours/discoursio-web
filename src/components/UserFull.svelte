@@ -1,58 +1,22 @@
 <script>
 	import UserCard from './UserCard.svelte'
-	import ShoutCard from '../components/ShoutCard.svelte'
+	import ShoutFeed from '../components/ShoutFeed.svelte'
 
 	export let props
-
-	let user
-	$: user = props.user
-
-	let shouts = []
-
-	$: if (props.shouts) {
-		shouts = Array(Math.ceil(props.shouts.length / 5))
-			.fill()
-			.map(function (item, index) {
-				return props.shouts.slice(index * 5, index * 5 + 5)
-			})
-	}
 
 	// TODO: UserFull - public user profile page
 </script>
 
-{#if user}
+{#if props.user}
 	<div class="container">
 		<div class="row">
 			<div class="user-details">
-				<UserCard {user} hasFullInfo={true} />
+				<UserCard user={props.user} hasFullInfo={true} />
 			</div>
 		</div>
 	</div>
 
-	<div class="container">
-		<div class="row">
-			{#each shouts as group}
-				<div class="floor col-12">
-					<div class="row">
-						{#each group.slice(0, 2) as shout}
-							<div class="col-md-6">
-								<ShoutCard {shout} />
-							</div>
-						{/each}
-					</div>
-				</div>
-				<div class="floor col-12">
-					<div class="row">
-						{#each group.slice(2, 5) as shout}
-							<div class="col-md-4">
-								<ShoutCard {shout} />
-							</div>
-						{/each}
-					</div>
-				</div>
-			{/each}
-		</div>
-	</div>
+	<ShoutFeed start={0} shouts={props.shouts} />
 {/if}
 
 <style lang="scss">
