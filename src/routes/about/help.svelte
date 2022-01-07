@@ -31,7 +31,7 @@
 	}
 	let container: HTMLFormElement
 	let amountSwitchElement: HTMLDivElement
-	let amount: string | number
+	let amount: string
 	let customAmount
 	let checkout
 	let card: CardData = {
@@ -45,7 +45,7 @@
 		console.log('help: donate clicked')
 		$openModal = 'donate'
 		let choice: HTMLInputElement = amountSwitchElement.querySelector('input[type=radio]:checked')
-		amount = choice.value || customAmount
+		amount = customAmount || choice.value
 		console.log('help: input amount ' + amount)
 		checkout = new (window as any).cp.Checkout({
 			publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
@@ -135,7 +135,7 @@
 								<input
 									class="form-control donate-input"
 									required
-									value={customAmount}
+									bind:value={customAmount}
 									type="number"
 									name="sum"
 									placeholder="Другая сумма"
