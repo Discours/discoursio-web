@@ -76,7 +76,9 @@
 				shoutsByLayout[s.layout].add(s)
 			}
 		})
+		console.log(`mainpage: ${Object.keys(shoutsByLayout)}`)
 		tslugs.forEach(t => shoutsByTopic[t] = oneTopic(t))
+		console.log(`mainpage: ${tslugs.size} topics found`)
 
 		// top commented
 		topCommented = recents
@@ -329,7 +331,7 @@
 			</div>
 		</div>
 
-		{#if $topicslist && shoutsByTopic['research']}
+		{#key shoutsByTopic}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
@@ -364,7 +366,7 @@
 					</div>
 				</div>
 			</div>
-		{/if}
+		{/key}
 
 		<div class="floor">
 			<div class="wide-container row">
@@ -380,7 +382,7 @@
 			</div>
 		</div>
 
-		{#if $topicslist && shoutsByTopic['psychology']}
+		{#key shoutsByTopic}
 			<div class="floor">
 				<div class="wide-container row">
 					<div class="col-md-4">
@@ -398,7 +400,7 @@
 					{/each}
 				</div>
 			</div>
-		{/if}
+		{/key}
 
 		<DiscoursBanner />
 
@@ -412,30 +414,30 @@
 			</div>
 		</div>
 
-		{#if shoutsByLayout['podcast']}
+		{#key shoutsByLayout}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
 						<div class="row">
 							<h3 class="col-sm-6">
-								Подкасты
+								Музыка
 							</h3>
 							<div class="col-sm-6 all-materials">
-								<a href={`/search?layout=podcast`}
+								<a href={`/search?layout=music`}
 									>все материалы
 									<Icon name="arrow-right" />
 								</a>
 							</div>
 						</div>
 					</div>
-					{#each shoutsByLayout['podcast'].slice(0, 3) as shout}
+					{#each Array.from(shoutsByLayout['music']).slice(0, 3) as shout}
 						<div class="col-md-4">
 							<ShoutCard {shout} />
 						</div>
 					{/each}
 				</div>
 			</div>
-		{/if}
+		{/key}
 
 		<div class="floor">
 			<div class="wide-container row">
