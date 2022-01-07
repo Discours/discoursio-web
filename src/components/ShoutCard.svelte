@@ -5,7 +5,8 @@
 
 	export let shout: Shout
 	export let additionalClass = ''
-	export let isShort = false
+	export let noimage = false
+	export let nosubtitle = false
 	export let isGroup = false
 	export let photoBottom = false
 
@@ -26,11 +27,11 @@
 
 <section
 	class="shout-card {additionalClass}"
-	class:shout-card--short={isShort}
-	class:shout-card--photo-bottom={photoBottom}
+	class:shout-card--short={noimage}
+	class:shout-card--photo-bottom={noimage && photoBottom}
 >
 	{#if shout}
-		{#if !isShort}
+		{#if !noimage}
 			<div class="shout-card__cover-container">
 				<div class="shout-card__cover">
 					<img src={shout.cover} alt={shout.title} loading="lazy" />
@@ -61,7 +62,7 @@
 				</a>
 			</div>
 
-			{#if !isShort && shout.subtitle}
+			{#if !nosubtitle && shout.subtitle}
 				<div class="shout-card__subtitle">{@html shout.subtitle}</div>
 			{/if}
 

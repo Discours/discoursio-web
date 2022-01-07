@@ -418,7 +418,7 @@
 							).title}
 						</h4>
 						{#each topicsGroup.slice(4, 7) as article}
-							<ShoutCard shout={article} isShort={true} isGroup={true} />
+							<ShoutCard shout={article} nosubtitle={true} noimage={true} isGroup={true} />
 						{/each}
 					</div>
 					{#each $shoutslist.slice(24, 26) as article}
@@ -489,7 +489,7 @@
 			<div class="wide-container row">
 				<div class="col-md-4">
 					{#each $shoutslist.slice(4, 8) as article}
-						<ShoutCard shout={article} isShort={true} />
+						<ShoutCard shout={article} noimage={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
