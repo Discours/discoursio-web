@@ -98,8 +98,13 @@
 		$loading = false
 	}
 
-	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
+	const oneTopic = (topic) => $shoutslist.filter((s) => {
+						if (s.topics) s.topics.map((t) => t.slug).includes(topic)
+						else console.error(s)
+					})
+	
 
+	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
 </script>
 
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
@@ -157,7 +162,7 @@
 				<div class="col-md-4">
 					<h4>Самое читаемое</h4>
 					<ul class="top-viewed">
-						{#each topViewed.slice(0, 5) as shout}
+						{#each topViewed.slice(5, 10) as shout}
 							<li>
 								<div>
 									<div class="top-viewed__topic">
@@ -181,7 +186,7 @@
 					</ul>
 				</div>
 				<div class="col-md-8">
-					{#each $shoutslist.slice(5, 6) as shout}
+					{#each $shoutslist.slice(10, 11) as shout}
 						<ShoutCard {shout} />
 					{/each}
 				</div>
@@ -190,7 +195,7 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(7, 10) as shout}
+				{#each $shoutslist.slice(11, 14) as shout}
 					<div class="col-md-4">
 						<ShoutCard {shout} />
 					</div>
@@ -201,7 +206,7 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[14]} />
+					<ShoutCard shout={$shoutslist[15]} />
 				</div>
 				<div class="col-md-4">
 					<div class="ratings-header">
@@ -244,7 +249,7 @@
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(10, 12) as shout}
+				{#each $shoutslist.slice(16, 18) as shout}
 					<div class="col-md-6">
 						<ShoutCard {shout} />
 					</div>
@@ -256,7 +261,7 @@
 			{#if recents}
 				<div class="wide-container row">
 					<h2 class="col-12">Коротко</h2>
-					{#each recents.slice(0, 4) as shout}
+					{#each recents.slice(18, 22) as shout}
 						<div class="col-md-6 col-lg-3">
 							<ShoutCard
 								{shout}
@@ -271,14 +276,14 @@
 		<div class="floor floor--one-article">
 			<div class="wide-container row">
 				<div class="col-12">
-					<ShoutCard shout={$shoutslist[13]} />
+					<ShoutCard shout={$shoutslist[22]} />
 				</div>
 			</div>
 		</div>
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(15, 18) as shout}
+				{#each $shoutslist.slice(23, 26) as shout}
 					<div class="col-md-4">
 						<ShoutCard {shout} />
 					</div>
@@ -319,14 +324,14 @@
 					{/if}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[15]} />
+					<ShoutCard shout={$shoutslist[27]} />
 				</div>
 			</div>
 		</div>
 
 		<div class="floor floor--10">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(16, 19) as article}
+				{#each $shoutslist.slice(28, 31) as article}
 					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>
@@ -376,68 +381,33 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					<ShoutCard shout={$shoutslist[22]} />
+					<ShoutCard shout={$shoutslist[32]} />
 				</div>
 				<div class="col-md-8">
 					<ShoutCard
-						shout={$shoutslist[23]}
+						shout={$shoutslist[33]}
 						additionalClass="shout-card--with-cover"
 					/>
 				</div>
 			</div>
 		</div>
-
-		{#if topicsGroup && topicsGroup.length > 0}
-			<div class="floor">
-				<div class="wide-container row">
-					<div class="col-md-4">
-						<h4>
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
-						</h4>
-						{#each topicsGroup.slice(4, 7) as article}
-							<ShoutCard shout={article} nosubtitle={true} noimage={true} isGroup={true} />
-						{/each}
-					</div>
-					{#each $shoutslist.slice(24, 26) as article}
-						<div class="col-md-4">
-							<ShoutCard shout={article} />
-						</div>
-					{/each}
-				</div>
-			</div>
-		{/if}
-
+		
+		{#if oneTopic('culture')}
 		<div class="floor floor--14">
 			<div class="wide-container row">
 				<h4>Культура</h4>
-				{#each $shoutslist
-					.filter((s) => {
-						if (s.topics) s.topics.map((t) => t.slug).includes('culture')
-						else console.error(s)
-					})
-					.slice(0, 3) as article}
+				{#each oneTopic('culture').slice(0, 3) as article}
 					<div class="col-md-4">
 						<ShoutCard shout={article} />
 					</div>
 				{/each}
 			</div>
 		</div>
+		{/if}
 
 		<DiscoursBanner />
 
-		<div class="floor">
-			<div class="wide-container row">
-				{#each $shoutslist.slice(0, 3) as article}
-					<div class="col-md-4">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
-			</div>
-		</div>
-
-		{#if topicsGroup.length > 0}
+		{#if topicsGroup && topicsGroup.length > 0}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
@@ -467,16 +437,17 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#each $shoutslist.slice(4, 8) as article}
+					{#each $shoutslist.slice(34, 38) as article}
 						<ShoutCard shout={article} noimage={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[8]} photoBottom={true} />
+					<ShoutCard shout={$shoutslist[39]} photoBottom={true} />
 				</div>
 			</div>
 		</div>
-		<ShoutFeed start={27} />
+
+		<ShoutFeed start={40} />
 	</div>
 {/if}
 
