@@ -4,7 +4,7 @@
 	export const load = async ({ fetch }) => {
 		let props = {}
 		const recents = await fetch('/feed/recents.json')
-		const topMonth = await fetch('/feed/top-month.json')
+		const topMonth = await fetch('/feed/top-month.json?size=10')
 		const topOverall = await fetch('/feed/top-overall.json')
 		const topViewed = await fetch(`/feed/top-viewed.json`)
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
@@ -23,51 +23,40 @@
 	import Icon from '../components/DiscoursIcon.svelte'
 	import { Navigation } from 'swiper'
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
-	import { shouts, topics, shoutslist, subscribedAuthors } from '../stores/zine'
+	import { shouts, topics, shoutslist, subscribedAuthors, topicslist } from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { fade } from 'svelte/transition'
 	import { loading, openModal } from '../stores/app'
 	import ShoutFeed from '../components/ShoutFeed.svelte'
+	import { shuffle } from '$lib/utils'
 
 	export let recents = []
 	export let topMonth = []
 	export let topOverall = []
 	export let topViewed = []
 	let topCommented = [],
-		authorsMonth = [],
+		topMonthAuthors = [],
 		topicsMonth = [],
-		topicsGroup = []
+		shoutsByTopic = {},
+		shoutsByLayout = {}
 	const authorsLimit = 8
 	let tslugs: Set<string> = new Set([])
 	let aslugs: Set<string> = new Set([])
-	let favs = [],
-		favs1 = []
+
+	// one topic filtered
+	const oneTopic = (filter) => $shoutslist.filter( (t) => t.topics.find((topic) => topic.slug === filter) )
 
 	$: if ($shoutslist === null) {
 		$loading = true
-		console.log(
-			`mainpage: loaded ${recents.length.toString()} recent shouts from api`
-		)
-		// fill up shouts dict store
 		recents.forEach((s) => ($shouts[s.slug] = s))
-		$shoutslist = recents.sort(
-			(a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-		)
-		console.log(
-			`mainpage: loaded ${topMonth.length.toString()} top month shouts from api`
-		)
-		// top commented
-		topCommented = recents
-			.filter((s) => s.stat.comments > 0)
-			.sort((a, b) => b.stat.comments - a.stat.comments)
-		console.log(`mainpage: found ${topCommented.length.toString()} commented`)
-		// prepare top month authors and topics
+		topOverall.forEach((s) => ($shouts[s.slug] = s))
 		topMonth.forEach((s) => {
+			$shouts[s.slug] = s
 			s.authors.forEach((a) => {
 				if (!aslugs.has(a.slug)) {
 					aslugs.add(a.slug)
-					authorsMonth.push(a)
+					topMonthAuthors.push(a)
 				}
 			})
 			s.topics.forEach((t) => {
@@ -76,32 +65,35 @@
 					topicsMonth.push($topics[t.slug])
 				}
 			})
-			$shouts[s.slug] = s
 		})
+		console.log(`mainpage: loaded ${Object.keys($shouts).length} shouts from api`)
+		const byDate = (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+		$shoutslist = Object.values($shouts).sort(byDate)
+		$shoutslist.forEach(s => {
+			s.topics.forEach( t => tslugs.add(t.slug))
+			if(s.layout) {
+				if(!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = new Set([])
+				shoutsByLayout[s.layout].add(s)
+			}
+		})
+		tslugs.forEach(t => shoutsByTopic[t] = oneTopic(t))
+
+		// top commented
+		topCommented = recents
+			.filter((s) => s.stat.comments > 0)
+			.sort((a, b) => b.stat.comments - a.stat.comments)
+		console.log(`mainpage: found ${topCommented.length.toString()} commented`)
+		
 		// top month topics sorted by authors amount
-		topicsMonth = topicsMonth.sort(
-			(a, b) => b.topicStat.authors - a.topicStat.authors
-		)
+		const byAuthors = (a, b) => b.topicStat.authors - a.topicStat.authors
+		topicsMonth = topicsMonth.sort(byAuthors)
+
 		// top month authors
-		authorsMonth = authorsMonth.sort((a, b) => b.rating - a.rating)
-		console.log(`mainpage: found ${authorsMonth.length.toString()} authors`)
-		// one topic filtered
-		topicsGroup = $shoutslist.filter((t) =>
-			t.topics.find((topic) => topic.slug === 'culture')
-		)
-		topOverall.forEach((s) => ($shouts[s.slug] = s))
-		if (topOverall && topOverall.length > 9) {
-			favs = topOverall.slice(0, 10)
-			favs1 = topOverall.slice(10, 20)
-			// favs2 = topOverall.slice(20, 30)
-		}
+		const byRating = (a, b) => b.rating - a.rating
+		topMonthAuthors = topMonthAuthors.sort(byRating)
+		console.log(`mainpage: found ${topMonthAuthors.length.toString()} top month authors`)
 		$loading = false
 	}
-
-	const oneTopic = (topic) => $shoutslist.filter((s) => {
-						if (s.topics) s.topics.map((t) => t.slug).includes(topic)
-						else console.error(s)
-					})
 
 
 	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
@@ -120,9 +112,7 @@
 					{/each}
 				</div>
 				<div class="col-md-6">
-					{#each $shoutslist.slice(2, 3) as shout}
-						<ShoutCard {shout} />
-					{/each}
+					<ShoutCard shout={$shoutslist[2]} />
 				</div>
 				<div class="col-md-3">
 					{#each $shoutslist.slice(3, 5) as shout}
@@ -217,7 +207,7 @@
 						</a>
 					</div>
 					{#key $subscribedAuthors}
-						{#each authorsMonth.slice(0, authorsLimit) as user}
+						{#each topMonthAuthors.slice(0, authorsLimit) as user}
 							<UserCard {user} />
 						{/each}
 					{/key}
@@ -228,7 +218,7 @@
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
 				<h2 class="col-12">Выбор сообщества</h2>
-				{#if favs && favs.length > 0}
+				{#if topMonth}
 					<Swiper
 						modules={[Navigation]}
 						spaceBetween={8}
@@ -237,7 +227,7 @@
 						centeredSlides
 						loop
 					>
-						{#each favs as shout}
+						{#each shuffle(topMonth) as shout}
 							<SwiperSlide>
 								<ShoutCard {shout} additionalClass="shout-card--with-cover" />
 							</SwiperSlide>
@@ -293,7 +283,7 @@
 
 		<div class="floor floor--important floor--slider">
 			<div class="wide-container row">
-				{#if favs1 && favs1.length > 0}
+				{#if topOverall}
 					<h2 class="col-12">Избранное</h2>
 					<Swiper
 						modules={[Navigation]}
@@ -303,7 +293,7 @@
 						centeredSlides
 						loop
 					>
-						{#each favs1 as shout}
+						{#each shuffle(topOverall).slice(0, 10) as shout}
 							<SwiperSlide>
 								<ShoutCard {shout} additionalClass="shout-card--with-cover" />
 							</SwiperSlide>
@@ -339,18 +329,16 @@
 			</div>
 		</div>
 
-		{#if topicsGroup && topicsGroup.length > 0}
+		{#if $topicslist && shoutsByTopic['research']}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
 						<div class="row">
 							<h3 class="col-sm-6">
-								{topicsGroup[0].topics.find(
-									(item) => item.slug === topicsGroup[0].mainTopic
-								).title}
+								{$topics['research'].title}
 							</h3>
 							<div class="col-sm-6 all-materials">
-								<a href={`/topic/${topicsGroup[0].mainTopic}`}
+								<a href={`/topic/research`}
 									>все материалы
 									<Icon name="arrow-right-white" />
 								</a>
@@ -358,18 +346,18 @@
 						</div>
 					</div>
 					<div class="col-lg-6">
-						<ShoutCard shout={topicsGroup[0]} />
+						<ShoutCard shout={shoutsByTopic['research'][0]} />
 					</div>
 					<div class="col-lg-6">
 						<div class="row">
 							<div class="col-md-6">
-								{#each topicsGroup.slice(1, 4) as article}
-									<ShoutCard shout={article} noimage={true} />
+								{#each shoutsByTopic['research'].slice(1, 4) as shout}
+									<ShoutCard {shout} noimage={true} />
 								{/each}
 							</div>
 							<div class="col-md-6">
-								{#each topicsGroup.slice(4, 7) as article}
-									<ShoutCard shout={article} noimage={true} />
+								{#each shoutsByTopic['research'].slice(4, 7) as shout}
+									<ShoutCard {shout} noimage={true} />
 								{/each}
 							</div>
 						</div>
@@ -392,20 +380,18 @@
 			</div>
 		</div>
 
-		{#if topicsGroup && topicsGroup.length > 0}
+		{#if $topicslist && shoutsByTopic['psychology']}
 			<div class="floor">
 				<div class="wide-container row">
 					<div class="col-md-4">
 						<h4>
-							{topicsGroup[0].topics.find(
-								(item) => item.slug === topicsGroup[0].mainTopic
-							).title}
+							{$topics['psychology'].title}
 						</h4>
-						{#each topicsGroup.slice(4, 7) as shout}
+						{#each shoutsByTopic['psychology'].slice(0, 3) as shout}
 							<ShoutCard {shout} nosubtitle={true} noimage={true} isGroup={true} />
 						{/each}
 					</div>
-					{#each $shoutslist.slice(26, 28) as shout}
+					{#each shoutsByTopic['psychology'].slice(3, 5) as shout}
 						<div class="col-md-4">
 							<ShoutCard {shout} />
 						</div>
@@ -414,24 +400,11 @@
 			</div>
 		{/if}
 
-		{#if oneTopic('culture') && oneTopic('culture').length > 0}
-		<div class="floor floor--14">
-			<div class="wide-container row">
-				<h4>Культура</h4>
-				{#each oneTopic('culture').slice(0, 3) as shout}
-					<div class="col-md-4">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		{/if}
-
 		<DiscoursBanner />
 
 		<div class="floor">
 			<div class="wide-container row">
-				{#each $shoutslist.slice(28, 31) as shout}
+				{#each $shoutslist.slice(26, 29) as shout}
 					<div class="col-md-4">
 						<ShoutCard {shout} />
 					</div>
@@ -439,37 +412,25 @@
 			</div>
 		</div>
 
-		<div class="floor">
-			<div class="wide-container row">
-				{#each $shoutslist.slice(31, 33) as article}
-					<div class="col-md-6">
-						<ShoutCard shout={article} />
-					</div>
-				{/each}
-			</div>
-		</div>
-
-		{#if topicsGroup && topicsGroup.length > 0}
+		{#if shoutsByLayout['podcast']}
 			<div class="floor floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
 						<div class="row">
 							<h3 class="col-sm-6">
-								{topicsGroup[0].topics.find(
-									(item) => item.slug === topicsGroup[0].mainTopic
-								).title}
+								Подкасты
 							</h3>
 							<div class="col-sm-6 all-materials">
-								<a href={`/topic/${topicsGroup[0].mainTopic}`}
+								<a href={`/search?layout=podcast`}
 									>все материалы
 									<Icon name="arrow-right" />
 								</a>
 							</div>
 						</div>
 					</div>
-					{#each topicsGroup.slice(0, 3) as article}
+					{#each shoutsByLayout['podcast'].slice(0, 3) as shout}
 						<div class="col-md-4">
-							<ShoutCard shout={article} />
+							<ShoutCard {shout} />
 						</div>
 					{/each}
 				</div>
@@ -479,17 +440,17 @@
 		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
-					{#each $shoutslist.slice(33, 37) as article}
+					{#each $shoutslist.slice(29, 33) as article}
 						<ShoutCard shout={article} noimage={true} />
 					{/each}
 				</div>
 				<div class="col-md-8">
-					<ShoutCard shout={$shoutslist[37]} photoBottom={true} />
+					<ShoutCard shout={$shoutslist[34]} photoBottom={true} />
 				</div>
 			</div>
 		</div>
 
-		<ShoutFeed start={38} />
+		<ShoutFeed start={35} />
 	</div>
 {/if}
 
