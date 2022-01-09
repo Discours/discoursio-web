@@ -102,6 +102,7 @@
 		}
 
 		a {
+			border: none;
 			color: #000;
 		}
 	}
@@ -144,6 +145,7 @@
 				margin-bottom: 2.4rem;
 			}
 		}
+
 		&.fixed {
 			display: inline-flex;
 
@@ -162,6 +164,7 @@
 		}
 
 		a {
+			border: none;
 			color: #000;
 
 			&:hover {

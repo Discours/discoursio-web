@@ -159,6 +159,7 @@
 		padding: 2.4rem 0 4.2rem;
 
 		a {
+			border: none;
 			color: #fff;
 		}
 

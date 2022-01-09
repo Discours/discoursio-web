@@ -110,6 +110,10 @@
 				display: none;
 			}
 		}
+
+		a {
+			border: none;
+		}
 	}
 
 	.shout-card__cover-container {
