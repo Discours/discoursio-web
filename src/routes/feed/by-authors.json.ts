@@ -13,6 +13,7 @@ export const get = async ({ params }) => {
 				const sq = await client.request(SHOUTS_BY_AUTHOR, {
 					page: page || 0,
 					size: size || 9,
+					// limit: 50,
 					authors: authors.map((a) => a.slug)
 				})
 				if (sq.ok) shouts = (await sq.json())['shoutsByAuthor']

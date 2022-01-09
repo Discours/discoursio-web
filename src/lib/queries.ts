@@ -368,8 +368,8 @@ export const SHOUTS_BY_AUTHOR = gql`
 `
 
 export const SHOUTS_BY_TOPIC = gql`
-	query ShoutsByTopicQuery($topic: String!, $limit: Int!) {
-		shoutsByTopic(topic: $topic, limit: $limit) {
+	query ShoutsByTopicQuery($topic: String!, $page: Int!, $size: Int!) {
+		shoutsByTopic(topic: $topic, page: $page, size: $size) {
 			title
 			subtitle
 			layout

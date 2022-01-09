@@ -1,6 +1,7 @@
 <script>
-import { openModal } from "../stores/app"
+	import { openModal } from '../stores/app'
 </script>
+
 <div class="discours-banner">
 	<a href="/" class="wide-container row">
 		<div class="discours-banner__content col-md-5">
@@ -8,7 +9,9 @@ import { openModal } from "../stores/app"
 			<p>
 				<a href="/about/help">Помочь журналу</a>
 				<a href="/create">Стать автором</a>
-				<a href="#auth" on:click={() => $openModal = 'auth'}>Присоединиться к&nbsp;сообществу</a>
+				<a href="#auth" on:click={() => ($openModal = 'auth')}
+					>Присоединиться к&nbsp;сообществу</a
+				>
 			</p>
 		</div>
 		<div class="col-md-6 offset-md-1 discours-banner__image">

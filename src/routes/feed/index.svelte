@@ -38,8 +38,10 @@
 	let topCommented
 
 	$: if ($subscribedAuthors && $subscribedAuthors.length > 0) {
-		(async () => {
-			const aq = await fetch(`/feed/by-authors.json?authors=${await JSON.stringify($subscribedAuthors)}`)
+		;(async () => {
+			const aq = await fetch(
+				`/feed/by-authors.json?authors=${await JSON.stringify($subscribedAuthors)}`
+			)
 			if (aq.ok) {
 				const data = await aq.json()
 				if (data.shouts) $shoutslist = [...data.shouts, ...$shoutslist]
@@ -51,8 +53,10 @@
 
 	$: if ($subscribedTopics && $subscribedTopics.length > 0) {
 		// NOTE: $topicslist should be preloaded by layout
-		(async () => {
-			const tq = await fetch(`/feed/by-topics.json?topics=${await JSON.stringify($subscribedTopics)}`)
+		;(async () => {
+			const tq = await fetch(
+				`/feed/by-topics.json?topics=${await JSON.stringify($subscribedTopics)}`
+			)
 			if (tq.ok) {
 				const data = await tq.json()
 				if (data.authors) $authorslist = [...data.authors, ...$authorslist]
@@ -91,7 +95,6 @@
 			`feed: found ${topCommented.length.toString()} commented from recentss`
 		)
 	}
-
 </script>
 
 <section class="feed" transition:fade>

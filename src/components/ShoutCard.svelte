@@ -3,7 +3,7 @@
 	import type { Shout } from '$lib/codegen'
 	import Icon from './DiscoursIcon.svelte'
 
-	export let shout: Shout
+	export let shout: Partial<Shout>
 	export let additionalClass = ''
 	export let noimage = false
 	export let nosubtitle = false
@@ -13,6 +13,7 @@
 	const seps = [':', '?', '!']
 
 	$: if (shout && !shout.subtitle) {
+		// console.log('shoutcard: got shout ' + shout.slug)
 		let tt = shout.title.split('.')
 		seps.forEach((c) => {
 			if (tt.length === 1) {

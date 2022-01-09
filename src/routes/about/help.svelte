@@ -5,7 +5,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
 	import SvelteSeo from 'svelte-seo'
-	import LibLoader from '../../components/LibLoader.svelte'
 	// import Modal from '../../components/Modal.svelte'
 	// import { openModal } from '../../stores/app'
 	import { goto } from '$app/navigation'
@@ -26,12 +25,13 @@
 		description: 'Здесь можно поддержать Дискурс материально.',
 		keywords: 'Discours.io, помощь, благотворительность'
 	}
-	let once = '', monthly = 'Monthly'
+	let once = '',
+		monthly = 'Monthly'
 	// let container: HTMLFormElement
 	let interval: string = monthly
 	let amountSwitchElement: HTMLDivElement
 	let amount: string
-	let customAmount
+	let customAmount, CustomerReciept
 	let widget
 	/*let card: CardData = {
 		cvv: '',
@@ -39,74 +39,90 @@
 		expDateMonth: '01',
 		expDateYear: '22'
 	}*/
-	const description = "Поддержка журнала и развитие Дискурса"
+	const description = 'Поддержка журнала и развитие Дискурса'
 	const cpOptions = {
-			publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
-			description,
-			currency: "RUB",
-		}
+		publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
+		description,
+		currency: 'RUB'
+	}
+
 	// const submitCard = () => console.log('submit')
+
+	const cpInit = () => {
+		widget = new (window as any).cp.CloudPayments() // Checkout(cpOptions)
+		console.log('help: payments initiated')
+		cpOptions.description =
+			description + '. ' + (interval === once ? '' : 'Ежемесячно')
+		CustomerReciept = {
+			Items: [
+				//товарные позиции
+				{
+					label: cpOptions.description, //наименование товара
+					price: parseInt(amount) || 0, //цена
+					quantity: 1, //количество
+					amount: parseInt(amount) || 0, //сумма
+					vat: 20, //ставка НДС
+					method: 0, // тег-1214 признак способа расчета - признак способа расчета
+					object: 0 // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
+				}
+			],
+			// taxationSystem: 0, //система налогообложения; необязательный, если у вас одна система налогообложения
+			// email: 'user@example.com', //e-mail покупателя, если нужно отправить письмо с чеком
+			// phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
+			isBso: false, //чек является бланком строгой отчетности
+			amounts: {
+				electronic: parseInt(amount), // Сумма оплаты электронными деньгами
+				advancePayment: 0.0, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
+				credit: 0.0, // Сумма постоплатой(в кредит) (2 знака после запятой)
+				provision: 0.0 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
+			}
+		}
+	}
 
 	const showCardForm = () => {
 		console.log('help: donate clicked')
 		// $openModal = 'donate'
-		let choice: HTMLInputElement = amountSwitchElement.querySelector('input[type=radio]:checked')
+		let choice: HTMLInputElement = amountSwitchElement.querySelector(
+			'input[type=radio]:checked'
+		)
 		amount = customAmount || choice.value
 		console.log('help: input amount ' + amount)
-		widget = new (window as any).cp.CloudPayments() // Checkout(cpOptions)
-		console.log('help: payments initiated')
-		cpOptions.description = description + '. ' + (interval === once ? '' : 'Ежемесячно')
-		const CustomerReciept = {
-            Items: [//товарные позиции
-                 {
-                    label: cpOptions.description, //наименование товара
-                    price: parseInt(amount) || 0 , //цена
-                    quantity: 1, //количество
-                    amount: parseInt(amount) || 0, //сумма
-                    vat: 20, //ставка НДС
-                    method: 0, // тег-1214 признак способа расчета - признак способа расчета
-                    object: 0, // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
-                }
-            ],
-            // taxationSystem: 0, //система налогообложения; необязательный, если у вас одна система налогообложения
-            // email: 'user@example.com', //e-mail покупателя, если нужно отправить письмо с чеком
-            // phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
-            isBso: false, //чек является бланком строгой отчетности
-            amounts:
-            {
-                electronic: parseInt(amount), // Сумма оплаты электронными деньгами
-                advancePayment: 0.00, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
-                credit: 0.00, // Сумма постоплатой(в кредит) (2 знака после запятой)
-                provision: 0.00 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
-            }
-        }
-		widget.charge({ // options
-			...cpOptions,
-			amount: parseInt(amount),
-			skin: 'classic',
-			requireEmail: true,
-			retryPayment: true,
-			// invoiceId: '1234567', //номер заказа  (необязательно)
-			// accountId: 'user@example.com', //идентификатор плательщика (обязательно для создания подписки)
-			data: { CloudPayments: {
-				CustomerReciept,
-				recurrent: {
-					interval,
-					period: 1, 
-					CustomerReciept // чек для регулярных платежей
+		
+		widget.charge(
+			{
+				// options
+				...cpOptions,
+				amount: parseInt(amount),
+				skin: 'classic',
+				requireEmail: true,
+				retryPayment: true,
+				// invoiceId: '1234567', //номер заказа  (необязательно)
+				// accountId: 'user@example.com', //идентификатор плательщика (обязательно для создания подписки)
+				data: {
+					CloudPayments: {
+						CustomerReciept,
+						recurrent: {
+							interval,
+							period: 1,
+							CustomerReciept // чек для регулярных платежей
+						}
+					}
 				}
-			}}
-		}, (opts) => { // success
-			// действие при успешной оплате
-			console.debug(opts)
-			// $openModal = ''
-			goto('/about/thanks')
-		},
-		function (reason, options) { // fail
-			// действие при неуспешной оплате
-			console.debug(options)
-			$notices.push({ type: 'error', text: reason, state: 'new', ts: new Date() })
-		})
+			},
+			(opts) => {
+				// success
+				// действие при успешной оплате
+				console.debug(opts)
+				// $openModal = ''
+				goto('/about/thanks')
+			},
+			function (reason, options) {
+				// fail
+				// действие при неуспешной оплате
+				console.debug(options)
+				$notices.push({ type: 'error', text: reason, state: 'new', ts: new Date() })
+			}
+		)
 	}
 </script>
 
@@ -114,7 +130,9 @@
 	{...meta}
 	openGraph={{ ...meta, images: [{ url: '/images/donate.jpg' }] }}
 />
-<LibLoader src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" />
+<svelte:head>
+	<script defer async src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" on:load={cpInit} />
+</svelte:head> 
 <article class="container discours-help">
 	<!--Modal name="donate">
 		<div class="row modalwrap__content">
@@ -210,31 +228,41 @@
 						>
 							<div class="btn-group payment-choose" data-toggle="buttons">
 								{#key interval}
-								<input
-									type="radio"
-									autocomplete="off"
-									id="once"
-									name="once"
-									on:click|preventDefault={() => interval = once}
-									checked={interval===once}
-								/>
-								<label for="once" class="btn payment-type" class:active={interval===once}>Единоразово</label>
-								<input
-									type="radio"
-									autocomplete="off"
-									id="monthly"
-									name="monthly"
-									on:click|preventDefault={() => interval = monthly}
-									checked={interval===monthly}
-								/>
-								<label for="monthly" class="btn payment-type" class:active={interval===monthly}>Ежемесячно</label>
+									<input
+										type="radio"
+										autocomplete="off"
+										id="once"
+										name="once"
+										on:click|preventDefault={() => (interval = once)}
+										checked={interval === once}
+									/>
+									<label
+										for="once"
+										class="btn payment-type"
+										class:active={interval === once}>Единоразово</label
+									>
+									<input
+										type="radio"
+										autocomplete="off"
+										id="monthly"
+										name="monthly"
+										on:click|preventDefault={() => (interval = monthly)}
+										checked={interval === monthly}
+									/>
+									<label
+										for="monthly"
+										class="btn payment-type"
+										class:active={interval === monthly}>Ежемесячно</label
+									>
 								{/key}
 							</div>
 						</div>
 
 						<div class="form-group">
-							<a href="#donate" class="btn send-btn donate" on:click={() => showCardForm()}
-								>Помочь журналу</a
+							<a
+								href="#donate"
+								class="btn send-btn donate"
+								on:click={() => showCardForm()}>Помочь журналу</a
 							>
 						</div>
 					</form>

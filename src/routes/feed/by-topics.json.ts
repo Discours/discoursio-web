@@ -9,7 +9,8 @@ export const get = async ({ params }) => {
 		authors = {}
 		try {
 			topicslugs.forEach(async (topic) => {
-				const q = await client.request(SHOUTS_BY_TOPIC, { topic, 
+				const q = await client.request(SHOUTS_BY_TOPIC, {
+					topic,
 					page: page || 0,
 					size: size || 9
 				})

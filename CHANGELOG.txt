@@ -3,7 +3,6 @@
 [+] 'static' pages fixes
 [+] ShoutFeed reusable component
 [+] render order revised
-[+] LibLoader reusable component
 
 [0.0.9]
 [+] lots of visual changes for demo

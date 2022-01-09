@@ -3,7 +3,7 @@ import { GET_AUTHOR, SHOUTS_BY_AUTHOR, GET_ROLES } from '$lib/queries'
 
 export const get = async ({ params }) => {
 	try {
-		const { slug } = params
+		const { slug, page, size } = params
 		const { getUsersBySlugs: users } = await client.request(GET_AUTHOR, {
 			slugs: [slug]
 		})
@@ -12,7 +12,9 @@ export const get = async ({ params }) => {
 			const user = users[0]
 			const { shoutsByAuthor: shouts } = await client.request(SHOUTS_BY_AUTHOR, {
 				author: slug,
-				limit: 50
+				page: page || 0,
+				size: size || 50,
+				// limit: 50,
 			})
 			const { userRoles: roles } = await client.request(GET_ROLES, { slug })
 			user.roles = roles

@@ -23,7 +23,13 @@
 	import Icon from '../components/DiscoursIcon.svelte'
 	import { Navigation } from 'swiper'
 	import { Swiper, SwiperSlide } from 'swiper/svelte'
-	import { shouts, topics, shoutslist, subscribedAuthors, topicslist } from '../stores/zine'
+	import {
+		shouts,
+		topics,
+		shoutslist,
+		subscribedAuthors,
+		topicslist
+	} from '../stores/zine'
 	import DiscoursBanner from '../components/DiscoursBanner.svelte'
 	import NavTopics from '../components/NavTopics.svelte'
 	import { fade } from 'svelte/transition'
@@ -45,7 +51,8 @@
 	let aslugs: Set<string> = new Set([])
 
 	// one topic filtered
-	const oneTopic = (filter) => $shoutslist.filter( (t) => t.topics.find((topic) => topic.slug === filter) )
+	const oneTopic = (filter) =>
+		$shoutslist.filter((t) => t.topics.find((topic) => topic.slug === filter))
 
 	$: if ($shoutslist === null) {
 		$loading = true
@@ -67,17 +74,18 @@
 			})
 		})
 		console.log(`mainpage: loaded ${Object.keys($shouts).length} shouts from api`)
-		const byDate = (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+		const byDate = (a, b) =>
+			new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 		$shoutslist = Object.values($shouts).sort(byDate)
-		$shoutslist.forEach(s => {
-			s.topics.forEach( t => tslugs.add(t.slug))
-			if(s.layout) {
-				if(!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = new Set([])
+		$shoutslist.forEach((s) => {
+			s.topics.forEach((t) => tslugs.add(t.slug))
+			if (s.layout) {
+				if (!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = new Set([])
 				shoutsByLayout[s.layout].add(s)
 			}
 		})
 		console.log(`mainpage: ${Object.keys(shoutsByLayout)}`)
-		tslugs.forEach(t => shoutsByTopic[t] = oneTopic(t))
+		tslugs.forEach((t) => (shoutsByTopic[t] = oneTopic(t)))
 		console.log(`mainpage: ${tslugs.size} topics found`)
 
 		// top commented
@@ -85,7 +93,7 @@
 			.filter((s) => s.stat.comments > 0)
 			.sort((a, b) => b.stat.comments - a.stat.comments)
 		console.log(`mainpage: found ${topCommented.length.toString()} commented`)
-		
+
 		// top month topics sorted by authors amount
 		const byAuthors = (a, b) => b.topicStat.authors - a.topicStat.authors
 		topicsMonth = topicsMonth.sort(byAuthors)
@@ -93,10 +101,11 @@
 		// top month authors
 		const byRating = (a, b) => b.rating - a.rating
 		topMonthAuthors = topMonthAuthors.sort(byRating)
-		console.log(`mainpage: found ${topMonthAuthors.length.toString()} top month authors`)
+		console.log(
+			`mainpage: found ${topMonthAuthors.length.toString()} top month authors`
+		)
 		$loading = false
 	}
-
 
 	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
 </script>
@@ -140,7 +149,9 @@
 						>
 					</p>
 					<div class="about-discours__actions">
-						<a class="button" href="#auth" on:click={() => $openModal = 'auth'}>присоединитьсяк&nbsp;сообществу</a>
+						<a class="button" href="#auth" on:click={() => ($openModal = 'auth')}
+							>присоединитьсяк&nbsp;сообществу</a
+						>
 						<a class="button" href="/create">стать&nbsp;автором</a>
 						<a class="button" href="/about/manifest">о&nbsp;проекте</a>
 						<a class="button" href="/about/help">поддержать&nbsp;платформу</a>
@@ -347,23 +358,25 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-lg-6">
-						<ShoutCard shout={shoutsByTopic['research'][0]} />
-					</div>
-					<div class="col-lg-6">
-						<div class="row">
-							<div class="col-md-6">
-								{#each shoutsByTopic['research'].slice(1, 4) as shout}
-									<ShoutCard {shout} noimage={true} />
-								{/each}
-							</div>
-							<div class="col-md-6">
-								{#each shoutsByTopic['research'].slice(4, 7) as shout}
-									<ShoutCard {shout} noimage={true} />
-								{/each}
+					{#if shoutsByTopic['research']}
+						<div class="col-lg-6">
+							<ShoutCard shout={shoutsByTopic['research'][0]} />
+						</div>
+						<div class="col-lg-6">
+							<div class="row">
+								<div class="col-md-6">
+									{#each shoutsByTopic['research'].slice(1, 4) as shout}
+										<ShoutCard {shout} noimage={true} />
+									{/each}
+								</div>
+								<div class="col-md-6">
+									{#each shoutsByTopic['research'].slice(4, 7) as shout}
+										<ShoutCard {shout} noimage={true} />
+									{/each}
+								</div>
 							</div>
 						</div>
-					</div>
+					{/if}
 				</div>
 			</div>
 		{/key}
@@ -385,19 +398,21 @@
 		{#key shoutsByTopic}
 			<div class="floor">
 				<div class="wide-container row">
-					<div class="col-md-4">
-						<h4>
-							{$topics['psychology'].title}
-						</h4>
-						{#each shoutsByTopic['psychology'].slice(0, 3) as shout}
-							<ShoutCard {shout} nosubtitle={true} noimage={true} isGroup={true} />
-						{/each}
-					</div>
-					{#each shoutsByTopic['psychology'].slice(3, 5) as shout}
+					{#if shoutsByTopic['psychology']}
 						<div class="col-md-4">
-							<ShoutCard {shout} />
+							<h4>
+								{$topics['psychology'].title}
+							</h4>
+							{#each shoutsByTopic['psychology'].slice(0, 3) as shout}
+								<ShoutCard {shout} nosubtitle={true} noimage={true} isGroup={true} />
+							{/each}
 						</div>
-					{/each}
+						{#each shoutsByTopic['psychology'].slice(3, 5) as shout}
+							<div class="col-md-4">
+								<ShoutCard {shout} />
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 		{/key}
@@ -419,9 +434,7 @@
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
 						<div class="row">
-							<h3 class="col-sm-6">
-								Музыка
-							</h3>
+							<h3 class="col-sm-6">Музыка</h3>
 							<div class="col-sm-6 all-materials">
 								<a href={`/search?layout=music`}
 									>все материалы
@@ -430,11 +443,13 @@
 							</div>
 						</div>
 					</div>
-					{#each Array.from(shoutsByLayout['music']).slice(0, 3) as shout}
-						<div class="col-md-4">
-							<ShoutCard {shout} />
-						</div>
-					{/each}
+					{#if shoutsByLayout}
+						{#each Array.from(shoutsByLayout['music']).slice(0, 3) as shout}
+							<div class="col-md-4">
+								<ShoutCard {shout} />
+							</div>
+						{/each}
+					{/if}
 				</div>
 			</div>
 		{/key}

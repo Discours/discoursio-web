@@ -3,13 +3,15 @@ import { SHOUTS_BY_TOPIC } from '$lib/queries'
 
 export const get = async ({ params }) => {
 	try {
-		const { slug: topic } = params
+		const { slug: topic, page, size } = params
 		if (topic in ['all', 'author']) return
 		const { shoutsByTopic: shouts, errors } = await client.request(
 			SHOUTS_BY_TOPIC,
 			{
 				topic,
-				limit: 27
+				page: page || 0,
+				size: size || 27,
+				// limit: 50,
 			}
 		)
 		if (errors) {

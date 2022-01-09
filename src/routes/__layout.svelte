@@ -94,5 +94,7 @@
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>
 <NavHeader />
-{#key $page.url}<slot />{/key}
+{#key $page.url}
+	<slot />
+{/key}
 <DiscoursFooter />

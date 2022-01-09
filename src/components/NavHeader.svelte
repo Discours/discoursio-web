@@ -1,6 +1,5 @@
 <script lang="ts">
 	import NavAuth from './NavAuth.svelte'
-	import { fade } from 'svelte/transition'
 	import { page } from '$app/stores'
 	import { openModal } from '../stores/app'
 	import { token } from '../stores/user'
@@ -14,8 +13,9 @@
 	]
 
 	let fixed = false // when mobile menu is shown
-	$: if($openModal) fixed = false
+	$: if ($openModal) fixed = false
 </script>
+
 <svelte:body class:fixed />
 <header>
 	<Modal name="auth"><Auth /></Modal>
@@ -26,10 +26,12 @@
 					<img src="/logo.svg" alt="Дискурс" />
 				</a>
 			</div>
-			<ul class="col main-navigation text-xl inline-flex" class:fixed transition:fade>
+			<ul class="col main-navigation text-xl inline-flex" class:fixed>
 				{#each routes as r}
 					<li class:selected={$page?.url?.pathname === r.href}>
-						<a sveltekit:prefetch href={r.href} on:click={() => fixed = false}>{r.name}</a>
+						<a sveltekit:prefetch href={r.href} on:click={() => (fixed = false)}
+							>{r.name}</a
+						>
 					</li>
 				{/each}
 				<li class="usernav">
@@ -45,7 +47,7 @@
 				</li>
 			</ul>
 			<div class="burger-container">
-				<div class="burger" class:fixed on:click={() => fixed = !fixed}>
+				<div class="burger" class:fixed on:click={() => (fixed = !fixed)}>
 					<div />
 				</div>
 			</div>
@@ -72,8 +74,6 @@
 			z-index: 10;
 		}
 	}
-
-	
 
 	.main-logo {
 		align-items: center;
@@ -126,7 +126,6 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
-
 
 		@include media-breakpoint-down(md) {
 			background: #fff;
@@ -253,6 +252,4 @@
 			}
 		}
 	}
-
-	
 </style>
