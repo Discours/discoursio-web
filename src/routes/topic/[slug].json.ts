@@ -10,7 +10,7 @@ export const get = async ({ params }) => {
 			{
 				topic,
 				page: page || 0,
-				size: size || 27,
+				size: size || 27
 				// limit: 50,
 			}
 		)

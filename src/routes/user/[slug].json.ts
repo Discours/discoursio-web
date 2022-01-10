@@ -13,7 +13,7 @@ export const get = async ({ params }) => {
 			const { shoutsByAuthor: shouts } = await client.request(SHOUTS_BY_AUTHOR, {
 				author: slug,
 				page: page || 0,
-				size: size || 50,
+				size: size || 50
 				// limit: 50,
 			})
 			const { userRoles: roles } = await client.request(GET_ROLES, { slug })

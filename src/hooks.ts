@@ -1,4 +1,4 @@
-import { token } from "./stores/user"
+import { token } from './stores/user'
 
 export async function handle({ request, resolve }) {
 	const cookies: { [key: string]: string } = {}

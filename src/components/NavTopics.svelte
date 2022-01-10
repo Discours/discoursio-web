@@ -12,7 +12,7 @@
 	export let shouts: Shout[]
 	let slugs: Set<string> = new Set([])
 	let navTopics: string[] = []
-	let mounted: boolean = false
+	let mounted = false
 	const topicsAmount = 9
 	const getTitle = (slug: string) =>
 		slug && $topics[slug] ? $topics[slug].title : slug || 'ошибка'

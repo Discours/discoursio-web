@@ -38,7 +38,7 @@
 	let topCommented
 
 	$: if ($subscribedAuthors && $subscribedAuthors.length > 0) {
-		;(async () => {
+		(async () => {
 			const aq = await fetch(
 				`/feed/by-authors.json?authors=${await JSON.stringify($subscribedAuthors)}`
 			)
@@ -53,7 +53,7 @@
 
 	$: if ($subscribedTopics && $subscribedTopics.length > 0) {
 		// NOTE: $topicslist should be preloaded by layout
-		;(async () => {
+		(async () => {
 			const tq = await fetch(
 				`/feed/by-topics.json?topics=${await JSON.stringify($subscribedTopics)}`
 			)

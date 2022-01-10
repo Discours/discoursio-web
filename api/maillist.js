@@ -1,5 +1,5 @@
 const mailgun = require('mailgun-js')({
-	apiKey: MAILGUN_API_KEY,
+	apiKey: process.env.MAILGUN_API_KEY,
 	domain: process.env.MAILGUN_DOMAIN
 })
 const list = mailgun.lists('services@discours.io')
