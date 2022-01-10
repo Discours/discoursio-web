@@ -178,7 +178,7 @@
 			</div>
 		</div>
 
-		<div class="floor floor--2">
+		<div class="floor">
 			<div class="wide-container row">
 				<div class="col-md-4">
 					<h4>Самое читаемое</h4>

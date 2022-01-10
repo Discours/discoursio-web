@@ -85,6 +85,6 @@
 </svelte:head>
 <NavHeader />
 {#key $page.url}
-	<slot />
+	<main><slot /></main>
 {/key}
 <DiscoursFooter />
