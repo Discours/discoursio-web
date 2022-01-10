@@ -108,7 +108,7 @@
 	</div>
 
 	<div class="row">
-		<div class="floor floor--one-article col-12">
+		<div class="floor floor--one-article">
 			<div class="row">
 				{#each shouts.slice(0, 1) as shout}
 					<div class="col-12">
@@ -117,7 +117,7 @@
 				{/each}
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				{#each shouts.slice(1, 4) as shout}
 					<div class="col-md-4">
@@ -126,7 +126,7 @@
 				{/each}
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				{#each shouts.slice(4, 6) as shout}
 					<div class="col-md-6">
@@ -135,7 +135,7 @@
 				{/each}
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				<div class="col-md-4">
 					<h3>Тему поддерживают</h3>
@@ -151,16 +151,18 @@
 			</div>
 		</div>
 		<div class="floor floor--important">
-			<div class="row">
-				<h3 class="col-12">Популярное</h3>
-				{#each shouts.slice(8, 10) as shout}
-					<div class="col-md-6">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
+			<div class="container">
+				<div class="row">
+					<h3 class="col-12">Популярное</h3>
+					{#each shouts.slice(8, 10) as shout}
+						<div class="col-md-6">
+							<ShoutCard {shout}/>
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				{#each shouts.slice(10, 13) as shout}
 					<div class="col-md-4">
@@ -169,26 +171,28 @@
 				{/each}
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				{#each shouts.slice(13, 16) as shout}
-					<div class="col-md-4">
+					<div class="col-md-4">`
 						<ShoutCard {shout} />
 					</div>
 				{/each}
 			</div>
 		</div>
 		<div class="floor floor--important">
-			<div class="row">
-				<h3 class="col-12">Избранное</h3>
-				{#each shouts.slice(16, 19) as shout}
-					<div class="col-md-4">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
+			<div class="container">
+				<div class="row">
+					<h3 class="col-12">Избранное</h3>
+					{#each shouts.slice(16, 19) as shout}
+						<div class="col-md-4">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
+				</div>
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				<div class="col-md-4">
 					<ShoutCard shout={shouts[0]} />
@@ -198,7 +202,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				{#each shouts.slice(2, 6) as shout}
 					<div class="col-md-3">
@@ -207,7 +211,7 @@
 				{/each}
 			</div>
 		</div>
-		<div class="floor col-12">
+		<div class="floor">
 			<div class="row">
 				<div class="col-md-8">
 					<ShoutCard shout={shouts[6]} />
