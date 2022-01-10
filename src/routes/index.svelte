@@ -56,9 +56,7 @@
 	const oneTopic = (filter) =>
 		$shoutslist.filter((t) => t.topics.find((topic) => topic.slug === filter))
 
-	$: if($topicslist && browser) console.debug('mainpage: browser environment runtime')
-
-	$: if ($topicslist && $shoutslist === null) {
+	$: if ($topicslist && $topicslist.length > 0 && $shoutslist === null) {
 		$loading = true
 		recents.forEach((s) => ($shouts[s.slug] = s))
 		topOverall.forEach((s) => ($shouts[s.slug] = s))
