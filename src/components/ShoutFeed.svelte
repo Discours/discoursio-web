@@ -5,7 +5,8 @@
 	import { fade } from 'svelte/transition'
 	import { onMount } from 'svelte'
 	import { shuffle } from '$lib/utils'
-
+	export let props = {}
+	export let name: string = 'recents'
 	export let shouts: Shout[] = []
 	export let start = 0
 	export let size = 9
@@ -14,11 +15,11 @@
 	let nomore = false
 	$: if ($shoutslist === null && shouts) $shoutslist = shouts
 	$: if ($shoutslist) $shoutslist = Array.from(new Set($shoutslist))
-	const moreShouts = async () => {
+	const more = async (what = '') => { // what ='topics' | 'authors' 
 		loading = true
 		console.log('feed: show more shouts')
 		if (size * page > $shoutslist.length) {
-			const r = await fetch('/feed/recents.json?page=' + page + '&size=' + size)
+			const r = await fetch(`/feed/${name}.json?page=${page}&size=${size}` + (what ?? `&${what}=${props[what]}`))
 			if (r.ok) {
 				const { recents: newData } = await r.json()
 				if ($shoutslist.includes(newData[0])) {
@@ -75,7 +76,7 @@
 	{#if !nomore}
 		<div class="morewrap">
 			<div class="show-more">
-				<button class="button" type="button" on:click={moreShouts}>
+				<button class="button" type="button" on:click={more}>
 					{loading ? 'Загружаем' : 'Показать еще'}
 				</button>
 			</div>

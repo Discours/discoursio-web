@@ -22,6 +22,7 @@
 	import UserCard from '../../components/UserCard.svelte'
 	import type { Shout, User } from '$lib/codegen'
 	import { browser } from '$app/env'
+	import ShoutFeed from '../../components/ShoutFeed.svelte'
 
 	export let shouts: Shout[]
 	export let authors: User[]
@@ -81,6 +82,14 @@
 <TopicFull {topic} />
 
 <div class="container">
+	{#if shouts.length < 8}
+	<div class="col-md-4">
+		<h3>Тему поддерживают</h3>
+		{#each Object.values(authors).slice(0, 5) as user}
+			<UserCard {user} />
+		{/each}
+	</div>
+	{:else}
 	<div class="row topic__controls">
 		<div class="col-md-8">
 			<ul class="view-switcher">
@@ -218,11 +227,8 @@
 			</div>
 		</div>
 	</div>
-</div>
-
-<div class="show-more">
-	<button class="button" type="button" on:click={moreShouts}>Показать еще</button
-	>
+	{/if}
+	<ShoutFeed name="by-topics" props={{ topics: [slug,]}} />
 </div>
 
 <style lang="scss">
@@ -245,10 +251,5 @@
 		border-bottom: 1px dotted;
 		cursor: pointer;
 		font-weight: bold;
-	}
-
-	.show-more {
-		margin-bottom: 6.4rem;
-		text-align: center;
 	}
 </style>
