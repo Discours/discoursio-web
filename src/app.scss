@@ -281,6 +281,11 @@ figcaption {
 	.wide-container {
 		padding: 0;
 	}
+
+	.container {
+		padding-left: $container-padding-x;
+		padding-right: $container-padding-x;
+	}
 }
 
 .floor--important {
