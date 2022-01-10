@@ -12,11 +12,12 @@ export async function handle({ request, resolve }) {
 	let subdomain = request.host && request.host.split('.')[0]
 	if (subdomain === 'discours' || subdomain === 'new') subdomain = ''
 	token.set(cookies['token'])
-	request.locals = { subdomain }
+	if(subdomain) request.locals = { subdomain }
 	if(Object.keys(cookies).length > 0) {
 		console.debug(cookies)
 		request.session = cookies
 	}
+	// console.debug(request)
 	const response = await resolve(request)
 	return response
 }
