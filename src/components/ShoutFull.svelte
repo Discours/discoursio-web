@@ -7,10 +7,12 @@
 	import MD from '../components/MD.svelte'
 	import type { Topic } from '$lib/codegen'
 	import { capitalize } from '$lib/utils'
+	import Icon from './DiscoursIcon.svelte'
 
 	export let props
 	let shout
 	let canEdit
+	let mainTopic
 	let commentsById: { [key: number]: Partial<Comment> } = {}
 	onMount(() => {
 		if (shout.comments.length === 0) console.log('shout: no comments')
@@ -48,6 +50,8 @@
 				if (t === undefined) return
 				else return t.slug === shout.mainTopic
 			})
+
+			mainTopic = shout.topics.find(item => item.slug === shout.mainTopic)
 		}
 		// console.log(showTopic)
 	}
@@ -58,14 +62,10 @@
 		<div class="shout wide-container row">
 			<article class="col-md-6 offset-md-3">
 				<div class="shout__header">
-					<div class="shout__topic article-card__category">
-						{#each shout.topics as topic}
-							<span class="topic"
-								><a href={`/topic/${topic.slug}`}
-									>#{@html topic.title.replace(' ', '&nbsp;')}</a
-								></span
-							>
-						{/each}
+					<div class="shout__topic">
+						<a href={`/topic/${mainTopic.slug}`}
+						>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
+						>
 					</div>
 
 					<h1>{shout.title}</h1>
@@ -87,6 +87,40 @@
 				<div class="shout__body">
 					<MD body={shout.body} />
 				</div>
+			</article>
+
+			<div class="col-md-8 offset-md-2">
+				<div class="shout-stats">
+					<div class="shout-stats__item shout-stats__item--likes">
+						<Icon name="like"/>
+						{shout.ratings.reduce((acc, curr) => (acc + curr.value), 0)}
+						<Icon name="like"/>
+					</div>
+					<div class="shout-stats__item">
+						<Icon name="view"/>
+						{shout.stat.views}
+					</div>
+					<div class="shout-stats__item">
+						<a href="#bookmark">
+							<Icon name="bookmark"/>
+							В&nbsp;избранное
+						</a>
+					</div>
+					<div class="shout-stats__item">
+						<a href="#share">
+							<Icon name="share"/>
+							Поделиться
+						</a>
+					</div>
+				</div>
+
+				<div class="topics-list">
+					{#each shout.topics as topic}
+					<div class="shout__topic">
+						<a href="/topic/{topic.slug}">{topic.title}</a>
+					</div>
+					{/each}
+				</div>
 
 				<div class="shout__authors-list">
 					<h4>Авторы</h4>
@@ -96,9 +130,7 @@
 						<UserCard {user} hasSubscribeButton={false} />
 					{/each}
 				</div>
-			</article>
 
-			<div class="col-md-8 offset-md-3">
 				<h2>Комментарии {shout.comments.length}</h2>
 
 				{#each shout.comments as comment}
@@ -235,5 +267,66 @@
 	}
 	.topic a:hover {
 		font-weight: 500;
+	}
+
+	.shout-stats {
+		border-bottom: 1px solid #e8e8e8;
+		border-top: 4px solid #000;
+		padding: 3.2rem 0;
+	}
+
+	.shout-stats__item {
+		@include font-size(1.7rem);
+		font-weight: 500;
+		display: inline-block;
+		margin-right: $grid-gutter-width;
+		vertical-align: baseline;
+
+		:global(.icon) {
+			display: inline-block;
+			margin-right: 0.2em;
+			vertical-align: middle;
+		}
+
+		:global(img) {
+			display: block;
+		}
+
+		a {
+			border: none;
+		}
+	}
+
+	.shout-stats__item--likes {
+		:global(.icon) {
+			vertical-align: baseline;
+		}
+
+		:global(.icon):last-of-type {
+			transform: rotate(180deg);
+			transform-origin: center;
+			margin-left: 0.3em;
+			vertical-align: middle;
+		}
+	}
+
+	.topics-list {
+		margin: 2.4rem 0;
+
+		.shout__topic {
+			display: inline-block;
+			margin: 0 0.8rem 0.8rem 0;
+
+			a {
+				background: #f6f6f6;
+				color: #000;
+				padding: 0.4rem 0.8rem;
+				transition: background-color 0.2s;
+
+				&:hover {
+					background-color: rgba(0,0,0,0.2);
+				}
+			}
+		}
 	}
 </style>
