@@ -67,18 +67,14 @@
 		}
 		$topicslist.forEach((t) => ($topics[t.slug] = t))
 		$loading = false
-		await save()
-		console.log('layout: mounted')
-	})
-
-	const save = async () => {
 		const datastring = await JSON.stringify(topicsAll)
 		if (window.localStorage['topics'] !== datastring) {
 			window.localStorage['topics'] = datastring
 			console.log(`layout: updated ${$topicslist.length} topics in localStorage`)
-			return Promise.resolve()
-		} else return Promise.reject()
-	}
+		}
+		console.log('layout: mounted')
+	})
+
 </script>
 <svelte:head>
 	<link rel="shortcut icon" href="/favicon.png" />

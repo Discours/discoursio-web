@@ -13,7 +13,7 @@
 			},
 			body: JSON.stringify({ contact, message: msgElement.innerText })
 		})
-		$openModal = false
+		$openModal = ''
 	}
 </script>
 

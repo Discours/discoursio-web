@@ -66,7 +66,7 @@
 		document.querySelector('.ProseMirror-menubar').setAttribute('style', '')
 	})
 
-	onDestroy(() => view.destroy())
+	onDestroy(() => view && view.destroy())
 </script>
 
 {#if collab}<P2PConnect password={$webrtc.password} />{/if}
