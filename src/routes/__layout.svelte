@@ -33,8 +33,6 @@
 
 	export let topicsAll = []
 
-	$: if ($topicslist && $topicslist.length > 0) $shoutslist = null
-
 	onMount(async () => {
 		$topicslist = null // force update, WARN: works only with null!
 		$subscribedTopics = (await getSubscriptions(document.cookie, 'topics')) || []
@@ -64,9 +62,9 @@
 							`layout: loaded ${$topicslist.length} topics with browser request`
 						)
 					}
-					$loading = false
 				})
 		}
+		$shoutslist = null
 		console.log('layout: mounted')
 	})
 
@@ -75,7 +73,5 @@
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>
 <NavHeader />
-{#key $page.url}
-	<main><slot /></main>
-{/key}
+<main><slot /></main>
 <DiscoursFooter />
