@@ -1,4 +1,5 @@
 [
+  "[slug]",
   "about",
   "auth",
   "community",
@@ -6,6 +7,5 @@
   "feed",
   "search",
   "topic",
-  "user",
-  "[slug]"
+  "user"
 ]

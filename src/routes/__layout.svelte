@@ -9,6 +9,7 @@
 		if (r.ok) {
 			const data = await r.json()
 			topicsAll = data.topicsAll || []
+			console.debug('layout: ssr loaded all topics')
 		}
 		return { props: { topicsAll } }
 	}
@@ -28,31 +29,11 @@
 		shoutslist
 	} from '../stores/zine'
 	import { loading } from '../stores/app'
-	import { browser } from '$app/env'
 	import { page } from '$app/stores'
-	// import 'virtual:windi.css'
-	// import { initLocalizationContext } from '../i18n/index'
-	// initLocalizationContext()
 
 	export let topicsAll = []
 
-	$: if (browser && !topicslist) {
-		fetch(`/topic/all.json`)
-			.then((r) => r.ok && r.json())
-			.then((ttt) => {
-				if ($topicslist != ttt.topicsAll) {
-					$topicslist = ttt.topicsAll
-					console.log(
-						`layout: loaded ${$topicslist.length} topics with browser request`
-					)
-				}
-			})
-	}
-
-	$: if ($topicslist && $topicslist.length > 0) {
-		$shoutslist = null
-		console.log('layout: updated topiclist, updating shouts')
-	}
+	$: if ($topicslist && $topicslist.length > 0) $shoutslist = null
 
 	onMount(async () => {
 		$topicslist = null // force update, WARN: works only with null!
@@ -71,6 +52,20 @@
 		if (window.localStorage['topics'] !== datastring) {
 			window.localStorage['topics'] = datastring
 			console.log(`layout: updated ${$topicslist.length} topics in localStorage`)
+		}
+
+		if(!topicsAll) {
+			fetch(`/topic/all.json`)
+				.then((r) => r.ok && r.json())
+				.then((ttt) => {
+					if ($topicslist != ttt.topicsAll) {
+						$topicslist = ttt.topicsAll
+						console.log(
+							`layout: loaded ${$topicslist.length} topics with browser request`
+						)
+					}
+					$loading = false
+				})
 		}
 		console.log('layout: mounted')
 	})

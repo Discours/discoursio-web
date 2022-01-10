@@ -5,7 +5,6 @@
 	import Icon from './DiscoursIcon.svelte'
 	import { session, token as tokenStore } from '../stores/user'
 	import { openModal } from '../stores/app'
-	import { onMount } from 'svelte'
 	import { fade } from 'svelte/transition'
 	import { API_ENDPOINT } from '$lib/client'
 	import { goto } from '$app/navigation'
@@ -75,13 +74,10 @@
 		// TODO: implement me
 	}
 
-	onMount(async () => {
-		if ($page && $page.url) {
-			code = await $page.url.searchParams.get('code')
-			if (code) reset()
-			else console.log('auth: mounted without code')
-		}
-	})
+	$: if($page) {
+		code = $page?.url?.searchParams.get('code')
+		if (code) reset()
+	}
 
 	const oauth = (provider: string) => {
 		// $openModal = false
