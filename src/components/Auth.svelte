@@ -53,25 +53,25 @@
 
 	const forget = async () => {
 		console.log('auth: forget password clicked')
-		// TODO: forget handler
+		// TODO: implement forget handler
 	}
 
 	const reset = async () => {
 		console.log('auth: confirming reset password code')
 		console.log(code)
-		// TODO: implement me
+		// TODO: implement reset handler
 	}
 
 	const resend = () => {
 		console.log('auth: resending auth code')
-		// TODO: implement me
+		// TODO: implement resend handler
 	}
 
 	const renew = () => {
 		if (password2 === password) {
 			console.log('auth: renewing password')
 		}
-		// TODO: implement me
+		// TODO: implement renew handler
 	}
 
 	$: if($page) {

@@ -33,7 +33,16 @@
 
 	$: if($conn && $conn.awareness) {
 		console.log('p2p: webrtc provider initialized')
-		plugins.unshift([ySyncPlugin(body), yCursorPlugin($conn.awareness)])
+		plugins = [
+				ySyncPlugin(body),
+				yCursorPlugin($conn.awareness),
+				yUndoPlugin(),
+				keymap({
+					'Mod-z': undo,
+					'Mod-y': redo,
+					'Mod-Shift-z': redo
+				})
+			].concat(setup({ schema }))
 		view.updateState(EditorState.create({ schema, plugins }))
 	}
 
@@ -42,7 +51,6 @@
 		if (!collab) {
 			doc = body.doc
 			plugins = [
-				yUndoPlugin(),
 				keymap({
 					'Mod-z': undo,
 					'Mod-y': redo,
@@ -50,14 +58,6 @@
 				})
 			].concat(setup({ schema }))
 		}
-		plugins = [
-			yUndoPlugin(),
-			keymap({
-				'Mod-z': undo,
-				'Mod-y': redo,
-				'Mod-Shift-z': redo
-			})
-		].concat(setup({ schema }))
 		state = EditorState.create(
 			collab ? { schema, plugins } : { schema, plugins, doc }
 		)

@@ -82,7 +82,7 @@
 			{/if}
 		</div>
 		<div class="col-md-3">
-			<!-- TODO: make avatar -->
+			<!-- TODO: add topics' pics to db -->
 		</div>
 	</div>
 {/if}
