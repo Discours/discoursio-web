@@ -39,9 +39,6 @@
 		console.log('p2p: room is ' + $room)
 		// check if there is a pre-configured password
 		if (password) $webrtc.password = password
-		// init p2p provider
-		$p2p = new WebrtcProvider($room, $ydoc, $webrtc)
-		console.log('p2p: webrtc provider initialized')
 		// init db
 		$db = new IndexeddbPersistence($room, $ydoc)
 		console.log('p2p: indexed db persistence connected')

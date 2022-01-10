@@ -8,7 +8,6 @@ import { Awareness } from 'y-protocols/awareness.js'
 export const room: Writable<string> = writable('discours')
 export const ydoc = writable(new Y.Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
-
 interface WebrtcOptions {
 	signaling: string[]
 	awareness: Awareness

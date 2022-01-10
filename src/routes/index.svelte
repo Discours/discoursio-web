@@ -37,6 +37,7 @@
 	import ShoutFeed from '../components/ShoutFeed.svelte'
 	import { shuffle } from '$lib/utils'
 	import SvelteSeo from 'svelte-seo'
+	import { browser } from '$app/env'
 
 	export let recents = []
 	export let topMonth = []
@@ -54,6 +55,8 @@
 	// one topic filtered
 	const oneTopic = (filter) =>
 		$shoutslist.filter((t) => t.topics.find((topic) => topic.slug === filter))
+
+	$: if($topicslist && browser) console.debug('mainpage: browser environment runtime')
 
 	$: if ($shoutslist === null) {
 		$loading = true

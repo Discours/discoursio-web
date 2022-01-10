@@ -1,10 +1,10 @@
 /** @type {import('@sveltejs/kit').RequestHandler} */
-export async function post({ body, session }) {
+export async function post({ body, locals }) {
 	const { slug, what } = body
 	// console.log('unsubscribe: ' + slug + ' of ' + what)
-	const { subscriptions: subs } = session || { subscriptions: {} }
-	if (subs[what]) {
-		const sss = new Set(subs[what])
+	const { cookies } = locals
+	if (cookies[what]) {
+		const sss = new Set(cookies[what])
 		sss.delete(slug)
 		const headers = {
 			'Set-Cookie': what + '=' + JSON.stringify(Array.from(sss))

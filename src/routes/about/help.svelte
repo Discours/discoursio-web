@@ -487,6 +487,8 @@
 		max-width: 500px;
 	}
 
+	/*
+
 	.payment-form {
 		padding: 0 !important;
 
@@ -509,4 +511,5 @@
 		top: 50%;
 		transform: translate(-50%, calc(-50% - 0.8rem));
 	}
+	*/
 </style>

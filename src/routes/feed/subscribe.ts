@@ -1,12 +1,12 @@
 /** @type {import('@sveltejs/kit').RequestHandler} */
-export async function post({ body, session }) {
+export async function post({ body, locals }) {
 	const { slug, what } = body
-	const { subscriptions: subs } = session || { subscriptions: {} }
+	const { cookies } = locals
 	// console.debug(subs)
-	if (!subs[what]) subs[what] = []
-	subs[what].push(slug)
+	if (!cookies[what]) cookies[what] = []
+	cookies[what].push(slug)
 	const headers = {
-		'Set-Cookie': what + '=' + JSON.stringify(Array.from(new Set(subs[what])))
+		'Set-Cookie': what + '=' + JSON.stringify(Array.from(new Set(cookies[what])))
 	}
 	return { headers, body: { ok: true } }
 }

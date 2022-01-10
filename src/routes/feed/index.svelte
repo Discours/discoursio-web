@@ -2,12 +2,6 @@
 	import 'swiper/css'
 	import 'swiper/css/navigation'
 	export const prerender = true
-
-	const method = 'post'
-	const headers = {
-		accept: 'application/json',
-		'Content-Type': 'application/json;charset=utf-8'
-	}
 	export const load = async ({ fetch }) => {
 		let props = {}
 		const recents = await fetch('/feed/recents.json')
@@ -25,8 +19,6 @@
 		authorslist, // User[]
 		shouts, // { slug: Shout }
 		shoutslist, // Shout[]
-		topics, // { slug: Topic }
-		topicslist // Topic[]
 	} from '../../stores/zine'
 	import { fade } from 'svelte/transition'
 	import UserCard from '../../components/UserCard.svelte'
@@ -98,7 +90,8 @@
 </script>
 
 <section class="feed" transition:fade>
-	{#if $shoutslist} <NavTopics shouts={$shoutslist} />{/if}
-
-	<ShoutFeed start={0} />
+	{#if $shoutslist}
+		<NavTopics shouts={$shoutslist} />
+		<ShoutFeed />
+	{/if}
 </section>

@@ -1,5 +1,5 @@
 import { writeFileSync, readdirSync, readFileSync, statSync } from 'fs'
-import { typescript } from 'svelte-preprocess-esbuild'
+// import { typescript } from 'svelte-preprocess-esbuild'
 import { mdsvex } from 'mdsvex'
 // import adapter from '@sveltejs/adapter-auto'
 import vercel from '@sveltejs/adapter-vercel'
@@ -8,7 +8,7 @@ import ssg from '@sveltejs/adapter-static'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)
-const { scss, globalStyle } = require('svelte-preprocess')
+const { scss, globalStyle, typescript } = require('svelte-preprocess')
 
 const routesDir = './src/routes'
 const p = (f) => new URL(f, import.meta.url)
