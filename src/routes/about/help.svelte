@@ -9,6 +9,7 @@
 	// import { openModal } from '../../stores/app'
 	import { goto } from '$app/navigation'
 	import { notices } from '../../stores/user'
+	import { onMount } from 'svelte'
 
 	let paymentTypeShowing = true
 	interface CardData {
@@ -25,34 +26,22 @@
 		description: 'Здесь можно поддержать Дискурс материально.',
 		keywords: 'Discours.io, помощь, благотворительность'
 	}
-	let once = '',
-		monthly = 'Monthly'
-	// let container: HTMLFormElement
+	let once = '', monthly = 'Monthly'
 	let interval: string = monthly
 	let amountSwitchElement: HTMLDivElement
 	let amount: string
 	let customAmount, CustomerReciept
 	let widget
-	/*let card: CardData = {
-		cvv: '',
-		cardNumber: '',
-		expDateMonth: '01',
-		expDateYear: '22'
-	}*/
-	const description = 'Поддержка журнала и развитие Дискурса'
+
 	const cpOptions = {
 		publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
-		description,
+		description: 'Поддержка журнала и развитие Дискурса',
 		currency: 'RUB'
 	}
 
-	// const submitCard = () => console.log('submit')
-
-	const cpInit = () => {
+	onMount(() => {
 		widget = new (window as any).cp.CloudPayments() // Checkout(cpOptions)
 		console.log('help: payments initiated')
-		cpOptions.description =
-			description + '. ' + (interval === once ? '' : 'Ежемесячно')
 		CustomerReciept = {
 			Items: [
 				//товарные позиции
@@ -77,17 +66,14 @@
 				provision: 0.0 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
 			}
 		}
-	}
+	})
 
-	const showCardForm = () => {
-		console.log('help: donate clicked')
+	const show = () => {
 		// $openModal = 'donate'
-		let choice: HTMLInputElement = amountSwitchElement.querySelector(
-			'input[type=radio]:checked'
-		)
+		console.log('help: donate clicked')
+		let choice: HTMLInputElement = amountSwitchElement.querySelector('input[type=radio]:checked')
 		amount = customAmount || choice.value
 		console.log('help: input amount ' + amount)
-		
 		widget.charge(
 			{
 				// options
@@ -131,7 +117,7 @@
 	openGraph={{ ...meta, images: [{ url: '/images/donate.jpg' }] }}
 />
 <svelte:head>
-	<script defer async src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" on:load={cpInit} />
+	<script defer async src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" />
 </svelte:head> 
 <article class="container discours-help">
 	<!--Modal name="donate">
@@ -260,9 +246,9 @@
 
 						<div class="form-group">
 							<a
-								href="#donate"
+								href={''}
 								class="btn send-btn donate"
-								on:click={() => showCardForm()}>Помочь журналу</a
+								on:click|preventDefault={show}>Помочь журналу</a
 							>
 						</div>
 					</form>

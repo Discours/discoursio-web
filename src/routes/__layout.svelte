@@ -29,7 +29,6 @@
 	} from '../stores/zine'
 	import { loading } from '../stores/app'
 	import { browser } from '$app/env'
-	import SvelteSeo from 'svelte-seo'
 	import { page } from '$app/stores'
 	// import 'virtual:windi.css'
 	// import { initLocalizationContext } from '../i18n/index'
@@ -50,7 +49,10 @@
 			})
 	}
 
-	$: if ($topicslist && $topicslist.length > 0) $shoutslist = null
+	$: if ($topicslist && $topicslist.length > 0) {
+		$shoutslist = null
+		console.log('layout: updated topiclist, updating shouts')
+	}
 
 	onMount(async () => {
 		$topicslist = null // force update, WARN: works only with null!
@@ -76,20 +78,7 @@
 			console.log(`layout: updated ${$topicslist.length} topics in localStorage`)
 		}
 	}
-	const meta = {
-		title: 'Дискурс',
-		description: 'Самоорганизующаяся журналистика',
-		keywords: 'Discours.io, дискурс, самыздат, коллаборативная редакция, авторы'
-	}
 </script>
-
-<SvelteSeo
-	{...meta}
-	openGraph={{
-		...meta,
-		images: [{ url: 'https://new.discours.io/logo.png' }]
-	}}
-/>
 <svelte:head>
 	<link rel="shortcut icon" href="/favicon.png" />
 </svelte:head>

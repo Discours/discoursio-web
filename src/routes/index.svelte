@@ -36,6 +36,7 @@
 	import { loading, openModal } from '../stores/app'
 	import ShoutFeed from '../components/ShoutFeed.svelte'
 	import { shuffle } from '$lib/utils'
+	import SvelteSeo from 'svelte-seo'
 
 	export let recents = []
 	export let topMonth = []
@@ -108,10 +109,24 @@
 	}
 
 	// NOTICE: onMount(() => $shoutslist = null) should be triggered by __layout.svelte
+
+	const meta = {
+		title: 'Дискурс',
+		description: 'Самоорганизующаяся журналистика',
+		keywords: 'Discours.io, дискурс, самыздат, коллаборативная редакция, авторы'
+	}
 </script>
 
+<SvelteSeo
+	{...meta}
+	openGraph={{
+		...meta,
+		images: [{ url: 'https://new.discours.io/logo.png' }]
+	}}
+/>
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $shoutslist && $shoutslist.length > 0}
+{#if $loading}<div class='home'>laoding...</div>
+{:else}
 	<div class="home" transition:fade>
 		{#key recents} <NavTopics shouts={recents} />{/key}
 
@@ -169,11 +184,7 @@
 							<li>
 								<div>
 									<div class="top-viewed__topic">
-										<a
-											href="/topic/{shout.topics.find(
-												(item) => item.slug === shout.mainTopic
-											).slug}"
-										>
+										<a href="/topic/{shout.mainTopic}">
 											{shout.topics.find((item) => item.slug === shout.mainTopic).title}
 										</a>
 									</div>

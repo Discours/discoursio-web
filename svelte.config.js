@@ -37,6 +37,7 @@ const config = {
 		mdsvex()
 	],
 	compilerOptions: {
+		dev: process.env.NODE_ENV === 'development',
 		enableSourcemap: true,
 		cssHash: ({ hash, css }) => 's' + hash(css)
 	},
