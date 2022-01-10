@@ -5,7 +5,7 @@ export const get = async ({ params }) => {
 	const { page, size } = params
 	try {
 		const { topViewed } = await client.request(TOP_VIEWED, {
-			page: page || 0,
+			page: page || 1,
 			size: size || 9
 		})
 		return {

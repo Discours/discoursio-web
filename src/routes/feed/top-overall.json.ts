@@ -5,7 +5,7 @@ export const get = async ({ params }) => {
 	const { page, size } = params
 	try {
 		const { topOverall } = await client.request(TOP_OVERALL, {
-			page: page || 0,
+			page: page || 1,
 			size: size || 9
 		})
 		return {

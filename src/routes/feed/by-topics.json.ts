@@ -11,7 +11,7 @@ export const get = async ({ params }) => {
 			topicslugs.forEach(async (topic) => {
 				const q = await client.request(SHOUTS_BY_TOPIC, {
 					topic,
-					page: page || 0,
+					page: page || 1,
 					size: size || 9
 				})
 				if (q.ok) {

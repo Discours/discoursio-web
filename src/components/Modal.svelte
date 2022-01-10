@@ -86,7 +86,7 @@
 		width: 80%;
 	}
 
-	.modalwrap__content {
+	:global(.modalwrap__content) {
 		padding: $container-padding-x;
 
 		@include media-breakpoint-up(lg) {

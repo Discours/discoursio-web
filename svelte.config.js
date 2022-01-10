@@ -46,7 +46,7 @@ const config = {
 		target: '#svelte',
 		hydrate: true,
 		ssr: true,
-		prerender: { enabled: false }, //true, entries: ['*'] },
+		prerender: { enabled: true, entries: ['*'] },
 		vite: {
 			build: {
 				chunkSizeWarningLimit: 777,

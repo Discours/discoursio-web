@@ -11,7 +11,7 @@ export const get = async ({ params }) => {
 			if (q.ok) {
 				authors = (await q.json())['authorsBySlugs']
 				const sq = await client.request(SHOUTS_BY_AUTHOR, {
-					page: page || 0,
+					page: page || 1,
 					size: size || 9,
 					// limit: 50,
 					authors: authors.map((a) => a.slug)

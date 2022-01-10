@@ -10,8 +10,8 @@ export async function handle({ request, resolve }) {
 		token.set(cookies['token'])
 		delete cookies['token']
 	}
-	request.locals.cookies = cookies
-	request.locals.subdomain = subdomain
+	if(Object.keys(cookies).length > 0)request.locals.cookies = cookies
+	if(subdomain) request.locals.subdomain = subdomain
 	const response = await resolve(request)
 	return response
 }

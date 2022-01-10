@@ -12,7 +12,7 @@ export const get = async ({ params }) => {
 			const user = users[0]
 			const { shoutsByAuthor: shouts } = await client.request(SHOUTS_BY_AUTHOR, {
 				author: slug,
-				page: page || 0,
+				page: page || 1,
 				size: size || 50
 				// limit: 50,
 			})

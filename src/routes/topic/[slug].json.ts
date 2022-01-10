@@ -9,7 +9,7 @@ export const get = async ({ params }) => {
 			SHOUTS_BY_TOPIC,
 			{
 				topic,
-				page: page || 0,
+				page: page || 1,
 				size: size || 27
 				// limit: 50,
 			}

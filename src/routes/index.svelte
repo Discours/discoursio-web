@@ -58,7 +58,7 @@
 
 	$: if($topicslist && browser) console.debug('mainpage: browser environment runtime')
 
-	$: if ($shoutslist === null) {
+	$: if ($topicslist && $shoutslist === null) {
 		$loading = true
 		recents.forEach((s) => ($shouts[s.slug] = s))
 		topOverall.forEach((s) => ($shouts[s.slug] = s))
@@ -128,7 +128,7 @@
 	}}
 />
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $loading}<div class='home'>laoding...</div>
+{#if $loading}<div class='home offset-xl-2'>загрузка...</div>
 {:else}
 	<div class="home" transition:fade>
 		{#key recents} <NavTopics shouts={recents} />{/key}
@@ -357,6 +357,7 @@
 		</div>
 
 		{#key shoutsByTopic}
+			{#if 'research' in $topics}
 			<div class="floor floor--important floor--topics-group">
 				<div class="wide-container row">
 					<div class="topics-group__header col-12">
@@ -393,6 +394,7 @@
 					{/if}
 				</div>
 			</div>
+			{/if}
 		{/key}
 
 		<div class="floor">
@@ -457,7 +459,7 @@
 							</div>
 						</div>
 					</div>
-					{#if shoutsByLayout}
+					{#if 'music' in shoutsByLayout}
 						{#each Array.from(shoutsByLayout['music']).slice(0, 3) as shout}
 							<div class="col-md-4">
 								<ShoutCard {shout} />

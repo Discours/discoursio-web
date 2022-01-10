@@ -5,7 +5,7 @@ export const get = async ({ params }) => {
 	try {
 		const { page, size } = params
 		const { recents } = await client.request(RECENT_SHOUTS, {
-			page: page || 0,
+			page: page || 1,
 			size: size || 50
 		})
 		return {

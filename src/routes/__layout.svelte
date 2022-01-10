@@ -1,5 +1,4 @@
 <script context="module">
-	import '../app.scss'
 	// import dayjs from 'dayjs/esm'
 	// import relativeTime from 'dayjs/esm/plugin/relativeTime'
 	// dayjs().format()
@@ -16,6 +15,7 @@
 </script>
 
 <script lang="ts">
+	import '../app.scss'
 	import NavHeader from '../components/NavHeader.svelte'
 	import DiscoursFooter from '../components/DiscoursFooter.svelte'
 	import { onMount } from 'svelte'
