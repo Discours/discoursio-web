@@ -61,35 +61,38 @@
 
 <div class="shout">
 	{#if shout}
-		<div class="shout wide-container row">
-			<article class="col-md-6 offset-md-3">
-				<div class="shout__header">
-					<div class="shout__topic">
-						<a href={`/topic/${mainTopic.slug}`}
+		<div class="shout wide-container">
+			<div class="row">
+				<article class="col-md-6 offset-md-3">
+					<div class="shout__header">
+						<div class="shout__topic">
+							<a href={`/topic/${mainTopic.slug}`}
 							>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
-						>
+							>
+						</div>
+
+						<h1>{shout.title}</h1>
+						{#if shout.subtitle}
+							<h4>{capitalize(shout.subtitle, false)}</h4>{/if}
+
+						<div class="shout__author">
+							{#each shout.authors as author, index}
+								{#if index > 0},{/if}
+								{author.name}
+							{/each}
+						</div>
+
+						<div
+							class="shout__cover"
+							style={`background-image: url('${shout.cover}')`}
+						/>
 					</div>
 
-					<h1>{shout.title}</h1>
-					{#if shout.subtitle}<h4>{capitalize(shout.subtitle, false)}</h4>{/if}
-
-					<div class="shout__author">
-						{#each shout.authors as author, index}
-							{#if index > 0}, {/if}
-							{author.name}
-						{/each}
+					<div class="shout__body">
+						<MD body={shout.body}/>
 					</div>
-
-					<div
-						class="shout__cover"
-						style={`background-image: url('${shout.cover}')`}
-					/>
-				</div>
-
-				<div class="shout__body">
-					<MD body={shout.body} />
-				</div>
-			</article>
+				</article>
+			</div>
 
 			<div class="col-md-8 offset-md-2">
 				<div class="shout-stats">
@@ -187,7 +190,11 @@
 	}
 
 	.shout__header {
-		margin: 0 -16.6666% 2em;
+		margin-bottom: 2em;
+
+		@include media-breakpoint-up(md) {
+			margin: 0 -16.6666% 2em;
+		}
 	}
 
 	.article-card__category {
