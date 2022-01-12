@@ -146,6 +146,10 @@
 			}
 		}
 
+		@include media-breakpoint-down(sm) {
+			padding: divide($container-padding-x, 2);
+		}
+
 		&.fixed {
 			display: inline-flex;
 
@@ -158,8 +162,11 @@
 			margin-right: 2.4rem;
 
 			&:last-child {
-				text-align: right;
 				width: 100%;
+
+				@include media-breakpoint-up(md) {
+					text-align: right;
+				}
 			}
 		}
 
