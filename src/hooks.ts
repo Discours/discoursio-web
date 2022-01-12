@@ -7,6 +7,7 @@ export async function handle({ request, resolve }) {
 	let subdomain = request.host && request.host.split('.')[0]
 	if (subdomain === 'discours' || subdomain === 'new') subdomain = ''
 	if (cookies['token']) {
+		console.log('hooks: got token')
 		token.set(cookies['token'])
 		delete cookies['token']
 	}

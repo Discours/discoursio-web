@@ -4,8 +4,12 @@
 	export const prerender = true
 	export const load = async ({ fetch }) => {
 		let props = {}
-		const recents = await fetch('/feed/recents.json')
+		console.debug('preload: recent shouts')
+		const recents = await fetch('/feed/recents.json?')
 		props = recents.ok ? { ...(await recents.json()), ...props } : props
+		console.debug('TODO: preload: subscribed authors with shouts')
+		console.debug('TODO: preload: subscribed topics with shouts')
+		console.debug('TODO: preload: bookmarked shouts')
 		return { props }
 	}
 </script>
@@ -92,6 +96,8 @@
 <section class="feed" transition:fade>
 	{#if $shoutslist}
 		<NavTopics shouts={$shoutslist} />
-		<ShoutFeed />
+		<ShoutFeed name={'recents'} />
+		<ShoutFeed name={'by-topics'} />
+		<ShoutFeed name={'by-authors'} />
 	{/if}
 </section>

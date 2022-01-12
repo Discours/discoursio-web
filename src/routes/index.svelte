@@ -37,7 +37,6 @@
 	import ShoutFeed from '../components/ShoutFeed.svelte'
 	import { shuffle } from '$lib/utils'
 	import SvelteSeo from 'svelte-seo'
-	import { browser } from '$app/env'
 
 	export let recents = []
 	export let topMonth = []

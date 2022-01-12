@@ -106,7 +106,7 @@
 						<a href="#bookmark" on:click={() => subscribe(shout.slug, 'shouts')}>
 							<Icon name="bookmark" />
 							{#if shout.slug in $subscribedShouts}
-							Отписаться
+							Сохранено
 							{:else}
 							В&nbsp;избранное
 							{/if}

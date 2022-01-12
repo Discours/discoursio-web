@@ -9,7 +9,7 @@ export const load = async ({ fetch }) => {
 	if (r.ok) {
 		const data = await r.json()
 		topicsAll = data.topicsAll || []
-		console.debug('layout: ssr loaded all topics')
+		console.debug('preload: all topics')
 	}
 	return { props: { topicsAll } }
 }
@@ -26,7 +26,8 @@ import {
 	topics,
 	subscribedTopics,
 	subscribedAuthors,
-	shoutslist
+	shoutslist,
+	subscribedShouts
 } from '../stores/zine'
 import { loading } from '../stores/app'
 
@@ -34,8 +35,9 @@ export let topicsAll = []
 
 onMount(async () => {
 	$topicslist = null // force update, WARN: works only with null!
-	$subscribedTopics = (await getSubscriptions('topics')) || []
-	$subscribedAuthors = (await getSubscriptions('authors')) || []
+	$subscribedTopics = (await getSubscriptions('topics'))
+	$subscribedAuthors = (await getSubscriptions('authors'))
+	$subscribedShouts = (await getSubscriptions('shouts'))
 	if (topicsAll.length > 0) {
 		$topicslist = topicsAll
 	} else {
