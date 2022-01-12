@@ -123,6 +123,12 @@
 			margin-left: 3.2rem;
 		}
 
+		:global(.circlewrap) {
+			height: 23px;
+			min-width: 23px;
+			width: 23px;
+		}
+
 		:global(img) {
 			height: 20px;
 			vertical-align: middle;
@@ -135,7 +141,7 @@
 	}
 
 	.usercontrol__item--write-post {
-		@include media-breakpoint-up(md) {
+		@include media-breakpoint-up(lg) {
 			:global(.icon) {
 				display: none;
 			}

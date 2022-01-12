@@ -34,18 +34,18 @@
 						>
 					</li>
 				{/each}
-				<li class="usernav">
-					{#if $token}
-						<NavAuth />
-					{:else}
-						<div class="usercontrol col">
-							<div class="usercontrol__item loginbtn">
-								<a href={'#auth'} on:click={() => ($openModal = 'auth')}>войти</a>
-							</div>
-						</div>
-					{/if}
-				</li>
 			</ul>
+			<div class="usernav">
+				{#if $token}
+					<NavAuth />
+				{:else}
+					<div class="usercontrol col">
+						<div class="usercontrol__item loginbtn">
+							<a href={'#auth'} on:click={() => ($openModal = 'auth')}>войти</a>
+						</div>
+					</div>
+				{/if}
+			</div>
 			<div class="burger-container">
 				<div class="burger" class:fixed on:click={() => (fixed = !fixed)}>
 					<div />
@@ -62,8 +62,9 @@
 	}
 	.header__inner {
 		background: #fff;
-		//flex-wrap: wrap;
+		flex-wrap: nowrap;
 		justify-content: space-between;
+
 		&.fixed {
 			border-bottom: 4px solid #000;
 			left: 0;
@@ -116,6 +117,7 @@
 		width: auto;
 
 		@include media-breakpoint-down(md) {
+			flex: 1;
 			padding-left: 0;
 			padding-right: 0;
 		}
@@ -160,14 +162,6 @@
 
 		li {
 			margin-right: 2.4rem;
-
-			&:last-child {
-				width: 100%;
-
-				@include media-breakpoint-up(md) {
-					text-align: right;
-				}
-			}
 		}
 
 		a {
