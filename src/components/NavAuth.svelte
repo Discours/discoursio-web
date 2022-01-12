@@ -24,12 +24,16 @@
 		try {
 			console.log('navauth: found auth token ' + $token)
 			client.request(GET_ME).then(({ user, error }) => {
-				if (error)
+				if (error) {
 					$notices = [
 						{ text: error, type: 'error', ts: new Date(), state: 'new' },
 						...$notices
 					]
+					console.log('navauth: update notices')
+					console.debug($notices)
+				}
 				if (user) {
+					console.log('navauth: got own session')
 					$session = user
 					client.request(GET_ROLES, { slug: user.slug }).then(async (data) => {
 						console.log(data)
