@@ -18,7 +18,7 @@
 		authors, // { slug: User }
 		authorslist, // User[]
 		shouts, // { slug: Shout }
-		shoutslist, // Shout[]
+		shoutslist // Shout[]
 	} from '../../stores/zine'
 	import { fade } from 'svelte/transition'
 	import UserCard from '../../components/UserCard.svelte'

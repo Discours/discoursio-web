@@ -439,7 +439,7 @@ export type Shout = {
 	mainTopic?: Maybe<Scalars['String']>
 	publishedAt?: Maybe<Scalars['DateTime']>
 	publishedBy?: Maybe<Scalars['Int']>
-	ratings?: Maybe<Array<Maybe<Rating>>>
+	ratings?: Maybe<Array<Maybe<ShoutRating>>>
 	slug: Scalars['String']
 	stat?: Maybe<ShoutStat>
 	subtitle?: Maybe<Scalars['String']>
@@ -463,6 +463,12 @@ export type ShoutInput = {
 	versionOf?: InputMaybe<Scalars['String']>
 	visibleForRoles?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 	visibleForUsers?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>
+}
+
+export type ShoutRating = {
+	__typename?: 'ShoutRating'
+	rater: Scalars['String']
+	value: Scalars['Int']
 }
 
 export type ShoutResult = {
@@ -585,6 +591,6 @@ export function getSdk(
 	client: GraphQLClient,
 	withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
-	return { client, withWrapper }
+	return {client, withWrapper}
 }
 export type Sdk = ReturnType<typeof getSdk>

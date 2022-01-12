@@ -74,7 +74,7 @@
 		// TODO: implement renew handler
 	}
 
-	$: if($page) {
+	$: if ($page) {
 		code = $page?.url?.searchParams.get('code')
 		if (code) reset()
 	}

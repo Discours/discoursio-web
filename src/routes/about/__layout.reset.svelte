@@ -1,17 +1,17 @@
 <script lang="ts">
-import { page } from "$app/stores"
-import DiscoursFooter from "../../components/DiscoursFooter.svelte"
-import NavHeader from "../../components/NavHeader.svelte"
-import SvelteSeo from "svelte-seo"
+	import { page } from '$app/stores'
+	import DiscoursFooter from '../../components/DiscoursFooter.svelte'
+	import NavHeader from '../../components/NavHeader.svelte'
+	import SvelteSeo from 'svelte-seo'
 
-const meta = {
+	const meta = {
 		title: 'Дискурс',
 		description: 'О проекте',
-		keywords: 'Discours.io, дискурс, самыздат, коллаборативная редакция, проекты, донаты, партнёры'
+		keywords:
+			'Discours.io, дискурс, самыздат, коллаборативная редакция, проекты, донаты, партнёры'
 	}
 
-$: if($page && $page.url) console.log('layout: got page store')
-
+	$: if ($page && $page.url) console.log('layout: got page store')
 </script>
 
 <SvelteSeo

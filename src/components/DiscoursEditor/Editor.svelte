@@ -31,18 +31,18 @@
 		$conn = new WebrtcProvider($room, $ydoc, $webrtc)
 	}
 
-	$: if($conn && $conn.awareness) {
+	$: if ($conn && $conn.awareness) {
 		console.log('p2p: webrtc provider initialized')
 		plugins = [
-				ySyncPlugin(body),
-				yCursorPlugin($conn.awareness),
-				yUndoPlugin(),
-				keymap({
-					'Mod-z': undo,
-					'Mod-y': redo,
-					'Mod-Shift-z': redo
-				})
-			].concat(setup({ schema }))
+			ySyncPlugin(body),
+			yCursorPlugin($conn.awareness),
+			yUndoPlugin(),
+			keymap({
+				'Mod-z': undo,
+				'Mod-y': redo,
+				'Mod-Shift-z': redo
+			})
+		].concat(setup({ schema }))
 		view.updateState(EditorState.create({ schema, plugins }))
 	}
 

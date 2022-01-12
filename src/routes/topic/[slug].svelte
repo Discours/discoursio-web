@@ -83,156 +83,158 @@
 
 <div class="container">
 	{#if shouts.length < 8}
-	<div class="col-md-4">
-		<h3>Тему поддерживают</h3>
-		{#each Object.values(authors).slice(0, 5) as user}
-			<UserCard {user} />
-		{/each}
-	</div>
-	{:else}
-	<div class="row topic__controls">
-		<div class="col-md-8">
-			<ul class="view-switcher">
-				<li class:selected={mode === 'fresh'}>
-					<button type="button" on:click={() => sortBy('fresh')}>Свежее</button>
-				</li>
-				<li class:selected={mode === 'popular'}>
-					<button type="button" on:click={() => sortBy('popular')}>Популярное</button
-					>
-				</li>
-				<li class:selected={mode === 'discuss'}>
-					<button type="button" on:click={() => sortBy('discuss')}
-						>Обсуждаемое</button
-					>
-				</li>
-			</ul>
-		</div>
-
 		<div class="col-md-4">
-			<div class="mode-switcher">
-				Показывать
-				<span class="mode-switcher__control">Все публикации</span>
-			</div>
+			<h3>Тему поддерживают</h3>
+			{#each Object.values(authors).slice(0, 5) as user}
+				<UserCard {user} />
+			{/each}
 		</div>
-	</div>
+	{:else}
+		<div class="row topic__controls">
+			<div class="col-md-8">
+				<ul class="view-switcher">
+					<li class:selected={mode === 'fresh'}>
+						<button type="button" on:click={() => sortBy('fresh')}>Свежее</button>
+					</li>
+					<li class:selected={mode === 'popular'}>
+						<button type="button" on:click={() => sortBy('popular')}
+							>Популярное</button
+						>
+					</li>
+					<li class:selected={mode === 'discuss'}>
+						<button type="button" on:click={() => sortBy('discuss')}
+							>Обсуждаемое</button
+						>
+					</li>
+				</ul>
+			</div>
 
-	<div class="row">
-		<div class="floor floor--one-article">
-			<div class="row">
-				{#each shouts.slice(0, 1) as shout}
-					<div class="col-12">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				{#each shouts.slice(1, 4) as shout}
-					<div class="col-md-4">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				{#each shouts.slice(4, 6) as shout}
-					<div class="col-md-6">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				<div class="col-md-4">
-					<h3>Тему поддерживают</h3>
-					{#each Object.values(authors).slice(0, 5) as user}
-						<UserCard {user} />
-					{/each}
+			<div class="col-md-4">
+				<div class="mode-switcher">
+					Показывать
+					<span class="mode-switcher__control">Все публикации</span>
 				</div>
-				{#each shouts.slice(6, 8) as shout}
-					<div class="col-md-4">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
 			</div>
 		</div>
-		<div class="floor floor--important">
-			<div class="container">
+
+		<div class="row">
+			<div class="floor floor--one-article">
 				<div class="row">
-					<h3 class="col-12">Популярное</h3>
-					{#each shouts.slice(8, 10) as shout}
-						<div class="col-md-6">
-							<ShoutCard {shout}/>
+					{#each shouts.slice(0, 1) as shout}
+						<div class="col-12">
+							<ShoutCard {shout} />
 						</div>
 					{/each}
 				</div>
 			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				{#each shouts.slice(10, 13) as shout}
-					<div class="col-md-4">
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				{#each shouts.slice(13, 16) as shout}
-					<div class="col-md-4">`
-						<ShoutCard {shout} />
-					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor floor--important">
-			<div class="container">
+			<div class="floor">
 				<div class="row">
-					<h3 class="col-12">Избранное</h3>
-					{#each shouts.slice(16, 19) as shout}
+					{#each shouts.slice(1, 4) as shout}
 						<div class="col-md-4">
 							<ShoutCard {shout} />
 						</div>
 					{/each}
 				</div>
 			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				<div class="col-md-4">
-					<ShoutCard shout={shouts[0]} />
-				</div>
-				<div class="col-md-8">
-					<ShoutCard shout={shouts[1]} />
+			<div class="floor">
+				<div class="row">
+					{#each shouts.slice(4, 6) as shout}
+						<div class="col-md-6">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
 				</div>
 			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				{#each shouts.slice(2, 6) as shout}
-					<div class="col-md-3">
-						<ShoutCard {shout} />
+			<div class="floor">
+				<div class="row">
+					<div class="col-md-4">
+						<h3>Тему поддерживают</h3>
+						{#each Object.values(authors).slice(0, 5) as user}
+							<UserCard {user} />
+						{/each}
 					</div>
-				{/each}
-			</div>
-		</div>
-		<div class="floor">
-			<div class="row">
-				<div class="col-md-8">
-					<ShoutCard shout={shouts[6]} />
-				</div>
-				<div class="col-md-4">
-					<ShoutCard shout={shouts[7]} />
+					{#each shouts.slice(6, 8) as shout}
+						<div class="col-md-4">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
 				</div>
 			</div>
+			<div class="floor floor--important">
+				<div class="container">
+					<div class="row">
+						<h3 class="col-12">Популярное</h3>
+						{#each shouts.slice(8, 10) as shout}
+							<div class="col-md-6">
+								<ShoutCard {shout} />
+							</div>
+						{/each}
+					</div>
+				</div>
+			</div>
+			<div class="floor">
+				<div class="row">
+					{#each shouts.slice(10, 13) as shout}
+						<div class="col-md-4">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="floor">
+				<div class="row">
+					{#each shouts.slice(13, 16) as shout}
+						<div class="col-md-4">
+							`
+							<ShoutCard {shout} />
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="floor floor--important">
+				<div class="container">
+					<div class="row">
+						<h3 class="col-12">Избранное</h3>
+						{#each shouts.slice(16, 19) as shout}
+							<div class="col-md-4">
+								<ShoutCard {shout} />
+							</div>
+						{/each}
+					</div>
+				</div>
+			</div>
+			<div class="floor">
+				<div class="row">
+					<div class="col-md-4">
+						<ShoutCard shout={shouts[0]} />
+					</div>
+					<div class="col-md-8">
+						<ShoutCard shout={shouts[1]} />
+					</div>
+				</div>
+			</div>
+			<div class="floor">
+				<div class="row">
+					{#each shouts.slice(2, 6) as shout}
+						<div class="col-md-3">
+							<ShoutCard {shout} />
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="floor">
+				<div class="row">
+					<div class="col-md-8">
+						<ShoutCard shout={shouts[6]} />
+					</div>
+					<div class="col-md-4">
+						<ShoutCard shout={shouts[7]} />
+					</div>
+				</div>
+			</div>
 		</div>
-	</div>
 	{/if}
-	<ShoutFeed name="by-topics" props={{ topics: [slug,]}} />
+	<ShoutFeed name="by-topics" props={{ topics: [slug] }} />
 </div>
 
 <style lang="scss">

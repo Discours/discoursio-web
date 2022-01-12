@@ -9,5 +9,7 @@
 </script>
 
 <svelte:head><title>Дискурс : Редакция</title></svelte:head>
-<TopicInput />
-<DiscoursEditor body={$body} collab={true} />
+<article>
+	<TopicInput />
+	<DiscoursEditor body={$body} collab={false} />
+</article>

@@ -26,7 +26,8 @@
 		description: 'Здесь можно поддержать Дискурс материально.',
 		keywords: 'Discours.io, помощь, благотворительность'
 	}
-	let once = '', monthly = 'Monthly'
+	let once = '',
+		monthly = 'Monthly'
 	let interval: string = monthly
 	let amountSwitchElement: HTMLDivElement
 	let amount: string
@@ -71,7 +72,9 @@
 	const show = () => {
 		// $openModal = 'donate'
 		console.log('help: donate clicked')
-		let choice: HTMLInputElement = amountSwitchElement.querySelector('input[type=radio]:checked')
+		let choice: HTMLInputElement = amountSwitchElement.querySelector(
+			'input[type=radio]:checked'
+		)
 		amount = customAmount || choice.value
 		console.log('help: input amount ' + amount)
 		widget.charge(
@@ -117,8 +120,11 @@
 	openGraph={{ ...meta, images: [{ url: '/images/donate.jpg' }] }}
 />
 <svelte:head>
-	<script defer async src="https://widget.cloudpayments.ru/bundles/cloudpayments.js" />
-</svelte:head> 
+	<script
+		defer
+		async
+		src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
+</svelte:head>
 <article class="container discours-help">
 	<!--Modal name="donate">
 		<div class="row modalwrap__content">
@@ -245,10 +251,8 @@
 						</div>
 
 						<div class="form-group">
-							<a
-								href={''}
-								class="btn send-btn donate"
-								on:click|preventDefault={show}>Помочь журналу</a
+							<a href={''} class="btn send-btn donate" on:click|preventDefault={show}
+								>Помочь журналу</a
 							>
 						</div>
 					</form>

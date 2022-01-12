@@ -6,7 +6,7 @@
 	import { onMount } from 'svelte'
 	import { shuffle } from '$lib/utils'
 	export let props = {}
-	export let name: string = 'recents'
+	export let name = 'recents'
 	export let shouts: Shout[] = []
 	export let start = 0
 	export let size = 9
@@ -16,11 +16,15 @@
 	$: if ($shoutslist === null && shouts) $shoutslist = shouts
 	$: if ($shoutslist) $shoutslist = Array.from(new Set($shoutslist))
 
-	const more = async () => { // what ='topics' | 'authors' 
+	const more = async () => {
+		// what ='topics' | 'authors'
 		loading = true
 		console.log('feed: show more shouts')
 		if (size * page > $shoutslist.length) {
-			const r = await fetch(`/feed/${name}.json?page=${page}&size=${size}` + (name ==='by-topics' ?? `&topics=${props['topics']}`))
+			const r = await fetch(
+				`/feed/${name}.json?page=${page}&size=${size}` +
+					(name === 'by-topics' ?? `&topics=${props['topics']}`)
+			)
 			if (r.ok) {
 				const { recents: newData } = await r.json()
 				if ($shoutslist.includes(newData[0])) {
@@ -38,7 +42,7 @@
 	}
 	const lim = (num) => (num < $shoutslist.length ? num : $shoutslist.length)
 	let floors = [3, 2, 4] // 1 2 5
-	
+
 	onMount(() => {
 		floors = shuffle(floors)
 		console.debug($shoutslist.slice(0, 9))

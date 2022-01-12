@@ -2,12 +2,14 @@
 	import UserCard from './UserCard.svelte'
 	import ShoutComment from './ShoutComment.svelte'
 	import { session, token } from '../stores/user'
+	import { subscribedShouts } from "../stores/zine"
 	import { openModal } from '../stores/app'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
 	import type { Topic } from '$lib/codegen'
 	import { capitalize } from '$lib/utils'
 	import Icon from './DiscoursIcon.svelte'
+	import { subscribe } from '$lib/cookie'
 
 	export let props
 	let shout
@@ -51,7 +53,7 @@
 				else return t.slug === shout.mainTopic
 			})
 
-			mainTopic = shout.topics.find(item => item.slug === shout.mainTopic)
+			mainTopic = shout.topics.find((item) => item.slug === shout.mainTopic)
 		}
 		// console.log(showTopic)
 	}
@@ -64,7 +66,7 @@
 				<div class="shout__header">
 					<div class="shout__topic">
 						<a href={`/topic/${mainTopic.slug}`}
-						>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
+							>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
 						>
 					</div>
 
@@ -92,23 +94,27 @@
 			<div class="col-md-8 offset-md-2">
 				<div class="shout-stats">
 					<div class="shout-stats__item shout-stats__item--likes">
-						<Icon name="like"/>
-						{shout.ratings.reduce((acc, curr) => (acc + curr.value), 0)}
-						<Icon name="like"/>
+						<Icon name="like" />
+						{shout.ratings.reduce((acc, curr) => acc + curr.value, 0)}
+						<Icon name="like" />
 					</div>
 					<div class="shout-stats__item">
-						<Icon name="view"/>
+						<Icon name="view" />
 						{shout.stat.views}
 					</div>
 					<div class="shout-stats__item">
-						<a href="#bookmark">
-							<Icon name="bookmark"/>
+						<a href="#bookmark" on:click={() => subscribe(shout.slug, 'shouts')}>
+							<Icon name="bookmark" />
+							{#if shout.slug in $subscribedShouts}
+							Отписаться
+							{:else}
 							В&nbsp;избранное
+							{/if}
 						</a>
 					</div>
 					<div class="shout-stats__item">
-						<a href="#share">
-							<Icon name="share"/>
+						<a href="#share" on:click={() => $openModal = 'share'}>
+							<Icon name="share" />
 							Поделиться
 						</a>
 					</div>
@@ -116,9 +122,9 @@
 
 				<div class="topics-list">
 					{#each shout.topics as topic}
-					<div class="shout__topic">
-						<a href="/topic/{topic.slug}">{topic.title}</a>
-					</div>
+						<div class="shout__topic">
+							<a href="/topic/{topic.slug}">{topic.title}</a>
+						</div>
 					{/each}
 				</div>
 
@@ -324,7 +330,7 @@
 				transition: background-color 0.2s;
 
 				&:hover {
-					background-color: rgba(0,0,0,0.2);
+					background-color: rgba(0, 0, 0, 0.2);
 				}
 			}
 		}

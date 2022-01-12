@@ -1,3 +1,5 @@
+import { createCookie } from '$lib/cookie'
+
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ body, locals }) {
 	const { slug, what } = body
@@ -7,7 +9,7 @@ export async function post({ body, locals }) {
 		const sss = new Set(cookies[what])
 		sss.delete(slug)
 		const headers = {
-			'Set-Cookie': what + '=' + JSON.stringify(Array.from(sss))
+			'Set-Cookie': createCookie(what, Array.from(sss))
 		}
 		// console.log('setting cookie: '  + JSON.stringify(Array.from(sss)))
 		return { headers, body: { ok: true } }

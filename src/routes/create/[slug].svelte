@@ -14,9 +14,11 @@
 
 	export let slug
 
-	$: topic = $shouts[slug].mainTopic
+	$: topic = $shouts[slug]?.mainTopic
 </script>
 
 <svelte:head><title>Дискурс : Редакция</title></svelte:head>
-<TopicInput {topic} />
-<DiscoursEditor body={new XmlFragment()} collab={false} />
+<article>
+	<TopicInput {topic} />
+	<DiscoursEditor body={new XmlFragment()} collab={false} />
+</article>

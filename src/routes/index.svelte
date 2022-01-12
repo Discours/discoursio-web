@@ -126,7 +126,7 @@
 	}}
 />
 <svelte:head><title>Дискурс : Главная</title></svelte:head>
-{#if $loading}<div class='home offset-xl-2'>загрузка...</div>
+{#if $loading}<div class="home offset-xl-2">загрузка...</div>
 {:else}
 	<div class="home" transition:fade>
 		{#key recents} <NavTopics shouts={recents} />{/key}
@@ -356,42 +356,42 @@
 
 		{#key shoutsByTopic}
 			{#if 'research' in $topics}
-			<div class="floor floor--important floor--topics-group">
-				<div class="wide-container row">
-					<div class="topics-group__header col-12">
-						<div class="row">
-							<h3 class="col-sm-6">
-								{$topics['research'].title}
-							</h3>
-							<div class="col-sm-6 all-materials">
-								<a href={`/topic/research`}
-									>все материалы
-									<Icon name="arrow-right-white" />
-								</a>
-							</div>
-						</div>
-					</div>
-					{#if shoutsByTopic['research']}
-						<div class="col-lg-6">
-							<ShoutCard shout={shoutsByTopic['research'][0]} />
-						</div>
-						<div class="col-lg-6">
+				<div class="floor floor--important floor--topics-group">
+					<div class="wide-container row">
+						<div class="topics-group__header col-12">
 							<div class="row">
-								<div class="col-md-6">
-									{#each shoutsByTopic['research'].slice(1, 4) as shout}
-										<ShoutCard {shout} noimage={true} />
-									{/each}
-								</div>
-								<div class="col-md-6">
-									{#each shoutsByTopic['research'].slice(4, 7) as shout}
-										<ShoutCard {shout} noimage={true} />
-									{/each}
+								<h3 class="col-sm-6">
+									{$topics['research'].title}
+								</h3>
+								<div class="col-sm-6 all-materials">
+									<a href={`/topic/research`}
+										>все материалы
+										<Icon name="arrow-right-white" />
+									</a>
 								</div>
 							</div>
 						</div>
-					{/if}
+						{#if shoutsByTopic['research']}
+							<div class="col-lg-6">
+								<ShoutCard shout={shoutsByTopic['research'][0]} />
+							</div>
+							<div class="col-lg-6">
+								<div class="row">
+									<div class="col-md-6">
+										{#each shoutsByTopic['research'].slice(1, 4) as shout}
+											<ShoutCard {shout} noimage={true} />
+										{/each}
+									</div>
+									<div class="col-md-6">
+										{#each shoutsByTopic['research'].slice(4, 7) as shout}
+											<ShoutCard {shout} noimage={true} />
+										{/each}
+									</div>
+								</div>
+							</div>
+						{/if}
+					</div>
 				</div>
-			</div>
 			{/if}
 		{/key}
 

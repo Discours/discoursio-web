@@ -29,10 +29,31 @@ const unsubscribe = async (slug, what) => {
 	return subscribed
 }
 
-const getSubscriptions = async (coo, entity) => {
-	if (coo.replace(entity + '=', '') !== coo) {
-		return await JSON.parse(coo.split(entity + '=')[1].split(';')[0])
-	} else return
+const getSubscriptions = async (entity) => await JSON.parse(getCookie(entity))
+
+const createCookie = (name: string, value: any, days: number = 0) => {
+    let expires = ""
+    if (days) {
+        const date = new Date()
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
+        expires = "; expires=" + date.toUTCString()
+    }
+    return name + "=" + value + expires + "; path=/"
 }
 
-export { subscribe, unsubscribe, getSubscriptions }
+const getCookie = (c_name: string) => {
+    if (document?.cookie?.length > 0) {
+        let c_start = document.cookie.indexOf(c_name + "=")
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            let c_end = document.cookie.indexOf(";", c_start)
+            if (c_end == -1) {
+                c_end = document.cookie.length
+            }
+            return unescape(document.cookie.substring(c_start, c_end))
+        }
+    }
+    return ""
+}
+
+export { createCookie, getCookie, subscribe, unsubscribe, getSubscriptions }
