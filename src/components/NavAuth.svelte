@@ -29,7 +29,7 @@
 						{ text: error, type: 'error', ts: new Date(), state: 'new' },
 						...$notices
 					]
-					console.log('navauth: update notices')
+					console.log('navauth: update notices with no token error')
 					console.debug($notices)
 				}
 				if (user) {
@@ -46,11 +46,13 @@
 				}
 			})
 		} catch (e) {
-			console.error('navauth: graphql request failed')
+			console.error(e)
 			$notices = [
 				{ text: e, type: 'error', ts: new Date(), state: 'new' },
 				...$notices
 			]
+			console.log('navauth: update notices with graphql error')
+			console.debug($notices)
 		}
 	}
 
