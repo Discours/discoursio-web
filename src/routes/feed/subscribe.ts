@@ -1,4 +1,4 @@
-import { createCookie } from "$lib/cookie"
+import { createCookie } from '$lib/cookie'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ body, locals }) {

@@ -17,7 +17,7 @@ export type Scalars = {
 	Boolean: boolean
 	Int: number
 	Float: number
-	DateTime: string
+	DateTime: any
 }
 
 export type AuthResult = {
@@ -121,7 +121,6 @@ export type MessageWithStatus = {
 export type Mutation = {
 	__typename?: 'Mutation'
 	confirmEmail: AuthResult
-	confirmPasswordReset: Scalars['Boolean']
 	createComment: CommentResult
 	createCommunity: Community
 	createMessage: MessageResult
@@ -135,12 +134,13 @@ export type Mutation = {
 	rateComment: Result
 	rateShout: Result
 	registerUser: AuthResult
-	requestPasswordReset: Scalars['Boolean']
+	requestPasswordUpdate: Result
 	topicSubscribe: Result
 	topicUnsubscribe: Result
 	updateComment: CommentResult
 	updateCommunity: Community
 	updateMessage: MessageResult
+	updatePassword: Result
 	updateProfile: Result
 	updateShout: ShoutResult
 	updateTopic: TopicResult
@@ -148,10 +148,6 @@ export type Mutation = {
 }
 
 export type MutationConfirmEmailArgs = {
-	token: Scalars['String']
-}
-
-export type MutationConfirmPasswordResetArgs = {
 	token: Scalars['String']
 }
 
@@ -214,7 +210,7 @@ export type MutationRegisterUserArgs = {
 	password?: InputMaybe<Scalars['String']>
 }
 
-export type MutationRequestPasswordResetArgs = {
+export type MutationRequestPasswordUpdateArgs = {
 	email: Scalars['String']
 }
 
@@ -238,6 +234,11 @@ export type MutationUpdateCommunityArgs = {
 export type MutationUpdateMessageArgs = {
 	body: Scalars['String']
 	id: Scalars['Int']
+}
+
+export type MutationUpdatePasswordArgs = {
+	password: Scalars['String']
+	token: Scalars['String']
 }
 
 export type MutationUpdateProfileArgs = {
@@ -591,6 +592,6 @@ export function getSdk(
 	client: GraphQLClient,
 	withWrapper: SdkFunctionWrapper = defaultWrapper
 ) {
-	return {client, withWrapper}
+	return { client, withWrapper }
 }
 export type Sdk = ReturnType<typeof getSdk>

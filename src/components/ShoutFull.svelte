@@ -2,7 +2,7 @@
 	import UserCard from './UserCard.svelte'
 	import ShoutComment from './ShoutComment.svelte'
 	import { session, token } from '../stores/user'
-	import { subscribedShouts } from "../stores/zine"
+	import { subscribedShouts } from '../stores/zine'
 	import { openModal } from '../stores/app'
 	import { onMount } from 'svelte'
 	import MD from '../components/MD.svelte'
@@ -67,7 +67,7 @@
 					<div class="shout__header">
 						<div class="shout__topic">
 							<a href={`/topic/${mainTopic.slug}`}
-							>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
+								>#{@html mainTopic.title.replace(' ', '&nbsp;')}</a
 							>
 						</div>
 
@@ -89,7 +89,7 @@
 					</div>
 
 					<div class="shout__body">
-						<MD body={shout.body}/>
+						<MD body={shout.body} />
 					</div>
 				</article>
 			</div>
@@ -109,14 +109,14 @@
 						<a href="#bookmark" on:click={() => subscribe(shout.slug, 'shouts')}>
 							<Icon name="bookmark" />
 							{#if shout.slug in $subscribedShouts}
-							Сохранено
+								Сохранено
 							{:else}
-							В&nbsp;избранное
+								В&nbsp;избранное
 							{/if}
 						</a>
 					</div>
 					<div class="shout-stats__item">
-						<a href="#share" on:click={() => $openModal = 'share'}>
+						<a href="#share" on:click={() => ($openModal = 'share')}>
 							<Icon name="share" />
 							Поделиться
 						</a>
