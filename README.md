@@ -16,7 +16,7 @@ redis-server
 ### Start backend
 
 ```sh
-cd api
+cd server
 poetry run python server.py
 ```
 
