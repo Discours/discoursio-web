@@ -49,27 +49,27 @@ export { buildMenuItems, buildKeymap, buildInputRules }
 //     menuContent:: [[MenuItem]]
 //     Can be used to override the menu content.
 export function setup(options) {
-	const plugins = [
-		buildInputRules(options.schema),
-		keymap(buildKeymap(options.schema, options.mapKeys)),
-		keymap(baseKeymap),
-		dropCursor(),
-		gapCursor()
-	]
-	if (options.menuBar !== false)
-		plugins.push(
-			menuBar({
-				floating: options.floatingMenu !== false,
-				content: options.menuContent || buildMenuItems(options.schema).fullMenu
-			})
-		)
-	if (options.history !== false) plugins.push(history())
+  const plugins = [
+    buildInputRules(options.schema),
+    keymap(buildKeymap(options.schema, options.mapKeys)),
+    keymap(baseKeymap),
+    dropCursor(),
+    gapCursor()
+  ]
+  if (options.menuBar !== false)
+    plugins.push(
+      menuBar({
+        floating: options.floatingMenu !== false,
+        content: options.menuContent || buildMenuItems(options.schema).fullMenu
+      })
+    )
+  if (options.history !== false) plugins.push(history())
 
-	return plugins.concat(
-		new Plugin({
-			props: {
-				attributes: { class: 'discours-editor' }
-			}
-		})
-	)
+  return plugins.concat(
+    new Plugin({
+      props: {
+        attributes: { class: 'discours-editor' }
+      }
+    })
+  )
 }

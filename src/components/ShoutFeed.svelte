@@ -1,102 +1,105 @@
 <script lang="ts">
-	import { shoutslist } from '../stores/zine'
-	import type { Shout } from '$lib/codegen'
-	import ShoutCard from './ShoutCard.svelte'
-	import { fade } from 'svelte/transition'
-	import { onMount } from 'svelte'
-	import { shuffle } from '$lib/utils'
-	export let props = {}
-	export let name = 'recents'
-	export let shouts: Shout[] = []
-	export let start = 0
-	export let size = 9
-	let page = 1
-	let loading = false
-	let nomore = false
-	$: if ($shoutslist === null && shouts) $shoutslist = shouts
-	$: if ($shoutslist) $shoutslist = Array.from(new Set($shoutslist))
+  import type { Shout } from '$lib/codegen'
+  import ShoutCard from './ShoutCard.svelte'
+  import { fade } from 'svelte/transition'
+  import { onMount } from 'svelte'
+  import { shuffle } from '$lib/utils'
+  // import { createEventDispatcher } from 'svelte'
+  import { loading, more } from '../stores/app'
 
-	const more = async () => {
-		// what ='topics' | 'authors'
-		loading = true
-		console.log('feed: show more shouts')
-		if (size * page > $shoutslist.length) {
-			const r = await fetch(
-				`/feed/${name}.json?page=${page}&size=${size}` +
-					(name === 'by-topics' ?? `&topics=${props['topics']}`)
-			)
-			if (r.ok) {
-				const { recents: newData } = await r.json()
-				if ($shoutslist.includes(newData[0])) {
-					console.log('feed: reached the bottom')
-					nomore = true
-				} else {
-					$shoutslist = Array.from(new Set([...newData, ...$shoutslist]))
-					console.debug('feed: ' + newData.length.toString() + ' more shouts loaded')
-				}
-			}
-		}
-		console.debug('feed: ' + $shoutslist.length.toString() + ' total shouts')
-		loading = false
-		page += 1
-	}
-	const lim = (num) => (num < $shoutslist.length ? num : $shoutslist.length)
-	let floors = [3, 2, 4] // 1 2 5
+  // const dispatch = createEventDispatcher()
 
-	onMount(() => {
-		floors = shuffle(floors)
-		console.debug($shoutslist.slice(0, 9))
-	})
+  export let props = {}
+  export let name = 'recents'
+  export let shouts: Shout[]
+  export let start = 0
+  export let size = 9
+  let page = 0
+  let showed: Shout[] = []
+  $: end = (page + 1) * size > shouts?.length ? shouts?.length : (page + 1) * size
+  $: if(shouts?.length > 0) showed = shouts.slice(start, end)
+  $: renderedPage = showed.length / size + (showed.length % size) > 0 ? 1 : 0
+  $: if (showed === shouts && renderedPage < page) $more = name
+  let nomore = false
+
+  const lim = (num) => (num < shouts?.length ? num : shouts?.length)
+  let perFloor = [3, 2, 4] // 1 2 5
+
+  onMount(() => {
+    perFloor = shuffle(perFloor)
+    // console.debug(shouts.slice(start, size))
+  })
+
+  let offsetHeight: number
+  let innerHeight: number
+  let scrollY: number
+
+  const onScroll = () => {
+    if (
+      shouts?.length > 0 &&
+      showed.length < shouts?.length &&
+      renderedPage < page &&
+      innerHeight &&
+      scrollY &&
+      offsetHeight &&
+      innerHeight + scrollY >= offsetHeight
+    )
+      page += 1
+  }
 </script>
 
-<section class="feed">
-	{#each [...Array(page).keys()] as p}
-		<div class="page" transition:fade>
-			{#each floors as n}
-				{#if lim(start + size * (p - 1) + n) < $shoutslist.length}
-					<div class={`floor floor--${n}`}>
-						<div class="wide-container row">
-							{#if n > 3}
-								<div class="col-md-4">
-									{#each $shoutslist.slice(lim(start + size * (p - 1)), lim(start + size * (p - 1) + n)) as shout}
-										<ShoutCard {shout} noimage={true} />
-									{/each}
-								</div>
-								<div class="col-md-8">
-									<ShoutCard shout={$shoutslist[lim(start + n + size * (p - 1))]} />
-								</div>
-							{:else}
-								{#each $shoutslist.slice(lim(start + size * (p - 1)), lim(start + size * (p - 1) + n)) as shout}
-									<div class={`col-md-${12 / n}`}>
-										<ShoutCard {shout} />
-									</div>
-								{/each}
-							{/if}
-						</div>
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/each}
+<svelte:window bind:scrollY bind:innerHeight on:scroll={onScroll} />
 
-	{#if !nomore}
-		<div class="morewrap">
-			<div class="show-more">
-				<button class="button" type="button" on:click={() => more()}>
-					{loading ? 'Загружаем' : 'Показать еще'}
-				</button>
-			</div>
-		</div>
-	{/if}
+<section class="feed">
+  {#each [...Array(page).keys()] as p}
+    <div class="page" transition:fade>
+      {#each perFloor as per, floor}
+        {@const begin = start + page * size}
+        {@const end = lim(begin + per)}
+        {#if begin < shouts?.length}
+          <div class={`floor floor--${floor}`}>
+            <div class="wide-container row">
+              {#if per > 3}
+                <div class="col-md-4">
+                  {#each showed.slice(begin, begin + per) as shout}
+                    <ShoutCard {shout} noimage={true} />
+                  {/each}
+                </div>
+                <div class="col-md-8">
+                  <ShoutCard shout={shouts[end]} />
+                </div>
+              {:else}
+                {#each shouts.slice(begin, end) as shout}
+                  <div class={`col-md-${12 / per}`}>
+                    <ShoutCard {shout} />
+                  </div>
+                {/each}
+              {/if}
+            </div>
+          </div>
+        {/if}
+      {/each}
+    </div>
+  {/each}
+
+  {#if !nomore}
+    <div class="morewrap">
+      <div class="show-more">
+        <button class="button" type="button" on:click={() => ($more = name)}>
+          {$loading ? 'Загружаем' : 'Показать еще'}
+        </button>
+      </div>
+    </div>
+  {/if}
 </section>
 
 <style lang="scss">
-	.morewrap {
-		flex: 1 58.3333%;
-	}
+  .morewrap {
+    flex: 1 58.3333%;
+  }
 
-	.show-more {
-		margin-bottom: 6.4rem;
-		text-align: center;
-	}
+  .show-more {
+    margin-bottom: 6.4rem;
+    text-align: center;
+  }
 </style>

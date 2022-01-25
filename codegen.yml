@@ -1,14 +1,14 @@
 overwrite: true
 schema:
- - 'server/schema.graphql'
+  - 'server/schema.graphql'
 generates:
- src/lib/codegen.ts:
-  plugins:
-   - 'typescript'
-   - 'typescript-operations'
-   - 'typescript-graphql-request'
-  clientPath: 'src/lib/client'
-  asyncQuery: true
+  src/lib/codegen.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-graphql-request'
+    clientPath: 'src/lib/client'
+    asyncQuery: true
 hooks:
- afterAllFileWrite:
-  - prettier --ignore-path .gitignore --write --plugin-search-dir=. .
+  afterAllFileWrite:
+    - prettier --ignore-path .gitignore --write --plugin-search-dir=. .

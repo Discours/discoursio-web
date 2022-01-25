@@ -1,259 +1,259 @@
 <script lang="ts">
-	import NavAuth from './NavAuth.svelte'
-	import { page } from '$app/stores'
-	import { openModal } from '../stores/app'
-	import { token } from '../stores/user'
-	import Auth from './Auth.svelte'
-	import Modal from './Modal.svelte'
+  import NavAuth from './NavAuth.svelte'
+  import { page } from '$app/stores'
+  import { openModal } from '../stores/app'
+  import { token } from '../stores/user'
+  import Auth from './Auth.svelte'
+  import Modal from './Modal.svelte'
 
-	const routes = [
-		{ name: 'журнал', href: '/' },
-		{ name: 'лента', href: '/feed' },
-		{ name: 'темы', href: '/topic' }
-	]
+  const routes = [
+    { name: 'журнал', href: '/' },
+    { name: 'лента', href: '/feed' },
+    { name: 'темы', href: '/topic' }
+  ]
 
-	let fixed = false // when mobile menu is shown
-	$: if ($openModal) fixed = false
+  let fixed = false // when mobile menu is shown
+  $: if ($openModal) fixed = false
 </script>
 
 <svelte:body class:fixed />
 <header>
-	<Modal name="auth"><Auth /></Modal>
-	<div class="wide-container">
-		<nav class="row header__inner" class:fixed>
-			<div class="main-logo col-auto">
-				<a href="/">
-					<img src="/logo.svg" alt="Дискурс" />
-				</a>
-			</div>
-			<ul class="col main-navigation text-xl inline-flex" class:fixed>
-				{#each routes as r}
-					<li class:selected={$page?.url?.pathname === r.href}>
-						<a sveltekit:prefetch href={r.href} on:click={() => (fixed = false)}
-							>{r.name}</a
-						>
-					</li>
-				{/each}
-			</ul>
-			<div class="usernav">
-				{#if $token}
-					<NavAuth />
-				{:else}
-					<div class="usercontrol col">
-						<div class="usercontrol__item loginbtn">
-							<a href={'#auth'} on:click={() => ($openModal = 'auth')}>войти</a>
-						</div>
-					</div>
-				{/if}
-			</div>
-			<div class="burger-container">
-				<div class="burger" class:fixed on:click={() => (fixed = !fixed)}>
-					<div />
-				</div>
-			</div>
-		</nav>
-	</div>
+  <Modal name="auth"><Auth /></Modal>
+  <div class="wide-container">
+    <nav class="row header__inner" class:fixed>
+      <div class="main-logo col-auto">
+        <a href="/">
+          <img src="/logo.svg" alt="Дискурс" />
+        </a>
+      </div>
+      <ul class="col main-navigation text-xl inline-flex" class:fixed>
+        {#each routes as r}
+          <li class:selected={$page?.url?.pathname === r.href}>
+            <a sveltekit:prefetch href={r.href} on:click={() => (fixed = false)}
+              >{r.name}</a
+            >
+          </li>
+        {/each}
+      </ul>
+      <div class="usernav">
+        {#if $token}
+          <NavAuth />
+        {:else}
+          <div class="usercontrol col">
+            <div class="usercontrol__item loginbtn">
+              <a href={'#auth'} on:click={() => ($openModal = 'auth')}>войти</a>
+            </div>
+          </div>
+        {/if}
+      </div>
+      <div class="burger-container">
+        <div class="burger" class:fixed on:click={() => (fixed = !fixed)}>
+          <div />
+        </div>
+      </div>
+    </nav>
+  </div>
 </header>
 
 <style lang="scss">
-	header {
-		border-bottom: 4px solid #000;
-		margin-bottom: 2.2rem;
-	}
-	.header__inner {
-		background: #fff;
-		flex-wrap: nowrap;
-		justify-content: space-between;
+  header {
+    border-bottom: 4px solid #000;
+    margin-bottom: 2.2rem;
+  }
+  .header__inner {
+    background: #fff;
+    flex-wrap: nowrap;
+    justify-content: space-between;
 
-		&.fixed {
-			border-bottom: 4px solid #000;
-			left: 0;
-			position: fixed;
-			right: 0;
-			top: 0;
-			padding: 0 $container-padding-x;
-			z-index: 10;
-		}
-	}
+    &.fixed {
+      border-bottom: 4px solid #000;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      padding: 0 $container-padding-x;
+      z-index: 10;
+    }
+  }
 
-	.main-logo {
-		align-items: center;
-		display: inline-flex;
-		height: 70px;
-		padding: 0 $container-padding-x;
-		text-align: center;
-		position: relative;
-		z-index: 10;
+  .main-logo {
+    align-items: center;
+    display: inline-flex;
+    height: 70px;
+    padding: 0 $container-padding-x;
+    text-align: center;
+    position: relative;
+    z-index: 10;
 
-		@include media-breakpoint-down(sm) {
-			padding-left: divide($container-padding-x, 2);
-		}
+    @include media-breakpoint-down(sm) {
+      padding-left: divide($container-padding-x, 2);
+    }
 
-		@include media-breakpoint-up(lg) {
-			height: 80px;
-		}
+    @include media-breakpoint-up(lg) {
+      height: 80px;
+    }
 
-		img {
-			vertical-align: middle;
-			width: 100px;
+    img {
+      vertical-align: middle;
+      width: 100px;
 
-			@include media-breakpoint-up(lg) {
-				width: 175px;
-			}
-		}
+      @include media-breakpoint-up(lg) {
+        width: 175px;
+      }
+    }
 
-		a {
-			border: none;
-			color: #000;
-		}
-	}
+    a {
+      border: none;
+      color: #000;
+    }
+  }
 
-	nav {
-		align-items: center;
-	}
+  nav {
+    align-items: center;
+  }
 
-	.usernav {
-		display: inline-flex;
-		width: auto;
+  .usernav {
+    display: inline-flex;
+    width: auto;
 
-		@include media-breakpoint-down(md) {
-			flex: 1;
-			padding-left: 0;
-			padding-right: 0;
-		}
-	}
+    @include media-breakpoint-down(md) {
+      flex: 1;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 
-	.main-navigation {
-		display: inline-flex;
-		@include font-size(1.7rem);
-		list-style: none;
-		margin: 0;
-		padding: 0;
+  .main-navigation {
+    display: inline-flex;
+    @include font-size(1.7rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
 
-		@include media-breakpoint-down(md) {
-			background: #fff;
-			bottom: 0;
-			display: none;
-			font-size: 2.6rem;
-			font-weight: bold;
-			left: 0;
-			padding: $container-padding-x;
-			position: fixed;
-			top: 74px;
-			width: 100%;
-			z-index: 1;
+    @include media-breakpoint-down(md) {
+      background: #fff;
+      bottom: 0;
+      display: none;
+      font-size: 2.6rem;
+      font-weight: bold;
+      left: 0;
+      padding: $container-padding-x;
+      position: fixed;
+      top: 74px;
+      width: 100%;
+      z-index: 1;
 
-			li {
-				margin-bottom: 2.4rem;
-			}
-		}
+      li {
+        margin-bottom: 2.4rem;
+      }
+    }
 
-		@include media-breakpoint-down(sm) {
-			padding: divide($container-padding-x, 2);
-		}
+    @include media-breakpoint-down(sm) {
+      padding: divide($container-padding-x, 2);
+    }
 
-		&.fixed {
-			display: inline-flex;
+    &.fixed {
+      display: inline-flex;
 
-			@include media-breakpoint-down(lg) {
-				display: block !important;
-			}
-		}
+      @include media-breakpoint-down(lg) {
+        display: block !important;
+      }
+    }
 
-		li {
-			margin-right: 2.4rem;
-		}
+    li {
+      margin-right: 2.4rem;
+    }
 
-		a {
-			border: none;
-			color: #000;
+    a {
+      border: none;
+      color: #000;
 
-			&:hover {
-				color: #000;
-			}
-		}
+      &:hover {
+        color: #000;
+      }
+    }
 
-		.selected a {
-			border-bottom: 2px solid;
-			color: #000;
-			pointer-events: none;
-			cursor: default;
-		}
-	}
+    .selected a {
+      border-bottom: 2px solid;
+      color: #000;
+      pointer-events: none;
+      cursor: default;
+    }
+  }
 
-	.burger-container {
-		box-sizing: content-box;
-		display: inline-flex;
-		float: right;
-		padding-left: 0;
-		width: 2.2rem;
+  .burger-container {
+    box-sizing: content-box;
+    display: inline-flex;
+    float: right;
+    padding-left: 0;
+    width: 2.2rem;
 
-		@include media-breakpoint-up(sm) {
-			padding-left: divide($container-padding-x, 2);
-		}
+    @include media-breakpoint-up(sm) {
+      padding-left: divide($container-padding-x, 2);
+    }
 
-		@include media-breakpoint-up(md) {
-			display: none;
-		}
-	}
+    @include media-breakpoint-up(md) {
+      display: none;
+    }
+  }
 
-	.burger {
-		background: #fff;
-		cursor: pointer;
-		height: 1.8rem;
-		display: inline-block;
-		position: relative;
-		vertical-align: middle;
-		width: 2.2rem;
+  .burger {
+    background: #fff;
+    cursor: pointer;
+    height: 1.8rem;
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    width: 2.2rem;
 
-		> div,
-		&:after,
-		&:before {
-			background: #000;
-			content: '';
-			display: block;
-			height: 2px;
-			left: 0;
-			position: absolute;
-			width: 100%;
-		}
+    > div,
+    &:after,
+    &:before {
+      background: #000;
+      content: '';
+      display: block;
+      height: 2px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
 
-		> div {
-			margin-top: -1px;
-			opacity: 1;
-			top: 50%;
-			transition: opacity 0.2s 0.1s;
-		}
+    > div {
+      margin-top: -1px;
+      opacity: 1;
+      top: 50%;
+      transition: opacity 0.2s 0.1s;
+    }
 
-		&:after,
-		&:before {
-			transform-origin: center !important;
-			transition: top 0.3s, transform 0.3s;
-		}
+    &:after,
+    &:before {
+      transform-origin: center !important;
+      transition: top 0.3s, transform 0.3s;
+    }
 
-		&:after {
-			bottom: 0;
-		}
+    &:after {
+      bottom: 0;
+    }
 
-		&:before {
-			top: 0;
-		}
+    &:before {
+      top: 0;
+    }
 
-		&.fixed {
-			> div {
-				opacity: 0;
-				transition: opacity 0s;
-			}
+    &.fixed {
+      > div {
+        opacity: 0;
+        transition: opacity 0s;
+      }
 
-			&:after {
-				bottom: 0.8rem;
-				transform: rotate(-45deg);
-			}
+      &:after {
+        bottom: 0.8rem;
+        transform: rotate(-45deg);
+      }
 
-			&:before {
-				transform: rotate(45deg);
-				top: 0.8rem;
-			}
-		}
-	}
+      &:before {
+        transform: rotate(45deg);
+        top: 0.8rem;
+      }
+    }
+  }
 </style>

@@ -15,3 +15,4 @@ static/upload/*
 .obsidian
 .vscode
 *.log
+.idea

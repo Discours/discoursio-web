@@ -1,24 +1,24 @@
 image: node:16
 stages:
- - prebuild
- - build
+  - prebuild
+  - build
 lint:
- stage: prebuild
- allow_failure: true
- before_script:
-  - yarn
- script:
-  - yarn validate
+  stage: prebuild
+  allow_failure: true
+  before_script:
+    - yarn
+  script:
+    - yarn validate
 build:
- only:
-  - dev
-  - master
- stage: build
- before_script:
-  - yarn
- script:
-  - yarn build
- artifacts:
-  when: on_success
-  paths:
-   - public
+  only:
+    - dev
+    - master
+  stage: build
+  before_script:
+    - yarn
+  script:
+    - yarn build
+  artifacts:
+    when: on_success
+    paths:
+      - public

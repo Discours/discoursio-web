@@ -1,4 +1,5 @@
 [0.1.0]
+[+] vitebook
 [+] modal components refactoring
 [+] 'static' pages fixes
 [+] ShoutFeed reusable component

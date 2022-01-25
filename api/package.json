@@ -1,6 +1,6 @@
 {
-	"dependencies": {
-		"nodemailer": "^6.7.2",
-		"mailgun-js": "^0.22.0"
-	}
+  "dependencies": {
+    "nodemailer": "^6.7.2",
+    "mailgun-js": "^0.22.0"
+  }
 }
