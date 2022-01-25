@@ -2,7 +2,6 @@
   import { onMount } from 'svelte'
   import Icon from './DiscoursIcon.svelte'
   import Userpic from './Userpic.svelte'
-  import Notifications from './Notifications.svelte'
   import { client } from '$lib/client'
   import { GET_ME, GET_ROLES } from '$lib/queries'
   import { session, token, roles, notices } from '../stores/user'
@@ -64,7 +63,6 @@
     newNotices = $notices.filter((n) => !n.state).length
 </script>
 
-<Notifications />
 {#if $token}
   <div class="usercontrol col">
     <div class="usercontrol__item usercontrol__item--write-post">

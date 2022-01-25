@@ -3,7 +3,7 @@
   import { SIGN_IN, SIGN_UP } from '$lib/queries'
   import { client } from '$lib/client'
   import Icon from './DiscoursIcon.svelte'
-  import { session, token as tokenStore } from '../stores/user'
+  import { notices, session, token as tokenStore } from '../stores/user'
   import { openModal } from '../stores/app'
   import { fade } from 'svelte/transition'
   import { API_ENDPOINT } from '$lib/client'
@@ -12,7 +12,7 @@
 
   export let mode = 'login'
   export let code = ''
-  export let warnings = ['']
+  export let warnings: string[] = []
 
   const showTerms = () => {
     $openModal = ''
@@ -28,12 +28,18 @@
     $tokenStore = token
     $session = user
     $openModal = ''
+    $notices.push({
+      type: 'info',
+      text: 'Welcome!',
+      state: 'new',
+      ts: new Date()
+    })
   }
 
   const authFailure = ({ error }) => {
-    console.log('auth: error handling')
-    console.log(error)
+    console.log('auth: error handling ' + error.toString())
     warnings.push(prefix + error)
+    console.debug(warnings)
     clearTimeout(warnTimeout)
     warnTimeout = setTimeout(
       () => (warnings = warnings.filter((w) => w !== prefix + error)),
@@ -113,8 +119,7 @@
       <p class="disclamer">
         Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a
           href="/about/terms-of-use"
-          on:click={showTerms}>правилами пользования</a
-        >
+          on:click={showTerms}>правилами пользования</a>
         сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых
         уведомлений.
       </p>
@@ -146,7 +151,8 @@
         {/if}
       </div>
 
-      <div class="auth-warnings" style="color: red;" transition:fade>
+      <div class="auth-warnings" style="color: red;">
+        {@debug warnings}
         {#each warnings as warn}
           <p>{warn}</p>
         {/each}
@@ -283,6 +289,12 @@
 </div>
 
 <style lang="scss">
+  .warn {
+    height: 50px;
+    width: 120px;
+    border: 1px solid black;
+    padding: 1em;
+  }
   .view {
     background: #fff;
     position: relative;

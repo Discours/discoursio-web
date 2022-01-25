@@ -26,6 +26,10 @@
     goto($notices[index].lead)
     close(index)
   }
+
+  $: if($notices) {
+     console.dir($notices)
+  }
 </script>
 
 {#if $showNotices}
@@ -81,6 +85,16 @@
       &:hover {
         color: #000;
       }
+    }
+
+    .error {
+      background-color:pink;
+    }
+    .info {
+      background-color: white;
+    }
+    .warn {
+      background-color: gray;
     }
   }
 </style>

@@ -120,7 +120,6 @@
 <main>
   <div class="home" transition:fade>
     {#if $recents?.length > 0}
-      {@debug $recents}
       <NavTopics shouts={$recents} />
       <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
       <DiscoursAbout />

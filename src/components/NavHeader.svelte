@@ -1,8 +1,9 @@
 <script lang="ts">
+  import Notifications from './Notifications.svelte'
   import NavAuth from './NavAuth.svelte'
   import { page } from '$app/stores'
   import { openModal } from '../stores/app'
-  import { token } from '../stores/user'
+  import { notices, token } from '../stores/user'
   import Auth from './Auth.svelte'
   import Modal from './Modal.svelte'
 
@@ -52,6 +53,7 @@
         </div>
       </div>
     </nav>
+    {#key $notices}<Notifications />{/key}
   </div>
 </header>
 

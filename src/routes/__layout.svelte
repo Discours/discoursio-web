@@ -104,23 +104,18 @@
 
   $: if ($topicslist === null) {
     if (!update.topicsAll) {
-      JSON.parse(window.localStorage.getItem('topics') || '[]').then(
-        (ttt) => ($topicslist = ttt)
-      )
-      if ($topicslist)
-        console.log(`preload: ${$topicslist.length} topics from localStorage`)
-      else {
-        fetch(`/topic/all.json`)
-          .then((r) => r.ok && r.json())
-          .then((ttt) => {
-            if ($topicslist != ttt.topicsAll) {
-              $topicslist = ttt.topicsAll
-              console.log(
-                `preload: ${$topicslist.length} topics with browser request`
-              )
-            }
-          })
-      }
+      $topicslist = JSON.parse(window.localStorage.getItem('topics') || '[]')
+      console.log(`preload: ${$topicslist.length} topics from localStorage`)
+      if(!$topicslist) fetch(`/topic/all.json`)
+        .then((r) => r.ok && r.json())
+        .then((ttt) => {
+          if ($topicslist != ttt.topicsAll) {
+            $topicslist = ttt.topicsAll
+            console.log(
+              `preload: ${$topicslist.length} topics with browser request`
+            )
+          }
+        })
     } else {
       $topicslist = update.topicsAll
       $topicslist.forEach((t) => ($topics[t.slug] = t))

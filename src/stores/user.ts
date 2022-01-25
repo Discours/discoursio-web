@@ -20,7 +20,7 @@ interface Role {
 }
 
 export interface Notice {
-  type: string
+  type: string // error info warn
   text: string
   lead?: string
   state: string
