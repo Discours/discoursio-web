@@ -21,7 +21,8 @@
   export let start = 0
   export let size = 9
   let page = 0
-  $: end = (page + 1) * size > shouts?.length ? shouts?.length : (page + 1) * size
+  $: end =
+    (page + 1) * size > shouts?.length ? shouts?.length : (page + 1) * size
   $: showed = shouts.slice(start, end)
   $: renderedPage = showed.length / size + (showed.length % size) > 0 ? 1 : 0
   $: if (showed === shouts && renderedPage < page) dispatch('loadmore')

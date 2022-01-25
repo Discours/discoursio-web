@@ -26,13 +26,11 @@
   import ShoutWide from '../components/ShoutWide.svelte'
   import ShoutsShort from '../components/ShoutsShort.svelte'
   import ShoutsSlider from '../components/ShoutsSlider.svelte'
-  import Shouts52 from '../components/Shouts52.svelte'
-  import TopicCard from '../components/TopicCard.svelte'
   import ShoutsTopic from '../components/ShoutsTopic.svelte'
   import ShoutsFirst5 from '../components/ShoutsFirst5.svelte'
-  import ShoutBeside from '../components/ShoutBeside.svelte'
-  import UserCard from '../components/UserCard.svelte'
-  import ShoutCard from '../components/ShoutCard.svelte'
+  import ShoutBesideFew from '../components/ShoutBesideFew.svelte'
+  import ShoutBesideTopics from '../components/ShoutBesideTopics.svelte'
+  import ShoutBesideAuthors from '../components/ShoutBesideAuthors.svelte'
 
   let topCommented = [],
     topMonthAuthors = [],
@@ -50,6 +48,7 @@
   //  new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 
   $: if ($topicslist && $topicslist.length > 0 && $recents === null) {
+    console.debug('mainpage: processing publications lists')
     $loading = true
     // $recents = Object.values($shouts).sort(byDate)
     $topOverall.forEach((s) => ($shouts[s.slug] = s))
@@ -120,49 +119,46 @@
 />
 <main>
   <div class="home" transition:fade>
-    {#if false && $recents?.length > 0}
-    <NavTopics shouts={$recents} />
-    <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
-    <DiscoursAbout />
-    <Shouts52 shouts={$topViewed} title={'Самое читаемое'} />
-    <Shouts3 shouts={$recents.slice(6, 9)} />
-    <ShoutBeside
-      beside={$recents[9]}
-      slugs={Array.from(aslugs)}
-      component={UserCard}
-      title="Авторы месяца"
-    />
-    <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-    <Shouts2 shouts={$recents.slice(10, 12)} />
-    <ShoutsShort shouts={$recents.slice(12, 16)} />
-    <ShoutWide shout={$recents[16]} />
-    <Shouts3 shouts={$recents.slice(17, 20)} />
-    <ShoutsSlider shouts={$topOverall} title="Избранное" />
-    <ShoutBeside
-      beside={$recents[20]}
-      slugs={Array.from(tslugs)}
-      component={TopicCard}
-      title="Темы месяца"
-    />
-    <Shouts3 shouts={$recents.slice(21, 24)} />
-    <ShoutsTopic
-      topic={$topics['research']}
-      shouts={shoutsByTopic['research']}
-    />
-    <Shouts2 shouts={$recents.slice(24, 25)} />
-    <ShoutsTopic
-      topic={$topics['psychology']}
-      shouts={shoutsByTopic['psychology']}
-    />
-    <DiscoursBanner />
-    <Shouts3 shouts={$recents.slice(25, 28)} />
-    <ShoutsTopic topic={$topics['music']} shouts={shoutsByTopic['music']} />
-    <ShoutBeside
-      beside={$recents[28]}
-      slugs={$recents.slice(29, 34).map((s) => s.slug)}
-      component={ShoutCard}
-    />
-    <ShoutFeed start={34} shouts={$recents} />
+    {#if $recents?.length > 0}
+      {@debug $recents}
+      <NavTopics shouts={$recents} />
+      <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
+      <DiscoursAbout />
+      <ShoutBesideFew shouts={$topViewed} title={'Самое читаемое'} />
+      <Shouts3 shouts={$recents.slice(5, 8)} />
+        <ShoutBesideAuthors
+          beside={$recents[8]}
+          slugs={Array.from(aslugs)}
+          title="Авторы месяца"
+        />
+        <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
+        <Shouts2 shouts={$recents.slice(9, 11)} />
+        <ShoutsShort shouts={$recents.slice(11, 15)} />
+        <ShoutWide shout={$recents[15]} />
+        <Shouts3 shouts={$recents.slice(16, 19)} />
+        <ShoutsSlider shouts={$topOverall} title="Избранное" />
+        <ShoutBesideTopics
+          beside={$recents[19]}
+          slugs={Array.from(tslugs)}
+          title="Темы месяца"
+        />
+        <Shouts3 shouts={$recents.slice(20, 23)} />
+      {#if false}
+        <ShoutsTopic
+          topic={$topics['research']}
+          shouts={shoutsByTopic['research']}
+        />
+        <Shouts2 shouts={$recents.slice(23, 25)} />
+        <ShoutsTopic
+          topic={$topics['psychology']}
+          shouts={shoutsByTopic['psychology']}
+        />
+        <DiscoursBanner />
+        <Shouts3 shouts={$recents.slice(25, 28)} />
+        <ShoutsTopic topic={$topics['music']} shouts={shoutsByTopic['music']} />
+        <ShoutBesideFew shouts={$recents.slice(28, 34)} />
+        <ShoutFeed shouts={$recents.slice(34, $recents.length)} />
+      {/if}
     {/if}
   </div>
 </main>

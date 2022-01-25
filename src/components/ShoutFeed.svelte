@@ -1,91 +1,64 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
-  import ShoutCard from './ShoutCard.svelte'
   import { fade } from 'svelte/transition'
-  import { onMount } from 'svelte'
-  import { shuffle } from '$lib/utils'
-  // import { createEventDispatcher } from 'svelte'
+  import { onMount, SvelteComponent } from 'svelte'
   import { loading, more } from '../stores/app'
+  import ShoutWide from './ShoutWide.svelte'
+  import Shouts2 from './Shouts2.svelte'
+  import Shouts3 from './Shouts3.svelte'
+  import ShoutBesideFew from './ShoutBesideFew.svelte'
 
-  // const dispatch = createEventDispatcher()
-
-  export let props = {}
   export let name = 'recents'
   export let shouts: Shout[]
-  export let start = 0
   export let size = 9
-  let page = 0
   let showed: Shout[] = []
-  $: end = (page + 1) * size > shouts?.length ? shouts?.length : (page + 1) * size
-  $: if(shouts?.length > 0) showed = shouts.slice(start, end)
-  $: renderedPage = showed.length / size + (showed.length % size) > 0 ? 1 : 0
-  $: if (showed === shouts && renderedPage < page) $more = name
-  let nomore = false
+  $: if (showed === shouts) $more = name // TODO: should trig api request
 
+  const ccc = {
+    1: ShoutWide,
+    2: Shouts2,
+    3: Shouts3,
+    4: ShoutBesideFew,
+    5: ShoutBesideFew,
+    6: ShoutBesideFew
+  }
+  let rows: Array<{
+    limit: number
+    component: SvelteComponent
+    shouts: Shout[]
+  }> = []
   const lim = (num) => (num < shouts?.length ? num : shouts?.length)
-  let perFloor = [3, 2, 4] // 1 2 5
 
-  onMount(() => {
-    perFloor = shuffle(perFloor)
-    // console.debug(shouts.slice(start, size))
-  })
+  const addRow = () => {
+    const limit = 1 + Math.floor(Math.random() * 6)
+    const component = ccc[limit]
+    const addition = shouts.slice(showed.length, lim(showed.length + limit))
+    rows.push({ limit, component, shouts: addition })
+    showed = [...showed, ...addition]
+  }
 
-  let offsetHeight: number
-  let innerHeight: number
-  let scrollY: number
+  onMount(() => (showed = shouts.slice(0, size)))
+
+  let oh: number // feed offset height
+  let ih: number // window inner height
+  let sy: number // window scroll y position
 
   const onScroll = () => {
-    if (
-      shouts?.length > 0 &&
-      showed.length < shouts?.length &&
-      renderedPage < page &&
-      innerHeight &&
-      scrollY &&
-      offsetHeight &&
-      innerHeight + scrollY >= offsetHeight
-    )
-      page += 1
+    const isBottom = ih && sy && oh && ih + sy >= oh
+    if (showed.length < shouts?.length && isBottom) addRow()
   }
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight on:scroll={onScroll} />
+<svelte:window bind:scrollY={sy} bind:innerHeight={ih} on:scroll={onScroll} />
 
-<section class="feed">
-  {#each [...Array(page).keys()] as p}
-    <div class="page" transition:fade>
-      {#each perFloor as per, floor}
-        {@const begin = start + page * size}
-        {@const end = lim(begin + per)}
-        {#if begin < shouts?.length}
-          <div class={`floor floor--${floor}`}>
-            <div class="wide-container row">
-              {#if per > 3}
-                <div class="col-md-4">
-                  {#each showed.slice(begin, begin + per) as shout}
-                    <ShoutCard {shout} noimage={true} />
-                  {/each}
-                </div>
-                <div class="col-md-8">
-                  <ShoutCard shout={shouts[end]} />
-                </div>
-              {:else}
-                {#each shouts.slice(begin, end) as shout}
-                  <div class={`col-md-${12 / per}`}>
-                    <ShoutCard {shout} />
-                  </div>
-                {/each}
-              {/if}
-            </div>
-          </div>
-        {/if}
-      {/each}
-    </div>
+<section class="feed" transition:fade bind:offsetHeight={oh}>
+  {#each rows as r}
+    <svelte:component this={r.component} limit={r.limit} shouts={r.shouts} />
   {/each}
-
-  {#if !nomore}
+  {#if showed === shouts}
     <div class="morewrap">
       <div class="show-more">
-        <button class="button" type="button" on:click={() => ($more = name)}>
+        <button class="button" type="button" on:click={addRow}>
           {$loading ? 'Загружаем' : 'Показать еще'}
         </button>
       </div>

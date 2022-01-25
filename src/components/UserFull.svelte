@@ -5,10 +5,6 @@
   export let props
 
   // TODO: UserFull - public user profile page
-
-  const loadmore = () => {
-    console.log('user: need to implement <load more>')
-  }
 </script>
 
 {#if props.user}
@@ -20,7 +16,7 @@
     </div>
   </div>
 
-  <ShoutFeed start={0} shouts={props.shouts} on:loadmore />
+  <ShoutFeed shouts={props.shouts} />
 {/if}
 
 <style lang="scss">

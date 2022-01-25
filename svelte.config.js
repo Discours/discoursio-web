@@ -43,7 +43,7 @@ const config = {
     cssHash: ({ hash, css }) => 's' + hash(css)
   },
   kit: {
-    adapter: node(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
+    adapter: adapter(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
     target: '#svelte',
     hydrate: true,
     prerender: {

@@ -5,7 +5,7 @@
   import ShoutCard from './ShoutCard.svelte'
   import type { Shout } from '$lib/codegen'
   export let shouts: Shout[]
-  export let title: string = 'Выбор сообщества'
+  export let title = 'Выбор сообщества'
 </script>
 
 <div class="floor floor--important floor--slider">

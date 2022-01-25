@@ -30,6 +30,16 @@
 
   let topic
   let mode
+  let byTopic = {}
+
+  $: if (shouts?.length > 0 && Object.keys(byTopic).length === 0) {
+    shouts.forEach((s) => {
+      let st = byTopic[s.mainTopic]
+      if (!st) st = []
+      st.push(s)
+      byTopic[s.mainTopic] = st
+    })
+  }
 
   $: if ($topicslist) topic = $topics[slug]
   onMount(() => {
@@ -58,23 +68,6 @@
         mode = 'fresh'
     }
     mode = by
-  }
-  let moreLoading = false
-  const moreShouts = async () => {
-    moreLoading = true
-    console.log('topicpage: show more shouts')
-    const p = Math.floor((Object.keys(shouts).length - 27) / 27)
-    const r = await fetch(`/topic/${slug}.json?page=${p}`)
-    if (r.ok) {
-      const { shouts: newData } = await r.json()
-      console.debug(
-        'topicpage: ' +
-          Object.values(newData).length.toString() +
-          ' more shouts loaded'
-      )
-      shouts = [...shouts, ...newData]
-    }
-    moreLoading = false
   }
 </script>
 
@@ -236,7 +229,7 @@
       </div>
     </div>
   {/if}
-  <ShoutFeed name="by-topics" props={{ topics: [slug] }} />
+  <ShoutFeed name="by-topics" shouts={byTopic[topic.slug]} />
 </div>
 
 <style lang="scss">
