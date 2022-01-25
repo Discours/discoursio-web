@@ -126,23 +126,23 @@
       <DiscoursAbout />
       <ShoutBesideFew shouts={$topViewed} title={'Самое читаемое'} />
       <Shouts3 shouts={$recents.slice(5, 8)} />
-        <ShoutBesideAuthors
-          beside={$recents[8]}
-          slugs={Array.from(aslugs)}
-          title="Авторы месяца"
-        />
-        <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-        <Shouts2 shouts={$recents.slice(9, 11)} />
-        <ShoutsShort shouts={$recents.slice(11, 15)} />
-        <ShoutWide shout={$recents[15]} />
-        <Shouts3 shouts={$recents.slice(16, 19)} />
-        <ShoutsSlider shouts={$topOverall} title="Избранное" />
-        <ShoutBesideTopics
-          beside={$recents[19]}
-          slugs={Array.from(tslugs)}
-          title="Темы месяца"
-        />
-        <Shouts3 shouts={$recents.slice(20, 23)} />
+      <ShoutBesideAuthors
+        beside={$recents[8]}
+        slugs={Array.from(aslugs)}
+        title="Авторы месяца"
+      />
+      <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
+      <Shouts2 shouts={$recents.slice(9, 11)} />
+      <ShoutsShort shouts={$recents.slice(11, 15)} />
+      <ShoutWide shout={$recents[15]} />
+      <Shouts3 shouts={$recents.slice(16, 19)} />
+      <ShoutsSlider shouts={$topOverall} title="Избранное" />
+      <ShoutBesideTopics
+        beside={$recents[19]}
+        slugs={Array.from(tslugs)}
+        title="Темы месяца"
+      />
+      <Shouts3 shouts={$recents.slice(20, 23)} />
       {#if false}
         <ShoutsTopic
           topic={$topics['research']}
@@ -156,9 +156,9 @@
         <DiscoursBanner />
         <Shouts3 shouts={$recents.slice(25, 28)} />
         <ShoutsTopic topic={$topics['music']} shouts={shoutsByTopic['music']} />
-        <ShoutBesideFew shouts={$recents.slice(28, 34)} />
-        <ShoutFeed shouts={$recents.slice(34, $recents.length)} />
       {/if}
+      <ShoutBesideFew shouts={$recents.slice(28, 34)} />
+      <ShoutFeed shouts={$recents.slice(34, $recents.length)} />
     {/if}
   </div>
 </main>
