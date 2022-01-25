@@ -131,7 +131,7 @@
         title="Авторы месяца"
       />
       <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-      <Shouts2 shouts={$recents.slice(9, 11)} />
+      <Shouts2 shouts={$recents.slice(9, 11)} y="0" />
       <ShoutsShort shouts={$recents.slice(11, 15)} />
       <ShoutWide shout={$recents[15]} />
       <Shouts3 shouts={$recents.slice(16, 19)} />
