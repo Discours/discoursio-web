@@ -8,7 +8,7 @@
     ['4', '8'],
     ['8', '4']
   ]
-  $: y = Math.floor(Math.random() * x.length)
+  export let y = Math.floor(Math.random() * x.length)
 </script>
 
 <div class="floor">

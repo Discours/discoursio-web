@@ -97,8 +97,7 @@
 
   $: if ($more) {
     $loading = true
-    const ppp = $pager[$more.toString()]
-    const stuff = { ...ppp }
+    const stuff = {...$pager[$more.toString()], name: $more }
     load({ fetch, stuff }).then(() => ($loading = false))
   }
 
