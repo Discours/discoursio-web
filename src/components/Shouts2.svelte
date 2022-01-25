@@ -14,7 +14,7 @@
 <div class="floor">
   <div class="wide-container row">
     {#each shouts as shout, i}
-      <div class="col-md-${x[y][i]}">
+      <div class="col-md-{x[y][i]}">
         <ShoutCard
           {shout}
           additionalClass={x[y][i] === '8' ? 'shout-card--with-cover' : ''}
