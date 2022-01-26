@@ -5,15 +5,17 @@
   export let shouts: Shout[]
   export let beside: Shout
   export let title = 'Интересное'
-  export let limit = 4
+  export let limit = 6
+  export let top = false
 </script>
 
 <div class="floor floor--9">
   <div class="wide-container row">
     <div class="col-md-4">
+	  <h3>{title}</h3>
       <ul class="top-viewed">
         {#each shouts.slice(1, limit) as shout}
-          <li>
+          <li class:top>
             <div>
               <div class="top-viewed__topic">
                 <a href="/topic/{shout.mainTopic}">
@@ -57,7 +59,7 @@
 				border: none;
 			}
 
-			&:before {
+			&.top:before {
 				content: counter(item, upper-roman);
 				counter-increment: item;
 				font-size: 1.4em;

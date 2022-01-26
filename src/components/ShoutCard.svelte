@@ -6,6 +6,7 @@
   export let shout: Partial<Shout>
   export let additionalClass = ''
   export let noimage = false
+  export let noicon = false
   export let nosubtitle = false
   export let isGroup = false
   export let photoBottom = false
@@ -38,7 +39,7 @@
           <img src={shout.cover} alt={shout.title} loading="lazy" />
         </div>
 
-        {#if shout.layout && shout.layout !== 'article'}
+        {#if shout.layout && shout.layout !== 'article' && !noicon}
           <div class="shout-card__type">
             <Icon name={shout.layout} />
           </div>
@@ -196,7 +197,7 @@
     }
   }
 
-  .shout-card__type {
+  :global(.shout-card__type) {
     background: #fff;
     border-radius: 100%;
     height: 3.2rem;

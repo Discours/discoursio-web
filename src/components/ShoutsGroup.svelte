@@ -21,6 +21,15 @@
     <div class="col-lg-6">
       {#if shouts}
       <div class="row">
+        {#if shouts.length < 4}
+          {#each shouts as shout}
+          <div class="row">
+            <div class="col-md-8">
+              <ShoutCard {shout} nosubtitle={false} noicon={true} />
+            </div>
+          </div>
+          {/each}
+        {:else}
         <div class="col-md-6">
           {#each shouts.slice(0, 2) as shout}
             <ShoutCard {shout} noimage={true} />
@@ -31,6 +40,7 @@
             <ShoutCard {shout} noimage={true} />
           {/each}
         </div>
+        {/if}
       </div>
       {/if}
 
