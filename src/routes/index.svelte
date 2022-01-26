@@ -37,7 +37,7 @@
 
   let topCommented = [],
     topMonthAuthors = [],
-    topicsMonth = [],
+    // topicsMonth = [],
     shoutsByTopic: {[key: string]: Array<Shout>} = {},
     shoutsByLayout: {[key: string]: Array<Shout>} = {}
   let tslugs: Set<string> = new Set([])
@@ -62,7 +62,7 @@
       s.topics.forEach((t) => {
         if (!tslugs.has(t.slug)) {
           tslugs.add(t.slug)
-          topicsMonth.push($topics[t.slug])
+          // topicsMonth.push($topics[t.slug])
         }
       })
     })
@@ -79,7 +79,7 @@
       .filter((s) => s.stat.comments > 0)
       .sort((a, b) => b.stat.comments - a.stat.comments)
     const byAuthors = (a, b) => b.topicStat.authors - a.topicStat.authors
-    topicsMonth = topicsMonth.sort(byAuthors)
+    // topicsMonth = topicsMonth.sort(byAuthors)
     const byRating = (a, b) => b.rating - a.rating
     topMonthAuthors = topMonthAuthors.sort(byRating)
     // console.dir(shoutsByLayout['music'])
@@ -110,39 +110,35 @@
       <DiscoursAbout />
       <ShoutBesideFew shouts={$topViewed} title={'Самое читаемое'} />
       <Shouts3 shouts={$recents.slice(5, 8)} />
-      <ShoutBesideAuthors
-        beside={$recents[8]}
-        slugs={Array.from(aslugs)}
-        title="Авторы месяца"
-      />
-      <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-      <Shouts2 shouts={$recents.slice(9, 11)} y={0} />
-      <ShoutsShort shouts={$recents.slice(11, 15)} />
-      <ShoutWide shout={$recents[15]} />
-      <Shouts3 shouts={$recents.slice(16, 19)} />
-      <ShoutsSlider shouts={$topOverall} title="Избранное" />
-      <ShoutBesideTopics
-        beside={$recents[19]}
-        slugs={Array.from(tslugs)}
-        title="Темы месяца"
-      />
-      <Shouts3 shouts={$recents.slice(20, 23)} />
-      {#if 'reasearch' in shoutsByTopic}
+      {#if topMonthAuthors}
+        <ShoutBesideAuthors
+          beside={$recents[8]}
+          slugs={Array.from(aslugs)}
+          title="Авторы месяца"
+        />
+        <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
+        <Shouts2 shouts={$recents.slice(9, 11)} y={0} />
+        <ShoutsShort shouts={$recents.slice(11, 15)} />
+        <ShoutWide shout={$recents[15]} />
+        <Shouts3 shouts={$recents.slice(16, 19)} />
+        <ShoutsSlider shouts={$topOverall} title="Избранное" />
+        <ShoutBesideTopics
+          beside={$recents[19]}
+          slugs={Array.from(tslugs)}
+          title="Темы месяца"
+        />
+        <Shouts3 shouts={$recents.slice(20, 23)} />
         <ShoutsGroup shouts={shoutsByTopic['research'].slice(1)}>
           <span slot="header"><TopicHeader topic={$topics['research']} /></span>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['research'][0]} /></span>
         </ShoutsGroup>
-      {/if}
-      <Shouts2 shouts={$recents.slice(23, 25)} />
-      {#if shoutsByTopic['psychology']}
+        <Shouts2 shouts={$recents.slice(23, 25)} />
         <ShoutsGroup shouts={shoutsByTopic['psychology'].slice(1)}>
           <span slot="header"><TopicHeader topic={$topics['psychology']} /></span>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['psychology'][0]} /></span>
         </ShoutsGroup>
-      {/if}
-      <DiscoursBanner />
-      <Shouts3 shouts={$recents.slice(25, 28)} />
-      {#if shoutsByLayout['music']}
+        <DiscoursBanner />
+        <Shouts3 shouts={$recents.slice(25, 28)} />
         <ShoutsGroup shouts={shoutsByLayout['music'].slice(1)}>
             <span slot="aside"><ShoutCard shout={shoutsByLayout['music'][0]} /></span>
         </ShoutsGroup>
