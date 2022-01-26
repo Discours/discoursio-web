@@ -139,10 +139,10 @@
         </ShoutsGroup>
         <DiscoursBanner />
         <Shouts2 shouts={$recents.slice(26, 28)} />
-        <div class="row"><div class="col-md-8"><TopicHeader topic={$topics[randomLayout]} /></div></div>
+        <div class="wide-container row"><TopicHeader topic={$topics[randomLayout]} /></div>
         <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
       {/if}
-      <ShoutBesideFew shouts={$recents.slice(29, 35)} beside={$recents[28]} top={false} />
+      <ShoutBesideFew shouts={$recents.slice(29, 35)} beside={$recents[28]} top={false} title={''}/>
       <ShoutFeed shouts={$recents.slice(35, $recents.length)} />
     {/if}
 </main>
