@@ -3,6 +3,7 @@
   import { notices } from '../stores/user'
   import { fade } from 'svelte/transition'
   import { goto } from '$app/navigation'
+  import Portal from 'svelte-portal/src/Portal.svelte'
 
   let elements: HTMLDivElement[]
 
@@ -32,29 +33,31 @@
   }
 </script>
 
-{#if $showNotices}
-  <div
-    class="noticecorner"
-    transition:fade
-    on:click|preventDefault={closeNotification}
-  >
-    {#each $notices as notice, index}
-      <div
-        class={`notice ${notice.type} ${notice.state}`}
-        bind:this={elements[index]}
-      >
-        {notice.text}
-        {#if notice.state === 'shown'}
-          <a href={'#'} on:click|preventDefault={() => more(index)}>...</a>
-        {/if}
-        {#if notice.state === 'open'}
-          <a href={'#'} on:click|preventDefault={() => follow(index)}>Перейти</a
-          >
-        {/if}
-      </div>
-    {/each}
-  </div>
-{/if}
+<Portal target="body">
+  {#if $showNotices}
+    <div
+      class="noticecorner"
+      transition:fade
+      on:click|preventDefault={closeNotification}
+    >
+      {#each $notices as notice, index}
+        <div
+          class={`notice ${notice.type} ${notice.state}`}
+          bind:this={elements[index]}
+        >
+          {notice.text}
+          {#if notice.state === 'shown'}
+            <a href={'#'} on:click|preventDefault={() => more(index)}>...</a>
+          {/if}
+          {#if notice.state === 'open'}
+            <a href={'#'} on:click|preventDefault={() => follow(index)}>Перейти</a
+            >
+          {/if}
+        </div>
+      {/each}
+    </div>
+  {/if}
+</Portal>
 
 <style lang="scss">
   .noticecorner {
