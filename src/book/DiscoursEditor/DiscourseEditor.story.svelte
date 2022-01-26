@@ -14,9 +14,10 @@
       EventsAddon,
       eventCallback,
     } from '@vitebook/client/addons';
-    import DiscoursEditor from '../../components/DiscoursEditor.svelte'
+    import DiscoursEditor from '../../components/DiscoursEditor/index.svelte'
   
     let collab = false
+    $: normal = !collab
   </script>
   
   <Variant name="Обычный режим" description="Редактирование публикации" on:enter={() => collab = false}>
@@ -27,7 +28,7 @@
   </Variant>
   <ControlsAddon>
     <label>
-        Обычный режим <input type="checkbox" bind:checked={!collab} />
+        Обычный режим <input type="checkbox" bind:checked={normal} />
     </label>
 
     <label>

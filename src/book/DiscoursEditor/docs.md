@@ -14,7 +14,7 @@
 ## Пример
 
 <script>
-  import DiscoursEditor from '../../components/DiscoursEditor.svelte'
+  import DiscoursEditor from '../../components/DiscoursEditor/index.svelte'
 </script>
 
 <DiscoursEditor body={''} collab={false} />

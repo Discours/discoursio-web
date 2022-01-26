@@ -16,7 +16,7 @@ module.exports = {
     project: ['./tsconfig.json'],
     extraFileExtensions: ['.svelte'],
     createDefaultProgram: true,
-    ecmaVersion: 2021,
+    ecmaVersion: 2022,
     sourceType: 'module'
   },
   plugins: [

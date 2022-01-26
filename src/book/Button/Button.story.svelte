@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
-    import type { PageMeta } from '@vitebook/client';
+    import type { PageMeta } from '@vitebook/client'
+    import Button from '../../components/Button.svelte'
   
     export const __pageMeta: PageMeta = {
       title: 'Button',
@@ -14,7 +15,6 @@
       EventsAddon,
       eventCallback,
     } from '@vitebook/client/addons';
-    import Button from '../components/Button.svelte';
   
     let title = 'Click Me';
     let disabled = false;

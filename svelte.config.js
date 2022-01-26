@@ -1,10 +1,10 @@
 import { writeFileSync, readdirSync, readFileSync, statSync } from 'fs'
 // import { typescript } from 'svelte-preprocess-esbuild'
-import { mdsvex } from 'mdsvex'
 import adapter from '@sveltejs/adapter-auto'
 import vercel from '@sveltejs/adapter-vercel'
 import node from '@sveltejs/adapter-node'
 import ssg from '@sveltejs/adapter-static'
+import { mdsvex } from 'mdsvex'
 import { createRequire } from 'module'
 
 const require = createRequire(import.meta.url)

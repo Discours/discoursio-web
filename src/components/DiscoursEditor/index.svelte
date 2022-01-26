@@ -15,16 +15,16 @@
 <script lang="ts">
   import Editor from './Editor.svelte'
   import { ydoc, room } from '../../stores/editor'
-  import type { XmlFragment } from 'yjs'
+  import { XmlFragment } from 'yjs'
   import { onMount } from 'svelte'
 
-  export let body: XmlFragment
+  export let body
   export let collab = false
 
   const sync = () => {
     if (collab) {
-      const remote: XmlFragment = $ydoc.getXmlFragment($room + '-body')
-      const local: XmlFragment = body
+      const remote = $ydoc.getXmlFragment($room + '-body')
+      const local = body === '' ? new XmlFragment() : body
       if (remote === local) {
         console.log('editor: nothing to solve')
         body = remote

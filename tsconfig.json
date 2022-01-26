@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "moduleResolution": "node",
-    "module": "es2020",
+    "module": "es2022",
     "lib": ["es2020", "DOM"],
     "target": "es2020",
     "importsNotUsedAsValues": "error",
@@ -16,7 +16,9 @@
     "checkJs": true,
     "paths": {
       "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"]
+      "$lib/*": ["src/lib/*"],
+      "$app": [".svelte-kit/runtime/app"],
+      "$app/*": [".svelte-kit/runtime/app/"]
     }
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte"]

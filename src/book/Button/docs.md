@@ -11,7 +11,7 @@ This is the documentation page for the awesome `<Button />` component.
 ## Example
 
 <script>
-  import Button from './Button.svelte';
+  import Button from '../../components/Button.svelte';
 </script>
 
 <Button>My Button</Button>
