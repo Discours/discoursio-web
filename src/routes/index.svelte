@@ -129,14 +129,14 @@
       <Shouts3 shouts={$recents.slice(20, 23)} />
       {#if 'reasearch' in shoutsByTopic}
         <ShoutsGroup shouts={Array.from(shoutsByTopic['research']).slice(1)}>
-          <span slot="header"><TopicHeader topic={$topics['research']} /></span>
+          <svelte:fragment slot="header"><TopicHeader topic={$topics['research']} /></svelte:fragment>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['research'][0]} /></span>
         </ShoutsGroup>
       {/if}
       <Shouts2 shouts={$recents.slice(23, 25)} />
       {#if shoutsByTopic['psychology']}
         <ShoutsGroup shouts={Array.from(shoutsByTopic['psychology']).slice(1)}>
-          <span slot="header"><TopicHeader topic={$topics['psychology']} /></span>
+          <svelte:fragment slot="header"><TopicHeader topic={$topics['psychology']} /></svelte:fragment>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['psychology'][0]} /></span>
         </ShoutsGroup>
       {/if}

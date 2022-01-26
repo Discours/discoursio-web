@@ -3,15 +3,13 @@ import type { Topic } from "$lib/codegen"
 import DiscoursIcon from "./DiscoursIcon.svelte"
 export let topic: Topic
 </script>
-<header>
-    <h3 class="col-sm-6">{topic.title}</h3>
-    <div class="col-sm-6 all-materials">
-        <a href={`/topic/${topic.slug}`}
-            >все материалы
-            <DiscoursIcon name="arrow-right-white" />
-        </a>
-    </div>
-</header>
+<h3 class="col-sm-6">{topic.title}</h3>
+<div class="col-sm-6 all-materials">
+  <a href={`/topic/${topic.slug}`}
+  >все материалы
+    <DiscoursIcon name="arrow-right-white" />
+  </a>
+</div>
 <style lang="scss">
 .all-materials {
     align-self: baseline;

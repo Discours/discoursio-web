@@ -44,5 +44,30 @@
     .group__header .row {
       align-items: baseline;
     }
-  }
+
+ 		.all-materials {
+ 			align-self: baseline;
+ 			margin-bottom: 1em;
+ 			white-space: nowrap;
+
+ 			@include media-breakpoint-up(sm) {
+ 				text-align: right;
+ 			}
+
+ 			:global(.icon) {
+ 				display: inline-block;
+ 				height: 0.8em;
+ 				vertical-align: middle;
+ 				width: 0.8em;
+ 			}
+
+ 			:global(img) {
+ 				vertical-align: top;
+ 			}
+ 		}
+
+ 		.group__header .row {
+ 			align-items: baseline;
+ 		}
+ 	}
 </style>
