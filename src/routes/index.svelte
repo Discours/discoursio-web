@@ -44,9 +44,15 @@
   let aslugs: Set<string> = new Set([])
 
   // one topic filtered
-  const filterRecentsByTopic = (filter) =>
-    $recents.filter((t) => t.topics.find((topic) => topic.slug === filter))
+  const filterFilledTopic = (filter) =>
+    $recents.filter((t) => t.topics.find((topic) => topic.slug === filter && $topics[topic.slug].topicStat.shouts > 19))
 
+  let rtopic1, rtopic2
+  $: filledTopics = Object.keys(shoutsByTopic)
+  $: if (filledTopics.length > 0) {
+    rtopic1 = filledTopics[Math.floor(Math.random()*filledTopics.length)]
+    rtopic2 = filledTopics[Math.floor(Math.random()*filledTopics.length)]
+  }
   $: if ($topMonth?.length > 0 && !topMonthAuthors?.length) {
     console.debug('mainpage: processing publications lists')
     $loading = true
@@ -59,12 +65,7 @@
           topMonthAuthors.push(a)
         }
       })
-      s.topics.forEach((t) => {
-        if (!tslugs.has(t.slug)) {
-          tslugs.add(t.slug)
-          // topicsMonth.push($topics[t.slug])
-        }
-      })
+      s.topics.forEach((t) => tslugs.add(t.slug))
     })
     $recents.forEach((s) => {
       s.topics.forEach((t) => tslugs.add(t.slug))
@@ -74,11 +75,11 @@
       }
     })
     // console.log(`mainpage: ${Object.keys(shoutsByLayout)}`)
-    tslugs.forEach((t) => (shoutsByTopic[t] = filterRecentsByTopic(t)))
+    tslugs.forEach((t) => (shoutsByTopic[t] = filterFilledTopic(t)))
     topCommented = $recents
       .filter((s) => s.stat.comments > 0)
       .sort((a, b) => b.stat.comments - a.stat.comments)
-    const byAuthors = (a, b) => b.topicStat.authors - a.topicStat.authors
+    // const byAuthors = (a, b) => b.topicStat.authors - a.topicStat.authors
     // topicsMonth = topicsMonth.sort(byAuthors)
     const byRating = (a, b) => b.rating - a.rating
     topMonthAuthors = topMonthAuthors.sort(byRating)
@@ -128,14 +129,14 @@
           title="Темы месяца"
         />
         <Shouts3 shouts={$recents.slice(20, 23)} />
-        <ShoutsGroup shouts={shoutsByTopic['research'].slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics['research']} /></svelte:fragment>
-          <span slot="aside"><ShoutCard shout={shoutsByTopic['research'][0]} /></span>
+        <ShoutsGroup shouts={shoutsByTopic[rtopic1].slice(1)}>
+          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment>
+          <span slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></span>
         </ShoutsGroup>
         <Shouts2 shouts={$recents.slice(23, 25)} />
-        <ShoutsGroup shouts={shoutsByTopic['psychology'].slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics['psychology']} /></svelte:fragment>
-          <span slot="aside"><ShoutCard shout={shoutsByTopic['psychology'][0]} /></span>
+        <ShoutsGroup shouts={shoutsByTopic[rtopic2].slice(1)}>
+          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment>
+          <span slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></span>
         </ShoutsGroup>
         <DiscoursBanner />
         <Shouts3 shouts={$recents.slice(25, 28)} />
