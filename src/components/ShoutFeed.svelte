@@ -6,7 +6,7 @@
   import ShoutWide from './ShoutWide.svelte'
   import Shouts2 from './Shouts2.svelte'
   import Shouts3 from './Shouts3.svelte'
-  import ShoutBesideFew from './ShoutBesideFew.svelte'
+  import ShoutBesideTop from './ShoutBesideTop.svelte'
 
   export let name = 'recents'
   export let shouts: Shout[]
@@ -18,9 +18,9 @@
     1: ShoutWide,
     2: Shouts2,
     3: Shouts3,
-    4: ShoutBesideFew,
-    5: ShoutBesideFew,
-    6: ShoutBesideFew
+    4: ShoutBesideTop,
+    5: ShoutBesideTop,
+    6: ShoutBesideTop
   }
   let rows: Array<{
     limit: number

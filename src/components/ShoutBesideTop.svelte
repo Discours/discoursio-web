@@ -3,6 +3,7 @@
   import type { Shout } from '$lib/codegen'
 
   export let shouts: Shout[]
+  export let beside: Shout
   export let title = 'Интересное'
   export let limit = 4
 </script>
@@ -31,7 +32,7 @@
       </ul>
     </div>
     <div class="col-md-8">
-      <ShoutCard shout={shouts[0]} />
+      <ShoutCard shout={beside} />
     </div>
   </div>
 </div>
