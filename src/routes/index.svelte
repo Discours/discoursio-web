@@ -38,14 +38,14 @@
   let topCommented = [],
     topMonthAuthors = [],
     topicsMonth = [],
-    shoutsByTopic: {[key: string]: Set<Shout>} = {},
-    shoutsByLayout: {[key: string]: Set<Shout>} = {}
+    shoutsByTopic: {[key: string]: Array<Shout>} = {},
+    shoutsByLayout: {[key: string]: Array<Shout>} = {}
   let tslugs: Set<string> = new Set([])
   let aslugs: Set<string> = new Set([])
 
   // one topic filtered
   const filterRecentsByTopic = (filter) =>
-    new Set($recents.filter((t) => t.topics.find((topic) => topic.slug === filter)))
+    $recents.filter((t) => t.topics.find((topic) => topic.slug === filter))
 
   $: if ($topMonth?.length > 0 && !topMonthAuthors?.length) {
     console.debug('mainpage: processing publications lists')
@@ -69,11 +69,11 @@
     $recents.forEach((s) => {
       s.topics.forEach((t) => tslugs.add(t.slug))
       if (s.layout) {
-        if (!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = new Set([])
-        shoutsByLayout[s.layout].add(s)
+        if (!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = []
+        shoutsByLayout[s.layout].push(s)
       }
     })
-    console.log(`mainpage: ${Object.keys(shoutsByLayout)}`)
+    // console.log(`mainpage: ${Object.keys(shoutsByLayout)}`)
     tslugs.forEach((t) => (shoutsByTopic[t] = filterRecentsByTopic(t)))
     topCommented = $recents
       .filter((s) => s.stat.comments > 0)
@@ -82,7 +82,7 @@
     topicsMonth = topicsMonth.sort(byAuthors)
     const byRating = (a, b) => b.rating - a.rating
     topMonthAuthors = topMonthAuthors.sort(byRating)
-    console.dir(shoutsByLayout['music'])
+    // console.dir(shoutsByLayout['music'])
     $loading = false
   }
 
@@ -128,14 +128,14 @@
       />
       <Shouts3 shouts={$recents.slice(20, 23)} />
       {#if 'reasearch' in shoutsByTopic}
-        <ShoutsGroup shouts={Array.from(shoutsByTopic['research']).slice(1)}>
+        <ShoutsGroup shouts={shoutsByTopic['research'].slice(1)}>
           <span slot="header"><TopicHeader topic={$topics['research']} /></span>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['research'][0]} /></span>
         </ShoutsGroup>
       {/if}
       <Shouts2 shouts={$recents.slice(23, 25)} />
       {#if shoutsByTopic['psychology']}
-        <ShoutsGroup shouts={Array.from(shoutsByTopic['psychology']).slice(1)}>
+        <ShoutsGroup shouts={shoutsByTopic['psychology'].slice(1)}>
           <span slot="header"><TopicHeader topic={$topics['psychology']} /></span>
           <span slot="aside"><ShoutCard shout={shoutsByTopic['psychology'][0]} /></span>
         </ShoutsGroup>
@@ -143,8 +143,8 @@
       <DiscoursBanner />
       <Shouts3 shouts={$recents.slice(25, 28)} />
       {#if shoutsByLayout['music']}
-        <ShoutsGroup shouts={Array.from(shoutsByLayout['music']).slice(1)}>
-            <span slot="aside"><ShoutCard shout={Array.from(shoutsByLayout['music'])[0]} /></span>
+        <ShoutsGroup shouts={shoutsByLayout['music'].slice(1)}>
+            <span slot="aside"><ShoutCard shout={shoutsByLayout['music'][0]} /></span>
         </ShoutsGroup>
       {/if}
       <ShoutBesideFew shouts={$recents.slice(28, 34)} />
