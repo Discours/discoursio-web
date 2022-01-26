@@ -29,15 +29,20 @@
   }> = []
   const lim = (num) => (num < shouts?.length ? num : shouts?.length)
 
-  const addRow = () => {
-    const limit = 1 + Math.floor(Math.random() * 6)
+  const addRow = (limit, addition) => {
     const component = ccc[limit]
-    const addition = shouts.slice(showed.length, lim(showed.length + limit))
     rows.push({ limit, component, shouts: addition })
     showed = [...showed, ...addition]
   }
 
-  onMount(() => (showed = shouts.slice(0, size)))
+  const next = () => {
+    const limit = 1 + Math.floor(Math.random() * 6)
+    const addition = shouts.slice(showed.length, lim(showed.length + limit))
+    showed = [...showed, ...addition]
+    addRow(limit, addition)
+  }
+
+  onMount(() => (showed = shouts?.slice(0, size)))
 
   let oh: number // feed offset height
   let ih: number // window inner height
@@ -45,7 +50,10 @@
 
   const onScroll = () => {
     const isBottom = ih && sy && oh && ih + sy >= oh
-    if (showed.length < shouts?.length && isBottom) addRow()
+    if(isBottom) {
+      if (showed.length < shouts?.length) next()
+      if (showed === shouts) $more = name
+    }
   }
 </script>
 
@@ -58,8 +66,8 @@
   {#if showed === shouts}
     <div class="morewrap">
       <div class="show-more">
-        <button class="button" type="button" on:click={addRow}>
-          {$loading ? 'Загружаем' : 'Показать еще'}
+        <button class="button" type="button" on:click={() => $more = name}>
+          {$loading ? 'Загружаем' : 'Загрузить ещё'}
         </button>
       </div>
     </div>

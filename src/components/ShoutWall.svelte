@@ -4,52 +4,49 @@
    * usage:
    *
    * <ShoutWall
-   *  shouts={shoutsArray}
-   *  start={0}
-   *  size={5}
-   *  on:loadmore={loadMoreHandler}
+   *  shouts={Shout[]}
+   *  size={9}
    */
 
   import type { Shout } from '$lib/codegen'
   import ShoutCard from './ShoutCard.svelte'
-  import { slide } from 'svelte/transition'
+  import { fade, slide } from 'svelte/transition'
   import Masonry from './Masonry.svelte'
-  import { createEventDispatcher } from 'svelte'
+  import { more } from '../stores/app'
+  import { onMount } from 'svelte'
 
-  const dispatch = createEventDispatcher()
+  export let name = 'recents'
   export let shouts: Shout[]
-  export let start = 0
   export let size = 9
-  let page = 0
-  $: end =
-    (page + 1) * size > shouts?.length ? shouts?.length : (page + 1) * size
-  $: showed = shouts.slice(start, end)
-  $: renderedPage = showed.length / size + (showed.length % size) > 0 ? 1 : 0
-  $: if (showed === shouts && renderedPage < page) dispatch('loadmore')
+  let showed: Shout[] = []
 
-  let offsetHeight: number
-  let innerHeight: number
-  let scrollY: number
+  const lim = (num) => (num < shouts?.length ? num : shouts?.length)
+
+  const next = () => {
+    const limit = 1 + Math.floor(Math.random() * 6)
+    const addition = shouts.slice(showed.length, lim(showed.length + limit))
+    showed = [...showed, ...addition]
+  }
+
+  onMount(() => (showed = shouts?.slice(0, size)))
+
+  let oh: number // feed offset height
+  let ih: number // window inner height
+  let sy: number // window scroll y position
 
   const onScroll = () => {
-    if (
-      shouts?.length > 0 &&
-      showed.length < shouts?.length &&
-      renderedPage < page &&
-      innerHeight &&
-      scrollY &&
-      offsetHeight &&
-      innerHeight + scrollY >= offsetHeight
-    )
-      page += 1
+    const isBottom = ih && sy && oh && ih + sy >= oh
+    if(isBottom) {
+      if (showed.length < shouts?.length) next()
+      if (showed === shouts) $more = name
+    }
   }
 </script>
 
-<svelte:window bind:scrollY bind:innerHeight on:scroll={onScroll} />
-
-<section class="feed">
+<svelte:window bind:scrollY={sy} bind:innerHeight={ih} on:scroll={onScroll} />
+<section class="feed" transition:fade bind:offsetHeight={oh}>
   <Masonry>
-    <div class="card" transition:slide>
+    <div class="card">
       {#each showed as shout}
         <ShoutCard {shout} />
       {/each}
