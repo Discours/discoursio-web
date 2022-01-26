@@ -9,7 +9,6 @@
     shouts,
     topics,
     recents,
-    topicslist,
     topOverall,
     topMonth,
     topViewed
@@ -34,8 +33,7 @@
   import TopicHeader from '../components/TopicHeader.svelte'
   import ShoutCard from '../components/ShoutCard.svelte'
   import type { Shout } from '$lib/codegen'
-import { kMaxLength } from 'buffer';
-import { shuffle } from '$lib/utils';
+  import { shuffle } from '$lib/utils'
 
   let topCommented = [],
     topMonthAuthors = [],
@@ -80,7 +78,7 @@ import { shuffle } from '$lib/utils';
     // topicsMonth = topicsMonth.sort(byAuthors)
     const byRating = (a, b) => b.rating - a.rating
     topMonthAuthors = topMonthAuthors.sort(byRating)
-    filledTopics = Object.entries(shoutsByTopic).filter(([k,v]) => v.length > 6)
+    filledTopics = Object.entries(shoutsByTopic).filter(([k,v]) => v.length > 4)
     console.dir(filledTopics)
     const rt = shuffle(filledTopics.map(f => f[0])).slice(0,2)
     rtopic1 = rt[0]
@@ -132,17 +130,17 @@ import { shuffle } from '$lib/utils';
         <Shouts3 shouts={$recents.slice(21, 24)} />
         <ShoutsGroup shouts={shoutsByTopic[rtopic1].slice(1)}>
           <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment>
-          <svelte:fragment  slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment >
+          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment >
         </ShoutsGroup>
         <Shouts2 shouts={$recents.slice(24, 26)} />
         <ShoutsGroup shouts={shoutsByTopic[rtopic2].slice(1)}>
           <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment>
-          <svelte:fragment  slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment >
+          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment >
         </ShoutsGroup>
         <DiscoursBanner />
         <Shouts3 shouts={$recents.slice(26, 29)} />
         <ShoutsGroup shouts={shoutsByLayout['music'].slice(1)}>
-            <svelte:fragment  slot="aside"><ShoutCard shout={shoutsByLayout['music'][0]} /></svelte:fragment >
+            <svelte:fragment slot="aside"><ShoutCard shout={shoutsByLayout['music'][0]} /></svelte:fragment >
         </ShoutsGroup>
       {/if}
       <ShoutBesideTop shouts={$recents.slice(30, 36)} beside={$recents[29]} />

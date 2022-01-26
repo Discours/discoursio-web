@@ -22,12 +22,12 @@
       {#if shouts}
       <div class="row">
         <div class="col-md-6">
-          {#each shouts.slice(0, 3) as shout}
+          {#each shouts.slice(0, 2) as shout}
             <ShoutCard {shout} noimage={true} />
           {/each}
         </div>
         <div class="col-md-6">
-          {#each shouts.slice(3, 6) as shout}
+          {#each shouts.slice(2, 4) as shout}
             <ShoutCard {shout} noimage={true} />
           {/each}
         </div>

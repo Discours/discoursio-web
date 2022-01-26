@@ -6,7 +6,7 @@
   export let beside: Shout
   export let slugs: string[]
   export let title = 'Темы'
-  export let limit = 4
+  export let limit = 3
 </script>
 
 <div class="floor floor--9">
