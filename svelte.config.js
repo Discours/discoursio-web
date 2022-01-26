@@ -10,17 +10,17 @@ import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 const { scss, globalStyle, typescript } = require('svelte-preprocess')
 
-const routesDir = './src/routes'
-const p = (f) => new URL(f, import.meta.url)
-const onlyDir = (f) =>
-  statSync(p(routesDir + '/' + f)).isDirectory() && f !== '[slug]'
+let noExternal = []
 
-writeFileSync(
-  p(routesDir + '/[slug]/routes.json'),
-  JSON.stringify(readdirSync(p(routesDir)).filter(onlyDir), null, 2)
-)
-
-const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
+if(process.argv.findIndex(a => a.includes('vitebook')) == -1) {
+  const routesDir = './src/routes'
+  const p = (f) => new URL(f, import.meta.url)
+  const dirs = (f) => statSync(p(routesDir + '/' + f)).isDirectory() && f !== '[slug]'
+  const dirsList = readdirSync(p(routesDir)).filter(dirs)
+  writeFileSync(p(routesDir + '/[slug]/routes.json'), JSON.stringify(dirsList, null, 2))
+  const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
+  noExternal = Object.keys(pkg.dependencies || {})
+}
 
 const scssOptions = {
   // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
@@ -62,7 +62,7 @@ const config = {
       },
       ssr: {
         external: ['w3c-keyname'],
-        noExternal: Object.keys(pkg.dependencies || {})
+        noExternal
       },
       external: ['w3c-keyname']
     }

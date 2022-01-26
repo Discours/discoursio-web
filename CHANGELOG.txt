@@ -1,8 +1,9 @@
 [0.1.0]
 [+] vitebook
-[+] modal components refactoring
+[+] husky, lint-staged
+[+] components refactoring
 [+] 'static' pages fixes
-[+] ShoutFeed reusable component
+[+] ShoutFeed's reusable components
 [+] render order revised
 
 [0.0.9]

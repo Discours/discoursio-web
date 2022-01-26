@@ -1,45 +1,24 @@
-import { defineConfig, clientPlugin } from '@vitebook/client/node'
-import {
-  DefaultThemeConfig,
-  defaultThemePlugin
-} from '@vitebook/theme-default/node'
-import { svelteMarkdownPlugin } from '@vitebook/markdown-svelte/node'
+import { clientPlugin, defineConfig } from '@vitebook/client/node'
 import { shikiMarkdownPlugin } from '@vitebook/markdown-shiki/node'
+import { svelteMarkdownPlugin } from '@vitebook/markdown-svelte/node'
+import config from '../svelte.config'
 
-export default defineConfig<DefaultThemeConfig>({
-  include: ['src/book/*.md'],
-  vite: {
-    optimizeDeps: {
-      include: ['clsx']
-    }
-  },
+export default defineConfig({
+  include: ['src/book/**/*.{md,svelte}'],
   plugins: [
-    svelteMarkdownPlugin({
-      code: {
-        lineNumbers: false,
-      },
-    }),
     shikiMarkdownPlugin(),
+    svelteMarkdownPlugin(),
     clientPlugin({
       appFile: 'App.svelte',
-      include: /\.svelte/,
       svelte: {
         extensions: ['.svelte', '.md'],
-        experimental: {
-          // Remove if using `svelte-preprocess`.
-          useVitePreprocess: true
-        }
+        preprocess: config.preprocess
       },
-    }),
-    defaultThemePlugin()
+    })
   ],
   site: {
-    title: 'discours.ui UI playbook',
-    description: 'Try our components',
-    theme: {
-      remoteGitRepo: {
-        url: 'Discours/discoursio-web'
-      }
-    }
-  }
-})
+    title: 'discoursio-book',
+    description: '',
+    theme: {},
+  },
+});

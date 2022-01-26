@@ -1,5 +1,4 @@
-node_modules
-*.DS_Store
+node_modules/
 .vercel
 .env
 build
@@ -9,10 +8,14 @@ static/*.json
 .verce*
 *.sqlite*
 Pipfile*
-api/migration/content
-api/migration/data
+server/migration/content
+server/migration/data
 static/upload/*
 .obsidian
 .vscode
 *.log
 .idea
+.DS_STORE
+.cache
+.temp
+dist/

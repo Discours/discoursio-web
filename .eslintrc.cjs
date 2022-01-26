@@ -5,6 +5,12 @@ module.exports = {
     node: true,
     browser: true
   },
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'],
@@ -13,12 +19,12 @@ module.exports = {
     ecmaVersion: 2021,
     sourceType: 'module'
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended'
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking'
+  plugins: [
+    "svelte3",
+    "@typescript-eslint",
+    "simple-import-sort",
+    "prettier"
   ],
-  plugins: ['svelte3', '@typescript-eslint', 'prettier'],
   overrides: [
     {
       files: ['*.svelte'],
@@ -36,10 +42,13 @@ module.exports = {
     }
   ],
   settings: {
+    "import/resolver": { "typescript": {} },
     'svelte3/typescript': true,
     'svelte3/ignore-styles': () => true
   },
   rules: {
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    "simple-import-sort/exports": "error",
+    "simple-import-sort/imports": "error"
   }
 }
