@@ -125,10 +125,12 @@ a:link {
 
 a {
   color: #000;
-  transition: color 0.2s;
+  padding-bottom: 0.1em;
+  transition: color 0.2s, background-color 0.2s;
 
   &:hover {
-    color: rgba(0, 0, 0, 0.6);
+    background: #000;
+    color: #fff;
   }
 }
 
@@ -215,6 +217,16 @@ input[type='checkbox'] {
   a {
     color: #9fa1a7;
   }
+
+  a {
+    background: transparent;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #000;
+      color: #fff;
+    }
+  }
 }
 
 .shout__topic {
@@ -222,10 +234,17 @@ input[type='checkbox'] {
   letter-spacing: 0.08em;
   margin-bottom: 0.8rem;
   text-transform: uppercase;
+  transition: background-color 0.2s;
 
   a {
+    background: transparent;
     border: none;
     color: $link-color;
+
+    &:hover {
+      background: $link-color;
+      color: #fff;
+    }
   }
 }
 
@@ -272,7 +291,14 @@ figcaption {
 
 .shout-card__title {
   a {
+    background: transparent;
     color: #000;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: #000;
+      color: #fff;
+    }
   }
 }
 
@@ -305,6 +331,11 @@ figcaption {
     a {
       color: rgba(255, 255, 255, 0.5);
     }
+  }
+
+  a:hover {
+    background: #fff;
+    color: #000 !important;
   }
 }
 

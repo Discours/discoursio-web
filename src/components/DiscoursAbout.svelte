@@ -65,6 +65,13 @@
       font-weight: bold;
       margin-right: 0.3em;
       margin-bottom: 0.8em;
+      transition: all 0.2s;
+
+      &:hover {
+        background: #fff;
+        border-color: #fff;
+        color: #000;
+      }
     }
   }
 </style>

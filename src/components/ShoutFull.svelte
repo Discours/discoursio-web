@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
-  
+
   import type { Topic } from '$lib/codegen'
   import { subscribe } from '$lib/cookie'
   import { capitalize } from '$lib/utils'
-  
+
   import MD from '../components/MD.svelte'
   import { openModal } from '../stores/app'
   import { session, token } from '../stores/user'
@@ -304,6 +304,7 @@
     :global(.icon) {
       display: inline-block;
       margin-right: 0.2em;
+      transition: filter 0.2s;
       vertical-align: middle;
     }
 
@@ -313,6 +314,12 @@
 
     a {
       border: none;
+
+      &:hover {
+        :global(.icon) {
+          filter: invert(1);
+        }
+      }
     }
   }
 

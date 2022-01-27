@@ -107,6 +107,10 @@
     a {
       border: none;
       color: #000;
+
+      &:hover {
+        background: none;
+      }
     }
   }
 
@@ -168,11 +172,6 @@
 
     a {
       border: none;
-      color: #000;
-
-      &:hover {
-        color: #000;
-      }
     }
 
     .selected a {
