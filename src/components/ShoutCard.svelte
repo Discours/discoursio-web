@@ -39,7 +39,7 @@
           <img src={shout.cover} alt={shout.title} loading="lazy" />
         </div>
 
-        {#if shout.layout && shout.layout !== 'article' && !noicon}
+        {#if shout.layout && shout.layout !== 'article' && !(noicon || noimage)}
           <div class="shout-card__type">
             <Icon name={shout.layout} />
           </div>

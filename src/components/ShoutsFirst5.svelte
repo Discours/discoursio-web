@@ -17,7 +17,7 @@
     </div>
     <div class="col-md-3">
       {#each shouts5.slice(3, 5) as shout}
-        <ShoutCard {shout} />
+        <ShoutCard {shout}/>
       {/each}
     </div>
   </div>

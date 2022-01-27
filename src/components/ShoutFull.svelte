@@ -10,6 +10,7 @@
   import { capitalize } from '$lib/utils'
   import Icon from './DiscoursIcon.svelte'
   import { subscribe } from '$lib/cookie'
+import { fade } from 'svelte/transition';
 
   export let props
   let shout
@@ -59,7 +60,7 @@
   }
 </script>
 
-<div class="shout">
+<div class="shout" transition:fade>
   {#if shout}
     <div class="shout wide-container">
       <div class="row">

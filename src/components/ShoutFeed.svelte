@@ -51,7 +51,7 @@
   const onScroll = () => {
     const isBottom = ih && sy && oh && ih + sy >= oh
     if(isBottom) {
-      if (showed.length < shouts?.length) next()
+      if (showed?.length < shouts?.length) next()
       if (showed === shouts) $more = name
     }
   }

@@ -1,6 +1,6 @@
-/*** 
-import { parse } from 'cookie'
-import { GET_ME } from '$lib/queries'
+
+// import { parse } from 'cookie'
+// import { GET_ME } from '$lib/queries'
 import { client } from '$lib/client'
 
 /** @type {import('@sveltejs/kit').Handle} 

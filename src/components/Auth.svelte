@@ -1,33 +1,28 @@
 <script lang="ts">
   import { page } from '$app/stores'
-  import { SIGN_IN, SIGN_UP } from '$lib/queries'
-  import { client } from '$lib/client'
   import Icon from './DiscoursIcon.svelte'
   import { notices, session, token as tokenStore } from '../stores/user'
   import { openModal } from '../stores/app'
   import { fade } from 'svelte/transition'
   import { API_ENDPOINT } from '$lib/client'
-  import { goto } from '$app/navigation'
-  const prefix = 'Ошибка сервера: '
 
-  export let mode = 'login'
+  export let mode = 'sign-in'
   export let code = ''
   export let warnings: string[] = []
 
-  const showTerms = () => {
-    $openModal = ''
-    goto('/about/terms-of-use')
-  }
-
-  let email,
-    password,
-    password2 = ''
+  let email
+  let password
+  let password2 = ''
   let warnTimeout
+  let process = false
 
-  const authSuccess = ({ token, user }) => {
+  const authSuccess = (data) => {
+    console.dir(data)
+    const { token, user } = data
     $tokenStore = token
     $session = user
     $openModal = ''
+    process = false
     $notices.push({
       type: 'info',
       text: 'Welcome!',
@@ -36,56 +31,31 @@
     })
   }
 
-  const authFailure = ({ error }) => {
-    console.log('auth: error handling ' + error.toString())
-    warnings.push(prefix + error)
-    console.debug(warnings)
+  const authFailure = (data) => {
+    const { error } = data
+    if(warnings[warnings.length-1] !== error) warnings.push(error)
+    process = false
+    console.dir(warnings)
     clearTimeout(warnTimeout)
-    warnTimeout = setTimeout(
-      () => (warnings = warnings.filter((w) => w !== prefix + error)),
-      4200
-    )
+    warnTimeout = setTimeout(() => (warnings = warnings.filter((w) => w !== error)), 4200)
   }
 
-  const auth = async (q) => {
-    console.log('auth: with discours.io account ')
-    const res = await client.request(q, { email, password })
-    const { token, user, error } =
-      res[q === SIGN_IN ? 'signIn' : 'registerUser']
-    if (token) authSuccess({ token, user })
-    else authFailure({ error })
+  const auth = (endpoint: string) => {
+    if(email?.length > 5 && password?.length > 5 && email.includes('@') && email.includes('.')) {
+      process = true
+      fetch(`/auth/${endpoint}`, {
+        method: 'POST',
+        cache: 'no-cache', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, code })
+      })
+        .then(r => r.ok? r.json().then(authSuccess) : authFailure({ error: 'Неизвестная ошибка' }))
+        .catch((error) => authFailure({ error }))
+      } else authFailure({ error: 'Пожалуйста, проверьте введённые данные' })
   }
 
-  const login = async () => auth(SIGN_IN)
-  const register = async () => auth(SIGN_UP)
-
-  const forget = async () => {
-    console.log('auth: forget password clicked')
-    // TODO: implement forget handler
-  }
-
-  const reset = async () => {
-    console.log('auth: confirming reset password code')
-    console.log(code)
-    // TODO: implement reset handler
-  }
-
-  const resend = () => {
-    console.log('auth: resending auth code')
-    // TODO: implement resend handler
-  }
-
-  const renew = () => {
-    if (password2 === password) {
-      console.log('auth: renewing password')
-    }
-    // TODO: implement renew handler
-  }
-
-  $: if ($page) {
-    code = $page?.url?.searchParams.get('code')
-    if (code) reset()
-  }
+  // if code in url params
+  $: if (code = $page?.url?.searchParams.get('code')) auth('reset')
 
   const oauth = (provider: string) => {
     // $openModal = false
@@ -95,21 +65,30 @@
       'width=740, height=420'
     )
   }
+
+  const titles = {
+    'sign-up': 'Создать аккаунт',
+    'sign-in': 'Войти в Дискурс',
+    'forget': 'Забыли пароль?',
+    'reset': 'Подтвердите почту и действие совершится',
+    'resend': 'Выслать подтверждение',
+    'password': 'Введите новый пароль'
+  }
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
 <div
   class="row view"
-  class:view--registration={mode === 'register'}
+  class:view--sign-up={mode === 'sign-up'}
   transition:fade
 >
-  <div class="col-sm-6 d-md-none login-image">
-    <div class="login-image__text" class:show={mode === 'register'}>
+  <div class="col-sm-6 d-md-none auth-image">
+    <div class="auth-image__text" class:show={mode === 'sign-up'}>
       <h2>Дискурс</h2>
       <h4>
         Присоединятесь к&nbsp;глобальному сообществу авторов со&nbsp;всего мира!
       </h4>
-      <p class="registration-benefits">
+      <p class="auth-benefits">
         Познакомитесь с&nbsp;выдающимися людьми нашего времени, участвуйте
         в&nbsp;редактировании и&nbsp;обсуждении статей, выступайте экспертом,
         оценивайте материалы других авторов со&nbsp;всего мира
@@ -119,7 +98,7 @@
       <p class="disclamer">
         Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a
           href="/about/terms-of-use"
-          on:click={showTerms}>правилами пользования</a>
+          on:click={() => $openModal = ''}>правилами пользования</a>
         сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых
         уведомлений.
       </p>
@@ -127,19 +106,7 @@
   </div>
   <form class="col-sm-6 auth" transition:fade>
     <div class="auth__inner">
-      <h4>
-        {#if mode === 'register'}
-          Создать аккаунт
-        {:else if mode === 'login'}
-          Войти в&nbsp;Дискурс
-        {:else if mode === 'forget'}
-          Забыли пароль?
-        {:else if mode === 'reset'}
-          Подтвердите почту и действие совершится
-        {:else if mode === 'password'}
-          Введите новый пароль
-        {/if}
-      </h4>
+      <h4>{titles[mode]}</h4>
 
       <div class="auth-subtitle">
         {#if mode === 'forget'}
@@ -150,14 +117,11 @@
           подтверждения регистрации
         {/if}
       </div>
-
+      {#if warnings?.length > 0}
       <div class="auth-warnings" style="color: red;">
-        {@debug warnings}
-        {#each warnings as warn}
-          <p>{warn}</p>
-        {/each}
+        {#each warnings as warn}<p>{warn}</p>{/each}
       </div>
-
+      {/if}
       {#if mode !== 'reset' && mode !== 'password'}
         <input
           autocomplete="username"
@@ -167,8 +131,9 @@
         />
       {/if}
 
-      {#if mode === 'register' || mode === 'login'}
+      {#if mode === 'sign-up' || mode === 'sign-in'}
         <input
+          on:focus={() => auth('sign-check')}
           autocomplete="current-password"
           bind:value={password}
           type="password"
@@ -190,25 +155,14 @@
       {/if}
 
       <div>
-        <button
-          class="button submitbtn"
-          on:click={(mode === 'register' && register) ||
-            (mode === 'login' && login) ||
-            (mode === 'forget' && forget) ||
-            (mode === 'reset' && reset) ||
-            (mode === 'password' && renew)}
-        >
-          {(mode === 'register' && 'Создать аккаунт') ||
-            (mode === 'login' && 'Войти') ||
-            (mode === 'forget' && 'Выслать пароль') ||
-            (mode === 'reset' && ' Подтвердить') ||
-            (mode === 'password' && 'Создать новый пароль')}
+        <button class="submitbtn" disabled={process} on:click={() => auth(mode)}>
+          {process ? '...' : titles[mode]}
         </button>
       </div>
 
-      {#if mode === 'login'}
+      {#if mode === 'sign-in'}
         <div class="auth-actions">
-          <a href={''} on:click|preventDefault={() => (mode = 'forget')}
+          <a href={'#auth'} on:click|preventDefault={() => (mode = 'forget')}
             >Забыли пароль?</a
           >
         </div>
@@ -217,37 +171,37 @@
       {#if mode !== 'forget' && mode !== 'reset'}
         <div class="social-provider">
           <div class="providers-text">
-            {#if mode === 'register'}
+            {#if mode === 'sign-up'}
               Или создайте аккаунт с&nbsp;помощью соцсетей
-            {:else if mode === 'login'}
+            {:else if mode === 'sign-in'}
               Или войдите через соцсети
             {/if}
           </div>
 
           <div class="social">
             <a
-              href={''}
+              href={'#auth'}
               class="facebook-auth"
               on:click|preventDefault={() => oauth('facebook')}
             >
               <Icon name="facebook" />
             </a>
             <a
-              href={''}
+              href={'#auth'}
               class="google-auth"
               on:click|preventDefault={() => oauth('google')}
             >
               <Icon name="google" />
             </a>
             <a
-              href={''}
+              href={'#auth'}
               class="vk-auth"
               on:click|preventDefault={() => oauth('vk')}
             >
               <Icon name="vk" />
             </a>
             <a
-              href={''}
+              href={'#auth'}
               class="github-auth"
               on:click|preventDefault={() => oauth('github')}
             >
@@ -258,28 +212,28 @@
       {/if}
 
       <div class="auth-control">
-        <div class:show={mode === 'register'}>
+        <div class:show={mode === 'sign-up'}>
           <span
             class="auth-link"
-            on:click|preventDefault={() => (mode = 'login')}
+            on:click|preventDefault={() => (mode = 'sign-in')}
             >У&nbsp;меня есть аккаунт</span
           >
         </div>
-        <div class:show={mode === 'login'}>
+        <div class:show={mode === 'sign-in'}>
           <span
             class="auth-link"
-            on:click|preventDefault={() => (mode = 'register')}
+            on:click|preventDefault={() => (mode = 'sign-up')}
             >У&nbsp;меня еще нет аккаунта</span
           >
         </div>
         <div class:show={mode === 'forget'}>
           <span
             class="auth-link"
-            on:click|preventDefault={() => (mode = 'login')}>Я знаю пароль</span
+            on:click|preventDefault={() => (mode = 'sign-in')}>Я знаю пароль</span
           >
         </div>
         <div class:show={mode === 'reset'}>
-          <span class="auth-link" on:click|preventDefault={() => resend()}
+          <span class="auth-link" on:click|preventDefault={() => auth('resend')}
             >Отправить код повторно</span
           >
         </div>
@@ -309,12 +263,12 @@
     }
   }
 
-  .view--registration {
-    .login-image {
+  .view--sign-up {
+    .auth-image {
       order: 2;
     }
 
-    .login-image:before {
+    .auth-image:before {
       background: linear-gradient(
         0deg,
         rgba(20, 20, 20, 0.8),
@@ -329,7 +283,7 @@
     }
   }
 
-  .login-image {
+  .auth-image {
     background: #141414 url('/auth-page.jpg') center no-repeat;
     background-size: cover;
     color: #fff;
@@ -351,7 +305,7 @@
     }
   }
 
-  .login-image__text {
+  .auth-image__text {
     display: none;
     flex-direction: column;
     justify-content: space-between;
@@ -367,11 +321,11 @@
       }
     }
   }
-  .login-image__text.show {
+  .auth-image__text.show {
     display: flex;
   }
 
-  .registration-benefits {
+  .auth-benefits {
     flex: 1;
   }
 
@@ -421,7 +375,7 @@
     margin: 0 -5px;
 
     > :global(*) {
-      background: #f7f7f7;
+      background-color: #f7f7f7;
       cursor: pointer;
       flex: 1;
       margin: 0 5px;

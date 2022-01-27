@@ -20,16 +20,22 @@
   import { onMount } from 'svelte'
   import ShoutCard from '../../components/ShoutCard.svelte'
   import UserCard from '../../components/UserCard.svelte'
-  import type { Shout, User } from '$lib/codegen'
+  import type { Shout, Topic, User } from '$lib/codegen'
   import { browser } from '$app/env'
   import ShoutFeed from '../../components/ShoutFeed.svelte'
+  import { fade } from 'svelte/transition'
+  import Shouts2 from '../../components/Shouts2.svelte'
+  import Shouts3 from '../../components/Shouts3.svelte'
+  import ShoutWide from '../../components/ShoutWide.svelte'
+  import ShoutBesideAuthors from "../../components/ShoutBesideAuthors.svelte"
 
   export let shouts: Shout[]
   export let authors: User[]
   export let slug: string
-
-  let topic
-  let mode
+  let topShoutsAbout = [] // TODO: get topShoutsAbout with api
+  let topViewedAbout = [] // TODO: get topViewedAbout from api
+  let topic: Topic
+  let mode: string
   let byTopic = {}
 
   $: if (shouts?.length > 0 && Object.keys(byTopic).length === 0) {
@@ -42,6 +48,7 @@
   }
 
   $: if ($topicslist) topic = $topics[slug]
+
   onMount(() => {
     if (browser) slug = $page.params.slug
     console.log('topic: [' + slug + ']')
@@ -74,7 +81,7 @@
 <svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
 <TopicFull {topic} />
 
-<div class="container">
+<div class="container" transition:fade>
   {#if shouts?.length < 8}
     <div class="col-md-4">
       <h3>Тему поддерживают</h3>
@@ -113,53 +120,20 @@
     </div>
 
     <div class="row">
-      <div class="floor floor--one-article">
-        <div class="row">
-          {#each shouts.slice(0, 1) as shout}
-            <div class="col-12">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          {#each shouts.slice(1, 4) as shout}
-            <div class="col-md-4">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          {#each shouts.slice(4, 6) as shout}
-            <div class="col-md-6">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          <div class="col-md-4">
-            <h3>Тему поддерживают</h3>
-            {#each Object.values(authors).slice(0, 5) as user}
-              <UserCard {user} />
-            {/each}
-          </div>
-          {#each shouts.slice(6, 8) as shout}
-            <div class="col-md-4">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
+      <ShoutWide shout={shouts[0]} />
+      <Shouts3 shouts={shouts.slice(1, 4)} />
+      <Shouts2 shouts={shouts.slice(4, 6)} />
+      <ShoutBesideAuthors 
+        title="Тему поддерживают"
+        slugs={Object.values(authors).map(a => a.slug).slice(0, 5)}
+        beside={shouts[6]}
+        />
+
       <div class="floor floor--important">
         <div class="container">
           <div class="row">
             <h3 class="col-12">Популярное</h3>
-            {#each shouts.slice(8, 10) as shout}
+            {#each topViewedAbout as shout}
               <div class="col-md-6">
                 <ShoutCard {shout} />
               </div>
@@ -167,30 +141,15 @@
           </div>
         </div>
       </div>
-      <div class="floor">
-        <div class="row">
-          {#each shouts.slice(10, 13) as shout}
-            <div class="col-md-4">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          {#each shouts.slice(13, 16) as shout}
-            <div class="col-md-4">
-              `
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
+
+      <Shouts3 shouts={shouts.slice(10, 13)} />
+      <Shouts3 shouts={shouts.slice(13, 16)} />
+
       <div class="floor floor--important">
         <div class="container">
           <div class="row">
             <h3 class="col-12">Избранное</h3>
-            {#each shouts.slice(16, 19) as shout}
+            {#each topShoutsAbout as shout}
               <div class="col-md-4">
                 <ShoutCard {shout} />
               </div>
@@ -198,38 +157,12 @@
           </div>
         </div>
       </div>
-      <div class="floor">
-        <div class="row">
-          <div class="col-md-4">
-            <ShoutCard shout={shouts[0]} />
-          </div>
-          <div class="col-md-8">
-            <ShoutCard shout={shouts[1]} />
-          </div>
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          {#each shouts.slice(2, 6) as shout}
-            <div class="col-md-3">
-              <ShoutCard {shout} />
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="floor">
-        <div class="row">
-          <div class="col-md-8">
-            <ShoutCard shout={shouts[6]} />
-          </div>
-          <div class="col-md-4">
-            <ShoutCard shout={shouts[7]} />
-          </div>
-        </div>
-      </div>
+
+      <Shouts2 shouts={shouts.slice(0,2)} />
+      <Shouts3 shouts={shouts.slice(2,5)} />
+      <Shouts2 shouts={shouts.slice(5,7)} />
     </div>
   {/if}
-  <ShoutFeed name="by-topics" shouts={byTopic[topic.slug]} />
 </div>
 
 <style lang="scss">

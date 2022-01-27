@@ -4,6 +4,7 @@
 
 <script lang="ts">
   import type { Topic } from '$lib/codegen'
+import { fade } from 'svelte/transition';
   import TopicCard from '../../components/TopicCard.svelte'
   import { topicslist, subscribedTopics } from '../../stores/zine'
 
@@ -52,7 +53,7 @@
   }
 </script>
 
-<div class="container">
+<div class="container" transition:fade>
   <div class="row">
     <div class="col-md-9">
       <h1>Темы</h1>
