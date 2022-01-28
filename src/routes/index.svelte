@@ -139,7 +139,7 @@
         </ShoutsGroup>
         <DiscoursBanner />
         <Shouts2 shouts={$recents.slice(26, 28)} />
-        <div class="wide-container row"><TopicHeader topic={$topics[randomLayout]} /></div>
+        <div class="wide-container row"><TopicHeader topic={$topics[randomLayout]} color="black" /></div>
         <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
       {/if}
       <ShoutBesideFew shouts={$recents.slice(29, 35)} beside={$recents[28]} top={false} title={''}/>

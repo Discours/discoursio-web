@@ -60,6 +60,8 @@
  			margin-bottom: 1em;
  			white-space: nowrap;
 
+      a { border: none }
+
  			@include media-breakpoint-up(sm) {
  				text-align: right;
  			}

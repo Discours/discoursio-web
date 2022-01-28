@@ -4,12 +4,21 @@
   import { subscribe, unsubscribe } from '$lib/cookie'
   import Icon from './DiscoursIcon.svelte'
   import { subscribedAuthors } from '../stores/zine'
+import { link } from 'fs'
 
   export let user: User | Partial<User>
   export let hasSubscribeButton = true
   export let hasFullInfo = false
   let subscribed = false
   $: if ($subscribedAuthors) subscribed = $subscribedAuthors.includes(user.slug)
+  const link2title = {
+    'instagram': 'ig',
+    'facebook': 'fb',
+    'linkedin': 'in',
+    'telegram': 'tg',
+    'vk': 'vk' 
+  }
+  const getLinkName = (l) => link2title[Object.keys(link2title).filter(key => l.includes(key))[0]] || l
 </script>
 
 <div class="author">
@@ -54,9 +63,9 @@
               Написать
             </button>
 
-            {#if user.links}
+            {#if user?.links?.length}
               {#each user.links as link}
-                <a href={link}>{link}</a>
+                <a href={link}>{getLinkName(link)}</a>
               {/each}
             {/if}
           {/if}
