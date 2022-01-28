@@ -9,11 +9,12 @@
   export let mode = 'sign-in'
   export let code = ''
   export let warnings: string[] = []
+  export let notifications: string[] = []
 
   let email
   let password
   let password2 = ''
-  let warnTimeout
+  let nto
   let process = false
 
   const authSuccess = (data) => {
@@ -31,27 +32,48 @@
     })
   }
 
+  const showMessage = (text, collection=null) => {
+    if(collection===null) collection = notifications
+    if(collection[collection.length-1] !== text) collection.push(text)
+    clearTimeout(nto)
+    nto = setTimeout(() => {
+      console.dir()
+      collection = collection.filter((w) => w !== text)
+    }, 3400)
+  }
+  
+  const showError = (error) => showMessage(error, warnings)
   const authFailure = (data) => {
     const { error } = data
-    if(warnings[warnings.length-1] !== error) warnings.push(error)
     process = false
-    console.dir(warnings)
-    clearTimeout(warnTimeout)
-    warnTimeout = setTimeout(() => (warnings = warnings.filter((w) => w !== error)), 4200)
+    showError(error)
   }
 
+  const _auth = (endpoint: string) => {
+    showMessage('Пожалуйста, подождите..')
+    fetch(`/auth/${endpoint}`, {
+      method: 'POST',
+      cache: 'no-cache', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, code })
+    })
+      .then(r => r.ok? r.json().then(authSuccess) : authFailure({ error: 'Неизвестная ошибка, попробуйте ещё раз' }))
+      .catch((error) => authFailure({ error }))
+  }
+      
   const auth = (endpoint: string) => {
-    if(email?.length > 5 && password?.length > 5 && email.includes('@') && email.includes('.')) {
-      process = true
-      fetch(`/auth/${endpoint}`, {
-        method: 'POST',
-        cache: 'no-cache', 
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, code })
-      })
-        .then(r => r.ok? r.json().then(authSuccess) : authFailure({ error: 'Неизвестная ошибка' }))
-        .catch((error) => authFailure({ error }))
-      } else authFailure({ error: 'Пожалуйста, проверьте введённые данные' })
+    const emailTyped = email?.length > 5 && email.includes('@') && email.includes('.')
+    if(!emailTyped) authFailure('Пожалуйста, проверьте введенный адрес почты')
+    process = true
+    if (mode === 'sign-up') {
+      showMessage('Ищем учётную запись с таким почтовым адресом')
+      fetch(`/auth/sign-check?email=${email}`).then((r) => {
+        if (r.ok) _auth(endpoint)
+        else authFailure({ error: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться' })
+      }) 
+    } else {
+      _auth(endpoint) 
+    }
   }
 
   // if code in url params
@@ -117,11 +139,10 @@
           подтверждения регистрации
         {/if}
       </div>
-      {#if warnings?.length > 0}
-      <div class="auth-warnings" style="color: red;">
-        {#each warnings as warn}<p>{warn}</p>{/each}
+      <div class="auth-info">
+        {#if notifications?.length}{#each notifications as n}<span class="info" transition:fade>{n}.&nbsp;</span>{/each}{/if}
+        {#if warnings?.length}{#each warnings as warn}<span class="warn" transition:fade>{warn}.&nbsp;</span>{/each}{/if}
       </div>
-      {/if}
       {#if mode !== 'reset' && mode !== 'password'}
         <input
           autocomplete="username"
@@ -133,7 +154,6 @@
 
       {#if mode === 'sign-up' || mode === 'sign-in'}
         <input
-          on:focus={() => auth('sign-check')}
           autocomplete="current-password"
           bind:value={password}
           type="password"
@@ -243,12 +263,6 @@
 </div>
 
 <style lang="scss">
-  .warn {
-    height: 50px;
-    width: 120px;
-    border: 1px solid black;
-    padding: 1em;
-  }
   .view {
     background: #fff;
     position: relative;
@@ -418,9 +432,11 @@
     margin: 1em;
   }
 
-  .auth-warnings {
-    color: #a00;
+  .auth-info {
+    min-height: 5em;
     font-weight: 400;
     font-size: smaller;
+    .warn { color: #a00; }
+    .info { color: gray; }
   }
 </style>

@@ -7,25 +7,27 @@ const method = 'POST'
 
 const subscribe = async (slug, what) => {
   let subscribed
-  console.log('topic: subscribing')
-  const r = await fetch('/subscribe', {
+  console.log(what + ' subscribing ' + slug)
+  const r = await fetch('/feed/subscribe', {
     method,
     headers,
     body: JSON.stringify({ slug, what })
   })
   if (r.ok) subscribed = true
+  else console.error('failed')
   return subscribed
 }
 
 const unsubscribe = async (slug, what) => {
   let subscribed
-  console.log('topic: unsubscribing')
-  const r = await fetch('/unsubscribe', {
+  console.log(what + ' unsubscribing ' + slug)
+  const r = await fetch('/feed/unsubscribe', {
     method,
     headers,
     body: JSON.stringify({ slug, what })
   })
   if (r.ok) subscribed = false
+  else console.error('failed')
   return subscribed
 }
 

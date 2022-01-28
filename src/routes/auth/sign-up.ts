@@ -3,8 +3,8 @@ import { SIGN_UP } from '$lib/queries'
 import { serialize } from 'cookie'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
-export async function post({ body: { email, password } }) {
-
+export async function post({ request }) {
+    const { email, password } = await request.json()
     const { token, user } = await client.request(SIGN_UP, { email, password})
     return {
      status: 200,
