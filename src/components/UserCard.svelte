@@ -10,7 +10,7 @@ import { link } from 'fs'
   export let hasSubscribeButton = true
   export let hasFullInfo = false
   let subscribed = false
-  $: if ($subscribedAuthors) subscribed = $subscribedAuthors.includes(user.slug)
+  $: if ($subscribedAuthors) subscribed = $subscribedAuthors.includes(user?.slug || '')
   const link2title = {
     'instagram': 'ig',
     'facebook': 'fb',
