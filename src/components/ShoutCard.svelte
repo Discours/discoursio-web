@@ -38,16 +38,18 @@
         <div class="shout-card__cover">
           <img src={shout.cover} alt={shout.title} loading="lazy" />
         </div>
-
-        {#if shout.layout && shout.layout !== 'article' && !(noicon || noimage)}
-          <div class="shout-card__type">
-            <Icon name={shout.layout} />
-          </div>
-        {/if}
       </div>
     {/if}
 
     <div class="shout-card__content">
+      {#if shout.layout && shout.layout !== 'article' && !(noicon || noimage)}
+        <div class="shout-card__type">
+          <a href="/topic/{shout.topics.filter((t) => shout.mainTopic == t.slug)[0].slug}">
+            <Icon name={shout.layout} />
+          </a>
+        </div>
+      {/if}
+
       {#if !isGroup}
         {#each shout.topics.filter((t) => shout.mainTopic == t.slug) as topic}
           <div class="shout__topic">
@@ -205,8 +207,17 @@
     right: 0.8rem;
     text-align: center;
     top: 0.8rem;
+    transition: background-color 0.2s;
     width: 3.2rem;
-    z-index: 1;
+    z-index: 2;
+
+    &:hover {
+      background: #000;
+
+      :global(.icon) {
+        filter: invert(1);
+      }
+    }
 
     :global(img) {
       height: auto;
@@ -219,6 +230,7 @@
 
     :global(.icon) {
       height: 100%;
+      transition: filter 0.2s;
     }
   }
 

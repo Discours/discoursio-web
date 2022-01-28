@@ -1,16 +1,18 @@
 <script lang="ts">
-  import UserCard from './UserCard.svelte'
-  import ShoutComment from './ShoutComment.svelte'
+  import { onMount } from 'svelte'
+  import { fade } from 'svelte/transition'
+
+  import type { Topic } from '$lib/codegen'
+  import { subscribe } from '$lib/cookie'
+  import { capitalize } from '$lib/utils'
+
+  import MD from '../components/MD.svelte'
+  import { openModal } from '../stores/app'
   import { session, token } from '../stores/user'
   import { subscribedShouts } from '../stores/zine'
-  import { openModal } from '../stores/app'
-  import { onMount } from 'svelte'
-  import MD from '../components/MD.svelte'
-  import type { Topic } from '$lib/codegen'
-  import { capitalize } from '$lib/utils'
   import Icon from './DiscoursIcon.svelte'
-  import { subscribe } from '$lib/cookie'
-import { fade } from 'svelte/transition';
+  import ShoutComment from './ShoutComment.svelte'
+  import UserCard from './UserCard.svelte'
 
   export let props
   let shout
@@ -79,7 +81,7 @@ import { fade } from 'svelte/transition';
             <div class="shout__author">
               {#each shout.authors as author, index}
                 {#if index > 0},{/if}
-                {author.name}
+                <a href="/@{author.slug}">{author.name}</a>
               {/each}
             </div>
 
@@ -302,6 +304,7 @@ import { fade } from 'svelte/transition';
     :global(.icon) {
       display: inline-block;
       margin-right: 0.2em;
+      transition: filter 0.2s;
       vertical-align: middle;
     }
 
@@ -311,6 +314,12 @@ import { fade } from 'svelte/transition';
 
     a {
       border: none;
+
+      &:hover {
+        :global(.icon) {
+          filter: invert(1);
+        }
+      }
     }
   }
 
