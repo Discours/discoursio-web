@@ -47,6 +47,7 @@
 
 <script lang="ts">
   import '../app.scss'
+  import { navigating } from '$app/stores'
   import NavHeader from '../components/NavHeader.svelte'
   import DiscoursFooter from '../components/DiscoursFooter.svelte'
   import { onMount } from 'svelte'
@@ -69,6 +70,8 @@
 
   export let update
 
+  $: $loading = !!$navigating
+
   const loadShout = (s) => {
     s.authors.forEach((a) => {
       if (!(a.slug in $authors)) {
@@ -78,7 +81,7 @@
     })
     $shouts[s.slug] = s
   }
-
+  
   // const byDate = (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 
   // trigged by layout.onMount

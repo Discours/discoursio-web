@@ -1,1 +1,1 @@
-<div>404 Page</div>
+<h1>404 Page</h1>

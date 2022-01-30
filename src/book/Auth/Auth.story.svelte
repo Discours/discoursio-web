@@ -1,5 +1,6 @@
 <script lang="ts" context="module">
     import type { PageMeta } from '@vitebook/client'
+    import Auth from '../../components/Auth.svelte'
   
     export const __pageMeta: PageMeta = {
       title: 'Auth',
@@ -13,9 +14,8 @@
       ControlsAddon,
       EventsAddon,
       eventCallback,
-    } from '@vitebook/client/addons';
-    import Auth from '../../components/Auth.svelte'
-  
+    } from '@vitebook/client/addons'
+    
     let mode = 'login'
     $: chLogin = mode === 'login'
     $: chReset = mode === 'reset'
