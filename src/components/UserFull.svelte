@@ -1,6 +1,6 @@
 <script>
-  import UserCard from './UserCard.svelte'
   import ShoutFeed from '../components/ShoutFeed.svelte'
+  import UserCard from './UserCard.svelte'
 
   export let props
 

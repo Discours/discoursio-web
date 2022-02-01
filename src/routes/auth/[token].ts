@@ -1,6 +1,7 @@
 import { client } from '$lib/client'
-import { token, session } from '../../stores/user'
 import { GET_ME } from '$lib/queries'
+
+import { session, token } from '../../stores/user'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ params }) {

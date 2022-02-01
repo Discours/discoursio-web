@@ -47,26 +47,28 @@
 
 <script lang="ts">
   import '../app.scss'
-  import { navigating } from '$app/stores'
-  import NavHeader from '../components/NavHeader.svelte'
-  import DiscoursFooter from '../components/DiscoursFooter.svelte'
+  
   import { onMount } from 'svelte'
+  
+  import { navigating } from '$app/stores'
   import { getSubscriptions } from '$lib/cookie'
+  
+  import DiscoursFooter from '../components/DiscoursFooter.svelte'
+  import NavHeader from '../components/NavHeader.svelte'
+  import { loading, more, pager } from '../stores/app'
   import {
-    topicslist,
-    topics,
-    subscribedTopics,
+    authors,
+    authorslist,
+    recents as recentsStore,
+    shouts,
     subscribedAuthors,
     subscribedShouts,
-    recents as recentsStore,
-    topOverall as topStore,
+    subscribedTopics,
+    topics,
+    topicslist,
     topMonth as topMonthStore,
-    topViewed as topViewedStore,
-    shouts,
-    authors,
-    authorslist
-  } from '../stores/zine'
-  import { loading, more, pager } from '../stores/app'
+    topOverall as topStore,
+    topViewed as topViewedStore} from '../stores/zine'
 
   export let update
 

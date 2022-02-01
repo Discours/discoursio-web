@@ -3,21 +3,23 @@
 </script>
 
 <script lang="ts">
-  import NavTopics from '../../components/NavTopics.svelte'
-  import {
-    subscribedAuthors, // string[]
-    subscribedTopics, // string[]
-    authors, // { slug: User }
-    authorslist, // User[]
-    shouts, // { slug: Shout }
-    recents // Shout[]
-  } from '../../stores/zine'
   import { fade } from 'svelte/transition'
-  import ShoutFeed from '../../components/ShoutFeed.svelte'
+  
   import type { User } from '$lib/codegen'
-  import { more } from '../../stores/app'
+  
+  import NavTopics from '../../components/NavTopics.svelte'
   import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
   import ShoutBesideTopics from '../../components/ShoutBesideTopics.svelte'
+  import ShoutFeed from '../../components/ShoutFeed.svelte'
+  import { more } from '../../stores/app'
+  import {
+    authors, // { slug: User }
+    authorslist, // User[]
+    recents, // Shout[]
+    shouts, // { slug: Shout }
+    subscribedAuthors, // string[]
+    subscribedTopics// string[]
+  } from '../../stores/zine'
 
   let authorsPage = 0
   let topicsPage = 0

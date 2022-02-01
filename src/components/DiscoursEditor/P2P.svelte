@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import {
-    db,
-    body,
-    loading,
-    ydoc,
-    room,
-    p2p,
-    webrtc
-  } from '../../stores/editor'
-  import * as Y from 'yjs'
   import { IndexeddbPersistence } from 'y-indexeddb'
+  import * as Y from 'yjs'
+  
+  import {
+    body,
+    db,
+    loading,
+    p2p,
+    room,
+    webrtc,
+    ydoc} from '../../stores/editor'
 
   export let password: string
 

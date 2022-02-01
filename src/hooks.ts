@@ -1,4 +1,3 @@
-
 // import { parse } from 'cookie'
 // import { GET_ME } from '$lib/queries'
 import { client } from '$lib/client'
@@ -20,5 +19,5 @@ export async function handle({ event, resolve }) {
 }
 
 /** @type {import('@sveltejs/kit').GetSession} */
-export const getSession = (req) => (req?.locals?.user ? { ...req.locals.user } : {})
-
+export const getSession = (req) =>
+  req?.locals?.user ? { ...req.locals.user } : {}

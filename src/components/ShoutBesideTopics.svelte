@@ -1,8 +1,9 @@
 <script lang="ts">
-  import ShoutCard from './ShoutCard.svelte'
   import type { Shout } from '$lib/codegen'
-  import TopicCard from './TopicCard.svelte'
+  
   import { topics } from '../stores/zine'
+  import ShoutCard from './ShoutCard.svelte'
+  import TopicCard from './TopicCard.svelte'
   export let beside: Shout
   export let slugs: string[]
   export let title = 'Темы'

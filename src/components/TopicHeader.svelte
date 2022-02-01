@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Topic } from "$lib/codegen"
+
 import DiscoursIcon from "./DiscoursIcon.svelte"
 export let topic: Topic
 export let color: 'white' | 'black' = 'white'

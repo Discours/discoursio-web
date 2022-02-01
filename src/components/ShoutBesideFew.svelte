@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ShoutCard from './ShoutCard.svelte'
   import type { Shout } from '$lib/codegen'
+  
+  import ShoutCard from './ShoutCard.svelte'
 
   export let shouts: Shout[]
   export let beside: Shout

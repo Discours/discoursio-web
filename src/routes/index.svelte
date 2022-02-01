@@ -5,35 +5,37 @@
 </script>
 
 <script lang="ts">
-  import {
-    shouts,
-    topics,
-    recents,
-    topOverall,
-    topMonth,
-    topViewed
-  } from '../stores/zine'
-  import DiscoursBanner from '../components/DiscoursBanner.svelte'
-  import NavTopics from '../components/NavTopics.svelte'
   import { fade } from 'svelte/transition'
-  import { loading } from '../stores/app'
-  import ShoutFeed from '../components/ShoutFeed.svelte'
   import SvelteSeo from 'svelte-seo'
-  import DiscoursAbout from '../components/DiscoursAbout.svelte'
-  import Shouts3 from '../components/Shouts3.svelte'
-  import Shouts2 from '../components/Shouts2.svelte'
-  import ShoutWide from '../components/ShoutWide.svelte'
-  import ShoutsShort from '../components/ShoutsShort.svelte'
-  import ShoutsSlider from '../components/ShoutsSlider.svelte'
-  import ShoutsGroup from '../components/ShoutsGroup.svelte'
-  import ShoutsFirst5 from '../components/ShoutsFirst5.svelte'
-  import ShoutBesideFew from '../components/ShoutBesideFew.svelte'
-  import ShoutBesideTopics from '../components/ShoutBesideTopics.svelte'
-  import ShoutBesideAuthors from '../components/ShoutBesideAuthors.svelte'
-  import TopicHeader from '../components/TopicHeader.svelte'
-  import ShoutCard from '../components/ShoutCard.svelte'
+  
   import type { Shout } from '$lib/codegen'
   import { shuffle } from '$lib/utils'
+  
+  import DiscoursAbout from '../components/DiscoursAbout.svelte'
+  import DiscoursBanner from '../components/DiscoursBanner.svelte'
+  import NavTopics from '../components/NavTopics.svelte'
+  import ShoutBesideAuthors from '../components/ShoutBesideAuthors.svelte'
+  import ShoutBesideFew from '../components/ShoutBesideFew.svelte'
+  import ShoutBesideTopics from '../components/ShoutBesideTopics.svelte'
+  import ShoutCard from '../components/ShoutCard.svelte'
+  import ShoutFeed from '../components/ShoutFeed.svelte'
+  import Shouts2 from '../components/Shouts2.svelte'
+  import Shouts3 from '../components/Shouts3.svelte'
+  import ShoutsFirst5 from '../components/ShoutsFirst5.svelte'
+  import ShoutsGroup from '../components/ShoutsGroup.svelte'
+  import ShoutsShort from '../components/ShoutsShort.svelte'
+  import ShoutsSlider from '../components/ShoutsSlider.svelte'
+  import ShoutWide from '../components/ShoutWide.svelte'
+  import TopicHeader from '../components/TopicHeader.svelte'
+  import { loading } from '../stores/app'
+  import {
+    recents,
+    shouts,
+    topics,
+    topMonth,
+    topOverall,
+    topViewed
+  } from '../stores/zine'
 
   let topCommented = [],
     topMonthAuthors = [],

@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { page } from '$app/stores'
-  import Icon from './DiscoursIcon.svelte'
-  import { notices, session, token as tokenStore } from '../stores/user'
-  import { openModal } from '../stores/app'
   import { fade } from 'svelte/transition'
+  
+  import { page } from '$app/stores'
   import { API_ENDPOINT } from '$lib/client'
+  
+  import { openModal } from '../stores/app'
+  import { notices, session, token as tokenStore } from '../stores/user'
+  import Icon from './DiscoursIcon.svelte'
 
   export let mode = 'sign-in'
   export let code = ''

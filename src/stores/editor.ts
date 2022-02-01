@@ -1,13 +1,14 @@
-import * as Y from 'yjs'
-import type { WebrtcProvider } from 'y-webrtc'
+import type { Readable, Writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 import type { IndexeddbPersistence } from 'y-indexeddb'
-import { writable, derived } from 'svelte/store'
-import type { Writable, Readable } from 'svelte/store'
 import { Awareness } from 'y-protocols/awareness.js'
+import type { WebrtcProvider } from 'y-webrtc'
+import * as Y from 'yjs'
 
 export const room: Writable<string> = writable('discours')
 export const ydoc = writable(new Y.Doc())
 export const p2p: Writable<WebrtcProvider> = writable()
+
 interface WebrtcOptions {
   signaling: string[]
   awareness: Awareness
@@ -24,6 +25,7 @@ export const signaling = [
   'wss://y-webrtc-signaling-eu.herokuapp.com',
   'wss://signaling.yjs.dev'
 ]
+
 export const webrtc: Readable<WebrtcOptions> = derived(
   [ydoc],
   ([$ydoc]): WebrtcOptions => {
@@ -37,6 +39,7 @@ export const webrtc: Readable<WebrtcOptions> = derived(
     }
   }
 )
+
 export const body: Writable<Y.XmlFragment> = writable(new Y.XmlFragment())
 export const db: Writable<IndexeddbPersistence> = writable()
 export const loading: Writable<boolean> = writable(false)

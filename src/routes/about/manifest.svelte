@@ -3,10 +3,11 @@
 </script>
 
 <script lang="ts">
-  import FeedbackForm from '../../components/FeedbackForm.svelte'
-  import SubscribeForm from '../../components/SubscribeForm.svelte'
-  import Modal from '../../components/Modal.svelte'
   import SvelteSeo from 'svelte-seo'
+  
+  import FeedbackForm from '../../components/FeedbackForm.svelte'
+  import Modal from '../../components/Modal.svelte'
+  import SubscribeForm from '../../components/SubscribeForm.svelte'
   import { openModal } from '../../stores/app'
 
   const meta = {

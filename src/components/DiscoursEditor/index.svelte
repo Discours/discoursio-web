@@ -13,10 +13,11 @@
 </script>
 
 <script lang="ts">
-  import Editor from './Editor.svelte'
-  import { ydoc, room } from '../../stores/editor'
-  import { XmlFragment } from 'yjs'
   import { onMount } from 'svelte'
+  import { XmlFragment } from 'yjs'
+  
+  import { room,ydoc } from '../../stores/editor'
+  import Editor from './Editor.svelte'
 
   export let body
   export let collab = false

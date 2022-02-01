@@ -14,20 +14,22 @@
 </script>
 
 <script lang="ts">
-  import { topics, topicslist } from '../../stores/zine'
-  import TopicFull from '../../components/TopicFull.svelte'
-  import { page } from '$app/stores'
   import { onMount } from 'svelte'
-  import ShoutCard from '../../components/ShoutCard.svelte'
-  import UserCard from '../../components/UserCard.svelte'
-  import type { Shout, Topic, User } from '$lib/codegen'
-  import { browser } from '$app/env'
-  import ShoutFeed from '../../components/ShoutFeed.svelte'
   import { fade } from 'svelte/transition'
+  
+  import { browser } from '$app/env'
+  import { page } from '$app/stores'
+  import type { Shout, Topic, User } from '$lib/codegen'
+  
+  import ShoutBesideAuthors from "../../components/ShoutBesideAuthors.svelte"
+  import ShoutCard from '../../components/ShoutCard.svelte'
+  import ShoutFeed from '../../components/ShoutFeed.svelte'
   import Shouts2 from '../../components/Shouts2.svelte'
   import Shouts3 from '../../components/Shouts3.svelte'
   import ShoutWide from '../../components/ShoutWide.svelte'
-  import ShoutBesideAuthors from "../../components/ShoutBesideAuthors.svelte"
+  import TopicFull from '../../components/TopicFull.svelte'
+  import UserCard from '../../components/UserCard.svelte'
+  import { topics, topicslist } from '../../stores/zine'
 
   export let shouts: Shout[]
   export let authors: User[]

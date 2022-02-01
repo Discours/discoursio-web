@@ -1,8 +1,10 @@
 <script lang="ts">
+  import SvelteSeo from 'svelte-seo'
+  
   import { page } from '$app/stores'
+  
   import DiscoursFooter from '../../components/DiscoursFooter.svelte'
   import NavHeader from '../../components/NavHeader.svelte'
-  import SvelteSeo from 'svelte-seo'
 
   const meta = {
     title: 'Дискурс',

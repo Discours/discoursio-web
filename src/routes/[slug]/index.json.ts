@@ -1,5 +1,5 @@
 import { client } from '$lib/client'
-import { GET_SHOUT, GET_COMMENTS } from '$lib/queries'
+import { GET_COMMENTS, GET_SHOUT } from '$lib/queries'
 
 export const get = async ({ params }) => {
   let res, body, status

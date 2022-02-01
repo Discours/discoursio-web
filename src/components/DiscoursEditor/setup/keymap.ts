@@ -1,22 +1,22 @@
 import {
-  wrapIn,
-  setBlockType,
   chainCommands,
-  toggleMark,
   exitCode,
-  joinUp,
   joinDown,
+  joinUp,
   lift,
-  selectParentNode
+  selectParentNode,
+  setBlockType,
+  toggleMark,
+  wrapIn
 } from 'prosemirror-commands'
-import {
-  wrapInList,
-  splitListItem,
-  liftListItem,
-  sinkListItem
-} from 'prosemirror-schema-list'
-import { undo, redo } from 'prosemirror-history'
+import { redo, undo } from 'prosemirror-history'
 import { undoInputRule } from 'prosemirror-inputrules'
+import {
+  liftListItem,
+  sinkListItem,
+  splitListItem,
+  wrapInList
+} from 'prosemirror-schema-list'
 
 const mac =
   typeof navigator != 'undefined' ? /Mac/.test(navigator.platform) : false

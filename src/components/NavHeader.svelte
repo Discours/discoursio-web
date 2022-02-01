@@ -1,11 +1,12 @@
 <script lang="ts">
-  import Notifications from './Notifications.svelte'
-  import NavAuth from './NavAuth.svelte'
   import { page } from '$app/stores'
+  
   import { openModal } from '../stores/app'
   import { notices, token } from '../stores/user'
   import Auth from './Auth.svelte'
   import Modal from './Modal.svelte'
+  import NavAuth from './NavAuth.svelte'
+  import Notifications from './Notifications.svelte'
 
   const routes = [
     { name: 'журнал', href: '/' },

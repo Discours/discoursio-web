@@ -1,7 +1,8 @@
 <script lang="ts">
-  import Auth from '../../../components/Auth.svelte'
-  import { page } from '$app/stores'
   import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
+  
+  import Auth from '../../../components/Auth.svelte'
 
   let code: string
   $: if ($page) code = $page.params.code

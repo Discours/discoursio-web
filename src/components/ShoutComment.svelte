@@ -1,9 +1,10 @@
 <script lang="ts">
   import type { Comment } from '$lib/codegen'
-  import UserCard from './UserCard.svelte'
+  
+  import Icon from './DiscoursIcon.svelte'
   // import { authors } from '../stores/zine'
   import MD from './MD.svelte'
-  import Icon from './DiscoursIcon.svelte'
+  import UserCard from './UserCard.svelte'
   // import dayjs from 'dayjs'
   // import 'dayjs/locale/ru'
 

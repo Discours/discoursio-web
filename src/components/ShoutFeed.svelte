@@ -1,12 +1,14 @@
 <script lang="ts">
-  import type { Shout } from '$lib/codegen'
-  import { fade } from 'svelte/transition'
   import { onMount, SvelteComponent } from 'svelte'
+  import { fade } from 'svelte/transition'
+  
+  import type { Shout } from '$lib/codegen'
+  
   import { loading, more } from '../stores/app'
-  import ShoutWide from './ShoutWide.svelte'
+  import ShoutBesideFew from './ShoutBesideFew.svelte'
   import Shouts2 from './Shouts2.svelte'
   import Shouts3 from './Shouts3.svelte'
-  import ShoutBesideFew from './ShoutBesideFew.svelte'
+  import ShoutWide from './ShoutWide.svelte'
 
   export let name = 'recents'
   export let shouts: Shout[]

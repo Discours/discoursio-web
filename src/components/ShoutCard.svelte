@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { capitalize } from '$lib/utils'
   import type { Shout } from '$lib/codegen'
+  import { capitalize } from '$lib/utils'
+  
   import Icon from './DiscoursIcon.svelte'
 
   export let shout: Partial<Shout>

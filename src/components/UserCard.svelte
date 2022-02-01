@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { link } from 'fs'
+  
   import type { User } from '$lib/codegen'
-  import Userpic from './Userpic.svelte'
   import { subscribe, unsubscribe } from '$lib/cookie'
-  import Icon from './DiscoursIcon.svelte'
+  
   import { subscribedAuthors } from '../stores/zine'
-import { link } from 'fs'
+  import Icon from './DiscoursIcon.svelte'
+  import Userpic from './Userpic.svelte'
 
   export let user: User | Partial<User>
   export let hasSubscribeButton = true

@@ -1,9 +1,0 @@
-{
-  "name": "discoursio-uibook",
-  "short_name": "discoursio-uibook",
-  "icons": [],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#ffc107",
-  "background_color": "#212121"
-}

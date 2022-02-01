@@ -1,5 +1,5 @@
+import { toggleMark } from 'prosemirror-commands'
 import {
-  wrapItem,
   blockTypeItem,
   // joinUpItem,
   // liftItem,
@@ -7,12 +7,13 @@ import {
   // undoItem,
   // redoItem,
   icons,
-  MenuItem
+  MenuItem,
+  wrapItem
 } from 'prosemirror-menu'
-import { NodeSelection } from 'prosemirror-state'
-import { toggleMark } from 'prosemirror-commands'
 import { wrapInList } from 'prosemirror-schema-list'
-import { TextField, openPrompt } from './prompt'
+import { NodeSelection } from 'prosemirror-state'
+
+import { openPrompt, TextField } from './prompt'
 
 // Helpers to create specific types of items
 

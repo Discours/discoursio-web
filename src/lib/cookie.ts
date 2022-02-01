@@ -67,9 +67,9 @@ const getSubscriptions = async (entity) => {
 
 export {
   createCookie,
-  getCookie,
   decodeCookies,
+  getCookie,
+  getSubscriptions,
   subscribe,
-  unsubscribe,
-  getSubscriptions
+  unsubscribe
 }

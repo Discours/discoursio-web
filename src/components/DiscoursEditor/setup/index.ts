@@ -1,16 +1,16 @@
-import { keymap } from 'prosemirror-keymap'
-import { history } from 'prosemirror-history'
 import { baseKeymap } from 'prosemirror-commands'
-import { Plugin } from 'prosemirror-state'
 import { dropCursor } from 'prosemirror-dropcursor'
 import { gapCursor } from 'prosemirror-gapcursor'
+import { history } from 'prosemirror-history'
+import { keymap } from 'prosemirror-keymap'
 import { menuBar } from 'prosemirror-menu'
+import { Plugin } from 'prosemirror-state'
 
-import { buildMenuItems } from './menu'
-import { buildKeymap } from './keymap'
 import { buildInputRules } from './inputrules'
+import { buildKeymap } from './keymap'
+import { buildMenuItems } from './menu'
 
-export { buildMenuItems, buildKeymap, buildInputRules }
+export { buildInputRules, buildKeymap, buildMenuItems }
 
 // !! This module exports helper functions for deriving a set of basic
 // menu items, input rules, or key bindings from a schema. These

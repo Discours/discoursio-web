@@ -1,6 +1,7 @@
-import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
-import type { User, Topic, Community, Shout } from '$lib/codegen'
+import { writable } from 'svelte/store'
+
+import type { Community, Shout, Topic, User } from '$lib/codegen'
 
 export const authorslist: Writable<User[]> = writable([])
 export const communitieslist: Writable<Community[]> = writable([])

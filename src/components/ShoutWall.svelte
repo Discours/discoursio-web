@@ -8,12 +8,14 @@
    *  size={9}
    */
 
-  import type { Shout } from '$lib/codegen'
-  import ShoutCard from './ShoutCard.svelte'
-  import { fade, slide } from 'svelte/transition'
-  import Masonry from './Masonry.svelte'
-  import { more } from '../stores/app'
   import { onMount } from 'svelte'
+  import { fade, slide } from 'svelte/transition'
+  
+  import type { Shout } from '$lib/codegen'
+  
+  import { more } from '../stores/app'
+  import Masonry from './Masonry.svelte'
+  import ShoutCard from './ShoutCard.svelte'
 
   export let name = 'recents'
   export let shouts: Shout[]

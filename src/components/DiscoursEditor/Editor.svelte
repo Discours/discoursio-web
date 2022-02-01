@@ -1,23 +1,24 @@
 <script lang="ts">
+  import './custom.css'
+  
+  import { keymap } from 'prosemirror-keymap'
+  import { schema } from 'prosemirror-markdown'
+  import { EditorState } from 'prosemirror-state'
+  import { EditorView } from 'prosemirror-view'
   import { onDestroy, onMount } from 'svelte'
   import { fade } from 'svelte/transition'
-  import './custom.css'
-  import { EditorView } from 'prosemirror-view'
-  import { EditorState } from 'prosemirror-state'
-  import { schema } from 'prosemirror-markdown'
-  import { setup } from './setup'
-  import { keymap } from 'prosemirror-keymap'
-  import type { XmlFragment } from 'yjs'
   import {
-    ySyncPlugin,
-    yCursorPlugin,
-    yUndoPlugin,
+    redo,
     undo,
-    redo
-  } from 'y-prosemirror'
-  import { webrtc, p2p as conn, ydoc, room } from '../../stores/editor'
-  import P2PConnect from './P2P.svelte'
+    yCursorPlugin,
+    ySyncPlugin,
+    yUndoPlugin} from 'y-prosemirror'
   import { WebrtcProvider } from 'y-webrtc'
+  import type { XmlFragment } from 'yjs'
+  
+  import { p2p as conn, room,webrtc, ydoc } from '../../stores/editor'
+  import P2PConnect from './P2P.svelte'
+  import { setup } from './setup'
 
   export let body: XmlFragment
   export let collab: boolean

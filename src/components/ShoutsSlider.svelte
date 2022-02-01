@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { Swiper, SwiperSlide } from 'swiper/svelte'
   import { Navigation } from 'swiper'
-  import { shuffle } from '$lib/utils'
-  import ShoutCard from './ShoutCard.svelte'
+  import { Swiper, SwiperSlide } from 'swiper/svelte'
+  
   import type { Shout } from '$lib/codegen'
+  import { shuffle } from '$lib/utils'
+  
+  import ShoutCard from './ShoutCard.svelte'
   export let shouts: Shout[]
   export let title = 'Выбор сообщества'
 </script>

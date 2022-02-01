@@ -1,7 +1,7 @@
 <script context="module">
   import MD from 'markdown-it'
-  import mdmark from 'markdown-it-mark'
   import mdfig from 'markdown-it-implicit-figures'
+  import mdmark from 'markdown-it-mark'
   // import mdcustom from 'markdown-it-container'
   import mdlinks from 'markdown-it-replace-link'
   const mit = MD({

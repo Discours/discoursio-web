@@ -1,9 +1,10 @@
 <script lang="ts">
-  import ShoutCard from './ShoutCard.svelte'
   import type { Shout } from '$lib/codegen'
-  import UserCard from './UserCard.svelte'
+  
   import Icon from '../components/DiscoursIcon.svelte';
   import { authors } from '../stores/zine'
+  import ShoutCard from './ShoutCard.svelte'
+  import UserCard from './UserCard.svelte'
 
   export let beside: Shout
   export let slugs: string[]

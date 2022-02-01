@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { fade } from 'svelte/transition'
+  import Portal from 'svelte-portal/src/Portal.svelte'
+  
+  import { goto } from '$app/navigation'
+  
   import { showNotices } from '../stores/app'
   import { notices } from '../stores/user'
-  import { fade } from 'svelte/transition'
-  import { goto } from '$app/navigation'
-  import Portal from 'svelte-portal/src/Portal.svelte'
 
   let elements: HTMLDivElement[]
 
