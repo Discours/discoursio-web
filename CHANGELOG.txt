@@ -1,5 +1,4 @@
 [0.1.0]
-[+] playwright
 [+] husky, lint-staged
 [+] components refactoring
 [+] 'static' pages fixes

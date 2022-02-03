@@ -1,77 +1,79 @@
-<script context="module">
+<script context="module" lang="ts">
+  import type { Shout } from '$lib/codegen'
+  import { encodeGetParams } from '$lib/utils'
+  import { session as sessionSvelte } from '$app/stores'
+  import { session } from '../../stores/user'
   export const prerender = true
+
+  const queries = ['feed/by-authors', 'feed/by-topics', 'feed/by-comments']
+
+  const fetchStuff = async (q, fetch, stuff) => {
+    const r = await fetch(`${q}.json?${encodeGetParams(stuff)}`)
+    if(r.ok) {
+      const update = await r.json()
+      console.debug(`${Object.values(update[0] || {}).length} ${q}`)
+      return update
+    }
+    return {}
+  }
+
+  export const load = async ({ fetch, stuff }) => { // TODO: use stuff for url params
+    console.log('preloader: feed/index')
+    let props: { update: { [key: string]: Shout[] } } = { update: {} }
+    await queries.forEach(async (q) => await fetchStuff(q, fetch, stuff))
+    return { props }
+  }
 </script>
 
 <script lang="ts">
   import { fade } from 'svelte/transition'
-
-  import type { User } from '$lib/codegen'
-
   import NavTopics from '../../components/NavTopics.svelte'
   import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
   import ShoutBesideTopics from '../../components/ShoutBesideTopics.svelte'
   import ShoutFeed from '../../components/ShoutFeed.svelte'
   import { more } from '../../stores/app'
   import {
-    authors, // { slug: User }
-    authorslist, // User[]
     recents, // Shout[]
-    shouts, // { slug: Shout }
     subscribedAuthors, // string[]
     subscribedTopics // string[]
   } from '../../stores/zine'
 
   let authorsPage = 0
   let topicsPage = 0
-  /**
-   * все публикации попадают в один сортированный по дате стор рисентс
-   * @param q - результат запроса
-   */
-  const extract = async (q) => {
-    const data = await q.json()
-    data?.shouts?.forEach((s) => ($shouts[s.slug] = s))
-    data?.authors?.forEach((a: Partial<User>) => ($authors[a.slug] = a))
-    // NOTE: all topics are preloaded
-    if (data?.authors)
-      $authorslist = Array.from(new Set([...data.authors, ...$authorslist]))
-    if (data?.shouts)
-      $recents = Array.from(new Set([...data.shouts, ...$recents]))
-  }
+  let reviewedPage = 0
+  const onPage = 25
 
-  const renew = async () => {
-    const aq = await fetch(
-      `/feed/by-authors.json?authors=
-        ${await JSON.stringify($subscribedAuthors)}
-        &page=${authorsPage}
-        &size=25`
-    )
-    const tq = await fetch(
-      `/feed/by-topics.json?topics=
-        ${await JSON.stringify($subscribedTopics)}
-        &page=${topicsPage}
-        &size=25`
-    )
-    if (tq.ok) await extract(tq)
-    if (aq.ok) await extract(aq)
+  const renew = async (params) => {
+    const {update: { shouts, topics, authors }} = await fetchStuff('feed/'+$more, fetch, params)
+    
   }
 
   $: if ($more === 'by-authors') {
-    $more = ''
     authorsPage += 1
-    renew()
-  }
-  $: if ($more === 'by-topics') {
+    renew({page: authorsPage, size: onPage, slugs: JSON.stringify($subscribedAuthors)})
     $more = ''
-    topicsPage += 1
-    renew()
   }
+
+  $: if ($more === 'by-topics') {
+    topicsPage += 1
+    renew({page: topicsPage, size: onPage, slugs: JSON.stringify($subscribedTopics)})
+    $more = ''
+  }
+
+  $: if ($more === 'by-reviewer') {
+    reviewedPage += 1
+    renew({page: reviewedPage, size: onPage, author: $session.slug })
+    $more = ''
+  }
+
+  $: filteredShouts = []
 </script>
 
 <section class="feed" transition:fade>
-  {#if $recents}
-    <NavTopics shouts={$recents} />
-    <ShoutBesideTopics beside={$recents[0]} slugs={$subscribedTopics} />
-    <ShoutFeed name={'recents'} shouts={$recents.slice(2)} />
-    <ShoutBesideAuthors beside={$recents[1]} slugs={$subscribedAuthors} />
-  {/if}
+  {#key filteredShouts}
+    <NavTopics shouts={filteredShouts} />
+    <ShoutBesideTopics beside={filteredShouts[0]} slugs={$subscribedTopics} />
+    <ShoutFeed name={'recents'} shouts={filteredShouts.slice(2)} />
+    <ShoutBesideAuthors beside={filteredShouts[1]} slugs={$subscribedAuthors} />
+  {/key}
 </section>

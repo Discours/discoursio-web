@@ -37,3 +37,5 @@ export const shuffle = (items) => {
   }
   return cached
 }
+
+export const encodeGetParams = p => Object.entries(p).map(kv => kv.map(encodeURIComponent).join("=")).join("&")

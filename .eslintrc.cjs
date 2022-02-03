@@ -43,7 +43,7 @@ module.exports = {
     }
   ],
   settings: {
-    "import/resolver": { "typescript": {} },
+    // "import/resolver": { "typescript": {} },
     'svelte3/typescript': true,
     'svelte3/ignore-styles': () => true
   },

@@ -5,42 +5,27 @@
   import type { Shout } from '$lib/codegen'
   export const prerender = true
   let size = 9,
-    page = 0
-
+    page = 0 
+  const mapping = {
+    'feed/recents': 'recents',
+    'feed/top-month': 'topMonth',
+    'feed/top-overall': 'topOverall',
+    'feed/top-viewed': 'topViewed',
+    'topic/all': 'topicsAll'
+  }
   export const load = async ({ fetch, stuff }) => {
-    console.log('on-server preloading...')
+    console.log('preloader: __layout')
     size = stuff?.size ? stuff.size : size
     page = stuff?.page ? stuff.page : page
     let props: { update: { [key: string]: Shout[] } } = { update: {} }
-    const recents = await fetch(`/feed/recents.json?page=${page}&size=${size}`)
-    const topMonth = await fetch(
-      `/feed/top-month.json?page=${page}&size=${size}`
-    )
-    const topOverall = await fetch(
-      `/feed/top-overall.json?page=${page}&size=${size}`
-    )
-    const topViewed = await fetch(
-      `/feed/top-viewed.json?page=${page}&size=${size}`
-    )
-    const topicsAll = await fetch(`/topic/all.json`)
-    props.update = recents.ok
-      ? { ...(await recents.json()), ...props.update }
-      : props.update
-    props.update = topMonth.ok
-      ? { ...(await topMonth.json()), ...props.update }
-      : props.update
-    props.update = topOverall.ok
-      ? { ...(await topOverall.json()), ...props.update }
-      : props.update
-    props.update = topViewed.ok
-      ? { ...(await topViewed.json()), ...props.update }
-      : props.update
-    props.update = topicsAll.ok
-      ? { ...(await topicsAll.json()), ...props.update }
-      : props.update
-    Object.entries(props.update).forEach(([k, v]) =>
-      console.debug(`${v.length} ${k}`)
-    )
+    await Object.entries(mapping).forEach(async ([q, name]) => {
+      const r = await fetch(`${q}.json?page=${page}&size=${size}`)
+      if(r.ok) {
+        const update = await r.json()
+        Object.assign(props.update, {...update})
+        console.debug(`${Object.keys(update[name]|| {}).length} ${q}`)
+      }
+    })
     return { props }
   }
 </script>

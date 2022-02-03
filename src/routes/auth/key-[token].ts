@@ -12,7 +12,7 @@ export async function get({ params }) {
     token.set(got)
     const user = await client.request(GET_ME)
     session.set(user)
-    // window.close()
+    window?.close()
     return {
       status: 200,
       headers: {

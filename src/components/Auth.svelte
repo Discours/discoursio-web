@@ -20,6 +20,7 @@
   let process = false
 
   const authSuccess = (data) => {
+    console.log('auth: success')
     console.dir(data)
     const { token, user } = data
     $tokenStore = token
@@ -29,7 +30,7 @@
     $notices.push({
       type: 'info',
       text: 'Welcome!',
-      state: 'new',
+      opened: false,
       ts: new Date()
     })
   }

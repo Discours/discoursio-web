@@ -27,7 +27,7 @@
       client.request(GET_ME).then(({ user, error }) => {
         if (error) {
           $notices = [
-            { text: error, type: 'error', ts: new Date(), state: 'new' },
+            { text: error, type: 'error', ts: new Date(), opened: false },
             ...$notices
           ]
           console.log('navauth: update notices with no token error')
@@ -49,7 +49,7 @@
     } catch (e) {
       console.error(e)
       $notices = [
-        { text: e, type: 'error', ts: new Date(), state: 'new' },
+        { text: e, type: 'error', ts: new Date(), opened: false },
         ...$notices
       ]
       console.log('navauth: update notices with graphql error')
@@ -62,7 +62,7 @@
     console.log(`navauth: ${newMessages} new messages`)
   }
   $: if ($notices && $notices.length > 0)
-    newNotices = $notices.filter((n) => !n.state).length
+    newNotices = $notices.filter((n) => !n.opened).length
 </script>
 
 {#if $token}

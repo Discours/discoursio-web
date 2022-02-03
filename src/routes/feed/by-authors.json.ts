@@ -3,11 +3,12 @@ import { AUTHORS_BY_SLUGS, SHOUTS_BY_AUTHOR } from '$lib/queries'
 
 export const get = async ({ params }) => {
   let shouts, authors
-  const { authors: authorslugs, page, size } = params
+  const { slugs, page, size } = params
+  console.log('feed: by-authors')
   console.log(authors)
-  if (authorslugs) {
+  if (slugs) {
     try {
-      const q = await client.request(AUTHORS_BY_SLUGS, { slugs: authorslugs })
+      const q = await client.request(AUTHORS_BY_SLUGS, { slugs })
       if (q.ok) {
         authors = (await q.json())['authorsBySlugs']
         const sq = await client.request(SHOUTS_BY_AUTHOR, {

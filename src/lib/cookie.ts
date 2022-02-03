@@ -57,6 +57,7 @@ const getSubscriptions = async (entity) => {
   let r = []
   try {
     const c = getCookie(entity)
+    console.log('cookie: subscriptions')
     console.debug(c)
     if (c) r = await JSON.parse(c)
   } catch (e) {

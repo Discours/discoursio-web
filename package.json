@@ -31,7 +31,6 @@
     "@graphql-codegen/typescript": "^2.4.2",
     "@graphql-codegen/typescript-graphql-request": "^4.3.3",
     "@graphql-codegen/typescript-operations": "^2.2.3",
-    "@playwright/test": "^1.18.1",
     "@popperjs/core": "^2.11.2",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/adapter-node": "next",

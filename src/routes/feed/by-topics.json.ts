@@ -4,11 +4,11 @@ import { SHOUTS_BY_TOPIC } from '$lib/queries'
 export const get = async ({ params }) => {
   let shouts
   let authors
-  const { topics: topicslugs, page, size } = params
-  if (topicslugs) {
+  const { slugs, page, size } = params
+  if (slugs) {
     authors = {}
     try {
-      topicslugs.forEach(async (topic) => {
+      slugs.forEach(async (topic) => {
         const q = await client.request(SHOUTS_BY_TOPIC, {
           topic,
           page: page || 1,

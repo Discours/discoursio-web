@@ -33,7 +33,7 @@
     close(index)
   }
 
-  $: if ($notices) console.dir($notices) // debug only
+  // $: if ($notices) console.debug($notices) // debug only
 </script>
 
 <Portal target="body">
