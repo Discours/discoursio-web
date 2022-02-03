@@ -43,7 +43,7 @@
     subscribedAuthors, // string[]
     subscribedTopics, // string[]
     recents,
-    recentCommented,
+    commented,
     candidates,
     topOverall,
     topViewed,
@@ -68,6 +68,7 @@
     subscribed: $subscribedShouts,
     reviewed: $reviewedShouts,
     recents: $recents,
+    commented: $commented,
     'top-overall': $topOverall,
     'top-viewed': $topViewed
   }
@@ -81,16 +82,15 @@
     $candidates.forEach(loadShout)
     $topOverall = update.topOverall
     $topOverall.forEach(loadShout)
-    $recentCommented = update.commented
-    $recentCommented.forEach(loadShout)
+    $commented = update.commented
+    $commented.forEach(loadShout)
     console.debug(`feed: loaded ${$authorslist.length.toString()} authors`)
   }
 
   // trigged by onMount
   $: if (stores[mode] === null && update.subscribedShouts) loaded(update)
 
-  let page = 0,
-    size = 25
+  let size = 17
   let mode = 'subscribed' // all topOverall topCommented
   let dataset = []
 
@@ -98,6 +98,8 @@
     dataset = stores[mode]
     if (!dataset) mode = 'recents'
   }
+
+  $: page = !dataset ? 0 : (dataset.length / size) - 1
 
   $: if ($more)
     fetchStuff('feed/' + $more, fetch, { page, size })
