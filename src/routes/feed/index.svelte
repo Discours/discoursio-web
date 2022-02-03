@@ -1,15 +1,19 @@
 <script context="module" lang="ts">
   import type { Shout } from '$lib/codegen'
   import { encodeGetParams } from '$lib/utils'
-  import { session as sessionSvelte } from '$app/stores'
-  import { session } from '../../stores/user'
+  import { onMount } from 'svelte'
   export const prerender = true
 
-  const queries = ['feed/by-authors', 'feed/by-topics', 'feed/by-comments']
+  const queries = [
+    'feed/reviewed',
+    'feed/subscribed',
+    'feed/candidates',
+    'feed/commented'
+  ]
 
   const fetchStuff = async (q, fetch, stuff) => {
     const r = await fetch(`${q}.json?${encodeGetParams(stuff)}`)
-    if(r.ok) {
+    if (r.ok) {
       const update = await r.json()
       console.debug(`${Object.values(update[0] || {}).length} ${q}`)
       return update
@@ -17,7 +21,8 @@
     return {}
   }
 
-  export const load = async ({ fetch, stuff }) => { // TODO: use stuff for url params
+  export const load = async ({ fetch, stuff }) => {
+    // TODO: use stuff for url params
     console.log('preloader: feed/index')
     let props: { update: { [key: string]: Shout[] } } = { update: {} }
     await queries.forEach(async (q) => await fetchStuff(q, fetch, stuff))
@@ -33,47 +38,80 @@
   import ShoutFeed from '../../components/ShoutFeed.svelte'
   import { more } from '../../stores/app'
   import {
-    recents, // Shout[]
+    reviewedShouts, // Shout[]
+    subscribedShouts, // Shout[]
     subscribedAuthors, // string[]
-    subscribedTopics // string[]
+    subscribedTopics, // string[]
+    recents,
+    recentCommented,
+    candidates,
+    topOverall,
+    topViewed,
+    authorslist,
+    authors,
+    shouts
   } from '../../stores/zine'
 
-  let authorsPage = 0
-  let topicsPage = 0
-  let reviewedPage = 0
-  const onPage = 25
+  export let update // { subscribed reviewed recents top-overall top-viewed }
 
-  const renew = async (params) => {
-    const {update: { shouts, topics, authors }} = await fetchStuff('feed/'+$more, fetch, params)
-    
+  const loadShout = (s) => {
+    s.authors.forEach((a) => {
+      if (!(a.slug in $authors)) {
+        $authorslist.push(a)
+        $authors[a.slug] = a
+      }
+    })
+    $shouts[s.slug] = s
   }
 
-  $: if ($more === 'by-authors') {
-    authorsPage += 1
-    renew({page: authorsPage, size: onPage, slugs: JSON.stringify($subscribedAuthors)})
-    $more = ''
+  const stores = {
+    subscribed: $subscribedShouts,
+    reviewed: $reviewedShouts,
+    recents: $recents,
+    'top-overall': $topOverall,
+    'top-viewed': $topViewed
   }
 
-  $: if ($more === 'by-topics') {
-    topicsPage += 1
-    renew({page: topicsPage, size: onPage, slugs: JSON.stringify($subscribedTopics)})
-    $more = ''
+  const loaded = (update) => {
+    $subscribedShouts = update.subscribed
+    $subscribedShouts.forEach(loadShout)
+    $reviewedShouts = update.reviewed
+    $reviewedShouts.forEach(loadShout)
+    $candidates = update.candidates
+    $candidates.forEach(loadShout)
+    $topOverall = update.topOverall
+    $topOverall.forEach(loadShout)
+    $recentCommented = update.commented
+    $recentCommented.forEach(loadShout)
+    console.debug(`feed: loaded ${$authorslist.length.toString()} authors`)
   }
 
-  $: if ($more === 'by-reviewer') {
-    reviewedPage += 1
-    renew({page: reviewedPage, size: onPage, author: $session.slug })
-    $more = ''
+  // trigged by onMount
+  $: if (stores[mode] === null && update.subscribedShouts) loaded(update)
+
+  let page = 0,
+    size = 25
+  let mode = 'subscribed' // all topOverall topCommented
+  let dataset = []
+
+  $: if (mode) {
+    dataset = stores[mode]
+    if (!dataset) mode = 'recents'
   }
 
-  $: filteredShouts = []
+  $: if ($more)
+    fetchStuff('feed/' + $more, fetch, { page, size })
+      .then(({ update }) => loaded(update))
+      .catch(console.error)
+
+  onMount(() => (stores[mode] = null))
 </script>
 
 <section class="feed" transition:fade>
-  {#key filteredShouts}
-    <NavTopics shouts={filteredShouts} />
-    <ShoutBesideTopics beside={filteredShouts[0]} slugs={$subscribedTopics} />
-    <ShoutFeed name={'recents'} shouts={filteredShouts.slice(2)} />
-    <ShoutBesideAuthors beside={filteredShouts[1]} slugs={$subscribedAuthors} />
+  {#key dataset}
+    <NavTopics shouts={dataset} />
+    <ShoutBesideTopics beside={dataset[0]} slugs={$subscribedTopics} />
+    <ShoutFeed name={mode} shouts={dataset.slice(2)} />
+    <ShoutBesideAuthors beside={dataset[1]} slugs={$subscribedAuthors} />
   {/key}
 </section>

@@ -2,16 +2,16 @@ import { client } from '$lib/client'
 import { SHOUTS_CANDIDATES } from '$lib/queries'
 
 export const get = async ({ params }) => {
-  let shouts
+  let candidates
   const { author, page, size } = params
   console.log('feed: candidates')
   if (author) {
     try {
       const q = await client.request(SHOUTS_CANDIDATES, { page, size })
-      if (q.ok) shouts = (await q.json())['shoutsCandidates']
+      if (q.ok) candidates = (await q.json())['shoutsCandidates']
       return {
         status: 200,
-        body: { shouts }
+        body: { candidates }
       }
     } catch (error) {
       console.error(error)

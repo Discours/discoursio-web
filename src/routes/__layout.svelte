@@ -5,7 +5,7 @@
   import type { Shout } from '$lib/codegen'
   export const prerender = true
   let size = 9,
-    page = 0 
+    page = 0
   const mapping = {
     'feed/recents': 'recents',
     'feed/top-month': 'topMonth',
@@ -14,16 +14,16 @@
     'topic/all': 'topicsAll'
   }
   export const load = async ({ fetch, stuff }) => {
-    console.log('preloader: __layout')
+    console.log('root: __layout load()')
     size = stuff?.size ? stuff.size : size
     page = stuff?.page ? stuff.page : page
     let props: { update: { [key: string]: Shout[] } } = { update: {} }
     await Object.entries(mapping).forEach(async ([q, name]) => {
       const r = await fetch(`${q}.json?page=${page}&size=${size}`)
-      if(r.ok) {
+      if (r.ok) {
         const update = await r.json()
-        Object.assign(props.update, {...update})
-        console.debug(`${Object.keys(update[name]|| {}).length} ${q}`)
+        Object.assign(props.update, { ...update })
+        console.debug(`root: ${Object.keys(update[name] || {}).length} ${q}`)
       }
     })
     return { props }
@@ -83,7 +83,7 @@
     $topMonthStore.forEach(loadShout)
     $topViewedStore = update.topViewed
     $topViewedStore.forEach(loadShout)
-    console.debug(`preload: found ${$authorslist.length.toString()} authors`)
+    console.debug(`root: preloaded ${$authorslist.length.toString()} authors`)
   }
 
   $: if ($more) {
@@ -95,7 +95,7 @@
   $: if ($topicslist === null) {
     if (!update.topicsAll) {
       $topicslist = JSON.parse(window.localStorage.getItem('topics') || '[]')
-      console.log(`preload: ${$topicslist.length} topics from localStorage`)
+      console.log(`root: ${$topicslist.length} topics from localStorage`)
       if (!$topicslist)
         fetch(`/topic/all.json`)
           .then((r) => r.ok && r.json())
@@ -103,7 +103,7 @@
             if ($topicslist != ttt.topicsAll) {
               $topicslist = ttt.topicsAll
               console.log(
-                `preload: ${$topicslist.length} topics with browser request`
+                `root: ${$topicslist.length} topics with browser request`
               )
             }
           })
@@ -114,9 +114,7 @@
     const datastring = JSON.stringify(update.topicsAll)
     if (window.localStorage['topics'] !== datastring) {
       window.localStorage['topics'] = datastring
-      console.log(
-        `preload: updated ${$topicslist.length} topics in localStorage`
-      )
+      console.log(`root: updated ${$topicslist.length} topics in localStorage`)
     }
   }
 
@@ -130,7 +128,7 @@
     $subscribedShouts = await getSubscriptions('shouts')
     $recentsStore = null
     $topicslist = null // force update, WARN: works only with null!
-    console.debug('layout: mounted, preloading...')
+    console.debug('root: mounted, preloading...')
   })
 </script>
 

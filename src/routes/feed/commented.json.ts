@@ -1,17 +1,17 @@
 import { client } from '$lib/client'
-import { SHOUTS_SUBSCRIBED } from '$lib/queries'
+import { SHOUTS_COMMENTED } from '$lib/queries'
 
 export const get = async ({ params }) => {
-  let subscribed
+  let commented
   const { author, page, size } = params
-  console.log('feed: by-subscriptions')
+  console.log('feed: commented')
   if (author) {
     try {
-      const q = await client.request(SHOUTS_SUBSCRIBED, { page, size })
-      if (q.ok) subscribed = (await q.json())['shoutsSubscribed']
+      const q = await client.request(SHOUTS_COMMENTED, { page, size })
+      if (q.ok) commented = (await q.json())['shoutsCommented']
       return {
         status: 200,
-        body: { subscribed }
+        body: { commented }
       }
     } catch (error) {
       console.error(error)

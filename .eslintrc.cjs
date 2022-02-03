@@ -6,10 +6,10 @@ module.exports = {
     browser: true
   },
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript'
     // "plugin:storybook/recommended"
   ],
   parser: '@typescript-eslint/parser',
@@ -20,12 +20,7 @@ module.exports = {
     ecmaVersion: 2022,
     sourceType: 'module'
   },
-  plugins: [
-    "svelte3",
-    "@typescript-eslint",
-    "simple-import-sort",
-    "prettier"
-  ],
+  plugins: ['svelte3', '@typescript-eslint', 'simple-import-sort', 'prettier'],
   overrides: [
     {
       files: ['*.svelte'],
@@ -49,7 +44,7 @@ module.exports = {
   },
   rules: {
     'no-unused-vars': 'off',
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": "error"
+    'simple-import-sort/exports': 'error',
+    'simple-import-sort/imports': 'error'
   }
 }

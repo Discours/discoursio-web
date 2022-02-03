@@ -12,12 +12,15 @@ const { scss, globalStyle, typescript } = require('svelte-preprocess')
 
 let noExternal = []
 
-if(process.argv.findIndex(a => a.includes('vitebook')) == -1) {
+if (process.argv.findIndex((a) => a.includes('vitebook')) == -1) {
   const routesDir = './src/routes'
   const p = (f) => new URL(f, import.meta.url)
-  const dirs = (f) => statSync(p(routesDir + '/' + f)).isDirectory() && f !== '[slug]'
+  const dirs = (f) =>
+    statSync(p(routesDir + '/' + f)).isDirectory() && f !== '[slug]'
   const dirsList = readdirSync(p(routesDir)).filter(dirs)
-  writeFileSync(p(routesDir + '/[slug]/routes.json'), JSON.stringify(dirsList, null, 2))
+  const routes = JSON.stringify(dirsList)
+  // console.debug(routes)
+  writeFileSync(p(routesDir + '/[slug]/routes.json'), routes)
   const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
   noExternal = Object.keys(pkg.dependencies || {})
 }

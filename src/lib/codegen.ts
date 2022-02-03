@@ -75,6 +75,20 @@ export type CommentResult = {
   error?: Maybe<Scalars['String']>
 }
 
+export enum CommentStatus {
+  Deleted = 'DELETED',
+  New = 'NEW',
+  Updated = 'UPDATED',
+  UpdatedRating = 'UPDATED_RATING'
+}
+
+export type CommentUpdatedResult = {
+  __typename?: 'CommentUpdatedResult'
+  comment?: Maybe<Comment>
+  error?: Maybe<Scalars['String']>
+  status?: Maybe<CommentStatus>
+}
+
 export type Community = {
   __typename?: 'Community'
   desc?: Maybe<Scalars['String']>
@@ -128,6 +142,8 @@ export enum MessageStatus {
 
 export type Mutation = {
   __typename?: 'Mutation'
+  authorSubscribe: Result
+  authorUnsubscribe: Result
   confirmEmail: AuthResult
   createChat: CreateChatResult
   createComment: CommentResult
@@ -153,6 +169,14 @@ export type Mutation = {
   updateShout: ShoutResult
   updateTopic: TopicResult
   viewShout: Result
+}
+
+export type MutationAuthorSubscribeArgs = {
+  slug: Scalars['String']
+}
+
+export type MutationAuthorUnsubscribeArgs = {
+  slug: Scalars['String']
 }
 
 export type MutationConfirmEmailArgs = {
@@ -309,16 +333,20 @@ export type Query = {
   getCommunities: Array<Maybe<Community>>
   getCommunity: Community
   getCurrentUser: UserResult
-  getMessages: Array<Message>
+  getMessages: Array<Maybe<Message>>
   getShoutBySlug: Shout
   getShoutComments: Array<Maybe<Comment>>
   getUserRoles: Array<Maybe<Role>>
   getUsersBySlugs: Array<Maybe<User>>
   isEmailFree: Result
+  recentCommented: Array<Maybe<Shout>>
   recents: Array<Maybe<Shout>>
   shoutsByAuthor: Array<Maybe<Shout>>
   shoutsByCommunity: Array<Maybe<Shout>>
   shoutsByTopic: Array<Maybe<Shout>>
+  shoutsCandidates: Array<Maybe<Shout>>
+  shoutsReviewed: Array<Maybe<Shout>>
+  shoutsSubscribed: Array<Maybe<Shout>>
   signIn: AuthResult
   signOut: Result
   topMonth: Array<Maybe<Shout>>
@@ -331,6 +359,7 @@ export type Query = {
 
 export type QueryEnterChatArgs = {
   chatId: Scalars['String']
+  size?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryGetCommunityArgs = {
@@ -338,8 +367,9 @@ export type QueryGetCommunityArgs = {
 }
 
 export type QueryGetMessagesArgs = {
-  count?: InputMaybe<Scalars['Int']>
-  page?: InputMaybe<Scalars['Int']>
+  chatId: Scalars['String']
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type QueryGetShoutBySlugArgs = {
@@ -360,6 +390,11 @@ export type QueryGetUsersBySlugsArgs = {
 
 export type QueryIsEmailFreeArgs = {
   email: Scalars['String']
+}
+
+export type QueryRecentCommentedArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type QueryRecentsArgs = {
@@ -383,6 +418,20 @@ export type QueryShoutsByTopicArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
   topic: Scalars['String']
+}
+
+export type QueryShoutsCandidatesArgs = {
+  size?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryShoutsReviewedArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+}
+
+export type QueryShoutsSubscribedArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type QuerySignInArgs = {
@@ -498,6 +547,7 @@ export type ShoutStat = {
 export type Subscription = {
   __typename?: 'Subscription'
   chatUpdated: ChatUpdatedResult
+  commentUpdated: CommentUpdatedResult
   onlineUpdated: Array<User>
   shoutUpdated: Shout
   topicUpdated: Shout
@@ -508,8 +558,12 @@ export type SubscriptionChatUpdatedArgs = {
   chatId: Scalars['String']
 }
 
+export type SubscriptionCommentUpdatedArgs = {
+  shout: Scalars['String']
+}
+
 export type SubscriptionTopicUpdatedArgs = {
-  user_id: Scalars['Int']
+  user_slug: Scalars['String']
 }
 
 export type Token = {

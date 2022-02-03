@@ -305,7 +305,6 @@ export const TOP_MONTH = gql`
   }
 `
 
-
 export const SHOUTS_SUBSCRIBED = gql`
   query ShoutsSubscribedQuery($page: Int!, $size: Int!) {
     shoutsSubscribed(page: $page, size: $size) {
@@ -368,10 +367,40 @@ export const SHOUTS_REVIEWED = gql`
   }
 `
 
-
 export const SHOUTS_CANDIDATES = gql`
   query ShoutsCandidatesQuery($page: Int!, $size: Int!) {
     shoutsCandidates(page: $page, size: $size) {
+      title
+      subtitle
+      layout
+      slug
+      cover
+      community
+      mainTopic
+      topics {
+        slug
+        title
+        body
+        pic
+      }
+      authors {
+        name
+        slug
+        userpic
+      }
+      publishedAt
+      stat {
+        views
+        comments
+        ratings
+      }
+    }
+  }
+`
+
+export const SHOUTS_COMMENTED = gql`
+  query ShoutsCommentedQuery($page: Int!, $size: Int!) {
+    shoutsCommented(page: $page, size: $size) {
       title
       subtitle
       layout
