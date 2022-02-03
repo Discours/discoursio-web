@@ -44,7 +44,6 @@ const config = {
   },
   kit: {
     adapter: adapter(), // process.env.VERCEL ? vercel() : process.env.SSG ? ssg() : node(),
-    target: '#svelte',
     browser: { hydrate: true },
     prerender: {
       concurrency: 9,

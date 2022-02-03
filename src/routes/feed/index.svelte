@@ -4,9 +4,9 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  
+
   import type { User } from '$lib/codegen'
-  
+
   import NavTopics from '../../components/NavTopics.svelte'
   import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
   import ShoutBesideTopics from '../../components/ShoutBesideTopics.svelte'
@@ -18,7 +18,7 @@
     recents, // Shout[]
     shouts, // { slug: Shout }
     subscribedAuthors, // string[]
-    subscribedTopics// string[]
+    subscribedTopics // string[]
   } from '../../stores/zine'
 
   let authorsPage = 0

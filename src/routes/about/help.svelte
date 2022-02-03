@@ -6,11 +6,11 @@
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
   import SvelteSeo from 'svelte-seo'
-  
+
   // import Modal from '../../components/Modal.svelte'
   // import { openModal } from '../../stores/app'
   import { goto } from '$app/navigation'
-  
+
   import { notices } from '../../stores/user'
 
   let paymentTypeShowing = true

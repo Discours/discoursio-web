@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
   import { capitalize } from '$lib/utils'
-  
+
   import Icon from './DiscoursIcon.svelte'
 
   export let shout: Partial<Shout>
@@ -45,7 +45,11 @@
     <div class="shout-card__content">
       {#if shout.layout && shout.layout !== 'article' && !(noicon || noimage)}
         <div class="shout-card__type">
-          <a href="/topic/{shout.topics.filter((t) => shout.mainTopic == t.slug)[0].slug}">
+          <a
+            href="/topic/{shout.topics.filter(
+              (t) => shout.mainTopic == t.slug
+            )[0].slug}"
+          >
             <Icon name={shout.layout} />
           </a>
         </div>

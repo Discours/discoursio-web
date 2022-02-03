@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
-  
+
   import ShoutCard from './ShoutCard.svelte'
 
   export let shouts: Shout[]
@@ -8,7 +8,6 @@
 
 <div class="floor floor--important floor--group">
   <div class="wide-container row">
-
     <div class="group__header col-12">
       <div class="row">
         <slot name="header" />
@@ -21,66 +20,35 @@
 
     <div class="col-lg-6">
       {#if shouts}
-      <div class="row">
-        {#if shouts.length < 4}
-          {#each shouts as shout}
-          <div class="row">
-            <div class="col-md-8">
-              <ShoutCard {shout} nosubtitle={false} noicon={true} />
+        <div class="row">
+          {#if shouts.length < 4}
+            {#each shouts as shout}
+              <div class="row">
+                <div class="col-md-8">
+                  <ShoutCard {shout} nosubtitle={false} noicon={true} />
+                </div>
+              </div>
+            {/each}
+          {:else}
+            <div class="col-md-6">
+              {#each shouts.slice(0, 2) as shout}
+                <ShoutCard {shout} noimage={true} />
+              {/each}
             </div>
-          </div>
-          {/each}
-        {:else}
-        <div class="col-md-6">
-          {#each shouts.slice(0, 2) as shout}
-            <ShoutCard {shout} noimage={true} />
-          {/each}
+            <div class="col-md-6">
+              {#each shouts.slice(2, 4) as shout}
+                <ShoutCard {shout} noimage={true} />
+              {/each}
+            </div>
+          {/if}
         </div>
-        <div class="col-md-6">
-          {#each shouts.slice(2, 4) as shout}
-            <ShoutCard {shout} noimage={true} />
-          {/each}
-        </div>
-        {/if}
-      </div>
       {/if}
-
     </div>
-
   </div>
 </div>
 
-<style lang="scss">
-  .floor--group {
-    .group__header .row {
-      align-items: baseline;
-    }
-
- 		.all-materials {
- 			align-self: baseline;
- 			margin-bottom: 1em;
- 			white-space: nowrap;
-
-      a { border: none }
-
- 			@include media-breakpoint-up(sm) {
- 				text-align: right;
- 			}
-
- 			:global(.icon) {
- 				display: inline-block;
- 				height: 0.8em;
- 				vertical-align: middle;
- 				width: 0.8em;
- 			}
-
- 			:global(img) {
- 				vertical-align: top;
- 			}
- 		}
-
- 		.group__header .row {
- 			align-items: baseline;
- 		}
- 	}
+<style>
+  .group__header .row {
+    align-items: baseline;
+  }
 </style>

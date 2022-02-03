@@ -1,12 +1,12 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  
+
   import { client } from '$lib/client'
   import { GET_ME, GET_ROLES } from '$lib/queries'
-  
+
   import { showNotices } from '../stores/app'
   import { messageslist } from '../stores/inbox'
-  import { notices,roles, session, token } from '../stores/user'
+  import { notices, roles, session, token } from '../stores/user'
   import Icon from './DiscoursIcon.svelte'
   import Userpic from './Userpic.svelte'
 

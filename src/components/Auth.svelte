@@ -1,9 +1,9 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  
+
   import { page } from '$app/stores'
   import { API_ENDPOINT } from '$lib/client'
-  
+
   import { openModal } from '../stores/app'
   import { notices, session, token as tokenStore } from '../stores/user'
   import Icon from './DiscoursIcon.svelte'
@@ -34,16 +34,16 @@
     })
   }
 
-  const showMessage = (text, collection=null) => {
-    if(collection===null) collection = notifications
-    if(collection[collection.length-1] !== text) collection.push(text)
+  const showMessage = (text, collection = null) => {
+    if (collection === null) collection = notifications
+    if (collection[collection.length - 1] !== text) collection.push(text)
     clearTimeout(nto)
     nto = setTimeout(() => {
       console.dir()
       collection = collection.filter((w) => w !== text)
     }, 3400)
   }
-  
+
   const showError = (error) => showMessage(error, warnings)
   const authFailure = (data) => {
     const { error } = data
@@ -55,31 +55,40 @@
     showMessage('Пожалуйста, подождите..')
     fetch(`/auth/${endpoint}`, {
       method: 'POST',
-      cache: 'no-cache', 
+      cache: 'no-cache',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, code })
     })
-      .then(r => r.ok? r.json().then(authSuccess) : authFailure({ error: 'Неизвестная ошибка, попробуйте ещё раз' }))
+      .then((r) =>
+        r.ok
+          ? r.json().then(authSuccess)
+          : authFailure({ error: 'Неизвестная ошибка, попробуйте ещё раз' })
+      )
       .catch((error) => authFailure({ error }))
   }
-      
+
   const auth = (endpoint: string) => {
-    const emailTyped = email?.length > 5 && email.includes('@') && email.includes('.')
-    if(!emailTyped) authFailure('Пожалуйста, проверьте введенный адрес почты')
+    const emailTyped =
+      email?.length > 5 && email.includes('@') && email.includes('.')
+    if (!emailTyped) authFailure('Пожалуйста, проверьте введенный адрес почты')
     process = true
     if (mode === 'sign-up') {
       showMessage('Ищем учётную запись с таким почтовым адресом')
       fetch(`/auth/sign-check?email=${email}`).then((r) => {
         if (r.ok) _auth(endpoint)
-        else authFailure({ error: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться' })
-      }) 
+        else
+          authFailure({
+            error:
+              'Такой адрес почты уже зарегистрирован, попробуйте залогиниться'
+          })
+      })
     } else {
-      _auth(endpoint) 
+      _auth(endpoint)
     }
   }
 
   // if code in url params
-  $: if (code = $page?.url?.searchParams.get('code')) auth('reset')
+  $: if ((code = $page?.url?.searchParams.get('code'))) auth('reset')
 
   const oauth = (provider: string) => {
     // $openModal = false
@@ -93,19 +102,15 @@
   const titles = {
     'sign-up': 'Создать аккаунт',
     'sign-in': 'Войти в Дискурс',
-    'forget': 'Забыли пароль?',
-    'reset': 'Подтвердите почту и действие совершится',
-    'resend': 'Выслать подтверждение',
-    'password': 'Введите новый пароль'
+    forget: 'Забыли пароль?',
+    reset: 'Подтвердите почту и действие совершится',
+    resend: 'Выслать подтверждение',
+    password: 'Введите новый пароль'
   }
 </script>
 
 <!-- svelte-ignore a11y-missing-attribute -->
-<div
-  class="row view"
-  class:view--sign-up={mode === 'sign-up'}
-  transition:fade
->
+<div class="row view" class:view--sign-up={mode === 'sign-up'} transition:fade>
   <div class="col-sm-6 d-md-none auth-image">
     <div class="auth-image__text" class:show={mode === 'sign-up'}>
       <h2>Дискурс</h2>
@@ -122,7 +127,8 @@
       <p class="disclamer">
         Регистрируясь, вы&nbsp;даёте согласие с&nbsp;<a
           href="/about/terms-of-use"
-          on:click={() => $openModal = ''}>правилами пользования</a>
+          on:click={() => ($openModal = '')}>правилами пользования</a
+        >
         сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых
         уведомлений.
       </p>
@@ -142,8 +148,14 @@
         {/if}
       </div>
       <div class="auth-info">
-        {#if notifications?.length}{#each notifications as n}<span class="info" transition:fade>{n}.&nbsp;</span>{/each}{/if}
-        {#if warnings?.length}{#each warnings as warn}<span class="warn" transition:fade>{warn}.&nbsp;</span>{/each}{/if}
+        {#if notifications?.length}{#each notifications as n}<span
+              class="info"
+              transition:fade>{n}.&nbsp;</span
+            >{/each}{/if}
+        {#if warnings?.length}{#each warnings as warn}<span
+              class="warn"
+              transition:fade>{warn}.&nbsp;</span
+            >{/each}{/if}
       </div>
       {#if mode !== 'reset' && mode !== 'password'}
         <input
@@ -177,7 +189,11 @@
       {/if}
 
       <div>
-        <button class="submitbtn" disabled={process} on:click={() => auth(mode)}>
+        <button
+          class="submitbtn"
+          disabled={process}
+          on:click={() => auth(mode)}
+        >
           {process ? '...' : titles[mode]}
         </button>
       </div>
@@ -251,7 +267,8 @@
         <div class:show={mode === 'forget'}>
           <span
             class="auth-link"
-            on:click|preventDefault={() => (mode = 'sign-in')}>Я знаю пароль</span
+            on:click|preventDefault={() => (mode = 'sign-in')}
+            >Я знаю пароль</span
           >
         </div>
         <div class:show={mode === 'reset'}>
@@ -438,7 +455,11 @@
     min-height: 5em;
     font-weight: 400;
     font-size: smaller;
-    .warn { color: #a00; }
-    .info { color: gray; }
+    .warn {
+      color: #a00;
+    }
+    .info {
+      color: gray;
+    }
   }
 </style>

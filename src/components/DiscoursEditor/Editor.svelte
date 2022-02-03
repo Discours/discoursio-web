@@ -1,6 +1,6 @@
 <script lang="ts">
   import './custom.css'
-  
+
   import { keymap } from 'prosemirror-keymap'
   import { schema } from 'prosemirror-markdown'
   import { EditorState } from 'prosemirror-state'
@@ -12,11 +12,12 @@
     undo,
     yCursorPlugin,
     ySyncPlugin,
-    yUndoPlugin} from 'y-prosemirror'
+    yUndoPlugin
+  } from 'y-prosemirror'
   import { WebrtcProvider } from 'y-webrtc'
   import type { XmlFragment } from 'yjs'
-  
-  import { p2p as conn, room,webrtc, ydoc } from '../../stores/editor'
+
+  import { p2p as conn, room, webrtc, ydoc } from '../../stores/editor'
   import P2PConnect from './P2P.svelte'
   import { setup } from './setup'
 

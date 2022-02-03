@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores'
-  
+
   import { openModal } from '../stores/app'
   import { notices, token } from '../stores/user'
   import Auth from './Auth.svelte'

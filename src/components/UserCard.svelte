@@ -1,9 +1,9 @@
 <script lang="ts">
   import { link } from 'fs'
-  
+
   import type { User } from '$lib/codegen'
   import { subscribe, unsubscribe } from '$lib/cookie'
-  
+
   import { subscribedAuthors } from '../stores/zine'
   import Icon from './DiscoursIcon.svelte'
   import Userpic from './Userpic.svelte'
@@ -12,15 +12,17 @@
   export let hasSubscribeButton = true
   export let hasFullInfo = false
   let subscribed = false
-  $: if ($subscribedAuthors) subscribed = $subscribedAuthors.includes(user?.slug || '')
+  $: if ($subscribedAuthors)
+    subscribed = $subscribedAuthors.includes(user?.slug || '')
   const link2title = {
-    'instagram': 'ig',
-    'facebook': 'fb',
-    'linkedin': 'in',
-    'telegram': 'tg',
-    'vk': 'vk' 
+    instagram: 'ig',
+    facebook: 'fb',
+    linkedin: 'in',
+    telegram: 'tg',
+    vk: 'vk'
   }
-  const getLinkName = (l) => link2title[Object.keys(link2title).filter(key => l.includes(key))[0]] || l
+  const getLinkName = (l) =>
+    link2title[Object.keys(link2title).filter((key) => l.includes(key))[0]] || l
 </script>
 
 <div class="author">

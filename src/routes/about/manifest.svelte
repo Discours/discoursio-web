@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import SvelteSeo from 'svelte-seo'
-  
+
   import FeedbackForm from '../../components/FeedbackForm.svelte'
   import Modal from '../../components/Modal.svelte'
   import SubscribeForm from '../../components/SubscribeForm.svelte'

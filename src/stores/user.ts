@@ -24,7 +24,7 @@ export interface Notice {
   type: string // error info warn
   text: string
   lead?: string
-  state: string
+  opened: boolean
   ts: Date
 }
 

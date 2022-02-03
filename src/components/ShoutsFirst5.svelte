@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
-  
+
   import ShoutCard from './ShoutCard.svelte'
 
   export let shouts5: Shout[]
@@ -18,7 +18,7 @@
     </div>
     <div class="col-md-3">
       {#each shouts5.slice(3, 5) as shout}
-        <ShoutCard {shout}/>
+        <ShoutCard {shout} />
       {/each}
     </div>
   </div>

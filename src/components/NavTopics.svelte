@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  
+
   import type { Shout } from '$lib/codegen'
   import { shuffle } from '$lib/utils'
-  
+
   import {
     filterTopic,
     subscribedTopics,

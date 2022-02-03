@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  
+
   import { openModal } from '../stores/app'
   export let name: string // auth || feedback || subscribe
 

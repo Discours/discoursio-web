@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount, SvelteComponent } from 'svelte'
   import { fade } from 'svelte/transition'
-  
+
   import type { Shout } from '$lib/codegen'
-  
+
   import { loading, more } from '../stores/app'
   import ShoutBesideFew from './ShoutBesideFew.svelte'
   import Shouts2 from './Shouts2.svelte'
@@ -52,7 +52,7 @@
 
   const onScroll = () => {
     const isBottom = ih && sy && oh && ih + sy >= oh
-    if(isBottom) {
+    if (isBottom) {
       if (showed?.length < shouts?.length) next()
       if (showed === shouts) $more = name
     }
@@ -68,7 +68,7 @@
   {#if showed === shouts}
     <div class="morewrap">
       <div class="show-more">
-        <button class="button" type="button" on:click={() => $more = name}>
+        <button class="button" type="button" on:click={() => ($more = name)}>
           {$loading ? 'Загружаем' : 'Загрузить ещё'}
         </button>
       </div>

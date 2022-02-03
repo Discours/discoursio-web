@@ -47,12 +47,12 @@
 
 <script lang="ts">
   import '../app.scss'
-  
+
   import { onMount } from 'svelte'
-  
+
   import { navigating } from '$app/stores'
   import { getSubscriptions } from '$lib/cookie'
-  
+
   import DiscoursFooter from '../components/DiscoursFooter.svelte'
   import NavHeader from '../components/NavHeader.svelte'
   import { loading, more, pager } from '../stores/app'
@@ -68,7 +68,8 @@
     topicslist,
     topMonth as topMonthStore,
     topOverall as topStore,
-    topViewed as topViewedStore} from '../stores/zine'
+    topViewed as topViewedStore
+  } from '../stores/zine'
 
   export let update
 
@@ -83,7 +84,7 @@
     })
     $shouts[s.slug] = s
   }
-  
+
   // const byDate = (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
 
   // trigged by layout.onMount
@@ -102,7 +103,7 @@
 
   $: if ($more) {
     $loading = true
-    const stuff = {...$pager[$more.toString()], name: $more }
+    const stuff = { ...$pager[$more.toString()], name: $more }
     load({ fetch, stuff }).then(() => ($loading = false))
   }
 
@@ -110,16 +111,17 @@
     if (!update.topicsAll) {
       $topicslist = JSON.parse(window.localStorage.getItem('topics') || '[]')
       console.log(`preload: ${$topicslist.length} topics from localStorage`)
-      if(!$topicslist) fetch(`/topic/all.json`)
-        .then((r) => r.ok && r.json())
-        .then((ttt) => {
-          if ($topicslist != ttt.topicsAll) {
-            $topicslist = ttt.topicsAll
-            console.log(
-              `preload: ${$topicslist.length} topics with browser request`
-            )
-          }
-        })
+      if (!$topicslist)
+        fetch(`/topic/all.json`)
+          .then((r) => r.ok && r.json())
+          .then((ttt) => {
+            if ($topicslist != ttt.topicsAll) {
+              $topicslist = ttt.topicsAll
+              console.log(
+                `preload: ${$topicslist.length} topics with browser request`
+              )
+            }
+          })
     } else {
       $topicslist = update.topicsAll
       $topicslist.forEach((t) => ($topics[t.slug] = t))

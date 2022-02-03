@@ -1,7 +1,7 @@
 <script lang="ts">
   import Select from 'svelte-select'
-  
-  import { topics,topicslist } from '../stores/zine'
+
+  import { topics, topicslist } from '../stores/zine'
 
   export let topic = ''
   let items = []

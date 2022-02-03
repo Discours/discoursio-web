@@ -16,12 +16,12 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { fade } from 'svelte/transition'
-  
+
   import { browser } from '$app/env'
   import { page } from '$app/stores'
   import type { Shout, Topic, User } from '$lib/codegen'
-  
-  import ShoutBesideAuthors from "../../components/ShoutBesideAuthors.svelte"
+
+  import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
   import ShoutCard from '../../components/ShoutCard.svelte'
   import ShoutFeed from '../../components/ShoutFeed.svelte'
   import Shouts2 from '../../components/Shouts2.svelte'
@@ -125,11 +125,13 @@
       <ShoutWide shout={shouts[0]} />
       <Shouts3 shouts={shouts.slice(1, 4)} />
       <Shouts2 shouts={shouts.slice(4, 6)} />
-      <ShoutBesideAuthors 
+      <ShoutBesideAuthors
         title="Тему поддерживают"
-        slugs={Object.values(authors).map(a => a.slug).slice(0, 5)}
+        slugs={Object.values(authors)
+          .map((a) => a.slug)
+          .slice(0, 5)}
         beside={shouts[6]}
-        />
+      />
 
       <div class="floor floor--important">
         <div class="container">
@@ -160,9 +162,9 @@
         </div>
       </div>
 
-      <Shouts2 shouts={shouts.slice(0,2)} />
-      <Shouts3 shouts={shouts.slice(2,5)} />
-      <Shouts2 shouts={shouts.slice(5,7)} />
+      <Shouts2 shouts={shouts.slice(0, 2)} />
+      <Shouts3 shouts={shouts.slice(2, 5)} />
+      <Shouts2 shouts={shouts.slice(5, 7)} />
     </div>
   {/if}
 </div>

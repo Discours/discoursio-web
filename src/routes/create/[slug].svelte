@@ -8,7 +8,7 @@
 
 <script lang="ts">
   import { XmlFragment } from 'yjs'
-  
+
   import DiscoursEditor from '../../components/DiscoursEditor/index.svelte'
   import TopicInput from '../../components/TopicInput.svelte'
   import { shouts } from '../../stores/zine'

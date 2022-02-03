@@ -10,9 +10,9 @@
 
   import { onMount } from 'svelte'
   import { fade, slide } from 'svelte/transition'
-  
+
   import type { Shout } from '$lib/codegen'
-  
+
   import { more } from '../stores/app'
   import Masonry from './Masonry.svelte'
   import ShoutCard from './ShoutCard.svelte'
@@ -38,7 +38,7 @@
 
   const onScroll = () => {
     const isBottom = ih && sy && oh && ih + sy >= oh
-    if(isBottom) {
+    if (isBottom) {
       if (showed.length < shouts?.length) next()
       if (showed === shouts) $more = name
     }

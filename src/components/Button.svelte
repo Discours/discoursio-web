@@ -1,6 +1,5 @@
 <script>
-    export let disabled = false;
-  </script>
-  
-  <button {disabled} on:click><slot /></button>
-  
+  export let disabled = false
+</script>
+
+<button {disabled} on:click><slot /></button>

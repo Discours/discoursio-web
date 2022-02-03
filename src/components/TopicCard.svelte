@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Topic } from '$lib/codegen'
   import { subscribe, unsubscribe } from '$lib/cookie'
-  import { capitalize,plural } from '$lib/utils'
-  
+  import { capitalize, plural } from '$lib/utils'
+
   import { subscribedTopics } from '../stores/zine'
 
   export let topic: Topic | Partial<Topic>

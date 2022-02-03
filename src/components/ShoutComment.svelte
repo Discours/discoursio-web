@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Comment } from '$lib/codegen'
-  
+
   import Icon from './DiscoursIcon.svelte'
   // import { authors } from '../stores/zine'
   import MD from './MD.svelte'

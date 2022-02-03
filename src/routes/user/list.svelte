@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { User } from '$lib/codegen'
-  
+
   import UserCard from '../../components/UserCard.svelte'
   export let authors: User[]
 

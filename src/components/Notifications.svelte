@@ -1,9 +1,9 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
   import Portal from 'svelte-portal/src/Portal.svelte'
-  
+
   import { goto } from '$app/navigation'
-  
+
   import { showNotices } from '../stores/app'
   import { notices } from '../stores/user'
 
@@ -16,48 +16,52 @@
     )
       $showNotices = false
   }
-  const more = (index) => {
-    $notices[index].state = 'opened'
+
+  const more = (index: number) => {
+    $notices[index].opened = true
     $notices[index].ts = new Date()
   }
-  const close = (index) => {
+
+  const close = (index: number) => {
     elements[index].setAttribute('style', 'height: 0')
-    $notices[index].state = 'closed'
+    $notices[index].opened = true
     $notices[index].ts = new Date()
   }
-  const follow = (index) => {
+
+  const follow = (index: number) => {
     goto($notices[index].lead)
     close(index)
   }
 
-  $: if($notices) {
-     console.dir($notices)
-  }
+  $: if ($notices) console.dir($notices) // debug only
 </script>
 
 <Portal target="body">
   {#if $showNotices}
-    <div
-      class="noticecorner"
-      transition:fade
-      on:click|preventDefault={closeNotification}
-    >
-      {#each $notices as notice, index}
-        <div
-          class={`notice ${notice.type} ${notice.state}`}
-          bind:this={elements[index]}
-        >
-          {notice.text}
-          {#if notice.state === 'shown'}
-            <a href={'#'} on:click|preventDefault={() => more(index)}>...</a>
-          {/if}
-          {#if notice.state === 'open'}
-            <a href={'#'} on:click|preventDefault={() => follow(index)}>Перейти</a
-            >
-          {/if}
-        </div>
-      {/each}
-    </div>
+    {#key $notices}
+      <div
+        class="noticecorner"
+        transition:fade
+        on:click|preventDefault={closeNotification}
+      >
+        {#each $notices as notice, index}
+          <div
+            class={`notice ${notice.type}`}
+            class:opened={notice.opened}
+            bind:this={elements[index]}
+          >
+            {notice.text}
+            {#if notice.opened}
+              <a href={'#'} on:click|preventDefault={() => more(index)}>...</a>
+            {:else}
+              <a href={'#'} on:click|preventDefault={() => follow(index)}
+                >Перейти</a
+              >
+            {/if}
+          </div>
+        {/each}
+      </div>
+    {/key}
   {/if}
 </Portal>
 
@@ -93,7 +97,7 @@
     }
 
     .error {
-      background-color:pink;
+      background-color: pink;
     }
     .info {
       background-color: white;

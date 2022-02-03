@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { IndexeddbPersistence } from 'y-indexeddb'
   import * as Y from 'yjs'
-  
+
   import {
     body,
     db,
@@ -10,7 +10,8 @@
     p2p,
     room,
     webrtc,
-    ydoc} from '../../stores/editor'
+    ydoc
+  } from '../../stores/editor'
 
   export let password: string
 

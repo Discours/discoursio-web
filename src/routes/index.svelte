@@ -7,10 +7,10 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
   import SvelteSeo from 'svelte-seo'
-  
+
   import type { Shout } from '$lib/codegen'
   import { shuffle } from '$lib/utils'
-  
+
   import DiscoursAbout from '../components/DiscoursAbout.svelte'
   import DiscoursBanner from '../components/DiscoursBanner.svelte'
   import NavTopics from '../components/NavTopics.svelte'
@@ -40,8 +40,8 @@
   let topCommented = [],
     topMonthAuthors = [],
     // topicsMonth = [],
-    shoutsByTopic: {[key: string]: Array<Shout>} = {},
-    shoutsByLayout: {[key: string]: Array<Shout>} = {}
+    shoutsByTopic: { [key: string]: Array<Shout> } = {},
+    shoutsByLayout: { [key: string]: Array<Shout> } = {}
   let tslugs: Set<string> = new Set([])
   let aslugs: Set<string> = new Set([])
 
@@ -49,7 +49,7 @@
   const filterFilledTopic = (filter) =>
     $recents.filter((t) => t.topics.find((topic) => topic.slug === filter))
 
-  let rtopic1, rtopic2 , randomLayout
+  let rtopic1, rtopic2, randomLayout
   $: if ($topMonth?.length > 0 && !topMonthAuthors?.length) {
     console.debug('mainpage: processing publications lists')
     $loading = true
@@ -80,9 +80,13 @@
     // topicsMonth = topicsMonth.sort(byAuthors)
     const byRating = (a, b) => b.rating - a.rating
     topMonthAuthors = topMonthAuthors.sort(byRating)
-    const filledTopics = Object.entries(shoutsByTopic).filter(([k,v]) => v.length > 4) // 4 in the floor
-    const rt = shuffle(filledTopics.map(f => f[0])).slice(0,2)
-    randomLayout = shuffle(Object.keys(shoutsByLayout).filter(l => l !== 'article'))[0]
+    const filledTopics = Object.entries(shoutsByTopic).filter(
+      ([k, v]) => v.length > 4
+    ) // 4 in the floor
+    const rt = shuffle(filledTopics.map((f) => f[0])).slice(0, 2)
+    randomLayout = shuffle(
+      Object.keys(shoutsByLayout).filter((l) => l !== 'article')
+    )[0]
     rtopic1 = rt[0]
     rtopic2 = rt[1]
     $loading = false
@@ -106,52 +110,65 @@
   }}
 />
 <main class="home" transition:fade>
-    {#if $recents?.length > 0}
-      <NavTopics shouts={$recents} />
-      <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
-      <DiscoursAbout />
-      <ShoutBesideFew beside={$recents[5]} shouts={$topViewed} title={'Самое читаемое'} top={true} />
-      <Shouts3 shouts={$recents.slice(6, 9)} />
-      {#if topMonthAuthors}
-        <ShoutBesideAuthors
-          beside={$recents[9]}
-          slugs={Array.from(aslugs)}
-          title="Авторы месяца"
-        />
-        <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-        <Shouts2 shouts={$recents.slice(10, 12)} y={0} />
-        <ShoutsShort shouts={$recents.slice(12, 16)} />
-        <ShoutWide shout={$recents[16]} />
-        <Shouts3 shouts={$recents.slice(17, 20)} />
-        <ShoutsSlider shouts={$topOverall} title="Избранное"/>
-        <ShoutBesideTopics
-          beside={$recents[20]}
-          slugs={Array.from(tslugs)}
-          title="Темы месяца"
-        />
-        <Shouts3 shouts={$recents.slice(21, 24)} />
-        <ShoutsGroup shouts={shoutsByTopic[rtopic1].slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment>
-          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment >
-        </ShoutsGroup>
-        <Shouts2 shouts={$recents.slice(24, 26)} />
-        <ShoutsGroup shouts={shoutsByTopic[rtopic2].slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment>
-          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment >
-        </ShoutsGroup>
-        <DiscoursBanner />
-        <Shouts2 shouts={$recents.slice(26, 28)} />
-        <div class="wide-container row"><TopicHeader topic={$topics[randomLayout]} color="black" /></div>
-        <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
-      {/if}
-      <ShoutBesideFew shouts={$recents.slice(29, 35)} beside={$recents[28]} top={false} title={''}/>
-      <ShoutFeed shouts={$recents.slice(35, $recents.length)} />
+  {#if $recents?.length > 0}
+    <NavTopics shouts={$recents} />
+    <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
+    <DiscoursAbout />
+    <ShoutBesideFew
+      beside={$recents[5]}
+      shouts={$topViewed}
+      title={'Самое читаемое'}
+      top={true}
+    />
+    <Shouts3 shouts={$recents.slice(6, 9)} />
+    {#if topMonthAuthors}
+      <ShoutBesideAuthors
+        beside={$recents[9]}
+        slugs={Array.from(aslugs)}
+        title="Авторы месяца"
+      />
+      <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
+      <Shouts2 shouts={$recents.slice(10, 12)} y={0} />
+      <ShoutsShort shouts={$recents.slice(12, 16)} />
+      <ShoutWide shout={$recents[16]} />
+      <Shouts3 shouts={$recents.slice(17, 20)} />
+      <ShoutsSlider shouts={$topOverall} title="Избранное" />
+      <ShoutBesideTopics
+        beside={$recents[20]}
+        slugs={Array.from(tslugs)}
+        title="Темы месяца"
+      />
+      <Shouts3 shouts={$recents.slice(21, 24)} />
+      <ShoutsGroup shouts={shoutsByTopic[rtopic1].slice(1)}>
+        <svelte:fragment slot="header"
+          ><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment
+        >
+        <svelte:fragment slot="aside"
+          ><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment
+        >
+      </ShoutsGroup>
+      <Shouts2 shouts={$recents.slice(24, 26)} />
+      <ShoutsGroup shouts={shoutsByTopic[rtopic2].slice(1)}>
+        <svelte:fragment slot="header"
+          ><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment
+        >
+        <svelte:fragment slot="aside"
+          ><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment
+        >
+      </ShoutsGroup>
+      <DiscoursBanner />
+      <Shouts2 shouts={$recents.slice(26, 28)} />
+      <div class="wide-container row">
+        <TopicHeader topic={$topics[randomLayout]} color="black" />
+      </div>
+      <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
     {/if}
+    <ShoutBesideFew
+      shouts={$recents.slice(29, 35)}
+      beside={$recents[28]}
+      top={false}
+      title={''}
+    />
+    <ShoutFeed shouts={$recents.slice(35, $recents.length)} />
+  {/if}
 </main>
-
-<style>
-  .shout-card__type {
-    top: unset;
-    right: 0; width: 2.2rem;
-  }
-</style>

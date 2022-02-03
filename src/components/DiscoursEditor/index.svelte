@@ -15,8 +15,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { XmlFragment } from 'yjs'
-  
-  import { room,ydoc } from '../../stores/editor'
+
+  import { room, ydoc } from '../../stores/editor'
   import Editor from './Editor.svelte'
 
   export let body

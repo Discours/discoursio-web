@@ -5,10 +5,7 @@ import { SIGN_IN } from '$lib/queries'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
-  // console.dir(request.body)
-  const {
-    body: { email, password }
-  } = request.body
+  const { email, password } = await request.json()
   const { token, user } = await client.request(SIGN_IN, { email, password })
   return {
     status: 200,
