@@ -1,44 +1,24 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { shuffle } from '$lib/utils'
+  import { filterTopic } from '../stores/zine'
+  import type { Topic } from '$lib/codegen'
 
-  import {
-    filterTopic,
-    topics,
-    topicslist
-  } from '../stores/zine'
-
-  export let slugs: Set<string> = new Set([])
-  let navTopics: string[] = []
-  let mounted = false
-  const topicsAmount = 9
-  const getTitle = (slug: string) =>
-    slug && $topics[slug] ? $topics[slug].title : slug || 'ошибка'
-  $: if (mounted && slugs.size === 0 && $topicslist) {
-    navTopics = shuffle(Array.from(slugs)).slice(0, topicsAmount)
-    console.log(
-      `navtopics: ${topicsAmount.toString()}/${slugs.size.toString()} topics`
-    )
-  }
-  onMount(() => (mounted = true))
+  export let topics
 </script>
 
 <nav class="subnavigation wide-container text-2xl">
   <ul class="topics">
-    {#if navTopics}
-      {#each navTopics as slug}
-        <li class="item" class:selected={$filterTopic === slug}>
-          <a
-            href={'/topic/' + slug}
-            on:click={() => ($filterTopic = slug || '')}
+    {#each topics as t}
+      <li class="item" class:selected={$filterTopic === t.slug}>
+        <a
+          href={'/topic/' + t.slug}
+          on:click={() => ($filterTopic = t.slug || '')}
+        >
+          <span class:transparent={$filterTopic !== t.slug}
+            >#{t.title}</span
           >
-            <span class:transparent={$filterTopic !== slug}
-              >#{getTitle(slug)}</span
-            >
-          </a>
-        </li>
-      {/each}
-    {/if}
+        </a>
+      </li>
+    {/each}
   </ul>
 </nav>
 

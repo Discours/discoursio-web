@@ -39,8 +39,7 @@ const getSubscriptions = async (entity) => {
   try {
     const c = getCookie(entity)
     console.log(`cookie: ${entity} subscriptions`)
-    console.debug(c)
-    if (c) r = await JSON.parse(c)
+    if (c) r = (await JSON.parse(c)) || []
   } catch (e) {
     console.error(e)
   }

@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import 'swiper/css'
   import 'swiper/css/navigation'
-  import type {Shout} from "$lib/codegen"
+  import type {Shout, Topic} from "$lib/codegen"
   export const prerender = true
   let size = 9,
     page = 0
@@ -105,9 +105,10 @@
   let mounted = false
   let topCommented = []
   let topMonthAuthors = []
+  let topMonthTopics = []
   let shoutsByTopic: { [key: string]: Array<Shout> } = {}
   let shoutsByLayout: { [key: string]: Array<Shout> } = {}
-  let tslugs: Set<string> = new Set([])
+  let topicset: Set<Topic> = new Set([])
   let aslugs: Set<string> = new Set([])
   let rtopic1, rtopic2, randomLayout
 
@@ -125,9 +126,10 @@
     })
     // stores mentioned topics slugs
     s.topics.forEach(t => {
+      if ($topMonth.includes(s) && !topMonthTopics.includes(t)) topMonthTopics.push(t) // <9 top month only
       if (!shoutsByTopic[t.slug]) shoutsByTopic[t.slug] = []
       shoutsByTopic[t.slug].push(s)
-      tslugs.add(t.slug)
+      topicset.add(t)
     })
     if (s.layout) {
       // stores shouts by layouts
@@ -151,13 +153,12 @@
     topCommented = $recents.filter((s) => s.stat.comments > 0).sort((a, b) => b.stat.comments - a.stat.comments)
     const goodTopics = Object.entries(shoutsByTopic).filter(([k, v], i) => v.length > 4) // 4 in the floor
     const rt = shuffle(goodTopics.map((f) => f[0])).slice(0, 2)
-    console.debug(`mainpage: ${rt.toString()} selected`)
+    console.debug(`mainpage: ${rt.toString()} topics selected`)
     randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
-    console.debug(`mainpage: ${randomLayout} selected`)
+    console.debug(`mainpage: ${randomLayout} layout selected`)
     rtopic1 = rt[0]
     rtopic2 = rt[1]
     $loading = false
-    console.debug('mainpage: loaded')
   }
 
   onMount(() => mounted = true)
@@ -179,7 +180,7 @@
 />
 <main class="home" transition:fade>
   {#if $recents?.length > 0}
-    <NavTopics slugs={tslugs} />
+    {#key topicset}<NavTopics topics={shuffle(Array.from(topicset)).slice(0, 9)} />{/key}
     <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
     <DiscoursAbout />
     <ShoutBesideFew
@@ -203,7 +204,7 @@
       <ShoutsSlider shouts={$topOverall} title="Избранное" />
       <ShoutBesideTopics
         beside={$recents[20]}
-        slugs={Array.from(tslugs)}
+        slugs={Array.from(topMonthTopics)}
         title="Темы месяца"
       />
       <Shouts3 shouts={$recents.slice(21, 24)} />

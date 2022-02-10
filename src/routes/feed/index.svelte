@@ -2,7 +2,7 @@
   import type { Shout } from '$lib/codegen'
   import { encodeGetParams } from '$lib/utils'
   import { onMount } from 'svelte'
-
+  import { shuffle } from '$lib/utils'
   export const prerender = true
 
   const sets = [
@@ -104,7 +104,7 @@
     'top-viewed': $topViewed
   }
 
-  let topicslugs = new Set([])
+  let topicset = new Set([])
 
   const loaded = (update) => {
     $subscribedShouts = update?.subscribed
@@ -129,7 +129,7 @@
 
   $: if (mode) {
     dataset = stores[mode]
-    dataset.forEach(s => s.topics.forEach(t => topicslugs.add(t.slug)))
+    dataset.forEach(s => s.topics.forEach(t => topicset.add(t)))
     // FIXME: if (!dataset) mode = 'recents'
   }
 
@@ -143,7 +143,7 @@
 
 <section class="feed" transition:fade>
   {#key dataset}
-    <NavTopics slugs={topicslugs} />
+    <NavTopics topics={shuffle(Array.from(topicset)).slice(0, 9)} />
     <ShoutBesideTopics beside={dataset[0]} slugs={$subscribedTopics} />
     <ShoutFeed name={mode} shouts={dataset.slice(2)} />
     <ShoutBesideAuthors beside={dataset[1]} slugs={$subscribedAuthors} />

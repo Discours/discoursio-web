@@ -10,7 +10,7 @@
     console.log('topics: preloading ' + sets.toString())
     let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
     let q = sets[0]
-    let r = await fetch(`topic/${q}.json`)
+    let r = await fetch(`/topic/${q}.json`)
     if (r.ok) {
       const update = await r.json()
       Object.assign(props.update, { ...update })

@@ -30,6 +30,7 @@
   import TopicFull from '../../components/TopicFull.svelte'
   import UserCard from '../../components/UserCard.svelte'
   import { topics, topicslist } from '../../stores/zine'
+  import SvelteSeo from 'svelte-seo'
 
   export let shouts: Shout[]
   export let authors: User[]
@@ -78,9 +79,21 @@
     }
     mode = by
   }
+  const meta = {
+    title: 'Дискурс / ' + topic?.title || slug,
+    description: 'Тема: ' + topic?.body || '',
+    keywords: 'Discours.io, дискурс, самыздат, коллаборативная редакция, авторы'
+  }
 </script>
 
-<svelte:head><title>Дискурс : {$page.params.slug}</title></svelte:head>
+<svelte:head><title>Дискурс : {topic?.title || slug}</title></svelte:head>
+<SvelteSeo
+  {...meta}
+  openGraph={{
+    ...meta,
+    images: [{ url: 'https://new.discours.io/logo.png' }]
+  }}
+/>
 <TopicFull {topic} />
 
 <div class="container" transition:fade>
