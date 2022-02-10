@@ -1,4 +1,4 @@
-import { parse } from 'cookie'
+import { parse, serialize as createCookie } from 'cookie'
 
 const headers = {
   Accept: 'application/json',
@@ -34,7 +34,6 @@ const unsubscribe = async (slug, what) => {
 }
 
 const getCookie = (entity: string): string => parse(document.cookie)[entity]
-
 const getSubscriptions = async (entity) => {  
   let r = []
   try {
@@ -49,6 +48,7 @@ const getSubscriptions = async (entity) => {
 }
 
 export {
+  createCookie,
   getCookie,
   getSubscriptions,
   subscribe,
