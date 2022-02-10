@@ -46,7 +46,10 @@
       >
         {#each $notices as notice, index}
           <div
-            class={`notice ${notice.type}`}
+            class="notice"
+            class:warn={notice.type==='warn'}
+            class:info={notice.type==='info'}
+            class:error={notice.type==='error'}
             class:opened={notice.opened}
             bind:this={elements[index]}
           >
@@ -96,13 +99,13 @@
       }
     }
 
-    .error {
+    &.error {
       background-color: pink;
     }
-    .info {
+    &.info {
       background-color: white;
     }
-    .warn {
+    &.warn {
       background-color: gray;
     }
   }

@@ -1,50 +1,20 @@
 module.exports = {
-  root: true,
-  env: {
-    es6: true,
-    node: true,
-    browser: true
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript'
-    // "plugin:storybook/recommended"
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: ['./tsconfig.json'],
-    extraFileExtensions: ['.svelte'],
-    createDefaultProgram: true,
-    ecmaVersion: 2022,
-    sourceType: 'module'
-  },
-  plugins: ['svelte3', '@typescript-eslint', 'simple-import-sort', 'prettier'],
-  overrides: [
-    {
-      files: ['*.svelte'],
-      processor: 'svelte3/svelte3'
-    },
-    {
-      files: ['*.ts'],
-      extends: ['plugin:prettier/recommended']
-    },
-    {
-      files: ['*.js'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 'off'
-      }
-    }
-  ],
-  settings: {
-    // "import/resolver": { "typescript": {} },
-    'svelte3/typescript': true,
-    'svelte3/ignore-styles': () => true
-  },
-  rules: {
-    'no-unused-vars': 'off',
-    'simple-import-sort/exports': 'error',
-    'simple-import-sort/imports': 'error'
-  }
-}
+	root: true,
+	parser: '@typescript-eslint/parser',
+	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+	plugins: ['svelte3', '@typescript-eslint'],
+	ignorePatterns: ['*.cjs'],
+	overrides: [{ files: ['*.svelte'], processor: 'svelte3/svelte3' }],
+	settings: {
+		'svelte3/typescript': () => require('typescript')
+	},
+	parserOptions: {
+		sourceType: 'module',
+		ecmaVersion: 2020
+	},
+	env: {
+		browser: true,
+		es2017: true,
+		node: true
+	}
+};

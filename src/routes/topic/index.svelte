@@ -1,16 +1,39 @@
-<script lang="ts" context="module">
+<script context="module" lang="ts">
+  // import dayjs from 'dayjs/esm'
+  // import relativeTime from 'dayjs/esm/plugin/relativeTime'
+  // dayjs().format()
+  import type { Shout } from '$lib/codegen'
   export const prerender = true
+  let size = 20
+  let page = 0
+  const mapping = {
+    'topic/all': 'topicsAll'
+  }
+  export const load = async ({ fetch, stuff }) => {
+    console.log('topics: preloading ' + Object.keys(mapping).toString())
+    size = stuff?.size ? stuff.size : size
+    page = stuff?.page ? stuff.page : page
+    let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
+    await Object.entries(mapping).forEach(async ([q, name]) => {
+      const r = await fetch(`${q}.json?page=${page}&size=${size}`)
+      if (r.ok) {
+        const update = await r.json()
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`topicss: preloaded ${Object.values(o).length} ${q}`)
+      }
+    })
+    return { props }
+  }
 </script>
 
 <script lang="ts">
   import { fade } from 'svelte/transition'
-
-  import type { Topic } from '$lib/codegen'
-
   import TopicCard from '../../components/TopicCard.svelte'
   import { subscribedTopics, topicslist } from '../../stores/zine'
 
-  let topics: Partial<Topic>[]
+  export let update
+
   let mode = 'views'
   let sortedKeys = []
   let topicsGroupedByAlphabet = []
@@ -32,10 +55,10 @@
       { 'A-Z': [] }
     )
   }
-
-  $: if ($topicslist) {
+  
+  $: if ($topicslist && update?.topicsAll) {
     if (mode === 'alphabet') {
-      topicsGroupedByAlphabet = groupBy(topics.slice(0))
+      topicsGroupedByAlphabet = groupBy(update.topicsAll.slice(0))
       sortedKeys = Object.keys(topicsGroupedByAlphabet).sort()
       sortedKeys.forEach((letter) => {
         topicsGroupedByAlphabet[letter] = topicsGroupedByAlphabet[letter].sort(
@@ -50,7 +73,7 @@
         )
       })
     } else {
-      topics = $topicslist.sort((a, b) => b.topicStat[mode] - a.topicStat[mode])
+      $topicslist = $topicslist.sort((a, b) => b.topicStat[mode] - a.topicStat[mode])
     }
   }
 </script>
@@ -103,8 +126,8 @@
         {/each}
       {:else}
         <div class="stats">
-          {#if topics}
-            {#each topics as topic}
+          {#if $topicslist}
+            {#each $topicslist as topic}
               <TopicCard
                 {topic}
                 compact={false}

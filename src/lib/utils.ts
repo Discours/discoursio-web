@@ -42,3 +42,6 @@ export const encodeGetParams = (p) =>
   Object.entries(p)
     .map((kv) => kv.map(encodeURIComponent).join('='))
     .join('&')
+
+
+export const snake2camel = s => s.split(/(?=[A-Z])/).join('-').toLowerCase()

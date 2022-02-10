@@ -4,7 +4,7 @@ import { SHOUTS_SUBSCRIBED } from '$lib/queries'
 export const get = async ({ params }) => {
   let subscribed
   const { author, page, size } = params
-  console.log('feed: by-subscriptions')
+  // console.log('feed: by-subscriptions')
   if (author) {
     try {
       const q = await client.request(SHOUTS_SUBSCRIBED, { page, size })

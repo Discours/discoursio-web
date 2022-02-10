@@ -1,134 +1,85 @@
-<script context="module" lang="ts">
+<script context="module">
   // import dayjs from 'dayjs/esm'
   // import relativeTime from 'dayjs/esm/plugin/relativeTime'
   // dayjs().format()
-  import type { Shout } from '$lib/codegen'
   export const prerender = true
-  let size = 9,
-    page = 0
-  const mapping = {
-    'feed/recents': 'recents',
-    'feed/top-month': 'topMonth',
-    'feed/top-overall': 'topOverall',
-    'feed/top-viewed': 'topViewed',
-    'topic/all': 'topicsAll'
-  }
-  export const load = async ({ fetch, stuff }) => {
-    console.log('root: __layout load()')
-    size = stuff?.size ? stuff.size : size
-    page = stuff?.page ? stuff.page : page
-    let props: { update: { [key: string]: Shout[] } } = { update: {} }
-    await Object.entries(mapping).forEach(async ([q, name]) => {
-      const r = await fetch(`${q}.json?page=${page}&size=${size}`)
-      if (r.ok) {
-        const update = await r.json()
-        Object.assign(props.update, { ...update })
-        console.debug(`root: ${Object.keys(update[name] || {}).length} ${q}`)
-      }
-    })
-    return { props }
-  }
 </script>
 
 <script lang="ts">
-  import '../app.scss'
-
-  import { onMount } from 'svelte'
-
-  import { navigating } from '$app/stores'
-  import { getSubscriptions } from '$lib/cookie'
-
+  // import { getSubscriptions } from '$lib/cookie'
   import DiscoursFooter from '../components/DiscoursFooter.svelte'
   import NavHeader from '../components/NavHeader.svelte'
-  import { loading, more, pager } from '../stores/app'
-  import {
-    authors,
-    authorslist,
-    recents as recentsStore,
-    shouts,
-    subscribedAuthors,
-    subscribedShouts,
-    subscribedTopics,
-    topics,
-    topicslist,
-    topMonth as topMonthStore,
-    topOverall as topStore,
-    topViewed as topViewedStore
+  import '../app.scss'
+  import { onMount } from 'svelte'
+  import { topicslist } from '../stores/zine'
+  import { snake2camel } from '$lib/utils'
+  import { 
+    recents, topMonth, topOverall, 
+    topViewed, commented, subscribedAuthors, 
+    subscribedShouts, subscribedTopics, reviewedShouts 
   } from '../stores/zine'
+  import { loading, more, pager } from '../stores/app'
+  import { getSubscriptions } from '$lib/cookie'
+  import { session } from '$app/stores'
 
-  export let update
+  // loads if localStorage is empty
+  $: if($topicslist === null) {
+    console.debug('topics are null')
+    fetch(`/topic/all.json`)
+      .then((r) => r.ok && r.json())
+      .then((ttt) => {
+        if ($topicslist != ttt.topicsAll) {
+          $topicslist = ttt.topicsAll
+          console.log(
+            `root: ${$topicslist.length} topics updated with browser request`
+          )
+        }
+      })
+      .catch(console.error)
+    }
 
-  $: $loading = !!$navigating
-
-  const loadShout = (s) => {
-    s.authors.forEach((a) => {
-      if (!(a.slug in $authors)) {
-        $authorslist.push(a)
-        $authors[a.slug] = a
-      }
-    })
-    $shouts[s.slug] = s
+  const stores = {
+    'recents': $recents,
+    'top-overall': $topOverall,
+    'top-month': $topMonth,
+    'top-viewed': $topViewed,
+    'commented': $commented,
+    'subscribed': $subscribedShouts,
+    'reviewed': $reviewedShouts
   }
 
-  // const byDate = (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-
-  // trigged by layout.onMount
-  $: if ($recentsStore === null && update.recents) {
-    // TODO: add $subscribedShouts store
-    $recentsStore = update.recents
-    $recentsStore.forEach(loadShout)
-    $topStore = update.topOverall
-    $topStore.forEach(loadShout)
-    $topMonthStore = update.topMonth
-    $topMonthStore.forEach(loadShout)
-    $topViewedStore = update.topViewed
-    $topViewedStore.forEach(loadShout)
-    console.debug(`root: preloaded ${$authorslist.length.toString()} authors`)
+  // loads more data if $more is not empty
+  const loadMore = async (stuff) => {
+    console.log('root: loading more...')
+    const size = stuff?.size ? stuff.size : $pager[$more].size
+    const page = stuff?.page ? stuff.page : $pager[$more].page
+    const r = await fetch(`feed/${$more}.json?page=${page}&size=${size}`)
+    if (r.ok) {
+      const key = snake2camel($more)
+      const update = await r.json()
+      const data = update[key] || []
+      console.debug(`root: loaded more ${data?.length} ${$more}`)
+      stores[key].set(data)
+    }
+    $more = ''
   }
-
+  
   $: if ($more) {
     $loading = true
-    const stuff = { ...$pager[$more.toString()], name: $more }
-    load({ fetch, stuff }).then(() => ($loading = false))
+    const stuff = { ...$pager[$more], name: $more }
+    loadMore(stuff).then(() => ($loading = false))
   }
-
-  $: if ($topicslist === null) {
-    if (!update.topicsAll) {
-      $topicslist = JSON.parse(window.localStorage.getItem('topics') || '[]')
-      console.log(`root: ${$topicslist.length} topics from localStorage`)
-      if (!$topicslist)
-        fetch(`/topic/all.json`)
-          .then((r) => r.ok && r.json())
-          .then((ttt) => {
-            if ($topicslist != ttt.topicsAll) {
-              $topicslist = ttt.topicsAll
-              console.log(
-                `root: ${$topicslist.length} topics with browser request`
-              )
-            }
-          })
-    } else {
-      $topicslist = update.topicsAll
-      $topicslist.forEach((t) => ($topics[t.slug] = t))
-    }
-    const datastring = JSON.stringify(update.topicsAll)
-    if (window.localStorage['topics'] !== datastring) {
-      window.localStorage['topics'] = datastring
-      console.log(`root: updated ${$topicslist.length} topics in localStorage`)
-    }
-  }
-
-  $: if (!$loading && $topicslist.length && $recentsStore.length)
-    $loading = false
 
   onMount(async () => {
-    $loading = true
     $subscribedTopics = await getSubscriptions('topics')
     $subscribedAuthors = await getSubscriptions('authors')
-    $subscribedShouts = await getSubscriptions('shouts')
-    $recentsStore = null
-    $topicslist = null // force update, WARN: works only with null!
-    console.debug('root: mounted, preloading...')
+    if(!$topicslist?.length) {
+      const ttt = JSON.parse(window.localStorage.getItem('topics') || '[]')
+      if(ttt?.length) {
+        $topicslist = ttt
+        console.log(`root: found ${ttt.length} topics in localStorage`)
+      } else $topicslist = null // force update, WARN: works only with null!
+    }
   })
 </script>
 

@@ -4,7 +4,7 @@ import { SHOUTS_COMMENTED } from '$lib/queries'
 export const get = async ({ params }) => {
   let commented
   const { author, page, size } = params
-  console.log('feed: commented')
+  // console.log('feed: commented')
   if (author) {
     try {
       const q = await client.request(SHOUTS_COMMENTED, { page, size })

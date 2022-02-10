@@ -1,3 +1,5 @@
+import { parse } from 'cookie'
+
 const headers = {
   Accept: 'application/json',
   'Content-Type': 'application/json'
@@ -31,33 +33,13 @@ const unsubscribe = async (slug, what) => {
   return subscribed
 }
 
-const createCookie = (name: string, value: any, days = 0) => {
-  let expires = ''
-  if (days) {
-    const date = new Date()
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
-    expires = '; expires=' + date.toUTCString()
-  }
-  return name + '=' + value + expires + '; path=/'
-}
+const getCookie = (entity: string): string => parse(document.cookie)[entity]
 
-const decodeCookies = (from) => {
-  const cookie = {}
-  from.split(';').forEach((el) => {
-    const [key, value] = el.split('=')
-    cookie[key.trim()] = value
-  })
-  return cookie
-}
-
-const getCookie = (cookieName, from = document.cookie) =>
-  decodeCookies(from)[cookieName]
-
-const getSubscriptions = async (entity) => {
+const getSubscriptions = async (entity) => {  
   let r = []
   try {
     const c = getCookie(entity)
-    console.log('cookie: subscriptions')
+    console.log(`cookie: ${entity} subscriptions`)
     console.debug(c)
     if (c) r = await JSON.parse(c)
   } catch (e) {
@@ -67,8 +49,6 @@ const getSubscriptions = async (entity) => {
 }
 
 export {
-  createCookie,
-  decodeCookies,
   getCookie,
   getSubscriptions,
   subscribe,

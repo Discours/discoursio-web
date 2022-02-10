@@ -4,8 +4,8 @@ import { AUTHORS_BY_SLUGS, SHOUTS_BY_AUTHOR } from '$lib/queries'
 export const get = async ({ params }) => {
   let shouts, authors
   const { slugs, page, size } = params
-  console.log('feed: by-authors')
-  console.log(authors)
+  // console.log('feed: by-authors')
+  // console.log(authors)
   if (slugs) {
     try {
       const q = await client.request(AUTHORS_BY_SLUGS, { slugs })

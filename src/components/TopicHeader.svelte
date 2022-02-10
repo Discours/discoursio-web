@@ -6,9 +6,9 @@
   export let color: 'white' | 'black' = 'white'
 </script>
 
-<h3 class="col-sm-6">{topic.title}</h3>
+<h3 class="col-sm-6">{topic?.title}</h3>
 <div class="col-sm-6 all-materials">
-  <a href={`/topic/${topic.slug}`}
+  <a href={`/topic/${topic?.slug}`}
     >все материалы
     <DiscoursIcon name={'arrow-right-' + color} />
   </a>

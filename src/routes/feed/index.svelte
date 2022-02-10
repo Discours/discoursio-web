@@ -5,17 +5,18 @@
   export const prerender = true
 
   const queries = [
-    'feed/reviewed',
-    'feed/subscribed',
-    'feed/candidates',
-    'feed/commented'
+    'reviewed',
+    'subscribed',
+    'candidates',
+    'commented'
   ]
 
   const fetchStuff = async (q, fetch, stuff) => {
-    const r = await fetch(`${q}.json?${encodeGetParams(stuff)}`)
+    const r = await fetch(`${q}.json${Object.keys(stuff).length? '?' + encodeGetParams(stuff): ''}`)
     if (r.ok) {
       const update = await r.json()
-      console.debug(`${Object.values(update[0] || {}).length} ${q}`)
+      const o = Object.values(update)[0] || {}
+      console.debug(`feed: preloaded ${Object.values(o).length} ${q}`)
       return update
     }
     return {}
@@ -23,9 +24,9 @@
 
   export const load = async ({ fetch, stuff }) => {
     // TODO: use stuff for url params
-    console.log('preloader: feed/index')
+    console.log('feed: preloading' + queries.toString())
     let props: { update: { [key: string]: Shout[] } } = { update: {} }
-    await queries.forEach(async (q) => await fetchStuff(q, fetch, stuff))
+    queries.forEach(async (q) => await fetchStuff('feed/'+q, fetch, stuff))
     return { props }
   }
 </script>
@@ -36,7 +37,7 @@
   import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
   import ShoutBesideTopics from '../../components/ShoutBesideTopics.svelte'
   import ShoutFeed from '../../components/ShoutFeed.svelte'
-  import { more } from '../../stores/app'
+  import { more, pager } from '../../stores/app'
   import {
     reviewedShouts, // Shout[]
     subscribedShouts, // Shout[]
@@ -73,6 +74,8 @@
     'top-viewed': $topViewed
   }
 
+  let topicslugs = new Set([])
+
   const loaded = (update) => {
     $subscribedShouts = update.subscribed
     $subscribedShouts.forEach(loadShout)
@@ -91,27 +94,26 @@
   $: if (stores[mode] === null && update.subscribedShouts) loaded(update)
 
   let size = 17
-  let mode = 'subscribed' // all topOverall topCommented
+  let mode = 'subscribed' // all reviewed commented
   let dataset = []
 
   $: if (mode) {
     dataset = stores[mode]
-    if (!dataset) mode = 'recents'
+    dataset.forEach(s => s.topics.forEach(t => topicslugs.add(t.slug)))
+    // FIXME: if (!dataset) mode = 'recents'
   }
 
-  $: page = !dataset ? 0 : (dataset.length / size) - 1
-
-  $: if ($more)
-    fetchStuff('feed/' + $more, fetch, { page, size })
-      .then(({ update }) => loaded(update))
-      .catch(console.error)
+  $: $pager[$more] = { 
+    page: !dataset ? 0 : (dataset.length / size) - 1, 
+    size: $pager[$more]?.size || size
+  }
 
   onMount(() => (stores[mode] = null))
 </script>
 
 <section class="feed" transition:fade>
   {#key dataset}
-    <NavTopics shouts={dataset} />
+    <NavTopics slugs={topicslugs} />
     <ShoutBesideTopics beside={dataset[0]} slugs={$subscribedTopics} />
     <ShoutFeed name={mode} shouts={dataset.slice(2)} />
     <ShoutBesideAuthors beside={dataset[1]} slugs={$subscribedAuthors} />

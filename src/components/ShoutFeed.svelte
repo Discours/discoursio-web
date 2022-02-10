@@ -4,15 +4,14 @@
 
   import type { Shout } from '$lib/codegen'
 
-  import { loading, more } from '../stores/app'
+  import { loading, more, pager } from '../stores/app'
   import ShoutBesideFew from './ShoutBesideFew.svelte'
   import Shouts2 from './Shouts2.svelte'
   import Shouts3 from './Shouts3.svelte'
   import ShoutWide from './ShoutWide.svelte'
-
+  export let size = 9
   export let name = 'recents'
   export let shouts: Shout[]
-  export let size = 9
   let showed: Shout[] = []
   $: if (showed === shouts) $more = name // TODO: should trig api request
 

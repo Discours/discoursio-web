@@ -6,6 +6,7 @@ import { browser } from '$app/env'
 export const theme: Writable<string> = writable('default')
 export const openModal: Writable<string> = writable('')
 export const showNotices: Writable<boolean> = writable(false)
+
 if (browser) {
   const value = localStorage.theme || 'default'
   theme.set(value)
@@ -18,7 +19,7 @@ export enum Locale {
 }
 
 export const lang: Writable<Locale> = writable(Locale.RU)
-export const loading: Writable<boolean> = writable(false)
+export const loading: Writable<boolean> = writable(true)
 export const more: Writable<string> = writable('')
 export const pager: Writable<{
   [key: string]: { size: number; page: number }

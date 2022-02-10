@@ -6,21 +6,17 @@
 
   import {
     filterTopic,
-    subscribedTopics,
     topics,
     topicslist
   } from '../stores/zine'
 
-  export let shouts: Shout[]
-  let slugs: Set<string> = new Set([])
+  export let slugs: Set<string> = new Set([])
   let navTopics: string[] = []
   let mounted = false
   const topicsAmount = 9
   const getTitle = (slug: string) =>
     slug && $topics[slug] ? $topics[slug].title : slug || 'ошибка'
   $: if (mounted && slugs.size === 0 && $topicslist) {
-    shouts.forEach((s) => s.topics.forEach((t) => slugs.add(t.slug)))
-    $subscribedTopics.forEach((t) => slugs.add(t))
     navTopics = shuffle(Array.from(slugs)).slice(0, topicsAmount)
     console.log(
       `navtopics: ${topicsAmount.toString()}/${slugs.size.toString()} topics`

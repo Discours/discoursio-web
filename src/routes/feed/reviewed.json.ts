@@ -4,7 +4,7 @@ import { SHOUTS_REVIEWED } from '$lib/queries'
 export const get = async ({ params }) => {
   let reviewed
   const { author, page, size } = params
-  console.log('feed: revieded')
+  // console.log('feed: revieded')
   if (author) {
     try {
       const q = await client.request(SHOUTS_REVIEWED, { page, size })
