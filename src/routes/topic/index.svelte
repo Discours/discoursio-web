@@ -4,25 +4,19 @@
   // dayjs().format()
   import type { Shout } from '$lib/codegen'
   export const prerender = true
-  let size = 20
-  let page = 0
-  const mapping = {
-    'topic/all': 'topicsAll'
-  }
-  export const load = async ({ fetch, stuff }) => {
-    console.log('topics: preloading ' + Object.keys(mapping).toString())
-    size = stuff?.size ? stuff.size : size
-    page = stuff?.page ? stuff.page : page
+  const sets = ['topics-all']
+
+  export const load = async ({ fetch }) => {
+    console.log('topics: preloading ' + sets.toString())
     let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
-    await Object.entries(mapping).forEach(async ([q, name]) => {
-      const r = await fetch(`${q}.json?page=${page}&size=${size}`)
-      if (r.ok) {
-        const update = await r.json()
-        Object.assign(props.update, { ...update })
-        const o = Object.values(update)[0] || {}
-        console.debug(`topicss: preloaded ${Object.values(o).length} ${q}`)
-      }
-    })
+    let q = sets[0]
+    let r = await fetch(`topic/${q}.json`)
+    if (r.ok) {
+      const update = await r.json()
+      Object.assign(props.update, { ...update })
+      const o = Object.values(update)[0] || {}
+      console.debug(`topics: preloaded ${Object.values(o).length} ${q}`)
+    }
     return { props }
   }
 </script>

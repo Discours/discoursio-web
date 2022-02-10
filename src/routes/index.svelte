@@ -2,7 +2,6 @@
   import 'swiper/css'
   import 'swiper/css/navigation'
   import type {Shout} from "$lib/codegen"
-
   export const prerender = true
   let size = 9,
     page = 0
@@ -12,22 +11,56 @@
     'top-overall',
     'top-viewed'
   ]
-  export const load = ({ fetch, stuff }) => {
+  export const load = async ({ fetch, stuff }) => {
     console.log('root: preloading ' + sets.toString())
     size = stuff?.size ? stuff.size : size
     page = stuff?.page ? stuff.page : page
     let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
-    sets.forEach(async (q) => {
-      const r = await fetch(`feed/${q}.json?page=${page}&size=${size}`)
-      if (r.ok) {
-        const update = await r.json()
-        if(update) {
-          Object.assign(props.update, { ...update })
-          const o = Object.values(update)[0] || {}
-          console.debug(`${Object.values(o).length} ${q}`)
-        }
+
+    // WARNING: there is not sets.forEach 
+    // cuz it causes multiple async context 
+    // which is not catched by svelte reactive trigger
+
+    let q = sets[0]
+    let r = await fetch(`feed/${sets[0]}.json?page=${page}&size=${size}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
       }
-    })
+    }
+    q = sets[1]
+    r = await fetch(`feed/${q}.json?page=${page}&size=${size}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
+    q = sets[2]
+    r = await fetch(`feed/${q}.json?page=${page}&size=${size}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
+    q = sets[3]
+    r = await fetch(`feed/${q}.json?page=${page}&size=${size}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
     return { props }
   }
 </script>
@@ -68,12 +101,15 @@
   } from '../stores/zine'
 
   export let update
+
+  let mounted = false
   let topCommented = []
   let topMonthAuthors = []
   let shoutsByTopic: { [key: string]: Array<Shout> } = {}
   let shoutsByLayout: { [key: string]: Array<Shout> } = {}
   let tslugs: Set<string> = new Set([])
   let aslugs: Set<string> = new Set([])
+  let rtopic1, rtopic2, randomLayout
 
   const loadShout = (s) => {
     // stores with all the shouts
@@ -88,7 +124,11 @@
       }
     })
     // stores mentioned topics slugs
-    s.topics.forEach(t => tslugs.add(t.slug))
+    s.topics.forEach(t => {
+      if (!shoutsByTopic[t.slug]) shoutsByTopic[t.slug] = []
+      shoutsByTopic[t.slug].push(s)
+      tslugs.add(t.slug)
+    })
     if (s.layout) {
       // stores shouts by layouts
       if (!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = []
@@ -96,7 +136,7 @@
     }
   }
 
-  $: if ($recents === null && update.recents) {
+  $: if (mounted && update?.recents) {
     console.debug('mainpage: preprocessing data...')
     // TODO: add $subscribedShouts store
     $recents = update.recents
@@ -108,38 +148,19 @@
     $topViewed = update.topViewed
     $topViewed.forEach(loadShout)
     console.debug(`mainpage: found ${$authorslist.length.toString()} authors`)
-    topCommented = $recents
-      .filter((s) => s.stat.comments > 0)
-      .sort((a, b) => b.stat.comments - a.stat.comments)
-    const filledTopics = Object.entries(shoutsByTopic).filter(([k, v]) => v.length > 4) // 4 in the floor
-    const rt = shuffle(filledTopics.map((f) => f[0])).slice(0, 2)
-    randomLayout = shuffle(
-      Object.keys(shoutsByLayout).filter((l) => l !== 'article')
-    )[0]
+    topCommented = $recents.filter((s) => s.stat.comments > 0).sort((a, b) => b.stat.comments - a.stat.comments)
+    const goodTopics = Object.entries(shoutsByTopic).filter(([k, v], i) => v.length > 4) // 4 in the floor
+    const rt = shuffle(goodTopics.map((f) => f[0])).slice(0, 2)
+    console.debug(`mainpage: ${rt.toString()} selected`)
+    randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
+    console.debug(`mainpage: ${randomLayout} selected`)
     rtopic1 = rt[0]
     rtopic2 = rt[1]
     $loading = false
+    console.debug('mainpage: loaded')
   }
 
-  $: if ($topicslist === null && update.topicaAll) {
-    $topicslist = update.topicsAll
-    $topicslist.forEach((t) => ($topics[t.slug] = t))
-    const datastring = JSON.stringify(update.topicsAll)
-    if (window.localStorage['topics'] !== datastring) {
-      window.localStorage['topics'] = datastring
-      console.log(`mainpage: stored ${$topicslist.length} topics in localStorage`)
-    }
-  }
-
-  onMount(() => {
-    $recents = null
-    console.debug('mainpage: mounted')
-  })
-
-  let rtopic1, rtopic2, randomLayout
-
-  $: if ($recents?.length > 0 && aslugs?.size === 0) {
-  }
+  onMount(() => mounted = true)
 
   const meta = {
     title: 'Дискурс',
@@ -157,59 +178,64 @@
   }}
 />
 <main class="home" transition:fade>
-  {#key $recents}
-    {#if $topicslist?.length && $recents?.length}
-      <NavTopics slugs={tslugs} />
-      <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
-      <DiscoursAbout />
-      <ShoutBesideFew
-        beside={$recents[5]}
-        shouts={$topViewed}
-        title={'Самое читаемое'}
-        top={true}
+  {#if $recents?.length > 0}
+    <NavTopics slugs={tslugs} />
+    <ShoutsFirst5 shouts5={$recents.slice(0, 5)} />
+    <DiscoursAbout />
+    <ShoutBesideFew
+      beside={$recents[5]}
+      shouts={$topViewed}
+      title={'Самое читаемое'}
+      top={true}
+    />
+    <Shouts3 shouts={$recents.slice(6, 9)} />
+    {#if topMonthAuthors}
+      <ShoutBesideAuthors
+        beside={$recents[9]}
+        slugs={Array.from(aslugs)}
+        title="Авторы месяца"
       />
-      <Shouts3 shouts={$recents.slice(6, 9)} />
-      {#if topMonthAuthors}
-        <ShoutBesideAuthors
-          beside={$recents[9]}
-          slugs={Array.from(aslugs)}
-          title="Авторы месяца"
-        />
-        <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
-        <Shouts2 shouts={$recents.slice(10, 12)} y={0} />
-        <ShoutsShort shouts={$recents.slice(12, 16)} />
-        <ShoutWide shout={$recents[16]} />
-        <Shouts3 shouts={$recents.slice(17, 20)} />
-        <ShoutsSlider shouts={$topOverall} title="Избранное" />
-        <ShoutBesideTopics
-          beside={$recents[20]}
-          slugs={Array.from(tslugs)}
-          title="Темы месяца"
-        />
-        <Shouts3 shouts={$recents.slice(21, 24)} />
-        <ShoutsGroup shouts={shoutsByTopic[rtopic1]?.slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment>
-          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment>
-        </ShoutsGroup>
-        <Shouts2 shouts={$recents.slice(24, 26)} />
-        <ShoutsGroup shouts={shoutsByTopic[rtopic2]?.slice(1)}>
-          <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment>
-          <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment>
-        </ShoutsGroup>
-        <DiscoursBanner />
-        <Shouts2 shouts={$recents.slice(26, 28)} />
-        <div class="wide-container row">
-          <TopicHeader topic={$topics[randomLayout]} color="black" />
-        </div>
-        <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
+      <ShoutsSlider shouts={$topMonth} title="Лучшее за месяц" />
+      <Shouts2 shouts={$recents.slice(10, 12)} y={0} />
+      <ShoutsShort shouts={$recents.slice(12, 16)} />
+      <ShoutWide shout={$recents[16]} />
+      <Shouts3 shouts={$recents.slice(17, 20)} />
+      <ShoutsSlider shouts={$topOverall} title="Избранное" />
+      <ShoutBesideTopics
+        beside={$recents[20]}
+        slugs={Array.from(tslugs)}
+        title="Темы месяца"
+      />
+      <Shouts3 shouts={$recents.slice(21, 24)} />
+      {#if rtopic1 in shoutsByTopic}
+      <ShoutsGroup shouts={shoutsByTopic[rtopic1]?.slice(1)}>
+        <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic1]} /></svelte:fragment>
+        <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic1][0]} /></svelte:fragment>
+      </ShoutsGroup>
       {/if}
-      <ShoutBesideFew
-        shouts={$recents.slice(29, 35)}
-        beside={$recents[28]}
-        top={false}
-        title={''}
-      />
-      <ShoutFeed shouts={$recents.slice(35, $recents.length)} />
+      <Shouts2 shouts={$recents.slice(24, 26)} />
+      {#if rtopic2 in shoutsByTopic}
+      <ShoutsGroup shouts={shoutsByTopic[rtopic2]?.slice(1)}>
+        <svelte:fragment slot="header"><TopicHeader topic={$topics[rtopic2]} /></svelte:fragment>
+        <svelte:fragment slot="aside"><ShoutCard shout={shoutsByTopic[rtopic2][0]} /></svelte:fragment>
+      </ShoutsGroup>
+      {/if}
+      <DiscoursBanner />
+      <Shouts2 shouts={$recents.slice(26, 28)} />
+
+      {#if randomLayout in shoutsByTopic}
+      <div class="wide-container row">
+        <TopicHeader topic={$topics[randomLayout]} color="black" />
+      </div>
+      <Shouts3 shouts={shoutsByLayout[randomLayout].slice(0, 3)} />
+      {/if}
     {/if}
-  {/key}
+    <ShoutBesideFew
+      shouts={$recents.slice(29, 35)}
+      beside={$recents[28]}
+      top={false}
+      title={''}
+    />
+    <ShoutFeed shouts={$recents.slice(35, $recents.length)} />
+  {/if}
 </main>

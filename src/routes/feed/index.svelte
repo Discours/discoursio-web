@@ -2,31 +2,61 @@
   import type { Shout } from '$lib/codegen'
   import { encodeGetParams } from '$lib/utils'
   import { onMount } from 'svelte'
+
   export const prerender = true
 
-  const queries = [
+  const sets = [
     'reviewed',
     'subscribed',
     'candidates',
     'commented'
   ]
 
-  const fetchStuff = async (q, fetch, stuff) => {
-    const r = await fetch(`${q}.json${Object.keys(stuff).length? '?' + encodeGetParams(stuff): ''}`)
+  export const load = async ({ fetch, stuff }) => {
+    console.log('root: preloading ' + sets.toString())
+    const params = Object.keys(stuff).length? '?' + encodeGetParams(stuff): ''
+    let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
+    let q = sets[0]
+    let r = await fetch(`${q}.json${params}`)
+
     if (r.ok) {
       const update = await r.json()
-      const o = Object.values(update)[0] || {}
-      console.debug(`feed: preloaded ${Object.values(o).length} ${q}`)
-      return update
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
     }
-    return {}
-  }
-
-  export const load = async ({ fetch, stuff }) => {
-    // TODO: use stuff for url params
-    console.log('feed: preloading' + queries.toString())
-    let props: { update: { [key: string]: Shout[] } } = { update: {} }
-    queries.forEach(async (q) => await fetchStuff('feed/'+q, fetch, stuff))
+    q = sets[1]
+    r = await fetch(`${q}.json${params}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
+    q = sets[2]
+    r = await fetch(`${q}.json${params}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
+    q = sets[3]
+    r = await fetch(`${q}.json${params}`)
+    if (r.ok) {
+      const update = await r.json()
+      if(update) {
+        Object.assign(props.update, { ...update })
+        const o = Object.values(update)[0] || {}
+        console.debug(`${Object.values(o).length} ${q}`)
+      }
+    }
     return { props }
   }
 </script>
@@ -77,15 +107,15 @@
   let topicslugs = new Set([])
 
   const loaded = (update) => {
-    $subscribedShouts = update.subscribed
+    $subscribedShouts = update?.subscribed
     $subscribedShouts.forEach(loadShout)
-    $reviewedShouts = update.reviewed
+    $reviewedShouts = update?.reviewed
     $reviewedShouts.forEach(loadShout)
-    $candidates = update.candidates
+    $candidates = update?.candidates
     $candidates.forEach(loadShout)
-    $topOverall = update.topOverall
+    $topOverall = update?.topOverall
     $topOverall.forEach(loadShout)
-    $commented = update.commented
+    $commented = update?.commented
     $commented.forEach(loadShout)
     console.debug(`feed: loaded ${$authorslist.length.toString()} authors`)
   }

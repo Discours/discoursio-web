@@ -3,7 +3,7 @@ import { TOPICS_ALL } from '$lib/queries'
 
 export const get = async () => {
   try {
-    const { topicsBySlugs: topicsAll } = await client.request(TOPICS_ALL)
+    const { topicsBySlugs: topicsAll } = await client.request(TOPICS_ALL )
     const body = { topicsAll }
     return { status: topicsAll ? 200 : 404, body }
   } catch (error) {
