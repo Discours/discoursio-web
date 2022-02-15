@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { openModal } from '../stores/app'
+  import { openModal } from '$lib/stores/app'
   const action = '/user/feedback'
   const method = 'post'
   let msgElement: HTMLTextAreaElement

@@ -10,7 +10,7 @@
   // import { session } from '$app/stores';
   // $session.user;
   // TODO: get settings from profile data
-  import Icon from '../../components/DiscoursIcon.svelte'
+  import Icon from '$lib/components/DiscoursIcon.svelte'
   export let user
 </script>
 

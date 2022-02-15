@@ -4,8 +4,8 @@
 
   import { goto } from '$app/navigation'
 
-  import { showNotices } from '../stores/app'
-  import { notices } from '../stores/user'
+  import { showNotices } from '$lib/stores/app'
+  import { notices } from '$lib/stores/user'
 
   let elements: HTMLDivElement[]
 

@@ -4,9 +4,9 @@
   import { client } from '$lib/client'
   import { GET_ME, GET_ROLES } from '$lib/queries'
 
-  import { showNotices } from '../stores/app'
-  import { messageslist } from '../stores/inbox'
-  import { notices, roles, session, token } from '../stores/user'
+  import { showNotices } from '$lib/stores/app'
+  import { messageslist } from '$lib/stores/inbox'
+  import { notices, roles, session, token } from '$lib/stores/user'
   import Icon from './DiscoursIcon.svelte'
   import Userpic from './Userpic.svelte'
 

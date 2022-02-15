@@ -3,7 +3,7 @@
   import { subscribe, unsubscribe } from '$lib/cookie'
   import { capitalize, plural } from '$lib/utils'
 
-  import { subscribedTopics } from '../stores/zine'
+  import { subscribedTopics } from '$lib/stores/zine'
 
   export let topic: Topic | Partial<Topic>
   export let subscribed = false

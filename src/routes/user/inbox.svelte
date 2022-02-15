@@ -1,8 +1,8 @@
 <!-- svelte-ignore a11y-missing-attribute -->
 <script lang="ts">
   // TODO: getMessages graphql query
-  import Icon from '../../components/DiscoursIcon.svelte'
-  import UserCard from '../../components/UserCard.svelte'
+  import Icon from '$lib/components/DiscoursIcon.svelte'
+  import UserCard from '$lib/components/UserCard.svelte'
 </script>
 
 <svelte:head><title>Дискурс : Чаты</title></svelte:head>

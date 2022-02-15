@@ -1,6 +1,6 @@
 <script lang="ts">
-  import ShoutCard from '../../components/ShoutCard.svelte'
-  import { shouts } from '../../stores/zine'
+  import ShoutCard from '$lib/components/ShoutCard.svelte'
+  import { shouts } from '$lib/stores/zine'
 
   let teasers = []
   $: if ($shouts) teasers = Object.keys($shouts)

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
 
-  import { topics } from '../stores/zine'
+  import { topics } from '$lib/stores/zine'
   import ShoutCard from './ShoutCard.svelte'
   import TopicCard from './TopicCard.svelte'
   export let beside: Shout

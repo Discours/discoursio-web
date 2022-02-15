@@ -6,10 +6,10 @@
   import { subscribe } from '$lib/cookie'
   import { capitalize } from '$lib/utils'
 
-  import MD from '../components/MD.svelte'
-  import { openModal } from '../stores/app'
-  import { session, token } from '../stores/user'
-  import { subscribedShouts } from '../stores/zine'
+  import MD from './MD.svelte'
+  import { openModal } from '$lib/stores/app'
+  import { session, token } from '$lib/stores/user'
+  import { subscribedShouts } from '$lib/stores/zine'
   import Icon from './DiscoursIcon.svelte'
   import ShoutComment from './ShoutComment.svelte'
   import UserCard from './UserCard.svelte'
@@ -203,12 +203,6 @@
     }
   }
 
-  .article-card__category {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-    text-transform: uppercase;
-  }
-
   .shout__cover {
     background-size: cover;
     height: 0;
@@ -273,19 +267,6 @@
     @include font-size(2.2rem);
     margin-bottom: 1em;
     padding: 2.4rem 1.8rem;
-  }
-
-  .topic {
-    display: inline-flex;
-  }
-
-  .topic a {
-    /* white-space: nowrap; */
-    color: black;
-    padding: 0.3vh;
-  }
-  .topic a:hover {
-    font-weight: 500;
   }
 
   .shout-stats {

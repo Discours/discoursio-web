@@ -1,7 +1,7 @@
 <script lang="ts">
   import { subscribe, unsubscribe } from '$lib/cookie'
 
-  import { subscribedTopics, topicslist } from '../stores/zine'
+  import { subscribedTopics, topicslist } from '$lib/stores/zine'
 
   let subscribed = false
   export let topic

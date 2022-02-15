@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { link } from 'fs'
-
   import type { User } from '$lib/codegen'
   import { subscribe, unsubscribe } from '$lib/cookie'
 
-  import { subscribedAuthors } from '../stores/zine'
+  import { subscribedAuthors } from '$lib/stores/zine'
   import Icon from './DiscoursIcon.svelte'
   import Userpic from './Userpic.svelte'
 

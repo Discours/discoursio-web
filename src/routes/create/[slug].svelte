@@ -9,9 +9,9 @@
 <script lang="ts">
   import { XmlFragment } from 'yjs'
 
-  import DiscoursEditor from '../../components/DiscoursEditor/index.svelte'
-  import TopicInput from '../../components/TopicInput.svelte'
-  import { shouts } from '../../stores/zine'
+  import DiscoursEditor from '$lib/components/DiscoursEditor/index.svelte'
+  import TopicInput from '$lib/components/TopicInput.svelte'
+  import { shouts } from '$lib/stores/zine'
 
   export let slug
 

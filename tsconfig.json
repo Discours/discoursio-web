@@ -15,6 +15,7 @@
     "allowJs": true,
     "checkJs": true,
     "paths": {
+      "@": ["src"],
       "$lib": ["src/lib"],
       "$lib/*": ["src/lib/*"],
       "$app": [".svelte-kit/runtime/app"],

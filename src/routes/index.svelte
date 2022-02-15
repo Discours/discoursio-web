@@ -17,9 +17,9 @@
     page = stuff?.page ? stuff.page : page
     let props: { update: { [key: string]: Shout[] } } = { update: {} } // exported down there
 
-    // WARNING: there is not sets.forEach 
-    // cuz it causes multiple async context 
-    // which is not catched by svelte reactive trigger
+    // WARNING: there is no sets.forEach
+    // cuz it causes multiple async context
+    // which is not caught by svelte reactive trigger
 
     let q = sets[0]
     let r = await fetch(`feed/${sets[0]}.json?page=${page}&size=${size}`)
@@ -27,8 +27,8 @@
       const update = await r.json()
       if(update) {
         Object.assign(props.update, { ...update })
-        const o = Object.values(update)[0] || {}
-        console.debug(`${Object.values(o).length} ${q}`)
+        const value = update[snake2camel(sets[0])]
+        if(value) console.debug(`${value.length} ${q}`)
       }
     }
     q = sets[1]
@@ -69,25 +69,25 @@
   import { fade } from 'svelte/transition'
   import SvelteSeo from 'svelte-seo'
   import { onMount } from 'svelte'
-  import { shuffle } from '$lib/utils'
+  import { shuffle, snake2camel } from '$lib/utils'
 
-  import DiscoursAbout from '../components/DiscoursAbout.svelte'
-  import DiscoursBanner from '../components/DiscoursBanner.svelte'
-  import NavTopics from '../components/NavTopics.svelte'
-  import ShoutBesideAuthors from '../components/ShoutBesideAuthors.svelte'
-  import ShoutBesideFew from '../components/ShoutBesideFew.svelte'
-  import ShoutBesideTopics from '../components/ShoutBesideTopics.svelte'
-  import ShoutCard from '../components/ShoutCard.svelte'
-  import ShoutFeed from '../components/ShoutFeed.svelte'
-  import Shouts2 from '../components/Shouts2.svelte'
-  import Shouts3 from '../components/Shouts3.svelte'
-  import ShoutsFirst5 from '../components/ShoutsFirst5.svelte'
-  import ShoutsGroup from '../components/ShoutsGroup.svelte'
-  import ShoutsShort from '../components/ShoutsShort.svelte'
-  import ShoutsSlider from '../components/ShoutsSlider.svelte'
-  import ShoutWide from '../components/ShoutWide.svelte'
-  import TopicHeader from '../components/TopicHeader.svelte'
-  import { loading } from '../stores/app'
+  import DiscoursAbout from '$lib/components/DiscoursAbout.svelte'
+  import DiscoursBanner from '$lib/components/DiscoursBanner.svelte'
+  import NavTopics from '$lib/components/NavTopics.svelte'
+  import ShoutBesideAuthors from '$lib/components/ShoutBesideAuthors.svelte'
+  import ShoutBesideFew from '$lib/components/ShoutBesideFew.svelte'
+  import ShoutBesideTopics from '$lib/components/ShoutBesideTopics.svelte'
+  import ShoutCard from '$lib/components/ShoutCard.svelte'
+  import ShoutFeed from '$lib/components/ShoutFeed.svelte'
+  import Shouts2 from '$lib/components/Shouts2.svelte'
+  import Shouts3 from '$lib/components/Shouts3.svelte'
+  import ShoutsFirst5 from '$lib/components/ShoutsFirst5.svelte'
+  import ShoutsGroup from '$lib/components/ShoutsGroup.svelte'
+  import ShoutsShort from '$lib/components/ShoutsShort.svelte'
+  import ShoutsSlider from '$lib/components/ShoutsSlider.svelte'
+  import ShoutWide from '$lib/components/ShoutWide.svelte'
+  import TopicHeader from '$lib/components/TopicHeader.svelte'
+  import { loading } from '$lib/stores/app'
   import {
     authors,
     authorslist,
@@ -98,7 +98,7 @@
     topMonth,
     topOverall,
     topViewed
-  } from '../stores/zine'
+  } from '$lib/stores/zine'
 
   export let update
 

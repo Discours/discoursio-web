@@ -2,7 +2,7 @@
   import type { Comment } from '$lib/codegen'
 
   import Icon from './DiscoursIcon.svelte'
-  // import { authors } from '../stores/zine'
+  // import { authors } from '$lib/stores/zine'
   import MD from './MD.svelte'
   import UserCard from './UserCard.svelte'
   // import dayjs from 'dayjs'

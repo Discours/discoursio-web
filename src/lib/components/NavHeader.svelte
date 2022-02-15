@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/stores'
 
-  import { openModal } from '../stores/app'
-  import { notices, token } from '../stores/user'
+  import { openModal } from '$lib/stores/app'
+  import { notices, token } from '$lib/stores/user'
   import Auth from './Auth.svelte'
   import Modal from './Modal.svelte'
   import NavAuth from './NavAuth.svelte'

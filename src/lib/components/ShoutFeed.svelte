@@ -4,7 +4,7 @@
 
   import type { Shout } from '$lib/codegen'
 
-  import { loading, more, pager } from '../stores/app'
+  import { loading, more, pager } from '$lib/stores/app'
   import ShoutBesideFew from './ShoutBesideFew.svelte'
   import Shouts2 from './Shouts2.svelte'
   import Shouts3 from './Shouts3.svelte'

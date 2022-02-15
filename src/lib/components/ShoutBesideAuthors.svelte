@@ -1,8 +1,8 @@
 <script lang="ts">
   import type { Shout } from '$lib/codegen'
 
-  import Icon from '../components/DiscoursIcon.svelte'
-  import { authors } from '../stores/zine'
+  import Icon from './DiscoursIcon.svelte'
+  import { authors } from '$lib/stores/zine'
   import ShoutCard from './ShoutCard.svelte'
   import UserCard from './UserCard.svelte'
 

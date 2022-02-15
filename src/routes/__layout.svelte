@@ -7,18 +7,18 @@
 
 <script lang="ts">
   // import { getSubscriptions } from '$lib/cookie'
-  import DiscoursFooter from '../components/DiscoursFooter.svelte'
-  import NavHeader from '../components/NavHeader.svelte'
-  import '../app.scss'
+  import DiscoursFooter from '$lib/components/DiscoursFooter.svelte'
+  import NavHeader from '$lib/components/NavHeader.svelte'
+  import '@/app.scss'
   import { onMount } from 'svelte'
-  import { topicslist } from '../stores/zine'
+  import { topicslist } from '$lib/stores/zine'
   import { snake2camel } from '$lib/utils'
   import { 
     recents, topMonth, topOverall, 
     topViewed, commented, subscribedAuthors, 
     subscribedShouts, subscribedTopics, reviewedShouts 
-  } from '../stores/zine'
-  import { loading, more, pager } from '../stores/app'
+  } from '$lib/stores/zine'
+  import { loading, more, pager } from '$lib/stores/app'
   import { getSubscriptions } from '$lib/cookie'
   import { session } from '$app/stores'
 

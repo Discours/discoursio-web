@@ -1,5 +1,5 @@
 <script lang="ts">
-  // import { session } from '../stores/auth'
+  // import { session } from '$lib/stores/auth'
   import type { User } from '$lib/codegen'
 
   export let user: User | Partial<User>

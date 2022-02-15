@@ -29,7 +29,7 @@
 </script>
 
 <script lang="ts">
-  import CommunityFull from '../../components/CommunityFull.svelte'
+  import CommunityFull from '$lib/components/CommunityFull.svelte'
 
   export let community
   export let shouts

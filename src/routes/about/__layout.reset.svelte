@@ -3,8 +3,8 @@
 
   import { page } from '$app/stores'
 
-  import DiscoursFooter from '../../components/DiscoursFooter.svelte'
-  import NavHeader from '../../components/NavHeader.svelte'
+  import DiscoursFooter from '$lib/components/DiscoursFooter.svelte'
+  import NavHeader from '$lib/components/NavHeader.svelte'
 
   const meta = {
     title: 'Дискурс',

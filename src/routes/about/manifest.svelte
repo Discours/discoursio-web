@@ -5,10 +5,10 @@
 <script lang="ts">
   import SvelteSeo from 'svelte-seo'
 
-  import FeedbackForm from '../../components/FeedbackForm.svelte'
-  import Modal from '../../components/Modal.svelte'
-  import SubscribeForm from '../../components/SubscribeForm.svelte'
-  import { openModal } from '../../stores/app'
+  import FeedbackForm from '$lib/components/FeedbackForm.svelte'
+  import Modal from '$lib/components/Modal.svelte'
+  import SubscribeForm from '$lib/components/SubscribeForm.svelte'
+  import { openModal } from '$lib/stores/app'
 
   const meta = {
     title: 'Манифесит Дискурса',

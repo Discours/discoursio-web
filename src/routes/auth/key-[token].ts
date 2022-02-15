@@ -3,7 +3,7 @@ import { serialize } from 'cookie'
 import { client } from '$lib/client'
 import { GET_ME } from '$lib/queries'
 
-import { session, token } from '../../stores/user'
+import { session, token } from '$lib/stores/user'
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function get({ params }) {

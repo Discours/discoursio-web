@@ -88,7 +88,6 @@
 </section>
 
 <style lang="scss">
-  @import '../styles/imports';
 
   :global(.col-md-6),
   :global(.col-md-8) {

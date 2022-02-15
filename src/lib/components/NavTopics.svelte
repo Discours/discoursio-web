@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { filterTopic } from '../stores/zine'
-  import type { Topic } from '$lib/codegen'
-
+  import { filterTopic } from '$lib/stores/zine'
   export let topics
 </script>
 

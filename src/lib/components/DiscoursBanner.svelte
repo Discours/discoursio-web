@@ -1,5 +1,5 @@
 <script>
-  import { openModal } from '../stores/app'
+  import { openModal } from '$lib/stores/app'
 </script>
 
 <div class="discours-banner">

@@ -23,8 +23,8 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  import TopicCard from '../../components/TopicCard.svelte'
-  import { subscribedTopics, topicslist } from '../../stores/zine'
+  import TopicCard from '$lib/components/TopicCard.svelte'
+  import { subscribedTopics, topicslist } from '$lib/stores/zine'
 
   export let update
 

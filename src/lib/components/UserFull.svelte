@@ -1,5 +1,5 @@
 <script>
-  import ShoutFeed from '../components/ShoutFeed.svelte'
+  import ShoutFeed from './ShoutFeed.svelte'
   import UserCard from './UserCard.svelte'
 
   export let props

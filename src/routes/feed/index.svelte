@@ -63,11 +63,11 @@
 
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  import NavTopics from '../../components/NavTopics.svelte'
-  import ShoutBesideAuthors from '../../components/ShoutBesideAuthors.svelte'
-  import ShoutBesideTopics from '../../components/ShoutBesideTopics.svelte'
-  import ShoutFeed from '../../components/ShoutFeed.svelte'
-  import { more, pager } from '../../stores/app'
+  import NavTopics from '$lib/components/NavTopics.svelte'
+  import ShoutBesideAuthors from '$lib/components/ShoutBesideAuthors.svelte'
+  import ShoutBesideTopics from '$lib/components/ShoutBesideTopics.svelte'
+  import ShoutFeed from '$lib/components/ShoutFeed.svelte'
+  import { more, pager } from '$lib/stores/app'
   import {
     reviewedShouts, // Shout[]
     subscribedShouts, // Shout[]
@@ -81,7 +81,7 @@
     authorslist,
     authors,
     shouts
-  } from '../../stores/zine'
+  } from '$lib/stores/zine'
 
   export let update // { subscribed reviewed recents top-overall top-viewed }
 

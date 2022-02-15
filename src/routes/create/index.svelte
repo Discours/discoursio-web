@@ -3,9 +3,9 @@
 </script>
 
 <script lang="ts">
-  import DiscoursEditor from '../../components/DiscoursEditor/index.svelte'
-  import TopicInput from '../../components/TopicInput.svelte'
-  import { body } from '../../stores/editor'
+  import DiscoursEditor from '$lib/components/DiscoursEditor/index.svelte'
+  import TopicInput from '$lib/components/TopicInput.svelte'
+  import { body } from '$lib/stores/editor'
 </script>
 
 <svelte:head><title>Дискурс : Редакция</title></svelte:head>

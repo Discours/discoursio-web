@@ -3,7 +3,7 @@
 </script>
 
 <script>
-  import { token } from '../../stores/user'
+  import { token } from '$lib/stores/user'
 </script>
 
 <article class="container">

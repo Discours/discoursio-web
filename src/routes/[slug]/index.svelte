@@ -23,8 +23,8 @@
 </script>
 
 <script lang="ts">
-  import ShoutFull from '../../components/ShoutFull.svelte'
-  import UserFull from '../../components/UserFull.svelte'
+  import ShoutFull from '$lib/components/ShoutFull.svelte'
+  import UserFull from '$lib/components/UserFull.svelte'
   import SvelteSeo from 'svelte-seo'
 
   export let shout

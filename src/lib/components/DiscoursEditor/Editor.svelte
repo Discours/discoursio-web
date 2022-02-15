@@ -17,7 +17,7 @@
   import { WebrtcProvider } from 'y-webrtc'
   import type { XmlFragment } from 'yjs'
 
-  import { p2p as conn, room, webrtc, ydoc } from '../../stores/editor'
+  import { p2p as conn, room, webrtc, ydoc } from '$lib/stores/editor'
   import P2PConnect from './P2P.svelte'
   import { setup } from './setup'
 

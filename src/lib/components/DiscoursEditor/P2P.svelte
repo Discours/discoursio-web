@@ -11,7 +11,7 @@
     room,
     webrtc,
     ydoc
-  } from '../../stores/editor'
+  } from '$lib/stores/editor'
 
   export let password: string
 

@@ -11,10 +11,10 @@ const require = createRequire(import.meta.url)
 const { scss, globalStyle, typescript } = require('svelte-preprocess')
 
 let noExternal = []
-
+const p = (f) => (new URL(f, import.meta.url)).toString().replace('file://', '')
+/*
 if (process.argv.findIndex((a) => a.includes('vitebook')) == -1) {
   const routesDir = './src/routes'
-  const p = (f) => new URL(f, import.meta.url)
   const dirs = (f) =>
     statSync(p(routesDir + '/' + f)).isDirectory() && f !== '[slug]'
   const dirsList = readdirSync(p(routesDir)).filter(dirs)
@@ -24,7 +24,7 @@ if (process.argv.findIndex((a) => a.includes('vitebook')) == -1) {
   const pkg = JSON.parse(readFileSync(p('package.json'), 'utf8'))
   noExternal = Object.keys(pkg.dependencies || {})
 }
-
+*/
 const scssOptions = {
   // https://github.com/sveltejs/svelte-preprocess/blob/main/docs/getting-started.md#31-prepending-content
   prependData: `@import 'src/styles/_imports.scss';`,
@@ -54,6 +54,12 @@ const config = {
       entries: ['*']
     },
     vite: {
+      resolve: { 
+        alias: {
+          '@' : p('./src'),
+          '$lib': p('./src/lib')
+        }
+      },
       build: {
         chunkSizeWarningLimit: 777,
         rollupOptions: {

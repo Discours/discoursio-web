@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { User } from '$lib/codegen'
 
-  import UserCard from '../../components/UserCard.svelte'
+  import UserCard from '$lib/components/UserCard.svelte'
   export let authors: User[]
 
   // TODO: authors page

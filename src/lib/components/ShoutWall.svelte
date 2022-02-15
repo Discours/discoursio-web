@@ -13,7 +13,7 @@
 
   import type { Shout } from '$lib/codegen'
 
-  import { more } from '../stores/app'
+  import { more } from '$lib/stores/app'
   import Masonry from './Masonry.svelte'
   import ShoutCard from './ShoutCard.svelte'
 
