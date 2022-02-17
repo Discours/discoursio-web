@@ -28,12 +28,26 @@
     component: SvelteComponent
     shouts: Shout[]
   }> = []
+
+  let parts = []
+
   const lim = (num) => (num < shouts?.length ? num : shouts?.length)
+
+  const chunkArray = (myArray, chunkSize) => {
+    const results = []
+
+    while (myArray.length) {
+      results.push(myArray.splice(0, chunkSize))
+    }
+
+    return results
+  }
 
   const addRow = (limit, addition) => {
     const component = ccc[limit]
     rows.push({ limit, component, shouts: addition })
     showed = [...showed, ...addition]
+    parts = chunkArray(showed, 5)
   }
 
   const next = () => {
@@ -43,7 +57,10 @@
     addRow(limit, addition)
   }
 
-  onMount(() => (showed = shouts?.slice(0, size)))
+  onMount(() => {
+    showed = shouts?.slice(0, size)
+    parts = chunkArray(showed, 5)
+  })
 
   let oh: number // feed offset height
   let ih: number // window inner height
@@ -64,6 +81,12 @@
   {#each rows as r}
     <svelte:component this={r.component} limit={r.limit} shouts={r.shouts} />
   {/each}
+
+  {#each parts as part}
+    <Shouts2 shouts={part.slice(0, 2)} y={0} />
+    <Shouts3 shouts={part.slice(2, 5)} />
+  {/each}
+
   {#if showed === shouts}
     <div class="morewrap">
       <div class="show-more">

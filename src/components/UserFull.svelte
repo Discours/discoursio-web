@@ -13,6 +13,16 @@
       <div class="user-details">
         <UserCard user={props.user} hasFullInfo={true} />
       </div>
+
+      <div class="mode-switcher">
+        <div class="mode-switcher__item mode-switcher__item--selected">
+          Публикации {props.shouts.length}
+        </div>
+        <div class="mode-switcher__item"><a href="#">Обсуждения</a></div>
+        <div class="mode-switcher__item"><a href="#">Комментарии</a></div>
+        <div class="mode-switcher__item"><a href="#">Черновики</a></div>
+        <div class="mode-switcher__item"><a href="#">О&nbsp;себе</a></div>
+      </div>
     </div>
   </div>
 
@@ -21,7 +31,7 @@
 
 <style lang="scss">
   .user-details {
-    margin-bottom: 6.4rem;
+    margin-bottom: 4.4rem;
 
     :global(.author__name) {
       @include font-size(3.4rem);
@@ -81,5 +91,28 @@
       margin-right: 1.6rem;
       vertical-align: middle;
     }
+  }
+
+  .mode-switcher {
+    display: flex;
+    @include font-size(1.5rem);
+    margin-bottom: 3em;
+
+    a {
+      border: none;
+      color: #696969;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+
+  .mode-switcher__item {
+    margin-right: 1.5em;
+  }
+
+  .mode-switcher__item--selected {
+    border-bottom: 2px solid;
   }
 </style>
