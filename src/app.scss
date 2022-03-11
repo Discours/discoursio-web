@@ -1,12 +1,8 @@
-@import 'styles/fonts';
-@import 'styles/imports';
 @import '../node_modules/bootstrap/scss/mixins/lists';
 @import '../node_modules/bootstrap/scss/mixins/container';
 @import '../node_modules/bootstrap/scss/mixins/utilities';
-
 @import '../node_modules/bootstrap/scss/containers';
 @import '../node_modules/bootstrap/scss/grid';
-
 @import '../node_modules/bootstrap/scss/utilities';
 
 :root {
@@ -16,8 +12,8 @@
   --secondary-color: #85878a;
   --danger-color: #fc6847;
   --lightgray-color: rgba(84, 16, 17, 0.06);
-  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
+    'Helvetica Neue', sans-serif;
 }
 
 * {
@@ -209,7 +205,7 @@ input[type='checkbox'] {
   display: none !important;
 }
 
-.shout__author {
+.article__author {
   font-size: 1.5rem;
   font-weight: 400;
 
@@ -229,7 +225,7 @@ input[type='checkbox'] {
   }
 }
 
-.shout__topic {
+.article__topic {
   font-size: 1.2rem;
   letter-spacing: 0.08em;
   margin-bottom: 0.8rem;
@@ -289,7 +285,7 @@ figcaption {
   }
 }
 
-.shout-card__title {
+.article-card__title {
   a {
     background: transparent;
     color: #000;
@@ -321,13 +317,13 @@ figcaption {
   padding: $grid-gutter-width 0;
 
   .all-materials,
-  .shout-card__title {
+  .article-card__title {
     a {
       color: #fff;
     }
   }
 
-  .shout__topic {
+  .article__topic {
     a {
       color: rgba(255, 255, 255, 0.5);
     }

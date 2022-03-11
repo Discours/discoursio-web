@@ -7,7 +7,7 @@
 
   import FeedbackForm from '$lib/components/FeedbackForm.svelte'
   import Modal from '$lib/components/Modal.svelte'
-  import SubscribeForm from '$lib/components/SubscribeForm.svelte'
+  import SubscribeForm from '$lib/components/Subscribe.tsx'
   import { openModal } from '$lib/stores/app'
 
   const meta = {

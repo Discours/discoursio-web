@@ -1,0 +1,31 @@
+.subnavigation {
+  @include font-size(1.5rem);
+  margin-bottom: 2.4rem;
+
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .item {
+    margin-right: 2.4rem;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .selected {
+    color: black;
+  }
+
+  a {
+    color: #141414;
+  }
+  a:hover {
+    font-weight: 500;
+  }
+}

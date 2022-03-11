@@ -1,21 +1,23 @@
-node_modules/
+dist
+worker
+.solid
+.output
 .vercel
-.env
-build
-.svelte-kit
-pnpm*
-static/*.json
-.verce*
-*.sqlite*
-Pipfile*
-server/migration/content
-server/migration/data
-static/upload/*
-.obsidian
-.vscode
-*.log
-.idea
-.DS_STORE
-.cache
-.temp
-dist/
+.netlify
+
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# Temp
+gitignore
+
+# System Files
+.DS_Store
+Thumbs.db

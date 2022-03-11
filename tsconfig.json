@@ -1,26 +1,17 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "es2022",
-    "lib": ["es2020", "DOM"],
-    "target": "es2020",
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "allowJs": true,
-    "checkJs": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsxImportSource": "solid-js",
+    "jsx": "preserve",
+    "types": ["vite/client"],
+    "lib": ["es5", "es6", "dom", "dom.iterable"],
+    "baseUrl": "./",
     "paths": {
-      "@": ["src"],
-      "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"],
-      "$app": [".svelte-kit/runtime/app"],
-      "$app/*": [".svelte-kit/runtime/app/"]
+      "~/*": ["./src/*"]
     }
-  },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte"]
+  }
 }

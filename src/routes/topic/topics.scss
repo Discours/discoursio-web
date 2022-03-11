@@ -1,0 +1,41 @@
+
+  .view-switcher {
+    font-weight: bold;
+    list-style: none;
+    margin: 0 0 1.5em;
+    padding: 0;
+
+    li {
+      display: inline-block;
+      margin-right: 1em;
+    }
+
+    a {
+      border-bottom: 2px solid #fff;
+      color: #696969;
+    }
+
+    .selected {
+      a {
+        border-color: #000;
+        color: #000;
+        cursor: default;
+      }
+    }
+  }
+
+  .group {
+    font-weight: bold;
+    margin-bottom: 9.6rem;
+
+    h2 {
+      margin-bottom: 3.2rem;
+      text-transform: capitalize;
+    }
+
+    .container {
+      margin-left: $grid-gutter-width;
+      padding-right: $container-padding-x;
+      width: auto;
+    }
+  }

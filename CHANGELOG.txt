@@ -1,3 +1,10 @@
+[0.2.0]
+[-] sveltekit
+[-] graphql-request
+[+] migrated to solid
+[+] urql
+[+] graphql caching results
+
 [0.1.0]
 [+] husky, lint-staged
 [+] components refactoring
