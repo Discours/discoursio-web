@@ -23,3 +23,4 @@ gitignore
 Thumbs.db
 
 .env
+src/views
