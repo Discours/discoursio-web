@@ -27,5 +27,9 @@ export default defineConfig({
         additionalData: `@import "~/styles/fonts";\n@import "~/styles/imports";\n`
       }
     }
-  }
+  },
+  test: {
+    exclude: ["./e2e/**/*.spec.js", "node_modules"],
+    environment: "jsdom"
+  },
 })
