@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect */
 import { expect, test, assert, vi, it, beforeAll, afterAll, describe } from "vitest";
 // Edit an assertion and save to see HMR in action
 import "solid-start/runtime/node-globals";
@@ -106,14 +107,15 @@ it("should throw object if handler throws", async () => {
 
     throw new Error("should have thrown");
   } catch (e) {
+    // eslint-disable-next-line jest/no-conditional-expect
     expect(e.data).toBe("Hello da vinci");
   }
 });
 
 it("should allow curried servers with args explicity passed in", async () => {
   const curriedServer = (message?: string) => (name?: string) =>
-    server(async (name?: string, message?: string) => ({
-      data: `${message ?? "Hello"} ${name ?? "World"}`
+    server(async (r?: string, m?: string) => ({
+      data: `${m ?? "Hello"} ${r ?? "World"}`
     }))(name, message);
 
   if (process.env.TEST_MODE === "client") {
@@ -130,8 +132,8 @@ const MESSAGE = "HELLO";
 
 it("should allow access to module scope inside the handler", async () => {
   const accessModuleScope = () => (name?: string) =>
-    server(async (name?: string) => ({
-      data: `${MESSAGE ?? "Hello"} ${name ?? "World"}`
+    server(async (r?: string) => ({
+      data: `${MESSAGE ?? "Hello"} ${r ?? "World"}`
     }))(name);
 
   if (process.env.TEST_MODE === "client") {
@@ -144,8 +146,8 @@ it("should allow access to module scope inside the handler", async () => {
 
 it("should throw error when invalid closure", async () => {
   const invalidClosureAccess = (message?: string) => (name?: string) =>
-    server(async (name?: string) => ({
-      data: `${message ?? "Hello"} ${name ?? "World"}`
+    server(async (r?: string) => ({
+      data: `${message ?? "Hello"} ${r ?? "World"}`
     }))(name);
 
   if (process.env.TEST_MODE === "client") {
