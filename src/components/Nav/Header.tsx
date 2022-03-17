@@ -1,7 +1,7 @@
 import { For, Show, createSignal, onMount } from 'solid-js'
 import { Link } from 'solid-app-router'
 import './Header.scss'
-import { useStore } from '~/store'
+import { useStore } from '../../store'
 import Private from './Private'
 import Notifications from './Notifications'
 import Icon from './Icon'
@@ -18,7 +18,7 @@ export default () => {
   const [token, setToken] = createSignal('')
   const [showNotices, setShowNotices] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const state = (useStore()||[null])[0]
+  const state = (useStore() || [null])[0]
 
   onMount(() => {
     setFixed(document.body.classList.contains('fixed'))

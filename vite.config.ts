@@ -1,36 +1,23 @@
 import { defineConfig, UserConfigExport } from 'vite'
-import solid from 'solid-start'
-import vercel from 'solid-start-vercel'
-import node from 'solid-start-node'
+import solidPlugin from 'vite-plugin-solid'
 
-const adapter = process.env.VERCEL ? vercel() : node()
-const cnf: UserConfigExport = {
-  plugins: [
-    /*{
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
-      ...(await import("@mdx-js/rollup")).default({
-        jsx: true,
-        jsxImportSource: "solid-js",
-        providerImportSource: "solid-mdx"
-      }),
-      enforce: "pre"
-    },*/
-    solid({
-      adapter,
-      ssr: false,
-      extensions: [".mdx", ".md"]
-    })],
+export default defineConfig({
+  plugins: [solidPlugin()],
+  build: {
+    emptyOutDir: false,
+    target: 'esnext',
+    polyfillDynamicImport: false,
+    outDir: 'public'
+  },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "~/styles/fonts";\n@import "~/styles/imports";\n`
+        additionalData: `@import "src/styles/fonts";\n@import "src/styles/imports";\n`
       }
     }
   },
   test: {
-    exclude: ["./e2e/**/*.spec.js", "node_modules"],
-    environment: "jsdom"
+    exclude: ['./e2e/**/*.spec.js', 'node_modules'],
+    environment: 'jsdom'
   }
-}
-
-export default defineConfig(cnf)
+} as UserConfigExport)

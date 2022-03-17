@@ -1,4 +1,4 @@
-import { createSignal, onCleanup, onMount } from 'solid-js';
+import { createSignal, onCleanup, onMount } from 'solid-js'
 import { For } from 'solid-js/web'
 import ArticleCard from './Card'
 import KeenSlider from 'keen-slider'
@@ -11,12 +11,12 @@ export default (props) => {
 
   onMount(() => {
     slider = new KeenSlider(el, { slides: el.childNodes })
-    el.classList.add("keen-slider")
+    el.classList.add('keen-slider')
   })
   onCleanup(() => slider && slider.destroy())
-  const slideChanged = instance => {
-      Boolean(slideChanged) && slideChanged(instance)
-      setCurrent(instance.details().relativeSlide)
+  const slideChanged = (instance) => {
+    Boolean(slideChanged) && slideChanged(instance)
+    setCurrent(instance.details().relativeSlide)
   }
 
   return (

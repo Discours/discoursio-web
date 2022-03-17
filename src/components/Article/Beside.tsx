@@ -13,7 +13,8 @@ const cards = {
   article: ArticleCard
 }
 
-export default (props) => { // wrap, top, title, beside, values
+export default (props) => {
+  // wrap, top, title, beside, values
   return (
     <div class='floor floor--9'>
       <div class='wide-container row'>

@@ -30,14 +30,17 @@ export default (props) => {
         <Show when={props.topic.topicStat}>
           <div class='topic-details'>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat.shouts} публикаци{plural(props.topic.topicStat.shouts, 'я', 'и', 'й')}
+              {props.topic.topicStat.shouts} публикаци
+              {plural(props.topic.topicStat.shouts, 'я', 'и', 'й')}
             </span>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat.authors} автор{plural(props.topic.topicStat.authors, '', 'а', 'ов')}
+              {props.topic.topicStat.authors} автор
+              {plural(props.topic.topicStat.authors, '', 'а', 'ов')}
             </span>
             <Show when={!props.compact}>
               <span class='topic-details__item'>
-                {props.topic.topicStat.views} просмотр{plural(props.topic.topicStat.views, '', 'а', 'ов')}
+                {props.topic.topicStat.views} просмотр
+                {plural(props.topic.topicStat.views, '', 'а', 'ов')}
               </span>
               <span class='topic-details__item'>
                 {props.topic.topicStat.subscriptions} подписчик

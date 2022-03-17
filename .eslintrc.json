@@ -1,19 +1,15 @@
 {
   "settings": {
-  "import/resolver": {
-    "typescript": {}
-  }
+    "import/resolver": {
+      "typescript": {}
+    }
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
     "tsconfigRootDir": "./"
   },
-  "plugins": [
-    "import",
-    "solid",
-    "@typescript-eslint"
-  ],
+  "plugins": ["import", "solid", "@typescript-eslint"],
   "extends": [
     "prettier",
     "stylelint",

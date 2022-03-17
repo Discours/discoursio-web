@@ -73,7 +73,9 @@ export default (props) => {
     if (!emailTyped) authFailure({ error: 'Пожалуйста, проверьте введенный адрес почты' })
 
     if (props.mode === 'sign-up') {
-      setState({ notifications: [...state.notifications, 'Ищем учётную запись с таким почтовым адресом'] })
+      setState({
+        notifications: [...state.notifications, 'Ищем учётную запись с таким почтовым адресом']
+      })
       checkEmail(emailElement.value).then((r) => {
         if (r.ok) _auth(endpoint)
         else
