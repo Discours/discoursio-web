@@ -1,13 +1,12 @@
-import { defineConfig } from 'vite'
+import { defineConfig, UserConfigExport } from 'vite'
 import solid from 'solid-start'
 import vercel from 'solid-start-vercel'
 import node from 'solid-start-node'
 
 const adapter = process.env.VERCEL ? vercel() : node()
-
-export default defineConfig({
+const cnf: UserConfigExport = {
   plugins: [
-    {
+    /*{
       // eslint-disable-next-line node/no-unsupported-features/es-syntax
       ...(await import("@mdx-js/rollup")).default({
         jsx: true,
@@ -15,7 +14,7 @@ export default defineConfig({
         providerImportSource: "solid-mdx"
       }),
       enforce: "pre"
-    },
+    },*/
     solid({
       adapter,
       ssr: false,
@@ -31,5 +30,7 @@ export default defineConfig({
   test: {
     exclude: ["./e2e/**/*.spec.js", "node_modules"],
     environment: "jsdom"
-  },
-})
+  }
+}
+
+export default defineConfig(cnf)
