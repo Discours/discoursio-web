@@ -1,19 +1,24 @@
 import { createSignal, createResource, batch } from 'solid-js'
 
 export default function createAuth(agent, actions, setState) {
-  const [loggedIn, setLoggedIn] = createSignal(false),
-    [currentUser, { mutate }] = createResource(loggedIn, agent.Auth.current)
+  const [loggedIn, setLoggedIn] = createSignal(false);
+    const [currentUser, { mutate }] = createResource(loggedIn, agent.Auth.current)
+
   Object.assign(actions, {
     pullUser: () => setLoggedIn(true),
     async login(email, password) {
       const { user, errors } = await agent.Auth.login(email, password)
+
       if (errors) throw errors
+
       actions.setToken(user.token)
       setLoggedIn(true)
     },
     async register(username, email, password) {
       const { user, errors } = await agent.Auth.register(username, email, password)
+
       if (errors) throw errors
+
       actions.setToken(user.token)
       setLoggedIn(true)
     },
@@ -25,9 +30,12 @@ export default function createAuth(agent, actions, setState) {
     },
     async updateUser(newUser) {
       const { user, errors } = await agent.Auth.update(newUser)
+
       if (errors) throw errors
+
       mutate(user)
     }
   })
+
   return currentUser
 }

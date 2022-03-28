@@ -1,7 +1,9 @@
+import { type Context } from 'solid-js'
 import { useRouter } from '../store'
 
 export default (props) => {
   const { getParams } = useRouter()
+  
   return (
     <a
       class={props.class}

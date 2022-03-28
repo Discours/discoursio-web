@@ -3,13 +3,13 @@ import { useStore } from '../store'
 import NavLink from './NavLink'
 
 export default () => {
-  const [store] = useStore()
+  const store = useStore()
 
   return (
     <nav class='navbar navbar-light'>
       <div class='container'>
         <NavLink class='navbar-brand' route=''>
-          {store.appName}
+          {store[0].appName}
         </NavLink>
         <ul class='nav navbar-nav pull-xs-right'>
           <li class='nav-item'>
@@ -18,7 +18,7 @@ export default () => {
             </NavLink>
           </li>
           <Show
-            when={store.currentUser}
+            when={store[0].currentUser}
             fallback={
               <>
                 <li class='nav-item'>
@@ -33,7 +33,6 @@ export default () => {
                 </li>
               </>
             }
-            children={0}
           >
             <li class='nav-item'>
               <NavLink class='nav-link' route='editor'>
@@ -46,8 +45,8 @@ export default () => {
               </NavLink>
             </li>
             <li class='nav-item'>
-              <NavLink class='nav-link' route='profile' href={`@${store.currentUser.username}`}>
-                {store.currentUser.username}
+              <NavLink class='nav-link' route='profile' href={`@${store[0].currentUser.username}`}>
+                {store[0].currentUser.username}
               </NavLink>
             </li>
           </Show>

@@ -3,11 +3,13 @@ import { createSignal, createResource } from 'solid-js'
 export default function createProfile(agent, actions, state, setState) {
   const [username, setUsername] = createSignal()
   const [profile] = createResource(username, agent.Author.get)
+
   Object.assign(actions, {
     loadProfile: setUsername,
     async follow() {
       if (state.profile && !state.profile.following) {
         setState('profile', 'following', true)
+
         try {
           await agent.Profile.follow(state.profile.username)
         } catch (err) {
@@ -18,6 +20,7 @@ export default function createProfile(agent, actions, state, setState) {
     async unfollow() {
       if (state.profile && state.profile.following) {
         setState('profile', 'following', false)
+
         try {
           await agent.Profile.unfollow(state.profile.username)
         } catch (err) {
@@ -26,5 +29,6 @@ export default function createProfile(agent, actions, state, setState) {
       }
     }
   })
+
   return profile
 }

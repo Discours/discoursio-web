@@ -1,3 +1,5 @@
+/* eslint-disable solid/no-innerhtml */
+import { Show } from "solid-js";
 import { marked } from 'marked'
 import NavLink from '../../components/NavLink'
 import { useStore } from '../../store'
@@ -26,7 +28,7 @@ const ArticleMeta = (props) => (
         >
           <i class='ion-edit' /> Edit Article
         </NavLink>
-        <button class='btn btn-outline-danger btn-sm' onClick={props.onDelete}>
+        <button class='btn btn-outline-danger btn-sm' onClick={() => props.onDelete()}>
           <i class='ion-trash-a' /> Delete Article
         </button>
       </span>
@@ -34,11 +36,13 @@ const ArticleMeta = (props) => (
   </div>
 )
 
-export default ({ slug }) => {
-  const [store, { deleteArticle }] = useStore(),
-    article = () => store.articles[slug],
-    canModify = () => store.currentUser && store.currentUser.username === article()?.author.username,
-    handleDeleteArticle = () => deleteArticle(slug).then(() => (location.hash = '/'))
+export default (props) => {
+  const state = useStore();
+  const store = state[0];
+  const {deleteArticle} = state[1]
+    const article = () => store.articles[props.slug];
+    const canModify = () => store.currentUser && store.currentUser.username === article()?.author.username;
+    const handleDeleteArticle = () => deleteArticle(props.slug).then(() => (location.hash = '/'))
 
   return (
     <div class='article-page'>

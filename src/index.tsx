@@ -1,10 +1,14 @@
 import { render } from 'solid-js/web'
 import App from './App'
-import { Provider } from './store'
+import { Provider } from 'solid-urql'
+import { createClient } from 'solid-urql'
+import { clientOptions } from './store/graphql/client'
+
+const client = createClient(clientOptions)
 
 render(
   () => (
-    <Provider>
+    <Provider value={client}>
       <App />
     </Provider>
   ),

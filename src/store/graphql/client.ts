@@ -1,23 +1,30 @@
-import { createClient, dedupExchange, fetchExchange, ssrExchange } from '@urql/core'
+import { ClientOptions, createClient, dedupExchange, fetchExchange, RequestPolicy, ssrExchange } from '@urql/core'
 import { devtoolsExchange } from '@urql/devtools'
+import { useClient } from 'solid-urql'
 import { cache } from './cache'
 
-export const API_ENDPOINT = 'https://newapi.discours.io'
-
-const isServerSide = typeof window === 'undefined'
-
+const isClient = typeof window !== 'undefined'
 // The `ssrExchange` must be initialized with `isClient` and `initialState`
-export const ssrCache = ssrExchange({
-  isClient: !isServerSide,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  initialState: !isServerSide ? (window as any).__URQL_DATA__ : undefined
+const ssrCache = ssrExchange({
+  isClient,
+  initialState: isClient ? (window as any).__URQL_DATA__ : undefined
 })
 
-export const client = createClient({
-  url: API_ENDPOINT,
+export const clientOptions: ClientOptions = {
+  url: 'https://newapi.discours.io',
   requestPolicy: 'cache-and-network',
   fetchOptions: {
     credentials: 'include'
   },
   exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
-})
+}
+
+export const authClient = (token) => {
+  let headers = {
+    'Content-Type': 'application/json',
+    'Auth': token // TODO: test
+  }
+  const client = useClient()
+
+  client.fetchOptions = { headers }
+}

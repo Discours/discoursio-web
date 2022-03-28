@@ -10,12 +10,14 @@ import createRouteHandler from './createRouteHandler'
 
 const StoreContext = createContext()
 const StoreContextProvider = StoreContext.Provider
-const RouterContext = createContext()
-const RouterContextProvider = RouterContext.Provider
+
+const RouterSolidContext = createContext()
+const RouterContextProvider = RouterSolidContext.Provider
+
 export function Provider(props) {
-  let articles, comments, tags, profile, currentUser
-  const router = createRouteHandler(''),
-    [state, setState] = createStore({
+  let articles; let comments; let tags; let profile; let currentUser
+  const router = createRouteHandler('');
+    const [state, setState] = createStore({
       get articles() {
         return articles()
       },
@@ -35,10 +37,10 @@ export function Provider(props) {
       totalPagesCount: 0,
       token: localStorage.getItem('jwt'),
       appName: 'discours.io'
-    }),
-    actions = {},
-    store = [state, actions],
-    agent = createAgent(store)
+    });
+    const actions = {};
+    const store = [state, actions];
+    const agent = createAgent(store)
 
   articles = createArticles(agent, actions, state, setState)
   comments = createComments(agent, actions, state, setState)
@@ -59,5 +61,5 @@ export function useStore() {
 }
 
 export function useRouter() {
-  return useContext(RouterContext)
+  return useContext(RouterSolidContext)
 }

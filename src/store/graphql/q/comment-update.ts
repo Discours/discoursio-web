@@ -5,12 +5,13 @@ import { Shout } from '../types.gen'
 
 export default gql`
   mutation CommentMutation($comment: Comment!) {
-    createComment(comment: $comment) {
+    updateComment(comment: $comment) {
       error
       comment {
         author
         body
         createdAt
+        updatedAt
         shout
         replyTo
       }

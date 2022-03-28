@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { lazy, createSignal, createComputed, Suspense, Match, Show, Switch } from 'solid-js'
 import { useStore, useRouter } from './store'
 import NavBar from './components/NavBar'
@@ -7,11 +8,13 @@ import Profile from './pages/Profile'
 import Editor from './pages/Editor'
 import './app.scss'
 
-const Settings = lazy(() => import('./pages/Settings')),
-  Auth = lazy(() => import('./pages/Auth'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Auth = lazy(() => import('./pages/Auth'))
 
 export default () => {
-  const [store, user] = useStore()
+  const state = useStore()
+  const store = state[0]
+  const user = state[1]
   const { pullUser } = user
   const [appLoaded, setAppLoaded] = createSignal(false)
   const { match, getParams } = useRouter()
@@ -25,28 +28,28 @@ export default () => {
   return (
     <>
       <NavBar />
-      <Show when={appLoaded()} children={0}>
-        <Suspense fallback={<div class='container'>Loading...</div>} children={0}>
-          <Switch children={0}>
-            <Match when={match('editor', /^editor\/?(.*)/)} children={0}>
+      <Show when={appLoaded()}>
+        <Suspense fallback={<div class='container'>Loading...</div>}>
+          <Switch>
+            <Match when={match('editor', /^editor\/?(.*)/)}>
               <Editor {...getParams()} />
             </Match>
-            <Match when={match('settings', /^settings/)} children={0}>
+            <Match when={match('settings', /^settings/)}>
               <Settings />
             </Match>
-            <Match when={match('login', /^login/)} children={0}>
+            <Match when={match('login', /^login/)}>
               <Auth />
             </Match>
-            <Match when={match('register', /^register/)} children={0}>
+            <Match when={match('register', /^register/)}>
               <Auth />
             </Match>
-            <Match when={match('article', /^article\/(.*)/)} children={0}>
+            <Match when={match('article', /^article\/(.*)/)}>
               <Article {...getParams()} />
             </Match>
-            <Match when={match('profile', /^@([^/]*)\/?(favorites)?/)} children={0}>
+            <Match when={match('profile', /^@([^/]*)\/?(favorites)?/)}>
               <Profile {...getParams()} />
             </Match>
-            <Match when={match('', /^#?$/)} children={0}>
+            <Match when={match('', /^#?$/)}>
               <Home />
             </Match>
           </Switch>
