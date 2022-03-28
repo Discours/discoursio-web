@@ -25,9 +25,9 @@ import authorSubscriptions from './q/author-subscriptions'
 import topicsAll from './q/topics-all'
 import topicArticles from './q/topic-articles'
 // comment
-// import commentCreate from './q/comment-create'
-// import commentUpdate from './q/comment-update'
-// import commentDestroy from './q/comment-destroy'
+import commentCreate from './q/comment-create'
+import commentUpdate from './q/comment-update'
+import commentDestroy from './q/comment-destroy'
 
 export default {
   topRecent,
@@ -50,5 +50,8 @@ export default {
   articleCreate,
   articleUpdate,
   topicsAll,
-  topicArticles
+  topicArticles,
+  commentCreate,
+  commentDestroy,
+  commentUpdate
 }

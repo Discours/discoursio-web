@@ -1,5 +1,5 @@
 import { Show, createSignal, onMount } from 'solid-js'
-import { IndexeddbPersistence } from 'y-indexeddb'
+// import { IndexeddbPersistence } from 'y-indexeddb'
 import { Awareness } from 'y-protocols/awareness'
 import { WebrtcProvider } from 'y-webrtc'
 import { XmlFragment, logUpdate } from 'yjs'
@@ -31,7 +31,7 @@ export default (props) => {
     console.log('p2p: webrtc provider initialized')
 
     // init db
-    const db = new IndexeddbPersistence(swarm(), props.ydoc)
+    // const db = new IndexeddbPersistence(swarm(), props.ydoc)
 
     console.log('p2p: indexed db persistence connected')
     // connect p2p
@@ -39,6 +39,7 @@ export default (props) => {
     props.onConnected(p2p)
     console.log('p2p: connected')
     // sync db
+    /*
     db.on('synced', () => {
       const up = db.doc.getXmlFragment(`${swarm()}-body`)
 
@@ -49,6 +50,7 @@ export default (props) => {
 
       setLoading(false)
     })
+    */
     p2p.doc.on('update', logUpdate)
 
     const remote = props.ydoc.getXmlFragment(`${swarm()}-body`)
@@ -56,7 +58,7 @@ export default (props) => {
 
     if (remote === local) {
       console.log('p2p: no conflict to solve')
-      body = remote
+      // body = remote
     } else {
       // TODO: implement conflict solving logix
       // если ты редактор - правишь как обычно

@@ -18,7 +18,7 @@ const cnf: UserConfigExport = {
     solid({
       adapter,
       ssr: false,
-      extensions: [".mdx", ".md"]
+      // extensions: [".mdx", ".md"]
     })],
   css: {
     preprocessorOptions: {
@@ -26,10 +26,6 @@ const cnf: UserConfigExport = {
         additionalData: `@import "~/styles/fonts";\n@import "~/styles/imports";\n`
       }
     }
-  },
-  test: {
-    exclude: ["./e2e/**/*.spec.js", "node_modules"],
-    environment: "jsdom"
   }
 }
 

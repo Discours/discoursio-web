@@ -6,15 +6,15 @@ import type { Shout } from './types.gen'
 export const cache = cacheExchange({
   updates: {
     Mutation: {
-      createNote: (_result, args, cache) => {
-        cache.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+      createNote: (_result, args, c) => {
+        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
           data.getUserNotes.unshift(_result.createNote)
 
           return data
         })
       },
-      updateNote: (_result, args, cache) => {
-        cache.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+      updateNote: (_result, args, c) => {
+        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
           const index = data.getUserNotes.findIndex(
             (note: Shout) => note.slug === (_result.updateNote as Shout)?.slug
           )
@@ -24,15 +24,15 @@ export const cache = cacheExchange({
           return data
         })
       },
-      deleteNote: (_result, args, cache) => {
-        cache.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+      deleteNote: (_result, args, c) => {
+        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
           data.getUserNotes = data.getUserNotes.filter((note: Shout) => note.slug !== _result.deleteNote)
 
           return data
         })
       },
-      login: (_result, args, cache) => {
-        cache.updateQuery({ query: MY_PROFILE }, (data) => {
+      login: (_result, args, c) => {
+        c.updateQuery({ query: MY_PROFILE }, (data) => {
           if (!data) {
             return {
               whoami: _result.login
@@ -42,8 +42,8 @@ export const cache = cacheExchange({
           return data
         })
       },
-      logout: (_result, args, cache) => {
-        cache.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+      logout: (_result, args, c) => {
+        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
           data.getUserNotes = []
 
           return data
