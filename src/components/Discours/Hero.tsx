@@ -1,8 +1,8 @@
-import { createSignal } from 'solid-js'
+import { useCommon } from '../../store/common'
 import './DiscoursAbout.scss'
 
 export default () => {
-  const [modal, setModal] = createSignal()
+  const [, { showModal }] = useCommon()
 
   return (
     <div class='about-discours'>
@@ -20,7 +20,7 @@ export default () => {
             </em>
           </p>
           <div class='about-discours__actions'>
-            <a class='button' href='#auth' onClick={() => setModal('auth')}>
+            <a class='button' href='#auth' onClick={() => showModal('auth')}>
               присоединитьсяк&nbsp;сообществу
             </a>
             <a class='button' href='/create'>

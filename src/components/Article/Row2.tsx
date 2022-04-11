@@ -1,5 +1,6 @@
 import { createComputed, createSignal } from 'solid-js'
 import { For } from 'solid-js/web'
+import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
 const x = [
   ['6', '6'],
@@ -7,7 +8,7 @@ const x = [
   ['8', '4']
 ]
 
-export default (props) => {
+export default (props: { articles: Partial<Shout>[] }) => {
   const [y, setY] = createSignal(0)
 
   createComputed(() => setY(Math.floor(Math.random() * x.length)))

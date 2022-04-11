@@ -1,8 +1,10 @@
 import MD from 'markdown-it'
-import mdfig from 'markdown-it-implicit-figures'
-import mdmark from 'markdown-it-mark'
+// import mdfig from 'markdown-it-implicit-figures'
+// import mdmark from 'markdown-it-mark'
 import mdcustom from 'markdown-it-container'
-import mdlinks from 'markdown-it-replace-link'
+// import mdlinks from 'markdown-it-replace-link'
+
+// FIXME: imports in tsx
 
 const mit = MD({
   html: true,
@@ -10,12 +12,13 @@ const mit = MD({
   typographer: true
 })
 
-mit.use(mdmark)
+// mit.use(mdmark)
 mit.use(mdcustom)
-mit.use(mdfig, {
-  dataType: false, // <figure data-type="image">
-  figcaption: true // <figcaption>alternative text</figcaption>
-})
-mit.use(mdlinks)
+// mit.use(mdfig, {
+//  dataType: false, // <figure data-type="image">
+//  figcaption: true // <figcaption>alternative text</figcaption>
+// })
+// mit.use(mdlinks)
 
-export default ({ body }) => (body.startsWith('<') ? body : mit.render(body))
+export default (props: { body: string }) =>
+  props.body.startsWith('<') ? props.body : mit.render(props.body)

@@ -1,65 +1,184 @@
-import { createContext, useContext } from 'solid-js'
+import { Accessor, createContext, createSignal, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import createAgent from './createAgent'
-import createArticles from './createArticles'
-import createAuth from './createAuth'
-import createCommon from './createCommon'
-import createComments from './createComments'
-import createProfile from './createProfile'
-import createRouteHandler from './createRouteHandler'
+import mySession from '../graphql/q/my-session'
+import { createQuery, CreateQueryState } from 'solid-urql'
+import signCheck from '../graphql/q/sign-check'
+import signUp from '../graphql/q/sign-up'
+import signOut from '../graphql/q/sign-out'
+import { Topic, User } from '../graphql/types.gen'
+import signIn from '../graphql/q/sign-in'
+import topicsAll from '../graphql/q/topics-all'
+import { createClient, Provider as GProvider } from 'solid-urql'
+import { clientOptions } from '../graphql/client'
+import mySubscribed from '../graphql/q/my-subscribed'
 
-const StoreContext = createContext()
+type ModalType = '' | 'auth' | 'subscribe'
+type WarnKind = 'error' | 'warn' | 'info'
+
+export interface Warning {
+  body: string
+  kind: WarnKind
+  seen?: boolean
+}
+
+interface CommonStore {
+  readonly topics: Topic[]
+  readonly currentUser: Partial<User>
+  readonly loadingTopics: boolean
+  readonly topicsSubscribed: string[]
+  readonly authorsSubscribed: string[]
+  page?: number
+  totalPagesCount?: number
+  token?: string
+  appName: string
+  session?: Partial<User>
+  handshaking?: boolean
+  warnings?: Warning[]
+  modal?: ModalType
+}
+
+const initState = {
+  page: 0,
+  totalPagesCount: 0,
+  token: '',
+  appName: 'discours.io',
+  session: {} as Partial<User>,
+  handshaking: false,
+  warnings: [] as Warning[],
+  modal: '' as ModalType
+}
+
+const StoreContext = createContext<[CommonStore, any]>([initState as CommonStore, {}])
 const StoreContextProvider = StoreContext.Provider
 
-const RouterSolidContext = createContext()
-const RouterContextProvider = RouterSolidContext.Provider
+export function StoreProvider(props: { children: any }) {
+  const [loggedIn, setLoggedIn] = createSignal(false)
+  let sessionData: Accessor<any>
+  let topicsData: Accessor<any>
+  let topicsState: Accessor<CreateQueryState<any, object>> | (() => { (): any; new (): any; fetching: any })
+  const [subs] = createQuery({ query: mySubscribed })
+  const [state, setState] = createStore({
+    get topicsSubscribed() {
+      return subs().topics
+    },
+    get authorsSubscribed() {
+      return subs().authors
+    },
+    get loadingTopics() {
+      return topicsState().fetching
+    },
+    get currentUser() {
+      return state.session
+    },
+    topics: [] as Topic[],
+    page: 0,
+    totalPagesCount: 0,
+    token: '',
+    appName: 'discours.io',
+    session: {} as Partial<User>,
+    handshaking: false,
+    warnings: [] as Warning[],
+    modal: '' as ModalType
+  })
 
-export function Provider(props) {
-  let articles; let comments; let tags; let profile; let currentUser
-  const router = createRouteHandler('');
-    const [state, setState] = createStore({
-      get articles() {
-        return articles()
-      },
-      get comments() {
-        return comments()
-      },
-      get tags() {
-        return tags()
-      },
-      get profile() {
-        return profile()
-      },
-      get currentUser() {
-        return currentUser()
-      },
-      page: 0,
-      totalPagesCount: 0,
-      token: localStorage.getItem('jwt'),
-      appName: 'discours.io'
-    });
-    const actions = {};
-    const store = [state, actions];
-    const agent = createAgent(store)
+  const actions = {
+    // warnings
+    warn: (w: Warning) => setState({ warnings: [...state.warnings, w] }),
+    unwarn: (index: number) => {
+      let w: Warning = state.warnings[index]
 
-  articles = createArticles(agent, actions, state, setState)
-  comments = createComments(agent, actions, state, setState)
-  tags = createCommon(agent, actions, state, setState)
-  profile = createProfile(agent, actions, state, setState)
-  currentUser = createAuth(agent, actions, setState)
+      w.seen = true
+      setState({ warnings: [...state.warnings, w] })
+    },
+    showModal: (name: ModalType) => setState({ ...state, modal: name }),
+    hideModal: () => setState({ ...state, modal: '' }),
+    // auth
+    getSession: () => {
+      setState({ ...state, token: localStorage.getItem('jwt') || '' })
+
+      if (state.token) {
+        const [sessionData] = createQuery({ query: mySession, variables: { token: state.token } })
+
+        setState({ session: sessionData(), token: state.token, handshaking: false })
+      }
+    },
+    signIn: (email: string, password: string) => {
+      const [qdata] = createQuery({ query: signIn, variables: { email, password } })
+      const { user, token, error } = qdata()
+
+      if (!error) setState({ token, session: user, handshaking: false })
+
+      setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
+      setLoggedIn(true)
+    },
+    signUp: (username: string, email: string, password: string) => {
+      const [qdata] = createQuery({ query: signUp, variables: { username, email, password } })
+      const { user, token, error } = qdata()
+
+      if (!error) setState({ token, session: user, handshaking: false })
+
+      setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
+      setLoggedIn(true)
+    },
+    signCheck: (email: string) => {
+      const [qdata] = createQuery({ query: signCheck, variables: { email } })
+      const { error } = qdata()
+
+      if (error) {
+        setState({ ...state, warnings: [...state.warnings, error] })
+
+        return false
+      }
+
+      return true
+    },
+    signOut: () => {
+      const [qdata] = createQuery({ query: signOut })
+      const { error } = qdata()
+
+      if (!error) setLoggedIn(false)
+    },
+    forget: (email: string) => {
+      console.log(`auth: forget ${email}`)
+      // TODO: implement forget, reset, resend
+      // const [qdata] = createQuery()
+    },
+    toggleAuthor: (slug: string) => {
+      console.log(`toggle ${slug} author`)
+      // TODO: implement
+    },
+    toggleTopic: (slug: string) => {
+      console.log(`toggle ${slug} topic`)
+      // TODO: implement
+    }
+  }
+
+  onMount(() => {
+    if (state.token) actions.getSession()
+
+    if (state.topics === {}) {
+      const [topicsData] = createQuery({ query: topicsAll })
+
+      setState({ ...state, topics: topicsData() })
+    }
+
+    if (loggedIn()) {
+      // TODO: set client auth
+    }
+  })
 
   return (
-    <RouterContextProvider
-      value={router}
-      children={<StoreContextProvider value={store} children={props.children} />}
-    />
+    <GProvider
+      value={createClient({
+        ...clientOptions,
+        fetchOptions: () => (state.token ? { headers: { Authorization: `Bearer ${state.token}` } } : {})
+      })}
+    >
+      <StoreContextProvider value={[state as CommonStore, actions]} children={props.children} />
+    </GProvider>
   )
 }
 
 export function useStore() {
   return useContext(StoreContext)
-}
-
-export function useRouter() {
-  return useContext(RouterSolidContext)
 }

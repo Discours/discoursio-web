@@ -1,5 +1,5 @@
 import { createSignal } from 'solid-js'
-let emailElement
+let emailElement: HTMLInputElement
 
 export default () => {
   const [title, setTitle] = createSignal('Подписаться')

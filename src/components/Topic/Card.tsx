@@ -1,4 +1,4 @@
-import { capitalize, plural } from '~/lib/utils'
+import { capitalize, plural } from '~/utils'
 import { Show } from 'solid-js/web'
 import './Card.scss'
 import { useStore } from '~/store'
@@ -7,8 +7,13 @@ export default (props) => {
   const [subscribed, setSubscribed] = createSignal()
   const store = useStore()
   const { currentUser } = store[0]
-  const subscribe = () => {}
-  const unsubscribe = () => {}
+  const subscribe = () => {
+    // TODO: IMPLEMENT
+  }
+  const unsubscribe = () => {
+    // TODO: IMPLEMENT
+  }
+
   return (
     <div class='topic row'>
       <div class='col-md-7'>

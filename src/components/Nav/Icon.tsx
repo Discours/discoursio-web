@@ -1,7 +1,7 @@
 import { mergeProps, Show } from 'solid-js'
 import './Icon.css'
 
-export default (_props) => {
+export default (_props: any) => {
   const props = mergeProps({ title: '', counter: 0 }, _props)
 
   return (

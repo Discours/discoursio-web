@@ -1,23 +1,13 @@
-import { onMount } from 'solid-js'
 import { For, Portal, Show } from 'solid-js/web'
-import { useStore } from '~/store'
-let store
-let state
-
+import { useStore, Warning } from '../../store'
 export default () => {
-  onMount(() => {
-    store = useStore()
-    state = store[0]
-  })
-
+  const [state] = useStore()
+  const notSeen = () => state.warnings?.filter((n: Warning) => !n.seen)
   return (
-    <Show when={state?.notifications}>
+    <Show when={notSeen()}>
       <Portal>
-        <ul class='errors'>
-          <For each={state.errors}>{(w: string) => <li>{w}</li>}</For>
-        </ul>
-        <ul class='notifications'>
-          <For each={state.notifications}>{(n: string) => <li>{n}</li>}</For>
+        <ul class='warns'>
+          <For each={state.warnings}>{(w: Warning) => <li>{w.body}</li>}</For>
         </ul>
       </Portal>
     </Show>

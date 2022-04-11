@@ -3,9 +3,7 @@ import ArticleList from '../Article/List'
 import AuthorCard from './Card'
 
 export default (props) => {
-  const store = useStore()
-  const state = store[0]
-  const { authorArticles } = store[1]
+  const [, { authorArticles }] = useStore()
 
   return (
     <>

@@ -1,7 +1,8 @@
 import { For } from 'solid-js/web'
+import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
 
-export default (props) => {
+export default (props: { articles: Partial<Shout>[] }) => {
   return (
     <div class='floor'>
       <div class='wide-container row'>

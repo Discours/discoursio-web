@@ -1,11 +1,11 @@
 // TODO: additional entities list column + article
 
 import { For, Show } from 'solid-js/web'
-import { Shout as Article } from '~/lib/graphql/types.gen'
 import ArticleCard from './Card'
 import AuthorCard from '../Author/Card'
 import TopicCard from '../Topic/Card'
 import './Beside.scss'
+import { Shout, Topic } from '../../graphql/types.gen'
 
 const cards = {
   topic: TopicCard,
@@ -13,7 +13,19 @@ const cards = {
   article: ArticleCard
 }
 
-export default (props) => {
+// FIXME: wip ...
+
+interface BesideProps {
+  title: string
+  values: any[]
+  top: any
+  beside: any
+}
+
+const whatAbout = (a: Partial<Shout>) =>
+  a.topics?.find((t: Partial<Topic> | null) => t?.slug === a.mainTopic) || a.topics?.pop()
+
+export default (props: BesideProps) => {
   // wrap, top, title, beside, values
   return (
     <div class='floor floor--9'>
@@ -26,13 +38,11 @@ export default (props) => {
           </Show>
           <ul class='beside-column'>
             <For each={props.values.slice(1, props.values.length - 1)}>
-              {(article: Partial<Article>) => {
+              {(article: Partial<Shout>) => {
                 return (
                   <li classList={{ top: props.top }}>
                     <div class='beside-column__topic'>
-                      <a href={`/topic/${article.mainTopic}`}>
-                        {article.topics.find((item) => item.slug === article.mainTopic).title}
-                      </a>
+                      <a href={`/topic/${article.mainTopic}`}>{whatAbout(article)?.title}</a>
                     </div>
                     <div class='beside-column__shout'>
                       <a href={`/${article.slug}`}>

@@ -1,4 +1,4 @@
-import { createSignal } from 'solid-js'
+import { useStore } from '../../store'
 
 const action = '/user/feedback'
 const method = 'post'
@@ -6,7 +6,7 @@ let msgElement: HTMLTextAreaElement
 let contactElement: HTMLInputElement
 
 export default () => {
-  const [modal, setModal] = createSignal('')
+  const [, { hideModal }] = useStore()
   const submit = async () => {
     await fetch(action, {
       method,
@@ -16,7 +16,7 @@ export default () => {
       },
       body: JSON.stringify({ contact: contactElement.value, message: msgElement.innerText })
     })
-    setModal('')
+    hideModal()
   }
 
   return (

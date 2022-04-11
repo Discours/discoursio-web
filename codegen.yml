@@ -1,14 +1,14 @@
 overwrite: true
 schema:
-  - 'https://newapi.discours.io'
+  - '../discours-backend/schema.graphql'
 generates:
-  src/store/graphql/types.gen.ts:
+  src/graphql/types.gen.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-urql'
       - 'urql-introspection'
-    clientPath: 'src/store/graphql/client'
+    clientPath: 'src/graphql/client'
     asyncQuery: true
 hooks:
   afterAllFileWrite:
