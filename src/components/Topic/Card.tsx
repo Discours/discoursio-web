@@ -1,4 +1,4 @@
-import { capitalize, plural } from '~/lib/utils'
+import { capitalize, plural } from '~/utils'
 import { Show } from 'solid-js/web'
 import './Card.scss'
 import { useStore } from '~/store'
@@ -7,8 +7,13 @@ export default (props) => {
   const [subscribed, setSubscribed] = createSignal()
   const store = useStore()
   const { currentUser } = store[0]
-  const subscribe = () => {}
-  const unsubscribe = () => {}
+  const subscribe = () => {
+    // TODO: IMPLEMENT
+  }
+  const unsubscribe = () => {
+    // TODO: IMPLEMENT
+  }
+
   return (
     <div class='topic row'>
       <div class='col-md-7'>
@@ -30,14 +35,17 @@ export default (props) => {
         <Show when={props.topic.topicStat}>
           <div class='topic-details'>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat.shouts} публикаци{plural(props.topic.topicStat.shouts, 'я', 'и', 'й')}
+              {props.topic.topicStat.shouts} публикаци
+              {plural(props.topic.topicStat.shouts, 'я', 'и', 'й')}
             </span>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat.authors} автор{plural(props.topic.topicStat.authors, '', 'а', 'ов')}
+              {props.topic.topicStat.authors} автор
+              {plural(props.topic.topicStat.authors, '', 'а', 'ов')}
             </span>
             <Show when={!props.compact}>
               <span class='topic-details__item'>
-                {props.topic.topicStat.views} просмотр{plural(props.topic.topicStat.views, '', 'а', 'ов')}
+                {props.topic.topicStat.views} просмотр
+                {plural(props.topic.topicStat.views, '', 'а', 'ов')}
               </span>
               <span class='topic-details__item'>
                 {props.topic.topicStat.subscriptions} подписчик

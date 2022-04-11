@@ -1,14 +1,14 @@
 overwrite: true
 schema:
-  - 'server/schema.graphql'
+  - '../discours-backend/schema.graphql'
 generates:
-  src/lib/graphql/types.gen.ts:
+  src/graphql/types.gen.ts:
     plugins:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-urql'
       - 'urql-introspection'
-    clientPath: 'src/lib/graphql/client'
+    clientPath: 'src/graphql/client'
     asyncQuery: true
 hooks:
   afterAllFileWrite:

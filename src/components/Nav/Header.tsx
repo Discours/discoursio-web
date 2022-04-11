@@ -1,7 +1,7 @@
 import { For, Show, createSignal, onMount } from 'solid-js'
 import { Link } from 'solid-app-router'
 import './Header.scss'
-import { useStore } from '~/store'
+import { useStore } from '../../store'
 import Private from './Private'
 import Notifications from './Notifications'
 import Icon from './Icon'
@@ -13,17 +13,21 @@ const routes = [
 ]
 
 export default () => {
-  const [modal, setModal] = createSignal('')
+  const [, setModal] = createSignal('')
   const [fixed, setFixed] = createSignal(false)
-  const [token, setToken] = createSignal('')
   const [showNotices, setShowNotices] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const state = (useStore()||[null])[0]
+  const [{ token, session, warnings }] = useStore()
 
   onMount(() => {
     setFixed(document.body.classList.contains('fixed'))
-    setToken(localStorage.getItem('token'))
     setResource(window.location.pathname)
+    if (token) {
+      if (session) {
+        console.log('nav/header: auth.token found and logged in')
+        // NOTE: session
+      }
+    }
   })
 
   return (
@@ -58,7 +62,7 @@ export default () => {
               <div class='usercontrol__item'>
                 <a href={''} onClick={() => setShowNotices(!showNotices())}>
                   <div>
-                    <Icon name='bell-white' counter={state?.notifications.length} />
+                    <Icon name='bell-white' counter={warnings?.length || 1} />
                   </div>
                 </a>
               </div>
@@ -66,7 +70,7 @@ export default () => {
                 <Notifications />
               </div>
               <Show
-                when={state?.currentUser}
+                when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
                     <a href={'#auth'} onClick={() => setModal('auth')}>

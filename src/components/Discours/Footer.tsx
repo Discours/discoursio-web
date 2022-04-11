@@ -1,4 +1,4 @@
-import { For, createSignal } from 'solid-js'
+import { For } from 'solid-js'
 import './Footer.scss'
 import Icon from '../Nav/Icon'
 
@@ -102,8 +102,6 @@ const SOCIAL = [
 ]
 
 export default function DiscoursFooter() {
-  const [count, setCount] = createSignal(0)
-
   return (
     <footer class='discours-footer'>
       <div class='wide-container'>
