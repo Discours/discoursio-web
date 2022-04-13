@@ -2,14 +2,11 @@ import { For, Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { unwrap } from 'solid-js/store'
 import { undo, redo } from 'prosemirror-history'
 import { File, useState /*, Config, PrettierConfig */ } from './store'
-// import { isTauri, isMac, alt, mod, WEB_URL /*, VERSION_URL*/ } from '../env'
-// import * as remote from '../remote'
-import { isEmpty /*, isInitialized*/ } from './prosemirror/state'
 import { Styled } from './Layout'
 import './Sidebar.scss'
 import { EditorState } from 'prosemirror-state'
 import { serialize } from './prosemirror/markdown'
-import { isMac, mod } from './prosemirror/context'
+import { baseUrl } from '../../graphql/client'
 
 const copy = async (text: string): Promise<void> => navigator.clipboard.writeText(text)
 const copyAllAsMarkdown = async (state: EditorState): Promise<void> =>
@@ -54,25 +51,52 @@ export default () => {
   const onToggleFullscreen = () => ctrl.setFullscreen(!store.fullscreen)
   const onNew = () => ctrl.newFile()
   const onDiscard = () => ctrl.discard()
-  /*
+  const [isHidden, setIsHidden] = createSignal<boolean | false>()
+
+  const toggleSidebar = () => {
+    setIsHidden(!isHidden());
+  }
+
+  toggleSidebar();
+
   const onSaveAs = async () => {
-    const path = await remote.save(editorView().state)
+    const path = 'test' // TODO: save filename await remote.save(editorView().state)
 
     if (path) ctrl.updatePath(path)
   }
-  */
+
   const onCollab = () => {
     const state = unwrap(store)
 
     store.collab?.started ? ctrl.stopCollab(state) : ctrl.startCollab(state)
   }
 
+  const onOpenInApp = () => {
+    // if (isTauri) return
+
+    if (store.collab?.started) {
+      window.open(`discoursio://main?room=${store.collab?.room}`, '_self')
+    } else {
+      const text = window.btoa(JSON.stringify(editorView().state.toJSON()))
+
+      window.open(`discoursio://main?text=${text}`, '_self')
+    }
+  }
+
   const onCopyCollabLink = () => {
-    copy(`https://${window?.location.hostname}/create/${store.collab?.room}`).then(() => {
+    copy(`${baseUrl}/collab/${store.collab?.room}`).then(() => {
       editorView().focus()
       setLastAction('copy-collab-link')
     })
   }
+
+  const onCopyCollabAppLink = () => {
+    copy(`discoursio://${store.collab?.room}`).then(() => {
+      editorView().focus()
+      setLastAction('copy-collab-app-link')
+    })
+  }
+
   const FileLink = (p: { file: File }) => {
     const length = 100
     let content = ''
@@ -82,7 +106,7 @@ export default () => {
       }
 
       if (content.length > length) {
-        content = `${content.substring(0, length)}...`
+        content = `${content.substring(0, length)  }...`
 
         return content
       }
@@ -101,11 +125,9 @@ export default () => {
     }
 
     // eslint-disable-next-line no-confusing-arrow
-    const text = () =>
-      p.file.path ? p.file.path.substring(p.file.path.length - length) : getContent(p.file.text?.doc)
+    const text = () => p.file.path ? p.file.path.substring(p.file.path.length - length) : getContent(p.file.text?.doc)
 
     return (
-      // eslint-disable-next-line solid/no-react-specific-props
       <Link className='file' onClick={() => onOpenFile(p.file)} data-testid='open'>
         {text()} {p.file.path && '📎'}
       </Link>
@@ -114,7 +136,9 @@ export default () => {
 
   const Keys = (props: { keys: string[] }) => (
     <span>
-      <For each={props.keys}>{(k: string) => <i>{k}</i>}</For>
+      <For each={props.keys}>{(k: string) => (
+        <i>{k}</i>
+      )}</For>
     </span>
   )
 
@@ -133,22 +157,27 @@ export default () => {
   })
 
   return (
-    <div class='sidebar-container'>
+    <div class={`sidebar-container${  isHidden() ? ' sidebar-container--hidden' : ''}`}>
+      <span class='sidebar-opener' onClick={toggleSidebar}>Советы и&nbsp;предложения</span>
+
       <Off onClick={() => editorView().focus()} data-tauri-drag-region='true'>
+        <div class='sidebar-closer' onClick={toggleSidebar}/>
         <Show when={true}>
           <div>
-            {
-              <Show when={store.path}>
-                {
-                  <Label>
-                    <i>({store.path?.substring(store.path.length - 24)})</i>
-                  </Label>
-                }
-              </Show>
-            }
-            <Link>Пригласить соавторов</Link>
-            <Link>Настройки публикации</Link>
-            <Link>История правок</Link>
+            <Show when={store.path}>
+              <Label>
+                <i>({store.path?.substring(store.path?.length - 24)})</i>
+              </Label>
+            </Show>
+            <Link>
+              Пригласить соавторов
+            </Link>
+            <Link>
+              Настройки публикации
+            </Link>
+            <Link>
+              История правок
+            </Link>
 
             <div class='theme-switcher'>
               Ночная тема
@@ -156,40 +185,53 @@ export default () => {
               <label for='theme'>Ночная тема</label>
             </div>
 
+            {/*
+            <Show when={isTauri && !store.path}>
+              <Link onClick={onSaveAs}>
+                Save to file <Keys keys={[mod, 's']} />
+              </Link>
+            </Show>
             <Link onClick={onNew} data-testid='new'>
               New <Keys keys={[mod, 'n']} />
             </Link>
             <Link
               onClick={onDiscard}
-              disabled={!store.path && store.files?.length === 0 && isEmpty(store.text)}
+              disabled={!store.path && store.files.length === 0 && isEmpty(store.text)}
               data-testid='discard'
             >
-              {store.path
-                ? 'Close'
-                : store.files?.length > 0 && isEmpty(store.text)
-                ? 'Delete ⚠️'
-                : 'Clear'}{' '}
+              {store.path ? 'Close' : store.files.length > 0 && isEmpty(store.text) ? 'Delete ⚠️' : 'Clear'}{' '}
               <Keys keys={[mod, 'w']} />
             </Link>
-
+            <Show when={isTauri}>
+              <Link onClick={onToggleFullscreen}>
+                Fullscreen {store.fullscreen && '✅'} <Keys keys={[alt, 'Enter']} />
+              </Link>
+            </Show>
             <Link onClick={onUndo}>
               Undo <Keys keys={[mod, 'z']} />
             </Link>
             <Link onClick={onRedo}>
               Redo <Keys keys={[mod, ...(isMac ? ['Shift', 'z'] : ['y'])]} />
             </Link>
-
+            <Show when={isTauri}>
+              <Link onClick={onToggleAlwaysOnTop}>Always on Top {store.config.alwaysOnTop && '✅'}</Link>
+            </Show>
+            <Show when={!isTauri && false}>
+              <Link onClick={onOpenInApp}>Open in App ⚡</Link>
+            </Show>
             <Link onClick={onToggleMarkdown} data-testid='markdown'>
               Markdown mode {store.markdown && '✅'} <Keys keys={[mod, 'm']} />
             </Link>
             <Link onClick={onCopyAllAsMd}>Copy all as MD {lastAction() === 'copy-md' && '📋'}</Link>
-            <Show when={store.files?.length > 0}>
+*/}
+            <Show when={store.files.length > 0}>
               <h4>Files:</h4>
               <p>
                 <For each={store.files}>{(file) => <FileLink file={file} />}</For>
               </p>
             </Show>
 
+            {/*
             <Link onClick={onCollab} title={store.collab?.error ? 'Connection error' : ''}>
               Collab {collabText()}
             </Link>
@@ -197,10 +239,22 @@ export default () => {
               <Link onClick={onCopyCollabLink}>
                 Copy Link {lastAction() === 'copy-collab-link' && '📋'}
               </Link>
+              <Show when={false}>
+                <Link onClick={onCopyCollabAppLink}>
+                  Copy App Link {lastAction() === 'copy-collab-app-link' && '📋'}
+                </Link>
+              </Show>
               <span>
                 {collabUsers()} {collabUsers() === 1 ? 'user' : 'users'} connected
               </span>
             </Show>
+
+            <Show when={isTauri}>
+              <Link onClick={() => remote.quit()}>
+                Quit <Keys keys={[mod, 'q']} />
+              </Link>
+            </Show>
+*/}
           </div>
         </Show>
       </Off>
