@@ -19,24 +19,23 @@ const ssrCache = ssrExchange({
 
 export const baseUrl = 'https://newapi.discours.io'
 export const clientOptions: ClientOptions = {
-  url: baseUrl,
+  url: `${baseUrl}/graphql`,
   requestPolicy: 'cache-and-network',
   fetchOptions: {
     credentials: 'include'
   },
-  exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
+  exchanges: [/*devtoolsExchange,*/ dedupExchange, cache, ssrCache, fetchExchange]
 }
 
 export const client = createClient({
   ...clientOptions,
   fetchOptions: () => {
     const [{ token }] = useStore()
+    let headers: { [key: string]: string } = { 'Content-Type': 'application/json' }
 
-    return {
-      headers: {
-        'Content-Type': 'applications/json',
-        authorization: token?.length ? `Auth ${token}` : ''
-      }
-    }
+    // eslint-disable-next-line dot-notation
+    if (token?.length) headers['Authorization'] = `Auth ${token}`
+
+    return { headers }
   }
 })

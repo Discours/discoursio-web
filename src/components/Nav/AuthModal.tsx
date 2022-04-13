@@ -1,7 +1,6 @@
 import { For, Show } from 'solid-js/web'
 import Icon from './Icon'
-import { useAuth } from '../../store/auth'
-import { useCommon, Warning } from '../../store/common'
+import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
 import { createSignal } from 'solid-js'
 
@@ -23,8 +22,7 @@ const titles = {
 
 export default (props: { code?: string; mode?: string }) => {
   const [mode, setMode] = createSignal<AuthMode>('sign-in')
-  const [authState, { signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useAuth()
-  const [commonState, { hideModal, warn }] = useCommon()
+  const [state, { hideModal, warn, signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useStore()
   // TODO: notifications destroy timeout
 
   const oauth = (provider: string) => {
@@ -33,48 +31,56 @@ export default (props: { code?: string; mode?: string }) => {
   }
 
   const auth = () => {
-    authState.handshaking = true
+    state.handshaking = true
     // 1 check format
     const emailTyped =
       emailElement.value.length > 5 && emailElement.value.includes('@') && emailElement.value.includes('.')
+
     if (!emailTyped) warn({ body: 'Пожалуйста, проверьте введенный адрес почты', kind: 'error' })
     // TODO: 2 check if used
+    // eslint-disable-next-line no-constant-condition
     else if (false) {
       const check = signCheck(emailElement.value)
+
       console.log(check)
+
       switch (mode()) {
-        case 'sign-up':
-          if (check)
-            warn({
-              body: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться',
-              kind: 'error'
-            })
-          // TODO: validation status on form
-          break
-        case 'sign-in':
-          if (!check)
-            warn({
-              body: 'Такой адрес не найден, попробуйте зарегистрироваться',
-              kind: 'error'
-            })
-          break
-        default:
-          console.log('auth: passing email check')
-      }
-    }
-    switch (mode()) {
-      case 'sign-in':
-        signIn(emailElement.value, passElement.value)
-        break
       case 'sign-up':
-        if (pass2Element.value !== passElement.value) warn({ body: 'Пароли не совпадают', kind: 'error' })
-        else signUp(usernameElement.value, emailElement.value, passElement.value)
+        if (check)
+        {warn({
+          body: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться',
+          kind: 'error'
+        })}
+
+        // TODO: validation status on form
         break
-      case 'reset':
-        // TODO: implement, resend, forget
+      case 'sign-in':
+        if (!check)
+        {warn({
+          body: 'Такой адрес не найден, попробуйте зарегистрироваться',
+          kind: 'error'
+        })}
+
         break
       default:
-        authState.handshaking = false
+        console.log('auth: passing email check')
+      }
+    }
+
+    switch (mode()) {
+    case 'sign-in':
+      signIn(emailElement.value, passElement.value)
+      break
+    case 'sign-up':
+      if (pass2Element.value !== passElement.value) warn({ body: 'Пароли не совпадают', kind: 'error' })
+      else signUp(usernameElement.value, emailElement.value, passElement.value)
+
+      break
+    case 'reset':
+      // TODO: implement, resend, forget
+      break
+    default:
+      state.handshaking = false
     }
   }
 
@@ -116,7 +122,7 @@ export default (props: { code?: string; mode?: string }) => {
             </Show>
           </div>
           <div class='auth-info'>
-            <For each={commonState.warnings}>
+            <For each={state.warnings}>
               {(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}
             </For>
           </div>
@@ -136,8 +142,8 @@ export default (props: { code?: string; mode?: string }) => {
           </Show>
 
           <div>
-            <button class='submitbtn' disabled={authState.handshaking} onClick={auth}>
-              {authState.handshaking ? '...' : titles[mode()]}
+            <button class='submitbtn' disabled={state.handshaking} onClick={auth}>
+              {state.handshaking ? '...' : titles[mode()]}
             </button>
           </div>
 

@@ -19,8 +19,8 @@ export const App = () => {
     <main class='min-h-screen'>
       <Router>
         <AppContextProvider>
-          <GraphqlProvider value={client}>
-            <StoreProvider>
+          <StoreProvider>
+            <GraphqlProvider value={client}>
               <Header />
               {/* two div wrappers to make page animation work and performant */}
               <div id='main-content'>
@@ -33,8 +33,8 @@ export const App = () => {
                 </div>
               </div>
               <Footer />
-            </StoreProvider>
-          </GraphqlProvider>
+            </GraphqlProvider>
+          </StoreProvider>
         </AppContextProvider>
       </Router>
     </main>

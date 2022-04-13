@@ -85,19 +85,20 @@ export const Home: Component = () => {
     data.topMonth?.forEach(postLoad)
     data.topOverall?.forEach(postLoad)
 
-    const goodTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
+    // const goodTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
 
-    randomTopics = shuffle(goodTopics.map((f) => f[0]))
+    // randomTopics = shuffle(goodTopics.map((f) => f[0]))
 
-    console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
+    // console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
 
-    randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
-    console.debug(`mainpage: ${randomLayout} layout selected`)
+    // randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
+    // console.debug(`mainpage: ${randomLayout} layout selected`)
+    console.debug('home: mounted')
   })
 
   return (
     <main class='home'>
-      <Show when={!data.loading}>
+      <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
         <NavTopics topics={randomTopics.slice(0, 9)} />
         <img src={bannerSrc} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
