@@ -71,7 +71,8 @@ export const Home: Component = () => {
   }
 
   const topCommented = () =>
-    data.topRecent?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
+    data.topRecent
+      ?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
       .sort((a, b) => {
         if (a && b && a.stat && b.stat) return b.stat.comments - a.stat.comments
 

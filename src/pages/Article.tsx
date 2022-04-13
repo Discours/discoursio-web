@@ -43,8 +43,7 @@ export const BlogArticle: Component = () => {
                           {a.username}
                         </a>
                       )}
-                    </For>
-                    {' '}
+                    </For>{' '}
                     on {new Date(data.article.createdAt || 0).toDateString()}
                   </div>
                 </div>

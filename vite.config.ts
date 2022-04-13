@@ -39,8 +39,8 @@ const pwaOptions = {
           },
           cacheableResponse: {
             statuses: [0, 200]
-          },
-        },
+          }
+        }
       },
       {
         urlPattern: /^https:\/\/cdn\.skypack\.dev\//i,
@@ -70,7 +70,7 @@ export default defineConfig({
         providerImportSource: 'solid-mdx'
         // remarkPlugins: [remarkGfm],
       }),
-      enforce: 'pre',
+      enforce: 'pre'
     },
     SolidJS({ extensions: ['.md', '.mdx'] }),
     SolidSVG(),

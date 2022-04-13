@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-// import gql from 'graphql-tag'
+//import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -261,7 +261,7 @@ export type Query = {
   getShoutComments: Array<Maybe<Comment>>
   getUserRoles: Array<Maybe<Role>>
   getUsersBySlugs: Array<Maybe<User>>
-  isEmailFree: Result
+  isEmailFree: Scalars['Boolean']
   recentCommented: Array<Maybe<Shout>>
   recents: Array<Maybe<Shout>>
   shoutsByAuthor: Array<Maybe<Shout>>
@@ -574,6 +574,7 @@ export type UserNotification = {
 export type UserResult = {
   __typename?: 'UserResult'
   error?: Maybe<Scalars['String']>
+  totalUnreadMessages?: Maybe<Scalars['Int']>
   user?: Maybe<User>
 }
 
@@ -1887,9 +1888,8 @@ export default {
             type: {
               kind: 'NON_NULL',
               ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
+                kind: 'SCALAR',
+                name: 'Any'
               }
             },
             args: [
@@ -3549,6 +3549,14 @@ export default {
         fields: [
           {
             name: 'error',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'totalUnreadMessages',
             type: {
               kind: 'SCALAR',
               name: 'Any'

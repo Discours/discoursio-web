@@ -30,10 +30,8 @@ export const BlogTopic: Component = () => {
               fallback={<div class='text-center p-10 m-10'>Loading articles...</div>}
               when={!data.loading}
             >
-
               <For each={data.articles}>
                 {(a: Partial<Shout>) => (
-
                   <div class='container lg:px-10'>
                     <div class='text-center space-y-5'>
                       <img class='rounded-md mb-10 shadow-md' src={a.cover || ''} />
@@ -41,7 +39,7 @@ export const BlogTopic: Component = () => {
                         {a.title}
                       </h1>
                       <div class='text-md'>
-                      Posted by{' '}
+                        Posted by{' '}
                         <For each={a.authors}>
                           {(author: Partial<User>) => (
                             <a target='_blank' rel='noopener' href={author.slug}>
@@ -49,7 +47,7 @@ export const BlogTopic: Component = () => {
                             </a>
                           )}
                         </For>
-                      on {new Date(a.createdAt).toDateString()}
+                        on {new Date(a.createdAt).toDateString()}
                       </div>
                     </div>
                     <hr class='mt-10 w-3/6 mx-auto' />
@@ -63,7 +61,6 @@ export const BlogTopic: Component = () => {
                       </NavLink>
                     </div>
                   </div>
-
                 )}
               </For>
             </Show>

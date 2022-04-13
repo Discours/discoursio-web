@@ -47,28 +47,28 @@ const codeMirrorKeymap = (props: Props) => {
 export const createExtensions = (opts: Opts): ProseMirrorExtension[] => {
   return opts.markdown
     ? [
-      placeholder('Просто начните...'),
-      customKeymap(opts),
-      base(opts.markdown),
-      // scroll(props.config.typewriterMode),
-      collab(opts.y as YOptions),
-      dragHandle()
-    ]
+        placeholder('Просто начните...'),
+        customKeymap(opts),
+        base(opts.markdown),
+        // scroll(props.config.typewriterMode),
+        collab(opts.y as YOptions),
+        dragHandle()
+      ]
     : [
-      selectionMenu(),
-      customKeymap(opts),
-      base(opts.markdown),
-      collab(opts.y as YOptions),
-      markdown(),
-      todoList(),
-      dragHandle(),
-      code(),
-      strikethrough(),
-      link(),
-      table(),
-      // image(props.path), // TODO: image extension
-      pasteMarkdown()
-      /*
+        selectionMenu(),
+        customKeymap(opts),
+        base(opts.markdown),
+        collab(opts.y as YOptions),
+        markdown(),
+        todoList(),
+        dragHandle(),
+        code(),
+        strikethrough(),
+        link(),
+        table(),
+        // image(props.path), // TODO: image extension
+        pasteMarkdown()
+        /*
     codeBlock({
       theme: codeTheme(props.config),
       typewriterMode: props.config.typewriterMode,
@@ -77,7 +77,7 @@ export const createExtensions = (opts: Opts): ProseMirrorExtension[] => {
       extensions: () => [codeMirrorKeymap(props)],
     }),
     */
-    ]
+      ]
 }
 
 export const createEmptyText = () => ({

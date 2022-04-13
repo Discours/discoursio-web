@@ -14,7 +14,7 @@ export const BlogAuthor: Component = () => {
     slug: string
     author: Partial<User>
     communities?: { [id: string]: Partial<Community> }
-    articles?:  Partial<Shout>[]
+    articles?: Partial<Shout>[]
   }>()
 
   useRouteReadyState()
@@ -26,17 +26,14 @@ export const BlogAuthor: Component = () => {
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
-            <Show
-              fallback={<div class='text-center p-10 m-10'>Loading...</div>}
-              when={!data.loading}
-            >
+            <Show fallback={<div class='text-center p-10 m-10'>Loading...</div>} when={!data.loading}>
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
                   <img class='rounded-md mb-10 shadow-md' src={data.author.userpic || ''} />
                   <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
                     {data.author.username}
                   </h1>
-                    since {new Date(data.author.createdAt).toDateString()}
+                  since {new Date(data.author.createdAt).toDateString()}
                 </div>
               </div>
               <hr class='mt-10 w-3/6 mx-auto' />
@@ -50,16 +47,15 @@ export const BlogAuthor: Component = () => {
                         {a.title}
                       </h1>
                       <div class='text-md'>
-                      Posted by{' '}
+                        Posted by{' '}
                         <For each={a.authors}>
                           {(author: Partial<User>) => (
                             <a target='_blank' rel='noopener' href={author.slug}>
                               {author.username}
                             </a>
                           )}
-                        </For>
-                        {' '}
-                      on {new Date(a.createdAt || 0).toDateString()}
+                        </For>{' '}
+                        on {new Date(a.createdAt || 0).toDateString()}
                       </div>
                     </div>
                     <hr class='mt-10 w-3/6 mx-auto' />

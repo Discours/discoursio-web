@@ -36,13 +36,13 @@ export default (plain = false): ProseMirrorExtension => ({
   schema: () =>
     plain
       ? {
-        nodes: plainSchema.spec.nodes,
-        marks: plainSchema.spec.marks
-      }
+          nodes: plainSchema.spec.nodes,
+          marks: plainSchema.spec.marks
+        }
       : {
-        nodes: (markdownSchema.spec.nodes as any).update('blockquote', blockquoteSchema),
-        marks: markdownSchema.spec.marks
-      },
+          nodes: (markdownSchema.spec.nodes as any).update('blockquote', blockquoteSchema),
+          marks: markdownSchema.spec.marks
+        },
   plugins: (prev, schema) => [
     ...prev,
     keymap({

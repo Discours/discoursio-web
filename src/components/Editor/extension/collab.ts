@@ -19,11 +19,13 @@ export const cursorBuilder = (user: any): HTMLElement => {
 export default (y: YOptions): ProseMirrorExtension => ({
   // eslint-disable-next-line no-confusing-arrow
   plugins: (prev) =>
-    y ? [
-      ...prev,
-      ySyncPlugin(y.type),
-      // @ts-ignore
-      yCursorPlugin(y.provider.awareness, { cursorBuilder }),
-      yUndoPlugin()
-    ] : prev
+    y
+      ? [
+          ...prev,
+          ySyncPlugin(y.type),
+          // @ts-ignore
+          yCursorPlugin(y.provider.awareness, { cursorBuilder }),
+          yUndoPlugin()
+        ]
+      : prev
 })

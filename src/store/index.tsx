@@ -166,7 +166,7 @@ export function StoreProvider(props: { children: any }) {
     }
   })
 
-  return (<StoreContextProvider value={[state as CommonStore, actions]} children={props.children} />)
+  return <StoreContextProvider value={[state as CommonStore, actions]} children={props.children} />
 }
 
 export function useStore() {

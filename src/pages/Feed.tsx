@@ -38,9 +38,7 @@ const Feed: Component = () => {
                   <div class='text-xs mt-3'>
                     By
                     <For each={article.authors}>
-                      {(a: Partial<User>) => (
-                        <a href={`/author/${a.slug}`}>{a.username}</a>
-                      )}
+                      {(a: Partial<User>) => <a href={`/author/${a.slug}`}>{a.username}</a>}
                     </For>
                     on {new Date(article.createdAt).toDateString()}
                   </div>
