@@ -1,17 +1,18 @@
 import { Plugin } from 'prosemirror-state'
 import { Node, Schema } from 'prosemirror-model'
 import { EditorView } from 'prosemirror-view'
-import { convertFileSrc } from '@tauri-apps/api/tauri'
-import { resolvePath, dirname } from '../../remote'
-import { isTauri } from '../../env'
+// import { convertFileSrc } from '@tauri-apps/api/tauri'
+// import { resolvePath, dirname } from '../../remote'
+// import { isTauri } from '../../env'
 import { ProseMirrorExtension } from '../state'
 
-const REGEX = /^!\[([^[\]]*?)\]\((.+?)\)\s+/
+const REGEX = /^!\[([^[\]]*)\]\((.+?)\)\s+/
 const MAX_MATCH = 500
 
 const isUrl = (str: string) => {
   try {
     const url = new URL(str)
+
     return url.protocol === 'http:' || url.protocol === 'https:'
   } catch (_) {
     return false
@@ -19,53 +20,64 @@ const isUrl = (str: string) => {
 }
 
 const isBlank = (text: string) => text === ' ' || text === '\xa0'
-
+/*
 export const getImagePath = async (src: string, path?: string) => {
   let paths = [src]
+
   if (path) paths = [await dirname(path), src]
+
   const absolutePath = await resolvePath(paths)
+
   return convertFileSrc(absolutePath)
 }
-
+*/
 const imageInput = (schema: Schema, path?: string) =>
   new Plugin({
     props: {
       handleTextInput(view, from, to, text) {
         if (view.composing || !isBlank(text)) return false
+
         const $from = view.state.doc.resolve(from)
+
         if ($from.parent.type.spec.code) return false
+
         const textBefore =
           $from.parent.textBetween(
             Math.max(0, $from.parentOffset - MAX_MATCH),
             $from.parentOffset,
-            null,
+            undefined,
             '\ufffc'
           ) + text
 
         const match = REGEX.exec(textBefore)
+
         if (match) {
           const [, title, src] = match
+
           if (isUrl(src)) {
             const node = schema.node('image', { src, title })
             const start = from - (match[0].length - text.length)
             const tr = view.state.tr
+
             tr.delete(start, to)
             tr.insert(start, node)
             view.dispatch(tr)
+
             return true
           }
 
-          if (!isTauri) return false
-
+          // if (!isTauri) return false
+          /*
           getImagePath(src, path).then((p) => {
             const node = schema.node('image', { src: p, title, path: src })
             const start = from - (match[0].length - text.length)
             const tr = view.state.tr
+
             tr.delete(start, to)
             tr.insert(start, node)
             view.dispatch(tr)
           })
-
+          */
           return false
         }
       }
@@ -105,13 +117,17 @@ const imageSchema = {
   ]
 }
 
-export const insertImage = (view: EditorView, src: string, left: number, top: number) => {
+export const insertImage = (view: EditorView<any>, src: string, left: number, top: number) => {
   const state = view.state
   const tr = state.tr
   const node = state.schema.nodes.image.create({ src })
-  const pos = view.posAtCoords({ left, top }).pos
-  tr.insert(pos, node)
-  view.dispatch(tr)
+
+  if (view) {
+    const pos = view.posAtCoords({ left, top }).pos
+
+    tr.insert(pos, node)
+    view.dispatch(tr)
+  }
 }
 
 class ImageView {
@@ -138,20 +154,20 @@ class ImageView {
 
     this.container = document.createElement('span')
     this.container.className = 'image-container'
+
     if (node.attrs.width) this.setWidth(node.attrs.width)
 
     const image = document.createElement('img')
+
     image.setAttribute('title', node.attrs.title ?? '')
 
     if (
-      isTauri &&
+      // isTauri &&
       !node.attrs.src.startsWith('asset:') &&
       !node.attrs.src.startsWith('data:') &&
       !isUrl(node.attrs.src)
     ) {
-      getImagePath(node.attrs.src, path).then((p) => {
-        image.setAttribute('src', p)
-      })
+      // getImagePath(node.attrs.src, path).then((p) => image.setAttribute('src', p))
     } else {
       image.setAttribute('src', node.attrs.src)
     }
@@ -176,9 +192,12 @@ class ImageView {
 
   onResizeEnd() {
     window.removeEventListener('mousemove', this.onResizeFn)
+
     if (this.updating === this.width) return
+
     this.updating = this.width
     const tr = this.view.state.tr
+
     tr.setNodeMarkup(this.getPos(), undefined, {
       ...this.node.attrs,
       width: this.width
@@ -188,7 +207,7 @@ class ImageView {
   }
 
   setWidth(width: number) {
-    this.container.style.width = width + 'px'
+    this.container.style.width = `${width}px`
   }
 }
 

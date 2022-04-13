@@ -3,19 +3,19 @@ import articleBySlug from '../graphql/q/article-by-slug'
 import articleComments from '../graphql/q/article-comments'
 import { createQuery } from 'solid-urql'
 
-export const ArticleData: RouteDataFunc = (props) => {
+export const ArticleData: RouteDataFunc = (args) => {
   const [articleData, articleState] = createQuery({
     query: articleBySlug,
-    variables: { slug: props.params.slug }
+    variables: { slug: args.params.slug }
   })
   const [commentsData, commentsState] = createQuery({
     query: articleComments,
-    variables: { slug: props.params.slug }
+    variables: { slug: args.params.slug }
   })
 
   return {
     get slug() {
-      return props.params.slug
+      return args.params.slug
     },
     get comments() {
       return commentsData()

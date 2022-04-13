@@ -1,4 +1,4 @@
-import { Component, onMount } from 'solid-js'
+import { Component, onMount, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 // import { useI18n } from '@solid-primitives/i18n';
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -10,27 +10,20 @@ import Row5 from '../components/Article/Row5'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
 import Row1 from '../components/Article/Row1'
-import { useStore } from '../store'
-
-interface HomeRouteData {
-  topics: { [key: string]: Partial<Topic> }
-  // authors: { [key: string]: Partial<User> }
-  topRecent: Partial<Shout>[]
-  topMonth: Partial<Shout>[]
-  topOverall: Partial<Shout>[]
-}
+// import { useStore } from '../store'
+import { HomeRouteData } from './Home.data'
 
 export const Home: Component = () => {
   // const isRouting = useIsRouting();
   // const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
-  const [, {}] = useStore()
+  // const [state, actions] = useStore()
 
   useRouteReadyState()
 
   // TODO: createSignal ? s
   let randomLayout = ''
-  let randomTopics = [] as Topic[]
+  let randomTopics = [] as string[]
   let aslugs = new Set([] as string[])
   let topicset = new Set([] as Topic[])
   let authors = [] as Partial<User>[]
@@ -78,8 +71,7 @@ export const Home: Component = () => {
   }
 
   const topCommented = () =>
-    data.topRecent
-      .filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
+    data.topRecent?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
       .sort((a, b) => {
         if (a && b && a.stat && b.stat) return b.stat.comments - a.stat.comments
 
@@ -88,13 +80,14 @@ export const Home: Component = () => {
 
   onMount(() => {
     // post load
-    data.topRecent.forEach(postLoad)
-    data.topMonth.forEach(postLoad)
-    data.topOverall.forEach(postLoad)
+    data.topRecent?.forEach(postLoad)
+    data.topMonth?.forEach(postLoad)
+    data.topOverall?.forEach(postLoad)
 
     const goodTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
 
     randomTopics = shuffle(goodTopics.map((f) => f[0]))
+
     console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
 
     randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
@@ -103,13 +96,15 @@ export const Home: Component = () => {
 
   return (
     <main class='home'>
-      <NavTopics topics={randomTopics.slice(0, 9)} />
-      <img src={bannerSrc} />
-      <Row3 articles={data.topRecent.slice(0, 3)} />
-      <Row2 articles={data.topRecent.slice(3, 5)} />
-      <Row5 articles={data.topRecent.slice(5, 10)} />
-      <Row1 article={data.topRecent[10]} />
-      <Row5 articles={topCommented()} />
+      <Show when={!data.loading}>
+        <NavTopics topics={randomTopics.slice(0, 9)} />
+        <img src={bannerSrc} />
+        <Row3 articles={data.topRecent.slice(0, 3)} />
+        <Row2 articles={data.topRecent.slice(3, 5)} />
+        <Row5 articles={data.topRecent.slice(5, 10)} />
+        <Row1 article={data.topRecent[10]} />
+        <Row5 articles={topCommented()} />
+      </Show>
     </main>
   )
 }

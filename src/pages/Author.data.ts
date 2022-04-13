@@ -7,7 +7,7 @@ export type AuthorParams = {
   lang: string
 }
 
-export const AuthorData: RouteDataFunc = (props) => {
+export const AuthorData: RouteDataFunc = (args) => {
   const location = useLocation()
   const [, { locale }] = useI18n()
   const paramList = (): AuthorParams => {
@@ -17,7 +17,7 @@ export const AuthorData: RouteDataFunc = (props) => {
   }
   const [authorArticlesData, stauthorArticlesState] = createQuery({
     query: authorArticles,
-    variables: { topic: props.params.slug }
+    variables: { topic: args.params.slug }
   })
 
   return {

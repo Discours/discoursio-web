@@ -35,8 +35,7 @@ export const useRouteReadyState = () => {
           return true
         }
 
-        // @ts-ignore
-        window.scrollTo({ top: 0, behavior: 'instant' })
+        window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
         restorePageHeight()
       }
     })
@@ -49,8 +48,7 @@ export const useRouteReadyState = () => {
       return true
     }
 
-    // @ts-ignore
-    window.scrollTo({ top: 0, behavior: 'instant' })
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
     restorePageHeight()
   }
 }

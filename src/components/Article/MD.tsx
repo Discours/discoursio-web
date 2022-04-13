@@ -20,5 +20,5 @@ mit.use(mdcustom)
 // })
 // mit.use(mdlinks)
 
-export default (props: { body: string }) =>
-  props.body.startsWith('<') ? props.body : mit.render(props.body)
+// eslint-disable-next-line no-confusing-arrow
+export default (props: { body: string }) => (props.body.startsWith('<') ? props.body : mit.render(props.body))

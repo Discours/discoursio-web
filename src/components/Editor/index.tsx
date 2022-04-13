@@ -61,10 +61,7 @@ const createEditorState = (
   return { editorState, nodeViews }
 }
 
-declare type EditorUpdate = EffectFunction<
-  (ProseMirrorExtension[] | EditorState<any>)[] | ({} | undefined)[] | undefined,
-  (ProseMirrorExtension[] | EditorState<any>)[] | undefined
->
+declare type EditorUpdate = EffectFunction<(ProseMirrorExtension[] | EditorState<any>)[] | undefined>
 
 export const ProseMirror = (props: Props) => {
   let editorRef = {} as HTMLDivElement
@@ -86,6 +83,7 @@ export const ProseMirror = (props: Props) => {
     const [prevText, prevExtensions] = state
     const text: EditorState = unwrap(props.text)
     const extensions: ProseMirrorExtension[] = unwrap(props.extensions)
+
     if (!text || !extensions?.length) return [text, extensions]
 
     if (!props.editorView) {
@@ -104,6 +102,7 @@ export const ProseMirror = (props: Props) => {
 
     if (extensions !== prevExtensions || (!(text instanceof EditorState) && text !== prevText)) {
       const { editorState, nodeViews } = createEditorState(text, extensions, prevText)
+
       if (!editorState) return
 
       editorView().updateState(editorState)
@@ -116,7 +115,9 @@ export const ProseMirror = (props: Props) => {
 
     return [text, extensions]
   }
-  createEffect(rerender as EditorUpdate, [props.text, props.extensions])
+
+  // eslint-disable-next-line solid/reactivity
+  createEffect(rerender as EffectFunction<any>, [props.text, props.extensions])
 
   return (
     <div

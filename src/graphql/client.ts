@@ -6,8 +6,9 @@ import {
   ssrExchange
 } from '@urql/core'
 import { devtoolsExchange } from '@urql/devtools'
-import { useClient } from 'solid-urql'
 import { cache } from './cache'
+import { createClient } from 'solid-urql'
+import { useStore } from '../store'
 
 const isClient = typeof window !== 'undefined'
 // The `ssrExchange` must be initialized with `isClient` and `initialState`
@@ -26,12 +27,16 @@ export const clientOptions: ClientOptions = {
   exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
 }
 
-export const authClient = (token: string) => {
-  let headers = {
-    'Content-Type': 'application/json',
-    Auth: token // TODO: test
-  }
-  const client = useClient()
+export const client = createClient({
+  ...clientOptions,
+  fetchOptions: () => {
+    const [{ token }] = useStore()
 
-  client.fetchOptions = { headers }
-}
+    return {
+      headers: {
+        'Content-Type': 'applications/json',
+        authorization: token?.length ? `Auth ${token}` : ''
+      }
+    }
+  }
+})

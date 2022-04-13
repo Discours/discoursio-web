@@ -1,4 +1,6 @@
-import { Accessor, createContext, createSignal, onMount, useContext } from 'solid-js'
+/* eslint-disable solid/reactivity */
+// see https://github.com/joshwilsonvu/eslint-plugin-solid/issues/18
+import { Accessor, createContext, createSignal, onMount, useContext, createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import mySession from '../graphql/q/my-session'
 import { createQuery, CreateQueryState } from 'solid-urql'
@@ -8,8 +10,7 @@ import signOut from '../graphql/q/sign-out'
 import { Topic, User } from '../graphql/types.gen'
 import signIn from '../graphql/q/sign-in'
 import topicsAll from '../graphql/q/topics-all'
-import { createClient, Provider as GProvider } from 'solid-urql'
-import { clientOptions } from '../graphql/client'
+import { client } from '../graphql/client'
 import mySubscribed from '../graphql/q/my-subscribed'
 
 type ModalType = '' | 'auth' | 'subscribe'
@@ -22,7 +23,7 @@ export interface Warning {
 }
 
 interface CommonStore {
-  readonly topics: Topic[]
+  readonly topics: { [key: string]: Topic }
   readonly currentUser: Partial<User>
   readonly loadingTopics: boolean
   readonly topicsSubscribed: string[]
@@ -97,6 +98,7 @@ export function StoreProvider(props: { children: any }) {
       setState({ ...state, token: localStorage.getItem('jwt') || '' })
 
       if (state.token) {
+        // eslint-disable-next-line no-shadow
         const [sessionData] = createQuery({ query: mySession, variables: { token: state.token } })
 
         setState({ session: sessionData(), token: state.token, handshaking: false })
@@ -157,26 +159,14 @@ export function StoreProvider(props: { children: any }) {
     if (state.token) actions.getSession()
 
     if (state.topics === {}) {
+      // eslint-disable-next-line no-shadow
       const [topicsData] = createQuery({ query: topicsAll })
 
       setState({ ...state, topics: topicsData() })
     }
-
-    if (loggedIn()) {
-      // TODO: set client auth
-    }
   })
 
-  return (
-    <GProvider
-      value={createClient({
-        ...clientOptions,
-        fetchOptions: () => (state.token ? { headers: { Authorization: `Bearer ${state.token}` } } : {})
-      })}
-    >
-      <StoreContextProvider value={[state as CommonStore, actions]} children={props.children} />
-    </GProvider>
-  )
+  return (<StoreContextProvider value={[state as CommonStore, actions]} children={props.children} />)
 }
 
 export function useStore() {

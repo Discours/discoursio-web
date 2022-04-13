@@ -1,7 +1,7 @@
 import { Component } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 
-const FourOhFour: Component<{}> = () => {
+const FourOhFour: Component<any> = () => {
   const [t] = useI18n()
 
   return (

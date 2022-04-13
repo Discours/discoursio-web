@@ -58,6 +58,13 @@ export interface Collab {
 
 export type LoadingType = 'loading' | 'initialized'
 
+export interface File {
+  text?: { [key: string]: any }
+  lastModified?: string
+  path?: string
+  markdown?: boolean
+}
+
 export interface State {
   text?: ProseMirrorState
   editorView?: any
@@ -74,13 +81,6 @@ export interface State {
   args?: Args
 }
 
-export interface File {
-  text?: { [key: string]: any }
-  lastModified?: string
-  path?: string
-  markdown?: boolean
-}
-
 export class ServiceError extends Error {
   public errorObject: ErrorObject
   constructor(id: string, props: unknown) {
@@ -88,6 +88,7 @@ export class ServiceError extends Error {
     this.errorObject = { id, props }
   }
 }
+
 const DEFAULT_CONFIG = {
   theme: '',
   // codeTheme: 'material-light',
@@ -105,8 +106,7 @@ const DEFAULT_CONFIG = {
   }
 }
 
-// @ts-ignore
-export const StateContext = createContext<[Store<State>, any]>([undefined, undefined])
+export const StateContext = createContext<[Store<State>, any]>([{} as Store<State>, undefined])
 
 export const useState = () => useContext(StateContext)
 

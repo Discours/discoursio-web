@@ -1,4 +1,5 @@
-import gql from 'graphql-tag'
+/* eslint-disable no-use-before-define */
+// import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -54,6 +55,7 @@ export type CommentResult = {
   error?: Maybe<Scalars['String']>
 }
 
+// eslint-disable-next-line no-shadow
 export enum CommentStatus {
   Deleted = 'DELETED',
   New = 'NEW',

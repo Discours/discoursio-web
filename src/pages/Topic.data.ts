@@ -7,7 +7,7 @@ export type TopicParams = {
   lang: string
 }
 
-export const TopicData: RouteDataFunc = (props) => {
+export const TopicData: RouteDataFunc = (args) => {
   const location = useLocation()
   const [, { locale }] = useI18n()
   const paramList = (): TopicParams => {
@@ -15,7 +15,7 @@ export const TopicData: RouteDataFunc = (props) => {
 
     return { lang }
   }
-  const [data, state] = createQuery({ query: topicArticles, variables: { topic: props.params.slug } })
+  const [data, state] = createQuery({ query: topicArticles, variables: { topic: args.params.slug } })
 
   return {
     get getArticles() {

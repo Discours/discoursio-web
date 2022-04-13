@@ -4,12 +4,23 @@ import { createQuery } from 'solid-urql'
 import topRecent from '../graphql/q/top-recent'
 import topOverall from '../graphql/q/top-overall'
 import topMonth from '../graphql/q/top-month'
+import { Shout } from '../graphql/types.gen'
 
 export type HomeParams = {
   lang?: string
 }
 
-export const HomeData: RouteDataFunc = () => {
+export interface HomeRouteData {
+  // topics: { [key: string]: Partial<Topic> }
+  // authors: { [key: string]: Partial<User> }
+  topRecent: Partial<Shout>[]
+  topMonth: Partial<Shout>[]
+  topOverall: Partial<Shout>[]
+  loading: boolean
+  params: HomeParams
+}
+
+export const HomeData: RouteDataFunc = (): HomeRouteData => {
   const location = useLocation()
   const [, { locale }] = useI18n()
   const paramList = (): HomeParams => {
@@ -35,7 +46,7 @@ export const HomeData: RouteDataFunc = () => {
       return recentState().fetching && topMonthState().fetching && topOverallState().fetching
     },
     get params() {
-      return paramList
+      return paramList()
     }
-  }
+  } as HomeRouteData
 }

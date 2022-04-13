@@ -7,6 +7,7 @@ const PageLoadingBar: Component<{
   const duration = 8000
   // delay property is not included, instead its within keyframes in order to work with Safari
   const animationName = 'Page-Loading-Bar'
+  // eslint-disable-next-line no-confusing-arrow
   const animationValue = () => (props.active ? `${animationName} ${duration}ms infinite` : 'none')
 
   return (

@@ -1,10 +1,9 @@
-import { defineConfig } from 'vite';
-import SolidJS from 'vite-plugin-solid';
-// import { VitePWA } from 'vite-plugin-pwa';
-import SolidSVG from 'vite-plugin-solid-svg';
-import manifest from './src/assets/manifest.json';
-import mdx from '@mdx-js/rollup';
-// import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from 'vite'
+import SolidJS from 'vite-plugin-solid'
+import SolidSVG from 'vite-plugin-solid-svg'
+import manifest from './src/assets/manifest.json'
+import mdx from '@mdx-js/rollup'
+import { VitePWA } from 'vite-plugin-pwa'
 
 const pwaOptions = {
   registerType: 'autoUpdate',
@@ -19,7 +18,7 @@ const pwaOptions = {
     'img/favicons/*.{png,ico}',
     'examples/*.json',
     'img/logo.png',
-    'img/logo/*/logo.*',
+    'img/logo/*/logo.*'
   ],
   manifest,
   workbox: {
@@ -36,10 +35,10 @@ const pwaOptions = {
           cacheName: 'unpkg-com',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
+            statuses: [0, 200]
           },
         },
       },
@@ -50,16 +49,16 @@ const pwaOptions = {
           cacheName: 'cdn-skypack-dev',
           expiration: {
             maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // <== 365 days
+            maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
           },
           cacheableResponse: {
-            statuses: [0, 200],
-          },
-        },
-      },
-    ],
-  },
-};
+            statuses: [0, 200]
+          }
+        }
+      }
+    ]
+  }
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -68,28 +67,28 @@ export default defineConfig({
       ...mdx({
         jsx: true,
         jsxImportSource: 'solid-js',
-        providerImportSource: 'solid-mdx',
+        providerImportSource: 'solid-mdx'
         // remarkPlugins: [remarkGfm],
       }),
       enforce: 'pre',
     },
     SolidJS({ extensions: ['.md', '.mdx'] }),
     SolidSVG(),
-    // TODO: update VitePWA(pwaOptions), pwaOptions
+    false && VitePWA(pwaOptions as any)
   ],
   optimizeDeps: {
     include: [],
-    exclude: [],
+    exclude: []
   },
   build: {
     polyfillDynamicImport: false,
-    target: 'esnext',
+    target: 'esnext'
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "src/styles/fonts";\n@import "src/styles/imports";\n`,
-      },
-    },
-  },
-});
+        additionalData: `@import "src/styles/fonts";\n@import "src/styles/imports";\n`
+      }
+    }
+  }
+})

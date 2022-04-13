@@ -1,17 +1,18 @@
 import { For, createSignal } from 'solid-js'
-import { Topic } from '../../graphql/types.gen'
+import { useStore } from '../../store'
 
-export default (props: { topics: Topic[] }) => {
+export default (props: { topics: string[] }) => {
   const [filterTopic, setFilterTopic] = createSignal()
+  const [state] = useStore()
 
   return (
     <nav class='subnavigation wide-container text-2xl'>
       <ul class='topics'>
         <For each={Array.from(props?.topics)}>
-          {(t: Topic) => (
-            <li class='item' classList={{ selected: filterTopic() === t.slug }}>
-              <a href={`/topic/${t.slug}`} onClick={() => setFilterTopic(t.slug || '')}>
-                <span classList={{ transparent: filterTopic() !== t.slug }}>#{t.title}</span>
+          {(t: string) => (
+            <li class='item' classList={{ selected: filterTopic() === t }}>
+              <a href={`/topic/${t}`} onClick={() => setFilterTopic(t || '')}>
+                <span classList={{ transparent: filterTopic() !== t }}>#{state.topics[t].title}</span>
               </a>
             </li>
           )}

@@ -9,15 +9,16 @@ import todoList from './extension/todo-list'
 import code from './extension/code'
 import strikethrough from './extension/strikethrough'
 import placeholder from './extension/placeholder'
-import menu from './extension/menu'
-import image from './extension/image'
+// import menu from './extension/menu'
+// import image from './extension/image'
 import dragHandle from './extension/drag-handle'
 import pasteMarkdown from './extension/paste-markdown'
 import table from './extension/table'
 import collab from './extension/collab'
 import { Config, YOptions } from './context'
+import selectionMenu from './extension/selection'
 
-interface Props {
+interface Opts {
   data?: unknown
   keymap?: any
   config: Config
@@ -27,9 +28,11 @@ interface Props {
   schema?: Schema
 }
 
-const customKeymap = (props: Props): ProseMirrorExtension => ({
-  plugins: (prev) => (props.keymap ? [...prev, keymap(props.keymap)] : prev)
+const customKeymap = (opts: Opts): ProseMirrorExtension => ({
+  // eslint-disable-next-line no-confusing-arrow
+  plugins: (prev) => (opts.keymap ? [...prev, keymap(opts.keymap)] : prev)
 })
+
 /*
 const codeMirrorKeymap = (props: Props) => {
   const keys = []
@@ -40,31 +43,32 @@ const codeMirrorKeymap = (props: Props) => {
   return cmKeymap.of(keys)
 }
 */
-export const createExtensions = (props: Props): ProseMirrorExtension[] =>
-  props.markdown
+// eslint-disable-next-line no-confusing-arrow
+export const createExtensions = (opts: Opts): ProseMirrorExtension[] => {
+  return opts.markdown
     ? [
-        placeholder('Просто начните...'),
-        customKeymap(props),
-        base(props.markdown),
-        // scroll(props.config.typewriterMode),
-        collab(props.y),
-        dragHandle()
-      ]
+      placeholder('Просто начните...'),
+      customKeymap(opts),
+      base(opts.markdown),
+      // scroll(props.config.typewriterMode),
+      collab(opts.y as YOptions),
+      dragHandle()
+    ]
     : [
-        menu(),
-        customKeymap(props),
-        base(props.markdown),
-        collab(props.y),
-        markdown(),
-        todoList(),
-        dragHandle(),
-        code(),
-        strikethrough(),
-        link(),
-        table(),
-        image(props.path),
-        pasteMarkdown()
-        /*
+      selectionMenu(),
+      customKeymap(opts),
+      base(opts.markdown),
+      collab(opts.y as YOptions),
+      markdown(),
+      todoList(),
+      dragHandle(),
+      code(),
+      strikethrough(),
+      link(),
+      table(),
+      // image(props.path), // TODO: image extension
+      pasteMarkdown()
+      /*
     codeBlock({
       theme: codeTheme(props.config),
       typewriterMode: props.config.typewriterMode,
@@ -73,7 +77,8 @@ export const createExtensions = (props: Props): ProseMirrorExtension[] =>
       extensions: () => [codeMirrorKeymap(props)],
     }),
     */
-      ]
+    ]
+}
 
 export const createEmptyText = () => ({
   doc: {
@@ -87,16 +92,11 @@ export const createEmptyText = () => ({
   }
 })
 
-export const createSchema = (props: Props) => {
-  const extensions = createExtensions({
-    config: props.config,
-    markdown: props.markdown,
-    path: props.path,
-    keymap: props.keymap,
-    y: props.y
-  })
+export const createSchema = (opts: Opts) => {
+  const extensions = createExtensions(opts)
 
   let schemaSpec = { nodes: {} }
+
   for (const extension of extensions) {
     if (extension.schema) {
       schemaSpec = extension.schema(schemaSpec)

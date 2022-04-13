@@ -1,17 +1,24 @@
 {
   "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "target": "ESNext",
-    "module": "ESNext",
+    "declaration": true,
     "moduleResolution": "node",
-    "jsxImportSource": "solid-js",
     "jsx": "preserve",
-    "types": ["vite/client"],
-    "lib": ["es5", "es6", "dom", "dom.iterable", "ES2021"],
-    "baseUrl": "./",
-    "paths": {
-      "~/*": ["./src/*"]
-    }
-  }
+    "resolveJsonModule": true,
+    "newLine": "lf",
+    "sourceMap": true,
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client", "vite-plugin-pwa/client"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"]
+  },
+  "include": ["./src/**/*", "vite.config.ts", "./scripts", "src/types.d.ts", "./e2e/*.ts"],
+  "exclude": ["node_modules/"]
 }

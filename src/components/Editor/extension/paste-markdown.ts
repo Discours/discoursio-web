@@ -1,19 +1,21 @@
 import { Plugin } from 'prosemirror-state'
 import { Fragment, Node, Schema, Slice } from 'prosemirror-model'
 import { ProseMirrorExtension } from '../state'
-import { createMarkdownParser } from '../../markdown'
+import { createMarkdownParser } from '../markdown'
 
-const URL_REGEX = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/g
+// eslint-disable-next-line
+const URL_REGEX = /(ftp|http|https):\/\/(\w+(?::\w*)?@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@\-/]))?/g
 
 const transform = (schema: Schema, fragment: Fragment) => {
-  const nodes = []
+  const nodes: Node<any>[] = []
+
   fragment.forEach((child: Node) => {
     if (child.isText) {
       let pos = 0
-      let match: any
+      let match: RegExpMatchArray | null
 
-      while ((match = URL_REGEX.exec(child.text)) !== null) {
-        const start = match.index
+      while ((match = URL_REGEX.exec(child.text as string)) !== null) {
+        const start = match.index as number
         const end = start + match[0].length
         const attrs = { href: match[0] }
 
@@ -22,11 +24,12 @@ const transform = (schema: Schema, fragment: Fragment) => {
         }
 
         const node = child.cut(start, end).mark(schema.marks.link.create(attrs).addToSet(child.marks))
+
         nodes.push(node)
         pos = end
       }
 
-      if (pos < child.text.length) {
+      if (pos < (child.text as string).length) {
         nodes.push(child.cut(pos))
       }
     } else {
@@ -41,26 +44,31 @@ let shiftKey = false
 
 const pasteMarkdown = (schema: Schema) => {
   const parser = createMarkdownParser(schema)
+
   return new Plugin({
     props: {
       handleDOMEvents: {
         keydown: (_, event) => {
           shiftKey = event.shiftKey
+
           return false
         },
         keyup: () => {
           shiftKey = false
+
           return false
         }
       },
       handlePaste: (view, event) => {
         if (!event.clipboardData) return false
+
         const text = event.clipboardData.getData('text/plain')
         const html = event.clipboardData.getData('text/html')
 
         // otherwise, if we have html then fallback to the default HTML
         // parser behavior that comes with Prosemirror.
         if (text.length === 0 || html) return false
+
         event.preventDefault()
 
         const paste = parser.parse(text)
@@ -69,6 +77,7 @@ const pasteMarkdown = (schema: Schema) => {
         const tr = view.state.tr.replaceSelection(new Slice(fragment, slice.openStart, slice.openEnd))
 
         view.dispatch(tr)
+
         return true
       }
     }

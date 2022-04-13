@@ -1,24 +1,24 @@
-import { Component, Show, createMemo, PropsWithChildren } from 'solid-js'
-import { useI18n } from '@solid-primitives/i18n'
+import { Component, Show, For } from 'solid-js'
+// import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { useAppContext } from '../AppContext'
-import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
+// import { useAppContext } from '../AppContext'
+// import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
+import { Shout, User } from '../graphql/types.gen'
+import MD from '../components/Article/MD'
 
 export const BlogArticle: Component = () => {
-  const [t] = useI18n()
+  //const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
     slug: string
-    details: BlogInfo
-    archive: boolean
-    article: MDXComponent
-    articles: { [id: string]: BlogInfo }
+    article: Partial<Shout>
+    comments?: Comment[]
   }>()
 
   useRouteReadyState()
-  const chevron = createMemo(() => (t('global.dir', {}, 'ltr') == 'rtl' ? 'chevron-right' : 'chevron-left'))
-  const context = useAppContext()
+  // const chevron = createMemo(() => (t('global.dir', {}, 'ltr') == 'rtl' ? 'chevron-right' : 'chevron-left'))
+  // const context = useAppContext()
 
   return (
     <div class='flex flex-col'>
@@ -31,37 +31,31 @@ export const BlogArticle: Component = () => {
             >
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
-                  <img class='rounded-md mb-10 shadow-md' src={data.details.img} />
+                  <img class='rounded-md mb-10 shadow-md' src={data.article.cover || ''} />
                   <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                    {data.details.title}
+                    {data.article.title}
                   </h1>
                   <div class='text-md'>
                     Posted by{' '}
-                    <a target='_blank' rel='noopener' href={data.details.author_url}>
-                      {data.details.author}
-                    </a>{' '}
-                    on {new Date(data.details.date).toDateString()}
+                    <For each={data.article.authors}>
+                      {(a: Partial<User>) => (
+                        <a target='_blank' rel='noopener' href={a.slug}>
+                          {a.username}
+                        </a>
+                      )}
+                    </For>
+                    {' '}
+                    on {new Date(data.article.createdAt || 0).toDateString()}
                   </div>
                 </div>
                 <hr class='mt-10 w-3/6 mx-auto' />
                 <article class='my-10 prose dark:prose-invert mx-auto'>
-                  <data.article
-                    components={{
-                      ListenNotesEpisode,
-                      Tweet: (props: PropsWithChildren) => (
-                        <Tweet {...props} theme={context.isDark ? 'dark' : 'light'}>
-                          {props.children}
-                        </Tweet>
-                      ),
-                      YouTube,
-                      Twitch
-                    }}
-                  />
+                  <MD body={data.article.body || ''} />
                 </article>
                 <hr class='mt-10 w-3/6 mx-auto' />
                 <div class='flex flex-row justify-center mt-10'>
                   <NavLink href='/blog'>
-                    <figure class={`inline-block chevron ${chevron()}`} /> Back to the SolidJS Blog
+                    <figure class={`inline-block`} /> Back
                   </NavLink>
                 </div>
               </div>

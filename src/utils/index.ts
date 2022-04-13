@@ -17,9 +17,9 @@ export const capitalize = (s: string, firstonly = false) => {
   const r = firstonly
     ? s.charAt(0).toUpperCase() + s.slice(1)
     : s
-        .split(' ')
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ')
+      .split(' ')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')
 
   // console.debug(r)
   return r

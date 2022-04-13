@@ -32,16 +32,17 @@ const blockquoteSchema = {
 }
 
 export default (plain = false): ProseMirrorExtension => ({
+  // eslint-disable-next-line no-confusing-arrow
   schema: () =>
     plain
       ? {
-          nodes: plainSchema.spec.nodes,
-          marks: plainSchema.spec.marks
-        }
+        nodes: plainSchema.spec.nodes,
+        marks: plainSchema.spec.marks
+      }
       : {
-          nodes: (markdownSchema.spec.nodes as any).update('blockquote', blockquoteSchema),
-          marks: markdownSchema.spec.marks
-        },
+        nodes: (markdownSchema.spec.nodes as any).update('blockquote', blockquoteSchema),
+        marks: markdownSchema.spec.marks
+      },
   plugins: (prev, schema) => [
     ...prev,
     keymap({
