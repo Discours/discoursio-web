@@ -48,15 +48,10 @@ const createEditorState = (
     }
   }
 
-  let editorState: EditorState = EditorState.fromJSON({ schema, plugins }, { text: '' })
+  let editorState: EditorState
 
-  if (reconfigure) {
-    editorState = text.reconfigure({ schema, plugins })
-  } else if (text instanceof EditorState) {
-    editorState = EditorState.fromJSON({ schema, plugins }, text.toJSON())
-  } else {
-    editorState = EditorState.fromJSON({ schema, plugins }, { text })
-  }
+  if (reconfigure) editorState = text.reconfigure({ schema, plugins })
+  else editorState = EditorState.fromJSON({ schema, plugins }, text as { [key:string]: any })
 
   return { editorState, nodeViews }
 }

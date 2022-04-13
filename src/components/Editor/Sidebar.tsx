@@ -22,6 +22,7 @@ const Link = (
   <button
     class={`sidebar-link${props.className ? ` ${props.className}` : ''}`}
     style={{ marginBottom: props.withMargin ? '10px' : '' }}
+    // eslint-disable-next-line solid/reactivity
     onClick={props.onClick}
     disabled={props.disabled}
     title={props.title}
@@ -128,6 +129,7 @@ export default () => {
     const text = () => p.file.path ? p.file.path.substring(p.file.path.length - length) : getContent(p.file.text?.doc)
 
     return (
+      // eslint-disable-next-line solid/no-react-specific-props
       <Link className='file' onClick={() => onOpenFile(p.file)} data-testid='open'>
         {text()} {p.file.path && '📎'}
       </Link>
@@ -196,10 +198,10 @@ export default () => {
             </Link>
             <Link
               onClick={onDiscard}
-              disabled={!store.path && store.files.length === 0 && isEmpty(store.text)}
+              disabled={!store.path && store.files?.length === 0 && isEmpty(store.text)}
               data-testid='discard'
             >
-              {store.path ? 'Close' : store.files.length > 0 && isEmpty(store.text) ? 'Delete ⚠️' : 'Clear'}{' '}
+              {store.path ? 'Close' : store.files?.length > 0 && isEmpty(store.text) ? 'Delete ⚠️' : 'Clear'}{' '}
               <Keys keys={[mod, 'w']} />
             </Link>
             <Show when={isTauri}>
@@ -224,7 +226,7 @@ export default () => {
             </Link>
             <Link onClick={onCopyAllAsMd}>Copy all as MD {lastAction() === 'copy-md' && '📋'}</Link>
 */}
-            <Show when={store.files.length > 0}>
+            <Show when={store.files?.length > 0}>
               <h4>Files:</h4>
               <p>
                 <For each={store.files}>{(file) => <FileLink file={file} />}</For>

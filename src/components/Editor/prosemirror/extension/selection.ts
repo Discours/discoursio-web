@@ -1,4 +1,5 @@
-import { renderGrouped } from 'prosemirror-menu'
+import { MenuItem, renderGrouped } from 'prosemirror-menu'
+import { Schema } from 'prosemirror-model'
 import { Plugin } from 'prosemirror-state'
 import { ProseMirrorExtension } from '../state'
 import { buildMenuItems } from './menu'
@@ -6,11 +7,14 @@ import { buildMenuItems } from './menu'
 export class SelectionTooltip {
   tooltip: any
 
-  constructor(view: any, schema: any) {
+  constructor(view: any, schema: Schema) {
     this.tooltip = document.createElement('div')
     this.tooltip.className = 'tooltip'
     view.dom.parentNode.appendChild(this.tooltip)
-    const { dom } = renderGrouped(view, (buildMenuItems(schema) as any).fullMenu)
+    const content: MenuItem<any> = (buildMenuItems(schema) as {[key:string]: MenuItem<any>})?.fullMenu
+
+    console.debug(content)
+    const { dom } = renderGrouped(view, content as any)
 
     this.tooltip.appendChild(dom)
     this.update(view, null)
