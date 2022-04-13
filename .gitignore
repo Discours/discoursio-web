@@ -4,7 +4,7 @@ worker
 .output
 .vercel
 .netlify
-public
+
 # dependencies
 /node_modules
 public/assets

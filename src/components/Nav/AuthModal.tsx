@@ -22,7 +22,8 @@ const titles = {
 
 export default (props: { code?: string; mode?: string }) => {
   const [mode, setMode] = createSignal<AuthMode>('sign-in')
-  const [state, { hideModal, warn, signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useStore()
+  const [state, { hideModal, warn, signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] =
+    useStore()
   // TODO: notifications destroy timeout
 
   const oauth = (provider: string) => {
@@ -45,42 +46,44 @@ export default (props: { code?: string; mode?: string }) => {
       console.log(check)
 
       switch (mode()) {
-      case 'sign-up':
-        if (check)
-        {warn({
-          body: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться',
-          kind: 'error'
-        })}
+        case 'sign-up':
+          if (check) {
+            warn({
+              body: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться',
+              kind: 'error'
+            })
+          }
 
-        // TODO: validation status on form
-        break
-      case 'sign-in':
-        if (!check)
-        {warn({
-          body: 'Такой адрес не найден, попробуйте зарегистрироваться',
-          kind: 'error'
-        })}
+          // TODO: validation status on form
+          break
+        case 'sign-in':
+          if (!check) {
+            warn({
+              body: 'Такой адрес не найден, попробуйте зарегистрироваться',
+              kind: 'error'
+            })
+          }
 
-        break
-      default:
-        console.log('auth: passing email check')
+          break
+        default:
+          console.log('auth: passing email check')
       }
     }
 
     switch (mode()) {
-    case 'sign-in':
-      signIn(emailElement.value, passElement.value)
-      break
-    case 'sign-up':
-      if (pass2Element.value !== passElement.value) warn({ body: 'Пароли не совпадают', kind: 'error' })
-      else signUp(usernameElement.value, emailElement.value, passElement.value)
+      case 'sign-in':
+        signIn(emailElement.value, passElement.value)
+        break
+      case 'sign-up':
+        if (pass2Element.value !== passElement.value) warn({ body: 'Пароли не совпадают', kind: 'error' })
+        else signUp(usernameElement.value, emailElement.value, passElement.value)
 
-      break
-    case 'reset':
-      // TODO: implement, resend, forget
-      break
-    default:
-      state.handshaking = false
+        break
+      case 'reset':
+        // TODO: implement, resend, forget
+        break
+      default:
+        state.handshaking = false
     }
   }
 
@@ -122,9 +125,7 @@ export default (props: { code?: string; mode?: string }) => {
             </Show>
           </div>
           <div class='auth-info'>
-            <For each={state.warnings}>
-              {(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}
-            </For>
+            <For each={state.warnings}>{(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}</For>
           </div>
           <Show when={props.mode !== 'reset' && props.mode !== 'password'}>
             <input autocomplete='username' ref={emailElement} type='text' placeholder='Почта' />

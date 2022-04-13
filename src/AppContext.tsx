@@ -72,7 +72,7 @@ export const AppContextProvider: Component<any> = (props) => {
       <I18nContext.Provider value={i18n}>
         <Title>{t('global.title', {}, 'discours.io')}</Title>
         <Meta name='lang' content={locale()} />
-        <div dir={t('global.dir', {}, 'ltr')}>{props.children}</div>
+        <div>{props.children}</div>
       </I18nContext.Provider>
     </AppContext.Provider>
   )

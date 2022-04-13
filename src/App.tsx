@@ -7,13 +7,24 @@ import Footer from './components/Discours/Footer'
 import { AppContextProvider } from './AppContext'
 import { preventSmoothScrollOnTabbing } from './utils'
 import { StoreProvider } from './store'
-import { Provider as GraphqlProvider } from 'solid-urql'
-import { client } from './graphql/client'
+import { Provider as GraphqlProvider, createClient } from 'solid-urql'
+import { clientOptions  } from './graphql/client'
+import { useStore } from './store'
+
+const client = createClient(clientOptions)
 
 export const App = () => {
   const Routes = useRoutes(routes)
 
   preventSmoothScrollOnTabbing()
+  const [{ token }] = useStore()
+
+  if (token?.length) {
+    let headers: { [key: string]: string } = { 'Content-Type': 'application/json' }
+
+    headers.authorization = `Auth ${token}`
+    client.fetchOptions = { headers }
+  }
 
   return (
     <main class='min-h-screen'>

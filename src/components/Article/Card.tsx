@@ -1,43 +1,58 @@
 import { For, Show } from 'solid-js/web'
-import { Topic, User } from '~/lib/graphql/types.gen'
+import { Shout, Topic, User } from '../../graphql/types.gen'
 import Icon from '../Nav/Icon'
 import './Card.scss'
-export default (props) => {
+
+interface CardProps {
+  settings?: {
+    noicon?: boolean
+    noimage?: boolean
+    nosubtitle?: boolean
+    isGroup?: boolean
+    photoBottom?: boolean
+    additionalClass?: boolean
+  }
+  article: Partial<Shout>
+}
+
+export default (props: CardProps) => {
   // eslint-disable-next-line solid/reactivity
-  const { noicon, noimage, nosubtitle, isGroup, photoBottom, additionalClass } = props.settings
+  const { settings, article } = props
 
   return (
     <section
       class='shout-card'
       classList={{
-        'shout-card--short': noimage,
-        'shout-card--photo-bottom': noimage && photoBottom,
-        additionalClass
+        'shout-card--short': settings?.noimage,
+        'shout-card--photo-bottom': settings?.noimage && settings?.photoBottom,
+        additionalClass: settings?.additionalClass
       }}
     >
-      <Show when={!noimage}>
+      <Show when={!settings?.noimage}>
         <div class='shout-card__cover-container'>
           <div class='shout-card__cover'>
-            <img src={props.article.cover} alt={props.article.title} loading='lazy' />
+            <img src={article.cover || ''} alt={article.title || ''} loading='lazy' />
           </div>
         </div>
       </Show>
 
       <div class='shout-card__content'>
-        <Show when={props.article.layout && props.article.layout !== 'article' && !(noicon || noimage)}>
+        <Show
+          when={article.layout && article.layout !== 'article' && !(settings?.noicon || settings?.noimage)}
+        >
           <div class='shout-card__type'>
             <a
               href={`/topic/${
-                props.article.topics.filter((t) => props.article.mainTopic === t.slug)[0].slug
+                (article.topics as Topic[]).filter((t) => article.mainTopic === t.slug)[0].slug
               }`}
             >
-              <Icon name={props.article.layout} />
+              <Icon name={article.layout} />
             </a>
           </div>
         </Show>
 
-        <Show when={!isGroup}>
-          <For each={props.article.topics.filter((t) => props.article.mainTopic === t.slug)}>
+        <Show when={!settings?.isGroup}>
+          <For each={(article.topics as Topic[]).filter((t: Topic) => article.mainTopic === t.slug)}>
             {(topic: Topic) => (
               <div class='shout__topic'>
                 <a href={`/topic/${topic.slug}`}>{topic.title}</a>
@@ -47,18 +62,18 @@ export default (props) => {
         </Show>
 
         <div class='shout-card__title'>
-          <a href={`/${props.article.slug}`}>{props.article.title}</a>
+          <a href={`/${article.slug}`}>{article.title}</a>
         </div>
 
-        <Show when={!nosubtitle && props.article.subtitle}>
+        <Show when={!settings?.nosubtitle && article.subtitle}>
           <div class='shout-card__subtitle'>{props.article.subtitle}</div>
         </Show>
 
         <div class='shout__author'>
-          <For each={props.article.authors}>
+          <For each={article.authors}>
             {(a: Partial<User>) => (
               <>
-                <Show when={props.article.authors.indexOf(a) > 0}>, </Show>
+                <Show when={(article.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
                 <a href={`/@${a.slug}`}>{a.name}</a>
               </>
             )}

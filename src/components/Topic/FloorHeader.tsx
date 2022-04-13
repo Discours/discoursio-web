@@ -1,6 +1,7 @@
+import { Topic } from '../../graphql/types.gen'
 import Icon from '../Nav/Icon'
 import './FloorHeader.scss'
-export default (props) => {
+export default (props: { topic: Topic; color: string }) => {
   // topic, color
   return (
     <>

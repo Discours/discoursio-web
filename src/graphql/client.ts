@@ -26,16 +26,3 @@ export const clientOptions: ClientOptions = {
   },
   exchanges: [/*devtoolsExchange,*/ dedupExchange, cache, ssrCache, fetchExchange]
 }
-
-export const client = createClient({
-  ...clientOptions,
-  fetchOptions: () => {
-    const [{ token }] = useStore()
-    let headers: { [key: string]: string } = { 'Content-Type': 'application/json' }
-
-    // eslint-disable-next-line dot-notation
-    if (token?.length) headers['Authorization'] = `Auth ${token}`
-
-    return { headers }
-  }
-})

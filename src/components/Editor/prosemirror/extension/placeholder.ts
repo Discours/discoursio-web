@@ -8,6 +8,7 @@ const placeholder = (text: string) =>
       decorations(state) {
         if (isEmpty(state)) {
           const div = document.createElement('div')
+
           div.setAttribute('contenteditable', 'false')
           div.classList.add('placeholder')
           div.textContent = text

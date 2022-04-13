@@ -33,12 +33,17 @@ export const routes: RouteDefinition[] = [
       candidates: CandidatesData
     })
   },
+  */
+  {
+    path: '/create',
+    component: lazy(() => import('./pages/Create'))
+    // TODO: data: EditorData,
+  },
   {
     path: '/topics',
-    component: lazy(() => import('./pages/AllTopics')),
-    data: AllTopicsData,
+    component: lazy(() => import('./pages/AllTopics'))
+    // TODO: data: AllTopicsData,
   },
-  */
   {
     path: '/topic/:slug',
     component: lazy(() => import('./pages/Topic')),
