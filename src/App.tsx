@@ -27,27 +27,25 @@ export const App = () => {
   }
 
   return (
-    <main class='min-h-screen'>
-      <Router>
-        <AppContextProvider>
-          <StoreProvider>
-            <GraphqlProvider value={client}>
-              <Header />
-              {/* two div wrappers to make page animation work and performant */}
-              <div id='main-content'>
-                <div>
-                  {/* <TransitionRoutes> */}
-                  <Suspense>
-                    <Routes />
-                  </Suspense>
-                  {/* </TransitionRoutes> */}
-                </div>
+    <Router>
+      <AppContextProvider>
+        <StoreProvider>
+          <GraphqlProvider value={client}>
+            <Header />
+            {/* two div wrappers to make page animation work and performant */}
+            <div id='main-content'>
+              <div>
+                {/* <TransitionRoutes> */}
+                <Suspense>
+                  <Routes />
+                </Suspense>
+                {/* </TransitionRoutes> */}
               </div>
-              <Footer />
-            </GraphqlProvider>
-          </StoreProvider>
-        </AppContextProvider>
-      </Router>
-    </main>
+            </div>
+            <Footer />
+          </GraphqlProvider>
+        </StoreProvider>
+      </AppContextProvider>
+    </Router>
   )
 }

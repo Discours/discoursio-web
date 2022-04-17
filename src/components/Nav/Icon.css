@@ -7,13 +7,15 @@ img {
 }
 .counter {
   background-color: red;
+  border-radius: 1rem;
+  color: #fff;
   font-size: 1rem;
   font-weight: 700;
-  color: white;
+  height: 1.5em;
+  line-height: 1.5em;
   position: absolute;
-  width: 1rem;
+  right: -0.5rem;
   text-align: center;
   top: -0.5rem;
-  right: -0.5rem;
-  border-radius: 1rem;
+  width: 1.5em;
 }

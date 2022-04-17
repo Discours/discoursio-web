@@ -12,7 +12,7 @@ export type Styled = {
 export const Layout = (props: Styled) => {
   return (
     // eslint-disable-next-line solid/reactivity
-    <div onMouseEnter={props.onMouseEnter} class='layout' data-testid={props['data-testid']}>
+    <div onMouseEnter={props.onMouseEnter} class='layout layout--editor' data-testid={props['data-testid']}>
       {props.children}
     </div>
   )

@@ -1,58 +1,46 @@
 .editor {
+  flex: 1;
   padding-top: 1em;
-}
 
-a {
-  color: rgb(0, 100, 200);
-  text-decoration: none;
-}
+  label {
+    display: block;
+  }
 
-a:hover {
-  text-decoration: underline;
-}
+  input,
+  button,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    -webkit-padding: 0.4em 0;
+    padding: 0.4em;
+    margin: 0 0 0.5em 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
 
-a:visited {
-  color: rgb(0, 80, 160);
-}
+  input:disabled {
+    color: #ccc;
+  }
 
-label {
-  display: block;
-}
+  button {
+    color: #333;
+    background-color: #f4f4f4;
+    outline: none;
+  }
 
-input,
-button,
-select,
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  -webkit-padding: 0.4em 0;
-  padding: 0.4em;
-  margin: 0 0 0.5em 0;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-}
+  button:disabled {
+    color: #999;
+  }
 
-input:disabled {
-  color: #ccc;
-}
+  button:not(:disabled):active {
+    background-color: #ddd;
+  }
 
-button {
-  color: #333;
-  background-color: #f4f4f4;
-  outline: none;
-}
-
-button:disabled {
-  color: #999;
-}
-
-button:not(:disabled):active {
-  background-color: #ddd;
-}
-
-button:focus {
-  border-color: #666;
+  button:focus {
+    border-color: #666;
+  }
 }
 
 .ProseMirror {

@@ -1,4 +1,4 @@
-.layout {
+.layout--editor {
   display: flex;
   font-family: 'Muller';
   font-size: 18px;
@@ -6,6 +6,7 @@
   color: var(--foreground);
   border-color: var(--background);
   min-height: 100vh;
+  margin-top: -2.2rem !important;
 
   &.dark {
     background: var(--foreground);
