@@ -1,4 +1,4 @@
-import { createComputed, createSignal } from 'solid-js'
+import { createComputed, createSignal, Show } from 'solid-js'
 import { For } from 'solid-js/web'
 import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
@@ -18,7 +18,7 @@ export default (props: { articles: Partial<Shout>[] }) => {
       <div class='wide-container row'>
         <For each={props.articles}>
           {(a, i) => {
-            return (
+            return (<Show when={!!a}>
               <div class={`col-md-${x[y()][i()]}`}>
                 <ArticleCard
                   article={a}
@@ -27,10 +27,9 @@ export default (props: { articles: Partial<Shout>[] }) => {
                   }}
                 />
               </div>
-            )
+              </Show>)
           }}
         </For>
       </div>
-    </div>
-  )
+    </div>)
 }

@@ -1,5 +1,5 @@
 import { Component, Show, For } from 'solid-js'
-// import { useI18n } from '@solid-primitives/i18n'
+import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
@@ -8,7 +8,7 @@ import { Shout, User } from '../graphql/types.gen'
 import MD from '../components/Article/MD'
 
 export const BlogArticle: Component = () => {
-  //const [t] = useI18n()
+  const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
     slug: string
@@ -26,14 +26,14 @@ export const BlogArticle: Component = () => {
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
             <Show
-              fallback={<div class='text-center p-10 m-10'>Loading article...</div>}
-              when={!data.loading}
+              fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
+              when={!data.loading && !!data.article}
             >
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
-                  <img class='rounded-md mb-10 shadow-md' src={data.article.cover || ''} />
+                  <img class='rounded-md mb-10 shadow-md' src={data.article?.cover || ''} />
                   <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                    {data.article.title}
+                    {data.article?.title || ''}
                   </h1>
                   <div class='text-md'>
                     Posted by{' '}

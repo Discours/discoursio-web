@@ -1,22 +1,22 @@
-import { Component, Show, PropsWithChildren } from 'solid-js'
-// import { useI18n } from '@solid-primitives/i18n';
+import { Component, Show, /* PropsWithChildren, */ For } from 'solid-js'
+import { useI18n } from '@solid-primitives/i18n';
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { useAppContext } from '../AppContext'
-import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
+// import { useAppContext } from '../AppContext'
+// import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social' 
+import { Shout, User } from '../graphql/types.gen'
+import ArticleFull from '../components/Article/Full'
 
 export const AboutArticle: Component = () => {
-  // const [t] = useI18n();
+  const [t] = useI18n();
   const data = useRouteData<{
     loading: boolean
     slug: string
-    details: BlogInfo
-    archive: boolean
-    article: MDXComponent
+    article: Partial<Shout>
   }>()
 
   useRouteReadyState()
-  const context = useAppContext()
+  // const context = useAppContext()
 
   return (
     <div class='flex flex-col'>
@@ -24,37 +24,30 @@ export const AboutArticle: Component = () => {
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
             <Show
-              fallback={<div class='text-center p-10 m-10'>Loading article...</div>}
+              fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
               when={!data.loading}
             >
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
-                  <img class='rounded-md mb-10 shadow-md' src={data.details.img} />
+                  <img class='rounded-md mb-10 shadow-md' src={data.article.cover || ''} />
                   <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                    {data.details.title}
+                    {data.article.title}
                   </h1>
                   <div class='text-md'>
-                    Posted by{' '}
-                    <a target='_blank' rel='noopener' href={data.details.author_url}>
-                      {data.details.author}
-                    </a>{' '}
-                    on {new Date(data.details.date).toDateString()}
+                    {t('Authors') + ' '}
+                    <For each={data.article?.authors}>
+                      {(a: Partial<User>) => (
+                        <a target='_blank' rel='noopener' href={a.slug}>
+                          {a.name}
+                        </a>
+                      )}
+                    </For>
+                    {' '} {new Date(data.article.createdAt).toDateString()}
                   </div>
                 </div>
                 <hr class='mt-10 w-3/6 mx-auto' />
                 <article class='my-10 prose dark:prose-invert mx-auto'>
-                  <data.article
-                    components={{
-                      ListenNotesEpisode,
-                      Tweet: (props: PropsWithChildren) => (
-                        <Tweet {...props} theme={context.isDark ? 'dark' : 'light'}>
-                          {props.children}
-                        </Tweet>
-                      ),
-                      YouTube,
-                      Twitch
-                    }}
-                  />
+                  <ArticleFull article={data.article} />
                 </article>
                 <hr class='mt-10 w-3/6 mx-auto' />
                 <div class='flex flex-row justify-center mt-10'>

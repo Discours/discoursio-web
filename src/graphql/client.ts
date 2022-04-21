@@ -3,12 +3,14 @@ import {
   dedupExchange,
   fetchExchange,
   // RequestPolicy,
-  ssrExchange
+  ssrExchange,
+  type Client
 } from '@urql/core'
 import { devtoolsExchange } from '@urql/devtools'
 import { cache } from './cache'
 import { createClient } from 'solid-urql'
-import { useStore } from '../store'
+import { createContext, useContext } from 'solid-js'
+// import { useStore } from '../store'
 
 const isClient = typeof window !== 'undefined'
 // The `ssrExchange` must be initialized with `isClient` and `initialState`
@@ -19,10 +21,19 @@ const ssrCache = ssrExchange({
 
 export const baseUrl = 'https://newapi.discours.io'
 export const clientOptions: ClientOptions = {
-  url: `${baseUrl}/graphql`,
+  url: `${baseUrl}`,
   requestPolicy: 'cache-and-network',
   fetchOptions: {
     credentials: 'include'
   },
-  exchanges: [/*devtoolsExchange,*/ dedupExchange, cache, ssrCache, fetchExchange]
+  exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
+}
+
+
+
+const client = createClient(clientOptions)
+const ClientContext = createContext<Client>(client)
+
+export function useClient() {
+  return useContext(ClientContext)
 }

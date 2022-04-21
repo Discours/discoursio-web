@@ -7,15 +7,14 @@ import Footer from './components/Discours/Footer'
 import { AppContextProvider } from './AppContext'
 import { preventSmoothScrollOnTabbing } from './utils'
 import { StoreProvider } from './store'
-import { Provider as GraphqlProvider, createClient } from 'solid-urql'
-import { clientOptions  } from './graphql/client'
+import { Provider as GraphqlProvider } from 'solid-urql'
+import { useClient } from './graphql/client'
 import { useStore } from './store'
 
-const client = createClient(clientOptions)
 
 export const App = () => {
   const Routes = useRoutes(routes)
-
+  const client = useClient()
   preventSmoothScrollOnTabbing()
   const [{ token }] = useStore()
 

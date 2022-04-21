@@ -1,5 +1,5 @@
 import { Component, Show, For } from 'solid-js'
-// import { useI18n } from '@solid-primitives/i18n'
+import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
@@ -9,7 +9,7 @@ import MD from '../components/Article/MD'
 
 // FIXME: it is a copy of BlogArticle
 export const BlogTopic: Component = () => {
-  // const [t] = useI18n()
+  const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
     slug?: string
@@ -27,7 +27,7 @@ export const BlogTopic: Component = () => {
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
             <Show
-              fallback={<div class='text-center p-10 m-10'>Loading articles...</div>}
+              fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
               when={!data.loading}
             >
               <For each={data.articles}>

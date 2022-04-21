@@ -8,6 +8,8 @@ import { Shout } from '../graphql/types.gen'
 
 export type HomeParams = {
   lang?: string
+  size?: number
+  page?: number
 }
 
 export interface HomeRouteData {
@@ -20,27 +22,31 @@ export interface HomeRouteData {
   params: HomeParams
 }
 
+const START = 1
+
 export const HomeData: RouteDataFunc = (): HomeRouteData => {
   const location = useLocation()
   const [, { locale }] = useI18n()
   const paramList = (): HomeParams => {
     const lang = location.query.locale ? (location.query.locale as string) : locale()
-
-    return { lang }
+    const page = location.query.page ? (parseInt(location.query.page) as number) : START
+    const size = location.query.size ? (parseInt(location.query.size) as number) : 50
+    return { lang, page, size  }
   }
-  const [topRecentData, recentState] = createQuery({ query: topRecent })
-  const [topMonthData, topMonthState] = createQuery({ query: topMonth })
-  const [topOverallData, topOverallState] = createQuery({ query: topOverall })
+  const { page, size } = paramList()
+  const [topRecentData, recentState] = createQuery({ query: topRecent, variables: { page: page || START, size } })
+  const [topMonthData, topMonthState] = createQuery({ query: topMonth, variables: { page: START, size: 10 }  })
+  const [topOverallData, topOverallState] = createQuery({ query: topOverall, variables: { page: START, size: 10 }  })
 
   return {
     get topRecent() {
-      return topRecentData()
+      return topRecentData()?.recents || []
     },
     get topMonth() {
-      return topMonthData()
+      return topMonthData()?.topMonth || []
     },
     get topOverall() {
-      return topOverallData()
+      return topOverallData()?.topOverall || []
     },
     get loading() {
       return recentState().fetching && topMonthState().fetching && topOverallState().fetching

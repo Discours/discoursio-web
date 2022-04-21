@@ -81,6 +81,7 @@ export const Home: Component = () => {
 
   onMount(() => {
     // post load
+    console.debug(data.topRecent)
     data.topRecent?.forEach(postLoad)
     data.topMonth?.forEach(postLoad)
     data.topOverall?.forEach(postLoad)
