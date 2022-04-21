@@ -1,8 +1,7 @@
 import { useRouteData } from 'solid-app-router'
 import { createComputed, createSignal } from 'solid-js'
-export const page = {
-  scrollY: 0
-}
+
+export const page = { scrollY: 0 }
 
 export const [routeReadyState, setRouteReadyState] = createSignal(
   {

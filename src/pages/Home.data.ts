@@ -31,6 +31,7 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     const lang = location.query.locale ? (location.query.locale as string) : locale()
     const page = location.query.page ? (parseInt(location.query.page) as number) : START
     const size = location.query.size ? (parseInt(location.query.size) as number) : 50
+
     return { lang, page, size  }
   }
   const { page, size } = paramList()

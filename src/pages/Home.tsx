@@ -86,14 +86,14 @@ export const Home: Component = () => {
     data.topMonth?.forEach(postLoad)
     data.topOverall?.forEach(postLoad)
 
-    // const goodTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
+    randomTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4).map((f) => f[0]) // 4 in the floor
 
-    // randomTopics = shuffle(goodTopics.map((f) => f[0]))
+    // randomTopics = shuffle(goodTopics)
 
     // console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
 
     // randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
-    // console.debug(`mainpage: ${randomLayout} layout selected`)
+    console.debug(`mainpage: ${randomLayout} layout selected`)
     console.debug('home: mounted')
   })
 

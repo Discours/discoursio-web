@@ -3,7 +3,7 @@ import { useI18n } from '@solid-primitives/i18n';
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
-// import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social' 
+// import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
 import { Shout, User } from '../graphql/types.gen'
 import ArticleFull from '../components/Article/Full'
 
@@ -34,7 +34,7 @@ export const AboutArticle: Component = () => {
                     {data.article.title}
                   </h1>
                   <div class='text-md'>
-                    {t('Authors') + ' '}
+                    {`${t('Authors')  } `}
                     <For each={data.article?.authors}>
                       {(a: Partial<User>) => (
                         <a target='_blank' rel='noopener' href={a.slug}>

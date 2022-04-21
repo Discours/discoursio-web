@@ -27,7 +27,7 @@ export const BlogArticle: Component = () => {
           <div class='space-y-10 px-4 lg:px-0'>
             <Show
               fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
-              when={!data.loading && !!data.article}
+              when={!data.loading && Boolean(data.article)}
             >
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>

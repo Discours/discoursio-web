@@ -13,10 +13,6 @@ export const routes: RouteDefinition[] = [
     data: HomeData
   },
   {
-    path: "/graphql",
-    component: lazy(() => import("./pages/404"))
-  },
-  {
     path: '/:slug',
     component: lazy(() => import('./pages/Article')),
     data: ArticleData

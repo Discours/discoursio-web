@@ -29,8 +29,6 @@ export const clientOptions: ClientOptions = {
   exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
 }
 
-
-
 const client = createClient(clientOptions)
 const ClientContext = createContext<Client>(client)
 

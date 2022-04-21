@@ -1,44 +1,43 @@
-import { capitalize } from '~/lib/utils'
+import { capitalize } from '../../utils'
 import './Full.scss'
 import MD from './MD'
 import Icon from '../Nav/Icon'
 import ArticleComment from './Comment'
 import AuthorCard from '../Author/Card'
-import { For, Show, createSignal, onMount } from 'solid-js'
-import { Comment, Topic } from '~/lib/graphql/types.gen'
-import { useStore } from '~/store'
+import { For, Show } from 'solid-js'
+import { Comment, Maybe, Shout, Topic, User } from '../../graphql/types.gen'
+import { useStore } from '../../store'
+import { useI18n } from '@solid-primitives/i18n'
 
 function subscribe(slug: string, arg1: string) {
   throw new Error('Function not implemented.')
 }
 
 const deepest = 6
-let commentElement
-const getCommentLevel = (c, level = 0) => {
-  if (c && c.replyTo && level < deepest) {
-    level += 1
 
-    return 0 // FIXME: getCommentLevel(commentsById[c.replyTo], level)
+interface ArticleProps {
+  article: Partial<Shout>
+  comments?: Comment[]
+}
+
+export default (props: ArticleProps) => {
+  const [t] = useI18n()
+  const [{ currentUser, modal, token },
+    { showModal, }] = useStore()
+
+  let commentElement
+  const getCommentLevel = (c: Comment, level = 0) => {
+    if (c && c.replyTo && level < deepest) {
+      level += 1
+
+      return 0 // FIXME: getCommentLevel(commentsById[c.replyTo], level)
+    }
+
+    return level
   }
 
-  return level
-}
-let article
-const token = ''
-let mainTopic: Topic
-let canEdit = false
-const subscribedArticles = []
-let session
-
-export default (props) => {
-  const [modal, setModal] = createSignal('')
-  const store = useStore()
-  const { currentUser } = store[0]
-
-  onMount(async () => {
-    mainTopic = props.article.topics.find((item) => item.slug === props.article.mainTopic)
-    canEdit = Boolean(props.article.authors.find((a) => a.slug === session.slug)) // FIXME
-  })
+  const mainTopic = () => props.article?.topics?.find((item: Maybe<Topic>) => Boolean(item?.slug === props.article?.mainTopic))
+  const canEdit = () => Boolean(props.article?.authors?.find((a: Partial<User>) => a.slug === currentUser.slug)) // FIXME
 
   return (
     <div class='article'>
@@ -47,19 +46,19 @@ export default (props) => {
           <article class='col-md-6 offset-md-3'>
             <div class='article__header'>
               <div class='article__topic'>
-                <a href={`/topic/${mainTopic.slug}`}>#{mainTopic.title.replace(' ', '&nbsp;')}</a>
+                <a href={`/topic/${mainTopic()?.slug}`}>#{mainTopic()?.title?.replace(' ', '&nbsp;')}</a>
               </div>
 
               <h1>{props.article.title}</h1>
               <Show when={props.article.subtitle}>
-                <h4>{capitalize(props.article.subtitle, false)}</h4>
+                <h4>{capitalize(props.article?.subtitle || '', false)}</h4>
               </Show>
               <div class='article__author'>
                 <For each={props.article.authors}>
-                  {([author, index]) => (
+                  {(u) => (
                     <>
-                      <Show when={index > 0}>, </Show>
-                      <a href={`/@${author.slug}`}>{author.name}</a>
+                      <Show when={Boolean(u) && (props.article.authors as Partial<User>[]).indexOf(u) > 0}>, </Show>
+                      <a href={`/@${u.slug}`}>{u.name}</a>
                     </>
                   )}
                 </For>
@@ -69,7 +68,7 @@ export default (props) => {
             </div>
 
             <div class='article__body'>
-              <MD body={props.article.body} />
+              <MD body={props.article.body || ''} />
             </div>
           </article>
         </div>
@@ -78,31 +77,31 @@ export default (props) => {
           <div class='article-stats'>
             <div class='article-stats__item article-stats__item--likes'>
               <Icon name='like' />
-              {props.article.ratings.reduce((acc, curr) => acc + curr.value, 0)}
+              {props.article?.ratings?.reduce((acc, curr) => acc + (curr?.value || 0), 0)}
               <Icon name='like' />
             </div>
             <div class='article-stats__item'>
               <Icon name='view' />
-              {props.article.stat.views}
+              {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a href='#bookmark' onClick={() => subscribe(props.article.slug, 'articles')}>
+              <a href='#bookmark' onClick={() => subscribe((props.article?.slug || ''), 'articles')}>
                 <Icon name='bookmark' />
-                <Show when={props.article.slug in subscribedArticles} fallback={`В&nbsp;избранное`}>
-                  Сохранено
+                <Show when={subscribedArticles.includes(props.article?.slug)} fallback={`В&nbsp;избранное`}>
+                  {t('Bookmarked')}
                 </Show>
               </a>
             </div>
             <div class='article-stats__item'>
-              <a href='#share' onClick={() => setModal('share')}>
+              <a href='#share' onClick={() => (showModal('share')}>
                 <Icon name='share' />
-                Поделиться
+                {t('Share')}
               </a>
             </div>
           </div>
 
           <div class='topics-list'>
-            <For each={props.article.topics}>
+            <For each={props.article.topics as Topic[]}>
               {(topic: Topic) => (
                 <div class='article__topic'>
                   <a href={`/topic/${topic.slug}`}>{topic.title}</a>
@@ -112,21 +111,21 @@ export default (props) => {
           </div>
 
           <div class='article__authors-list'>
-            <h4>Авторы</h4>
+            <h4>{t('Authors')}</h4>
 
             <For each={props.article.authors}>
-              {([author, index]) => (
+              {(author) => (
                 <>
-                  <Show when={index > 0}>, </Show>
+                  <Show when={props.article?.authors?.indexOf(author) > 0}>, </Show>
                   <AuthorCard {...author} hasSubscribeButton={false} />
                 </>
               )}
             </For>
           </div>
 
-          <h2>Комментарии {props.article.comments.length}</h2>
+          <h2>{t('Comments')} {props.comments?.length}</h2>
 
-          <For each={props.article.comments}>
+          <For each={props.comments}>
             {(comment: Comment) => (
               <ArticleComment
                 comment={comment}
@@ -139,9 +138,9 @@ export default (props) => {
             when={token}
             fallback={() => (
               <div class='comment-warning'>
-                Чтобы оставить комментарий, необходимо
-                <a href={''} onClick={() => setModal('auth')}>
-                  <i>зарегистрироваться или войти</i>
+                {t("To leave a comment please")}
+                <a href={''} onClick={() => showModal('auth')}>
+                  <i>{t("sign up or sign in")}</i>
                 </a>
               </div>
             )}

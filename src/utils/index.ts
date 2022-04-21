@@ -17,9 +17,9 @@ export const capitalize = (s: string, firstonly = false) => {
   const r = firstonly
     ? s.charAt(0).toUpperCase() + s.slice(1)
     : s
-        .split(' ')
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(' ')
+      .split(' ')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ')
 
   // console.debug(r)
   return r
@@ -43,7 +43,7 @@ export const plural = (amount: number, w1: string, w2: string, w5: string) => {
   return w5
 }
 
-export const shuffle = (items: string[]) => {
+export const shuffle = (items: any[]) => {
   const cached = items.slice(0)
   let temp
   let i = cached.length
