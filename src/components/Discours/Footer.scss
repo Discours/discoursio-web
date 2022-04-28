@@ -51,7 +51,7 @@
 .footer-copyright__social {
   display: flex;
 
-  :global(.icon) {
+  .icon {
     opacity: 0.5;
     transition: 0.3s;
 
@@ -60,7 +60,7 @@
     }
   }
 
-  :global(img) {
+  img {
     max-height: 20px;
     max-width: 20px;
     vertical-align: middle;
@@ -73,7 +73,7 @@
 }
 
 .social__item--vk {
-  :global(img) {
+  img {
     max-width: 25px;
   }
 }

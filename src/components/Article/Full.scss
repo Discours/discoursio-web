@@ -4,11 +4,11 @@ h1 {
   margin-top: 0.5em;
 }
 
-:global(h2) {
+h2 {
   line-height: 1.1;
 }
 
-:global(img) {
+img {
   max-width: 100%;
 }
 
@@ -34,12 +34,12 @@ h1 {
   font-size: 1.7rem;
   line-height: 1.6;
 
-  :global(img) {
+  img {
     display: block;
     margin-bottom: 0.5em;
   }
 
-  :global(blockquote) {
+  blockquote {
     border-left: 4px solid;
     font-size: 2rem;
     font-weight: 500;
@@ -49,7 +49,7 @@ h1 {
     padding: 0 0 0 1em;
   }
 
-  :global(mark) {
+  mark {
     background: none;
     font-size: 2rem;
     font-weight: bold;
@@ -64,7 +64,7 @@ h1 {
 .article__authors-list {
   margin-top: 2em;
 
-  :global(h4) {
+  h4 {
     color: #696969;
     font-size: 1.5rem;
     font-weight: normal;
@@ -103,14 +103,14 @@ h1 {
   margin-right: $grid-gutter-width;
   vertical-align: baseline;
 
-  :global(.icon) {
+  .icon {
     display: inline-block;
     margin-right: 0.2em;
     transition: filter 0.2s;
     vertical-align: middle;
   }
 
-  :global(img) {
+  img {
     display: block;
   }
 
@@ -118,7 +118,7 @@ h1 {
     border: none;
 
     &:hover {
-      :global(.icon) {
+      .icon {
         filter: invert(1);
       }
     }
@@ -126,11 +126,11 @@ h1 {
 }
 
 .article-stats__item--likes {
-  :global(.icon) {
+  .icon {
     vertical-align: baseline;
   }
 
-  :global(.icon):last-of-type {
+  .icon:last-of-type {
     transform: rotate(180deg);
     transform-origin: center;
     margin-left: 0.3em;

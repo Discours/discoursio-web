@@ -8,7 +8,7 @@
     padding: divide($container-padding-x, 2);
   }
 
-  :global(.circlewrap) {
+  .circlewrap {
     margin-right: 0;
   }
 }
@@ -20,13 +20,13 @@
     margin-left: 3.2rem;
   }
 
-  :global(.circlewrap) {
+  .circlewrap {
     height: 23px;
     min-width: 23px;
     width: 23px;
   }
 
-  :global(img) {
+  img {
     height: 20px;
     vertical-align: middle;
     width: auto;
@@ -39,7 +39,7 @@
 
 .usercontrol__item--write-post {
   @include media-breakpoint-up(lg) {
-    :global(.icon) {
+    .icon {
       display: none;
     }
 

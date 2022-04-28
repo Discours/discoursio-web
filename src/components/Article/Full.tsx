@@ -93,7 +93,7 @@ export default (props: ArticleProps) => {
               </a>
             </div>
             <div class='article-stats__item'>
-              <a href='#share' onClick={() => (showModal('share')}>
+              <a href='#share' onClick={() => showModal('share')}>
                 <Icon name='share' />
                 {t('Share')}
               </a>
