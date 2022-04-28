@@ -12,6 +12,11 @@ import Row2 from '../components/Article/Row2'
 import Row1 from '../components/Article/Row1'
 // import { useStore } from '../store'
 import { HomeRouteData } from './Home.data'
+import Hero from '../components/Discours/Hero';
+import Beside from "../components/Article/Beside";
+import RowShort from "../components/Article/RowShort";
+import Slider from "../components/Article/Slider";
+import Group from "../components/Article/Group";
 
 export const Home: Component = () => {
   // const isRouting = useIsRouting();
@@ -102,11 +107,21 @@ export const Home: Component = () => {
       <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
         <NavTopics topics={randomTopics.slice(0, 9)} />
         <img src={bannerSrc} />
-        <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Row2 articles={data.topRecent.slice(3, 5)} />
         <Row5 articles={data.topRecent.slice(5, 10)} />
+        <Hero/>
+        <Beside beside={data.topRecent[7]} top={true} title={'Самое читаемое'} values={topMonthTopics} />
+        <Row3 articles={data.topRecent.slice(0, 3)} />
+        <Beside beside={data.topRecent[8]} title={'Авторы месяца'} values={topMonthAuthors} />
+        <Slider title={'Лучшее за месяц'} articles={topMonthTopics}/>
+        <Row2 articles={data.topRecent.slice(3, 5)} />
+        <RowShort articles={data.topRecent.slice(3, 6)} />
         <Row1 article={data.topRecent[10]} />
+        <Row3 articles={data.topRecent.slice(0, 3)} />
         <Row5 articles={topCommented()} />
+        <Slider title={'Избранное'} articles={topMonthTopics}/>
+        <Beside beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} />
+        <Row3 articles={data.topRecent.slice(0, 3)} />
+        <Group articles={data.topRecent.slice(0, 8)}/>
       </Show>
     </main>
   )

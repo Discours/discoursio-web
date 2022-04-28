@@ -1,8 +1,8 @@
-import { useCommon } from '../../store/common'
-import './DiscoursAbout.scss'
+import { useStore } from '../../store'
+import './Hero.scss'
 
 export default () => {
-  const [, { showModal }] = useCommon()
+  const [, { showModal }] = useStore()
 
   return (
     <div class='about-discours'>

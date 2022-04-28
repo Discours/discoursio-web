@@ -320,13 +320,16 @@ figcaption {
   padding: $grid-gutter-width 0;
 
   .all-materials,
-  .article-card__title {
+  .article-card__title,
+  .shout-card__title {
     a {
       color: #fff;
     }
   }
 
-  .article__topic {
+  .article__topic,
+  .shout__topic,
+  .shout__author {
     a {
       color: rgba(255, 255, 255, 0.5);
     }
