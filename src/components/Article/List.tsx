@@ -30,7 +30,7 @@ interface ArticleListProps {
 export default (props: ArticleListProps) => {
   const [t] = useI18n()
   // currentPage, totalPagesCount, articles
-  const [{token, currentUser}, { follow, unfollow}] = useStore()
+  const [{ token, currentUser }, { follow, unfollow }] = useStore()
   const handleMore = () => {
     // TODO: show more
     // TODO: load more articles
@@ -42,9 +42,7 @@ export default (props: ArticleListProps) => {
       <For each={[...Array(Math.floor(props.articles.length / 6)).keys()]}>
         {(x: number) => <Block6 articles={props.articles.slice(0, lim(6, props.articles.length))} />}
       </For>
-      <Show when={props.page && props.page > 1}>
-        {'[page navigation]'}
-      </Show>
+      <Show when={props.page && props.page > 1}>{'[page navigation]'}</Show>
     </Suspense>
   )
 }

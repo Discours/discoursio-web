@@ -55,10 +55,10 @@ export default () => {
   const [isHidden, setIsHidden] = createSignal<boolean | false>()
 
   const toggleSidebar = () => {
-    setIsHidden(!isHidden());
+    setIsHidden(!isHidden())
   }
 
-  toggleSidebar();
+  toggleSidebar()
 
   const onSaveAs = async () => {
     const path = 'test' // TODO: save filename await remote.save(editorView().state)
@@ -107,7 +107,7 @@ export default () => {
       }
 
       if (content.length > length) {
-        content = `${content.substring(0, length)  }...`
+        content = `${content.substring(0, length)}...`
 
         return content
       }
@@ -126,7 +126,8 @@ export default () => {
     }
 
     // eslint-disable-next-line no-confusing-arrow
-    const text = () => p.file.path ? p.file.path.substring(p.file.path.length - length) : getContent(p.file.text?.doc)
+    const text = () =>
+      p.file.path ? p.file.path.substring(p.file.path.length - length) : getContent(p.file.text?.doc)
 
     return (
       // eslint-disable-next-line solid/no-react-specific-props
@@ -138,9 +139,7 @@ export default () => {
 
   const Keys = (props: { keys: string[] }) => (
     <span>
-      <For each={props.keys}>{(k: string) => (
-        <i>{k}</i>
-      )}</For>
+      <For each={props.keys}>{(k: string) => <i>{k}</i>}</For>
     </span>
   )
 
@@ -159,11 +158,13 @@ export default () => {
   })
 
   return (
-    <div class={`sidebar-container${  isHidden() ? ' sidebar-container--hidden' : ''}`}>
-      <span class='sidebar-opener' onClick={toggleSidebar}>Советы и&nbsp;предложения</span>
+    <div class={`sidebar-container${isHidden() ? ' sidebar-container--hidden' : ''}`}>
+      <span class='sidebar-opener' onClick={toggleSidebar}>
+        Советы и&nbsp;предложения
+      </span>
 
       <Off onClick={() => editorView().focus()} data-tauri-drag-region='true'>
-        <div class='sidebar-closer' onClick={toggleSidebar}/>
+        <div class='sidebar-closer' onClick={toggleSidebar} />
         <Show when={true}>
           <div>
             <Show when={store.path}>
@@ -171,15 +172,9 @@ export default () => {
                 <i>({store.path?.substring(store.path?.length - 24)})</i>
               </Label>
             </Show>
-            <Link>
-              Пригласить соавторов
-            </Link>
-            <Link>
-              Настройки публикации
-            </Link>
-            <Link>
-              История правок
-            </Link>
+            <Link>Пригласить соавторов</Link>
+            <Link>Настройки публикации</Link>
+            <Link>История правок</Link>
 
             <div class='theme-switcher'>
               Ночная тема

@@ -11,7 +11,6 @@ import { Topic, User } from '../graphql/types.gen'
 import signIn from '../graphql/q/sign-in'
 import topicsAll from '../graphql/q/topics-all'
 import { client } from '../graphql/client'
-import mySubscribed from '../graphql/q/my-subscribed'
 
 type ModalType = '' | 'auth' | 'subscribe'
 type WarnKind = 'error' | 'warn' | 'info'
@@ -33,7 +32,9 @@ interface Subscriber {
 interface CommonStore {
   readonly topics: { [key: string]: Topic }
   readonly currentUser: Partial<User>
-  readonly loadingTopics: boolean
+  readonly authorsSubscribed: string[]
+  readonly topicsSubscribed: string[]
+  readonly loadingSession: boolean
   page?: number
   totalPagesCount?: number
   token?: string
@@ -63,16 +64,15 @@ export function StoreProvider(props: { children: any }) {
   let sessionData: Accessor<any>
   let topicsData: Accessor<any>
   let topicsState: Accessor<CreateQueryState<any, object>> | (() => { (): any; new (): any; fetching: any })
-  const [subs] = createQuery({ query: mySubscribed })
   const [state, setState] = createStore({
-    get topicsSubscribed() {
-      return subs().topics
-    },
     get authorsSubscribed() {
-      return subs().authors
+      return state().userSubscribedAuthors
     },
-    get loadingTopics() {
-      return topicsState().fetching
+    get topicsSubscribed() {
+      return state().userSubscribedTopics
+    },
+    get loadingSession() {
+      return state().fetching
     },
     get currentUser() {
       return state.session

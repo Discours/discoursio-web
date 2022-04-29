@@ -1,4 +1,4 @@
-import { Component, onMount, Show } from 'solid-js'
+import { Component, createEffect, onMount, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 // import { useI18n } from '@solid-primitives/i18n';
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -79,14 +79,16 @@ export const Home: Component = () => {
         return 0
       })
 
-  onMount(() => {
-    // post load
+  createEffect(() => {
     console.debug(data.topRecent)
     data.topRecent?.forEach(postLoad)
     data.topMonth?.forEach(postLoad)
     data.topOverall?.forEach(postLoad)
 
-    randomTopics = Object.entries(shoutsByTopic).filter(([, v], _i) => (v as any[]).length > 4).map((f) => f[0]) // 4 in the floor
+    randomTopics = Object.entries(shoutsByTopic)
+      .filter(([, v], _i) => (v as any[]).length > 4)
+      .map((f) => f[0]) // 4 in the floor
+      .slice(0,9)
 
     // randomTopics = shuffle(goodTopics)
 
@@ -94,7 +96,7 @@ export const Home: Component = () => {
 
     // randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
     console.debug(`mainpage: ${randomLayout} layout selected`)
-    console.debug('home: mounted')
+    console.debug('home: updated')
   })
 
   return (

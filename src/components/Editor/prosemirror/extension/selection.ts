@@ -5,7 +5,7 @@ import { EditorView } from 'prosemirror-view'
 import { ProseMirrorExtension } from '../state'
 import { buildMenuItems } from './menu'
 
-const cut = (arr: any[] | MenuItem<any>) => arr.filter((a:any) => Boolean(a))
+const cut = (arr: any[] | MenuItem<any>) => arr.filter((a: any) => Boolean(a))
 
 export class SelectionTooltip {
   tooltip: any
@@ -14,7 +14,9 @@ export class SelectionTooltip {
     this.tooltip = document.createElement('div')
     this.tooltip.className = 'tooltip'
     view.dom.parentNode.appendChild(this.tooltip)
-    const content: Partial<MenuItem<any>> = cut((buildMenuItems(schema) as {[key:string]: MenuItem<any>})?.fullMenu)
+    const content: Partial<MenuItem<any>> = cut(
+      (buildMenuItems(schema) as { [key: string]: MenuItem<any> })?.fullMenu
+    )
 
     console.debug(content)
     const { dom } = renderGrouped(view, content as any)

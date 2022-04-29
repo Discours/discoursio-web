@@ -1,5 +1,5 @@
 import { Component, Show, /* PropsWithChildren, */ For } from 'solid-js'
-import { useI18n } from '@solid-primitives/i18n';
+import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
@@ -8,7 +8,7 @@ import { Shout, User } from '../graphql/types.gen'
 import ArticleFull from '../components/Article/Full'
 
 export const AboutArticle: Component = () => {
-  const [t] = useI18n();
+  const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
     slug: string
@@ -23,10 +23,7 @@ export const AboutArticle: Component = () => {
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
-            <Show
-              fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
-              when={!data.loading}
-            >
+            <Show fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>} when={!data.loading}>
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
                   <img class='rounded-md mb-10 shadow-md' src={data.article.cover || ''} />
@@ -34,15 +31,15 @@ export const AboutArticle: Component = () => {
                     {data.article.title}
                   </h1>
                   <div class='text-md'>
-                    {`${t('Authors')  } `}
+                    {`${t('Authors')} `}
                     <For each={data.article?.authors}>
                       {(a: Partial<User>) => (
                         <a target='_blank' rel='noopener' href={a.slug}>
                           {a.name}
                         </a>
                       )}
-                    </For>
-                    {' '} {new Date(data.article.createdAt).toDateString()}
+                    </For>{' '}
+                    {new Date(data.article.createdAt).toDateString()}
                   </div>
                 </div>
                 <hr class='mt-10 w-3/6 mx-auto' />

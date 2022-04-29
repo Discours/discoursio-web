@@ -32,12 +32,21 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     const page = location.query.page ? (parseInt(location.query.page) as number) : START
     const size = location.query.size ? (parseInt(location.query.size) as number) : 50
 
-    return { lang, page, size  }
+    return { lang, page, size }
   }
   const { page, size } = paramList()
-  const [topRecentData, recentState] = createQuery({ query: topRecent, variables: { page: page || START, size } })
-  const [topMonthData, topMonthState] = createQuery({ query: topMonth, variables: { page: START, size: 10 }  })
-  const [topOverallData, topOverallState] = createQuery({ query: topOverall, variables: { page: START, size: 10 }  })
+  const [topRecentData, recentState] = createQuery({
+    query: topRecent,
+    variables: { page: page || START, size }
+  })
+  const [topMonthData, topMonthState] = createQuery({
+    query: topMonth,
+    variables: { page: START, size: 10 }
+  })
+  const [topOverallData, topOverallState] = createQuery({
+    query: topOverall,
+    variables: { page: START, size: 10 }
+  })
 
   return {
     get topRecent() {

@@ -18,18 +18,21 @@ export default (props: { articles: Partial<Shout>[] }) => {
       <div class='wide-container row'>
         <For each={props.articles}>
           {(a, i) => {
-            return (<Show when={!!a}>
-              <div class={`col-md-${x[y()][i()]}`}>
-                <ArticleCard
-                  article={a}
-                  settings={{
-                    additionalClass: x[y()][i()] === '8' ? 'shout-card--with-cover' : ''
-                  }}
-                />
-              </div>
-              </Show>)
+            return (
+              <Show when={!!a}>
+                <div class={`col-md-${x[y()][i()]}`}>
+                  <ArticleCard
+                    article={a}
+                    settings={{
+                      additionalClass: x[y()][i()] === '8' ? 'shout-card--with-cover' : ''
+                    }}
+                  />
+                </div>
+              </Show>
+            )
           }}
         </For>
       </div>
-    </div>)
+    </div>
+  )
 }

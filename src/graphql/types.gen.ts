@@ -1,5 +1,4 @@
-/* eslint-disable no-use-before-define */
-//import gql from 'graphql-tag'
+// import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -55,7 +54,6 @@ export type CommentResult = {
   error?: Maybe<Scalars['String']>
 }
 
-// eslint-disable-next-line no-shadow
 export enum CommentStatus {
   Deleted = 'DELETED',
   New = 'NEW',
@@ -268,6 +266,8 @@ export type Query = {
   shoutsByCommunity: Array<Maybe<Shout>>
   shoutsByTopic: Array<Maybe<Shout>>
   shoutsCandidates: Array<Maybe<Shout>>
+  shoutsCommentedByUser: Array<Maybe<Shout>>
+  shoutsRatedByUser: Array<Maybe<Shout>>
   shoutsReviewed: Array<Maybe<Shout>>
   shoutsSubscribed: Array<Maybe<Shout>>
   signIn: AuthResult
@@ -338,6 +338,18 @@ export type QueryShoutsByTopicArgs = {
 
 export type QueryShoutsCandidatesArgs = {
   size?: InputMaybe<Scalars['Int']>
+}
+
+export type QueryShoutsCommentedByUserArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+  slug: Scalars['String']
+}
+
+export type QueryShoutsRatedByUserArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+  slug: Scalars['String']
 }
 
 export type QueryShoutsReviewedArgs = {
@@ -576,6 +588,7 @@ export type UserResult = {
   error?: Maybe<Scalars['String']>
   totalUnreadMessages?: Maybe<Scalars['Int']>
   user?: Maybe<User>
+  userSubscribedTopics: Array<Maybe<Topic>>
 }
 
 import { IntrospectionQuery } from 'graphql'
@@ -2139,6 +2152,98 @@ export default {
             ]
           },
           {
+            name: 'shoutsCommentedByUser',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Shout',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'shoutsRatedByUser',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Shout',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
             name: 'shoutsReviewed',
             type: {
               kind: 'NON_NULL',
@@ -3569,6 +3674,21 @@ export default {
               kind: 'OBJECT',
               name: 'User',
               ofType: null
+            },
+            args: []
+          },
+          {
+            name: 'userSubscribedTopics',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Topic',
+                  ofType: null
+                }
+              }
             },
             args: []
           }

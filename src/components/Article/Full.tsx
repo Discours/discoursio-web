@@ -22,8 +22,7 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ currentUser, modal, token,  },
-    { showModal, }] = useStore()
+  const [{ authorsSubscribed, topicsSubscribed, currentUser, modal, token }, { showModal }] = useStore()
 
   let commentElement
   const getCommentLevel = (c: Comment, level = 0) => {
@@ -36,8 +35,10 @@ export default (props: ArticleProps) => {
     return level
   }
 
-  const mainTopic = () => props.article?.topics?.find((item: Maybe<Topic>) => Boolean(item?.slug === props.article?.mainTopic))
-  const canEdit = () => Boolean(props.article?.authors?.find((a: Partial<User>) => a.slug === currentUser.slug)) // FIXME
+  const mainTopic = () =>
+    props.article?.topics?.find((item: Maybe<Topic>) => Boolean(item?.slug === props.article?.mainTopic))
+  const canEdit = () =>
+    Boolean(props.article?.authors?.find((a: Partial<User>) => a.slug === currentUser.slug)) // FIXME
 
   return (
     <div class='article'>
@@ -57,7 +58,9 @@ export default (props: ArticleProps) => {
                 <For each={props.article.authors}>
                   {(u) => (
                     <>
-                      <Show when={Boolean(u) && (props.article.authors as Partial<User>[]).indexOf(u) > 0}>, </Show>
+                      <Show when={Boolean(u) && (props.article.authors as Partial<User>[]).indexOf(u) > 0}>
+                        ,{' '}
+                      </Show>
                       <a href={`/@${u.slug}`}>{u.name}</a>
                     </>
                   )}
@@ -85,15 +88,18 @@ export default (props: ArticleProps) => {
               {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a href='#bookmark' onClick={() => subscribe((props.article?.slug || ''), 'articles')}>
+              <a href='#bookmark' onClick={() => subscribe(props.article?.slug || '', 'articles')}>
                 <Icon name='bookmark' />
-                <Show when={currentUser.subscriptions?.authors?.includes(props.article?.slug)} fallback={`В&nbsp;избранное`}>
+                <Show
+                  when={authorsSubscribed?.includes(props.article?.slug as string)}
+                  fallback={`В&nbsp;избранное`}
+                >
                   {t('Bookmarked')}
                 </Show>
               </a>
             </div>
             <div class='article-stats__item'>
-              <a href='#share' onClick={() => (showModal('share')}>
+              <a href='#share' onClick={() => showModal('share')}>
                 <Icon name='share' />
                 {t('Share')}
               </a>
@@ -123,7 +129,9 @@ export default (props: ArticleProps) => {
             </For>
           </div>
 
-          <h2>{t('Comments')} {props.comments?.length}</h2>
+          <h2>
+            {t('Comments')} {props.comments?.length}
+          </h2>
 
           <For each={props.comments}>
             {(comment: Comment) => (
@@ -138,9 +146,9 @@ export default (props: ArticleProps) => {
             when={token}
             fallback={() => (
               <div class='comment-warning'>
-                {t("To leave a comment please")}
+                {t('To leave a comment please')}
                 <a href={''} onClick={() => showModal('auth')}>
-                  <i>{t("sign up or sign in")}</i>
+                  <i>{t('sign up or sign in')}</i>
                 </a>
               </div>
             )}

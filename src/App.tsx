@@ -11,7 +11,6 @@ import { Provider as GraphqlProvider } from 'solid-urql'
 import { useClient } from './graphql/client'
 import { useStore } from './store'
 
-
 export const App = () => {
   const Routes = useRoutes(routes)
   const client = useClient()

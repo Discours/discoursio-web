@@ -26,10 +26,7 @@ export const BlogTopic: Component = () => {
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
-            <Show
-              fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
-              when={!data.loading}
-            >
+            <Show fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>} when={!data.loading}>
               <For each={data.articles}>
                 {(a: Partial<Shout>) => (
                   <div class='container lg:px-10'>
