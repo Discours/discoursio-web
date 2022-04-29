@@ -14,14 +14,14 @@ h3::first-letter {
     text-align: right;
   }
 
-  :global(.icon) {
+  .icon {
     display: inline-block;
     height: 0.8em;
     vertical-align: middle;
     width: 0.8em;
   }
 
-  :global(img) {
+  img {
     vertical-align: top;
   }
 }
