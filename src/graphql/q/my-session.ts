@@ -13,6 +13,8 @@ export default gql`
         userpic
         links
       }
+      totalUnreadMessages
+      userSubscribedTopics
     }
   }
 `

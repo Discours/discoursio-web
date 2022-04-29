@@ -22,17 +22,23 @@ export interface Warning {
   seen?: boolean
 }
 
+interface Subscriber {
+  subscriptions?: {
+    authors?: string[]
+    topics?: string[]
+    communities?: string[]
+  }
+}
+
 interface CommonStore {
   readonly topics: { [key: string]: Topic }
   readonly currentUser: Partial<User>
   readonly loadingTopics: boolean
-  readonly topicsSubscribed: string[]
-  readonly authorsSubscribed: string[]
   page?: number
   totalPagesCount?: number
   token?: string
   appName: string
-  session?: Partial<User>
+  session?: Partial<User> & Subscriber
   handshaking?: boolean
   warnings?: Warning[]
   modal?: ModalType

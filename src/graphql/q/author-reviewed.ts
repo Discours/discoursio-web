@@ -3,8 +3,8 @@ import { gql } from 'solid-urql'
 // WARNING: need Auth header
 
 export default gql`
-  query ShoutsReviewedQuery($page: Int!, $size: Int!) {
-    shoutsReviewed(page: $page, size: $size) {
+  query ShoutsReviewedByUserQuery($slug: String!, $page: Int!, $size: Int!) {
+    shoutsReviewedByUser(slug: String!, page: $page, size: $size) {
       title
       subtitle
       layout

@@ -3,8 +3,8 @@ import { gql } from 'solid-urql'
 // WARNING: need Auth header
 
 export default gql`
-  query ShoutsSubscribedQuery($page: Int!, $size: Int!) {
-    shoutsSubscribed(page: $page, size: $size) {
+  query ShoutsCommentedQuery($page: Int!, $size: Int!) {
+    shoutsCommentedByUser(slug: String!, page: Int!, size: Int!) {
       title
       subtitle
       layout

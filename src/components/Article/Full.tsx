@@ -22,7 +22,7 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ currentUser, modal, token },
+  const [{ currentUser, modal, token,  },
     { showModal, }] = useStore()
 
   let commentElement
@@ -87,7 +87,7 @@ export default (props: ArticleProps) => {
             <div class='article-stats__item'>
               <a href='#bookmark' onClick={() => subscribe((props.article?.slug || ''), 'articles')}>
                 <Icon name='bookmark' />
-                <Show when={subscribedArticles.includes(props.article?.slug)} fallback={`В&nbsp;избранное`}>
+                <Show when={currentUser.subscriptions?.authors?.includes(props.article?.slug)} fallback={`В&nbsp;избранное`}>
                   {t('Bookmarked')}
                 </Show>
               </a>
@@ -114,9 +114,9 @@ export default (props: ArticleProps) => {
             <h4>{t('Authors')}</h4>
 
             <For each={props.article.authors}>
-              {(author) => (
+              {(author: Partial<User>) => (
                 <>
-                  <Show when={props.article?.authors?.indexOf(author) > 0}>, </Show>
+                  <Show when={props.article?.authors?.includes(author as User)}>, </Show>
                   <AuthorCard {...author} hasSubscribeButton={false} />
                 </>
               )}
