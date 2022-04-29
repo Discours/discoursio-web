@@ -1,4 +1,4 @@
-import { Component, createEffect, onMount, Show } from 'solid-js'
+import { Component, createEffect, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 // import { useI18n } from '@solid-primitives/i18n';
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -61,7 +61,7 @@ export const Home: Component = () => {
 
           if (!byTopic[t.slug]) byTopic[t.slug] = []
 
-          shoutsByTopic[t.slug].push(s)
+          if (t.slug in shoutsByTopic) shoutsByTopic[t.slug].push(s)
           topicset.add(t)
         }
       })
