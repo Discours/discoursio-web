@@ -1,5 +1,3 @@
 import all from './discours.json'
 
-const langs = () => ({ ...all })
-
-export default langs
+export default () => ({ ...all })

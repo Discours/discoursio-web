@@ -5,7 +5,7 @@ import { useRouteReadyState } from '../utils/routeReadyState'
 import bannerSrc from '../assets/discours-banner.jpg'
 import { Maybe, Shout, Topic, User } from '../graphql/types.gen'
 import NavTopics from '../components/Nav/Topics'
-import { shuffle } from '../utils/index'
+// import { shuffle } from '../utils/index'
 import Row5 from '../components/Article/Row5'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
@@ -113,7 +113,7 @@ export const Home: Component = () => {
         <Hero/>
         <Beside beside={data.topRecent[7]} top={true} title={'Самое читаемое'} values={topMonthTopics} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Beside beside={data.topRecent[8]} title={'Авторы месяца'} values={topMonthAuthors} />
+        <Beside top={true} beside={data.topRecent[8]} title={'Авторы месяца'} values={topMonthAuthors} />
         <Slider title={'Лучшее за месяц'} articles={topMonthTopics}/>
         <Row2 articles={data.topRecent.slice(3, 5)} />
         <RowShort articles={data.topRecent.slice(3, 6)} />
@@ -121,7 +121,7 @@ export const Home: Component = () => {
         <Row3 articles={data.topRecent.slice(0, 3)} />
         <Row5 articles={topCommented()} />
         <Slider title={'Избранное'} articles={topMonthTopics}/>
-        <Beside beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} />
+        <Beside top={true} beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
         <Group articles={data.topRecent.slice(0, 8)}/>
       </Show>

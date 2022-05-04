@@ -13,12 +13,12 @@ const cards = {
   article: ArticleCard
 }
 
-// FIXME: wip ...
+// FIXME: use card type selection object up there
 
 interface BesideProps {
   title: string
   values: any[]
-  top: any
+  top?: boolean
   beside: any
 }
 

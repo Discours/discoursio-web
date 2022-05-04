@@ -9,7 +9,7 @@ export default (props: { articles: Partial<Shout>[] }) => (
         <For each={props.articles.slice(0, 2)}>{(a) => <ArticleCard article={a} />}</For>
       </div>
       <div class='col-md-6'>
-        <ArticleCard article={props.articles[2]} />
+        <For each={props.articles.slice(2, 3)}>{(a) => <ArticleCard article={a} />}</For>
       </div>
       <div class='col-md-3'>
         <For each={props.articles.slice(3, 5)}>{(a) => <ArticleCard article={a} />}</For>
