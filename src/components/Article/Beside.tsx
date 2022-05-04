@@ -5,28 +5,17 @@ import ArticleCard from './Card'
 import AuthorCard from '../Author/Card'
 import TopicCard from '../Topic/Card'
 import './Beside.scss'
-import { Shout, Topic } from '../../graphql/types.gen'
-
-const cards = {
-  topic: TopicCard,
-  author: AuthorCard,
-  article: ArticleCard
-}
-
-// FIXME: use card type selection object up there
+import { Shout, Topic, User } from '../../graphql/types.gen'
 
 interface BesideProps {
   title: string
   values: any[]
   top?: boolean
   beside: any
+  wrapper: 'topic' | 'author' | 'article'
 }
-
-const whatAbout = (a: Partial<Shout>) =>
-  a.topics?.find((t: Partial<Topic> | null) => t?.slug === a.mainTopic) || a.topics?.pop()
-
 export default (props: BesideProps) => {
-  // wrap, top, title, beside, values
+  // wrap, top, title, beside, values, wrapper
   return (
     <div class='floor floor--9'>
       <div class='wide-container row'>
@@ -38,18 +27,22 @@ export default (props: BesideProps) => {
           </Show>
           <ul class='beside-column'>
             <For each={props.values.slice(1, props.values.length - 1)}>
-              {(article: Partial<Shout>) => {
+              {(value: Partial<Shout | User | Topic>) => {
                 return (
                   <li classList={{ top: props.top }}>
-                    <div class='beside-column__topic'>
-                      <a href={`/topic/${article.mainTopic}`}>{whatAbout(article)?.title}</a>
-                    </div>
-                    <div class='beside-column__shout'>
-                      <a href={`/${article.slug}`}>
-                        <h4>{article.title}</h4>
-                        <Show when={article.subtitle}>{article.subtitle}</Show>
-                      </a>
-                    </div>
+
+                    <Show when={props.wrapper === 'topic'}>
+                      <TopicCard topic={value as Topic} />
+                    </Show>
+
+                    <Show when={props.wrapper === 'author'}>
+                      <AuthorCard author={value as Partial<User>} />
+                    </Show>
+
+                    <Show when={props.wrapper === 'article'}>
+                      <AuthorCard article={value as Partial<Shout>} />
+                    </Show>
+
                   </li>
                 )
               }}
