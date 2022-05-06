@@ -5,7 +5,7 @@ import { useRouteReadyState } from '../utils/routeReadyState'
 import bannerSrc from '../assets/discours-banner.jpg'
 import { Maybe, Shout, Topic, User } from '../graphql/types.gen'
 import NavTopics from '../components/Nav/Topics'
-// import { shuffle } from '../utils/index'
+import { shuffle } from '../utils/index'
 import Row5 from '../components/Article/Row5'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
@@ -39,8 +39,9 @@ export const Home: Component = () => {
   let topMonthTopics = [] as Topic[]
   let shoutsByTopic = {} as { [key: string]: Partial<Shout>[] }
   let shoutsByLayout = {} as { [key: string]: Partial<Shout>[] }
+  let topCommented = [] as Partial<Shout>[]
 
-  const postLoad = (s: Partial<Shout>) => {
+  const postLoad = (s: Partial<Shout>): void => {
     if (s.slug) {
       bySlugs[s.slug] = s
       // stores all the authors
@@ -75,33 +76,40 @@ export const Home: Component = () => {
     }
   }
 
-  const topCommented = () =>
-    data.topRecent
-      ?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
-      .sort((a, b) => {
-        if (a && b && a.stat && b.stat) return b.stat.comments - a.stat.comments
-
-        return 0
-      })
-
   createEffect(() => {
-    console.debug(data.topRecent)
-    data.topRecent?.forEach(postLoad)
-    data.topMonth?.forEach(postLoad)
-    data.topOverall?.forEach(postLoad)
 
-    randomTopics = Object.entries(shoutsByTopic)
-      .filter(([, v], _i) => (v as any[]).length > 4)
-      .map((f) => f[0]) // 4 in the floor
-      .slice(0,9)
+    if(data.topRecent?.length > 0) {
+      topCommented = data.topRecent?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
+        .sort((a, b) => {
+          if (a && b && a.stat && b.stat) return b.stat.comments - a.stat.comments
 
-    // randomTopics = shuffle(goodTopics)
+          return 0
+        })
+      if (topCommented?.length > 0) console.debug(topCommented)
+      
+      data.topRecent?.forEach(postLoad)
+    }
 
-    // console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
+    if(data.topMonth?.length > 0) {
+      console.debug(data.topMonth)
+      data.topMonth?.forEach(postLoad)
+    }
+    if(data.topOverall?.length > 0) data.topOverall?.forEach(postLoad)
 
-    // randomLayout = shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
-    console.debug(`mainpage: ${randomLayout} layout selected`)
-    console.debug('home: updated')
+    if(!randomTopics) {
+      randomTopics = Object.entries(shoutsByTopic)
+        .filter(([, v], _i) => (v as any[]).length > 4)
+        .map((f) => f[0]) // 4 in the floor
+        .slice(0,9)
+      
+      //randomTopics = shuffle(randomTopics)
+      console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
+    }
+    
+    if (!randomLayout) {
+      randomLayout = 'article' // shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
+      console.debug(`mainpage: ${randomLayout} layout selected`)
+    }
   })
 
   return (
@@ -119,7 +127,7 @@ export const Home: Component = () => {
         <RowShort articles={data.topRecent.slice(3, 6)} />
         <Row1 article={data.topRecent[10]} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Row5 articles={topCommented()} />
+        <Row5 articles={topCommented} />
         <Slider title={'Избранное'} articles={topMonthTopics}/>
         <Beside top={true} beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} wrapper={'topic'} />
         <Row3 articles={data.topRecent.slice(0, 3)} />

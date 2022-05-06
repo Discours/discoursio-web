@@ -32,15 +32,15 @@ export default (props: BesideProps) => {
                   <li classList={{ top: props.top }}>
 
                     <Show when={props.wrapper === 'topic'}>
-                      <TopicCard topic={value as Topic} />
+                      <TopicCard topic={value as Topic} compact={true} />
                     </Show>
 
                     <Show when={props.wrapper === 'author'}>
-                      <AuthorCard author={value as Partial<User>} />
+                      <AuthorCard author={value as Partial<User>} compact={true} />
                     </Show>
 
                     <Show when={props.wrapper === 'article'}>
-                      <AuthorCard article={value as Partial<Shout>} />
+                      <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true } } />
                     </Show>
 
                   </li>
