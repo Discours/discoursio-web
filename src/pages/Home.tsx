@@ -2,7 +2,7 @@ import { Component, createEffect, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 // import { useI18n } from '@solid-primitives/i18n';
 import { useRouteReadyState } from '../utils/routeReadyState'
-import bannerSrc from '../assets/discours-banner.jpg'
+import Banner from '../components/Discours/Banner'
 import { Maybe, Shout, Topic, User } from '../graphql/types.gen'
 import NavTopics from '../components/Nav/Topics'
 import { shuffle } from '../utils/index'
@@ -86,7 +86,7 @@ export const Home: Component = () => {
           return 0
         })
       if (topCommented?.length > 0) console.debug(topCommented)
-      
+
       data.topRecent?.forEach(postLoad)
     }
 
@@ -101,11 +101,11 @@ export const Home: Component = () => {
         .filter(([, v], _i) => (v as any[]).length > 4)
         .map((f) => f[0]) // 4 in the floor
         .slice(0,9)
-      
+
       //randomTopics = shuffle(randomTopics)
       console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
     }
-    
+
     if (!randomLayout) {
       randomLayout = 'article' // shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
       console.debug(`mainpage: ${randomLayout} layout selected`)
@@ -116,22 +116,22 @@ export const Home: Component = () => {
     <main class='home'>
       <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
         <NavTopics topics={randomTopics.slice(0, 9)} />
-        <img src={bannerSrc} />
         <Row5 articles={data.topRecent.slice(5, 10)} />
         <Hero/>
         <Beside beside={data.topRecent[7]} top={true} title={'Самое читаемое'} values={topMonthTopics} wrapper={'article'}/>
         <Row3 articles={data.topRecent.slice(0, 3)} />
         <Beside top={true} beside={data.topRecent[8]} title={'Авторы месяца'} values={topMonthAuthors} wrapper={'author'} />
-        <Slider title={'Лучшее за месяц'} articles={topMonthTopics}/>
+        <Slider title={'Лучшее за месяц'} articles={data.topRecent.slice(0, 8)}/>
         <Row2 articles={data.topRecent.slice(3, 5)} />
-        <RowShort articles={data.topRecent.slice(3, 6)} />
+        <RowShort articles={data.topRecent.slice(3, 7)} />
         <Row1 article={data.topRecent[10]} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
         <Row5 articles={topCommented} />
-        <Slider title={'Избранное'} articles={topMonthTopics}/>
+        <Slider title={'Избранное'} articles={data.topRecent.slice(0, 8)}/>
         <Beside top={true} beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} wrapper={'topic'} />
         <Row3 articles={data.topRecent.slice(0, 3)} />
         <Group articles={data.topRecent.slice(0, 8)}/>
+        <Banner/>
       </Show>
     </main>
   )

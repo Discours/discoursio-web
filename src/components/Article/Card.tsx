@@ -22,12 +22,10 @@ export default (props: CardProps) => {
   return (
     <Show when={!!article}>
       <section
-        class='shout-card'
+        class={`shout-card ${settings?.additionalClass}`}
         classList={{
           'shout-card--short': settings?.noimage,
           'shout-card--photo-bottom': settings?.noimage && settings?.photoBottom
-          // additionalClass: settings?.additionalClass
-          // FIXME: perhaps lost class logix here
         }}
       >
         <Show when={!settings?.noimage && article?.cover}>
