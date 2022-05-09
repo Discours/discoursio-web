@@ -100,9 +100,8 @@ export const Home: Component = () => {
       randomTopics = Object.entries(shoutsByTopic)
         .filter(([, v], _i) => (v as any[]).length > 4)
         .map((f) => f[0]) // 4 in the floor
-        .slice(0,9)
 
-      //randomTopics = shuffle(randomTopics)
+      randomTopics = shuffle(randomTopics).slice(0,9)
       console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
     }
 
