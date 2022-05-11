@@ -1,4 +1,5 @@
 import { Component } from 'solid-js'
+import './LoadingBar.scss'
 
 const PageLoadingBar: Component<{
   active: boolean
@@ -8,7 +9,7 @@ const PageLoadingBar: Component<{
   const animationName = 'Page-Loading-Bar'
 
   return (
-    <div class='absolute z-50 w-full overflow-hidden pointer-events-none' style={`top: 0; height: 6px;`}>
+    <div class='loadingbar'>
       <div
         style={{
           width: '100%',

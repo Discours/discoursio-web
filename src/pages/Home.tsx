@@ -17,6 +17,7 @@ import Beside from "../components/Article/Beside";
 import RowShort from "../components/Article/RowShort";
 import Slider from "../components/Article/Slider";
 import Group from "../components/Article/Group";
+import PageLoadingBar from '../components/LoadingBar'
 
 export const Home: Component = () => {
   // const isRouting = useIsRouting();
@@ -113,6 +114,7 @@ export const Home: Component = () => {
 
   return (
     <main class='home'>
+      <PageLoadingBar active={data.loading} />
       <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
         <NavTopics topics={randomTopics.slice(0, 9)} />
         <Row5 articles={data.topRecent.slice(5, 10)} />
