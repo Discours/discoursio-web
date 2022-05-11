@@ -7,7 +7,7 @@
     "codegen": "graphql-codegen",
     "dev": "vite dev",
     "build": "vite build",
-    "start": "vite start",
+    "start": "vite serve dist",
     "format": "prettier --ignore-path .gitignore --write src",
     "fix": "eslint --fix --ignore-path .gitignore src/**/*.{ts,tsx}",
     "build-and-start": "npm run build && npm run start",
