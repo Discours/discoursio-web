@@ -26,9 +26,8 @@ export default (props: SliderProps) => {
     },
   }
   onMount(() => {
-    if(!slider) {
-      slider = new KeenSlider(el as HTMLElement, opts as any)
-    }
+    slider = new KeenSlider(el as HTMLElement, opts as any)
+    setTimeout(slider.update, 500)
   })
   onCleanup(() => slider && slider.destroy())
 
