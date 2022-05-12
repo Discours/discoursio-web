@@ -10,7 +10,8 @@ import MD from '../components/Article/MD'
 import Icon from '../components/Nav/Icon'
 import AuthorCard from '../components/Author/Card'
 import {useStore} from '../store';
-import ArticleComment from "../components/Article/Comment";
+import ArticleComment from '../components/Article/Comment'
+import './Article.scss'
 
 export const BlogArticle: Component = () => {
   const [t] = useI18n()
@@ -48,8 +49,8 @@ export const BlogArticle: Component = () => {
             <article class="col-md-6 offset-md-3">
               <div class="shout__header">
                 <div class="shout__topic">
-                  <a href={`/topic/${data.article.slug}`}
-                     textContent={(data.article?.title as string).replace(' ', '&nbsp;')}></a>
+                  <a href={`/topic/${data.article.mainTopic}`}
+                     textContent={(data.article.topics.find(topic => topic.slug === data.article.mainTopic).title as string).replace(' ', '&nbsp;')}></a>
                 </div>
 
                 <h1>{data.article.title}</h1>
@@ -123,22 +124,24 @@ export const BlogArticle: Component = () => {
               <h4>Авторы</h4>
               <For each={data.article.authors as User[]}>
                 {(user: User) => (
-                  <AuthorCard author={user} compact={true} canFollow={false} />
+                  <AuthorCard author={user} compact={false} canFollow={false} />
                 )}
               </For>
             </div>
 
-            <h2>Комментарии {data.comments?.length.toString() || ''}</h2>
+            <Show when={data.comments?.length}>
+              <h2>Комментарии {data.comments?.length.toString() || ''}</h2>
 
-            <For each={data.comments}>
-              {(comment: Comment) => (
-                <ArticleComment
-                  comment={comment}
-                  level={getCommentLevel(comment)}
-                  canEdit={comment.author.slug === currentUser.slug}
-                />
-              )}
-            </For>
+              <For each={data.comments}>
+                {(comment: Comment) => (
+                  <ArticleComment
+                    comment={comment}
+                    level={getCommentLevel(comment)}
+                    canEdit={comment.author.slug === currentUser.slug}
+                  />
+                )}
+              </For>
+            </Show>
 
             <Show when={!token}>
               <div class="comment-warning">
