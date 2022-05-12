@@ -5,7 +5,6 @@ import { ArticleData } from './pages/Article.data'
 import { AuthorData } from './pages/Author.data'
 import { TopicData } from './pages/Topic.data'
 import { HomeData } from './pages/Home.data'
-import { AboutData } from './pages/about/data'
 
 export const routes: RouteDefinition[] = [
   {
