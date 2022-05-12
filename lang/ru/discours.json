@@ -1,8 +1,10 @@
 {
   "Authors": "Авторы",
   "Comments": "Комментарии",
+  "Favorite": "В&nbsp;избранное",
   "Bookmarked": "Сохранено",
   "To leave a comment please": "Чтобы оставить комментарий, необходимо",
   "sign up or sign in": "зарегистрироваться или войти",
-  "Share": "Поделиться"
+  "Share": "Поделиться",
+  "Write comment": "Написать комментарий"
 }

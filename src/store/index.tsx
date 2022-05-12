@@ -69,7 +69,7 @@ export function StoreProvider(props: { children: any }) {
       return state().userSubscribedAuthors
     },
     get topicsSubscribed() {
-      return state().userSubscribedTopics
+      return [] // FIXME: state().userSubscribedTopics
     },
     get loadingSession() {
       return state().fetching

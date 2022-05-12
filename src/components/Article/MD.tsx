@@ -26,5 +26,5 @@ export default (props: { body: string }) => {
     setRendered(props.body.startsWith('<') ? props.body : mit.render(props.body))
   })
 
-  return <>{rendered()}</>
+  return <div innerHTML={rendered()}></div>
 }

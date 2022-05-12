@@ -1,8 +1,9 @@
-import { Show } from 'solid-js/web'
-import {Topic, User} from '../../graphql/types.gen'
+import { For, Show } from 'solid-js/web'
+import { User } from '../../graphql/types.gen'
 import Userpic from './Userpic'
 import Icon from '../Nav/Icon'
 import './Card.scss'
+import { useStore } from '../../store'
 
 
 interface AuthorCardProps {
@@ -12,18 +13,9 @@ interface AuthorCardProps {
   author: Partial<User>
 }
 
-const link2title = {
-  instagram: 'ig',
-  facebook: 'fb',
-  linkedin: 'in',
-  telegram: 'tg',
-  vk: 'vk'
-}
-
-const getLinkName = (l) =>
-  link2title[Object.keys(link2title).filter((key) => l.includes(key))[0]] || l
-
 export default (props: AuthorCardProps) => {
+
+  const [, { follow, unfollow}] = useStore()
 
   // TODO: reimplement AuthorCard
   return (<>
@@ -44,25 +36,19 @@ export default (props: AuthorCardProps) => {
 
             <Show when={props.canFollow}>
               <div class="author__subscribe">
-                <Show when={props.isFollowed}>
-                  <button
-                    onClick={async () =>
-                      (subscribed = await unsubscribe(props.author.slug, 'authors'))}
-                    class="button button--subscribe"
-                    ><Icon name="author-unsubscribe" />
+                <Show when={props.isFollowed} fallback={
+                  <button onClick={follow} class="button button--subscribe">
+                  <Icon name="author-subscribe" />
+                  <span class="button__label">+&nbsp;Подписаться</span>
+                  </button>
+                }>
+                  <button onClick={unfollow} class="button button--subscribe">
+                    <Icon name="author-unsubscribe" />
                     <span class="button__label">-&nbsp;Отписаться</span>
                   </button>
                 </Show>
 
                 <Show when={!props.isFollowed}>
-                  <button
-                    onClick={async () =>
-                      (subscribed = await subscribe(props.author.slug, 'authors'))}
-                    class="button button--subscribe"
-                  >
-                    <Icon name="author-subscribe" />
-                    <span class="button__label">+&nbsp;Подписаться</span>
-                  </button>
                 </Show>
 
                 <Show when={!props.compact}>
@@ -71,13 +57,9 @@ export default (props: AuthorCardProps) => {
                     Написать
                   </button>
 
-                  <Show when={!props.author.links?.length}>
-                    <For each={props.author.links}>
-                      {(link) => (
-                        <a href={link}>{getLinkName(link)}</a>
-                      )}
-                    </For>
-                  </Show>
+                  <For each={props.author.links as string[]}>
+                    {(link: string) => (<a href={link}>*</a>)}
+                  </For>
                 </Show>
               </div>
             </Show>

@@ -4,14 +4,10 @@ import MD from './MD'
 import Icon from '../Nav/Icon'
 import ArticleComment from './Comment'
 import AuthorCard from '../Author/Card'
-import { For, Show } from 'solid-js'
+import { createSignal, For, Show } from 'solid-js'
 import { Comment, Maybe, Shout, Topic, User } from '../../graphql/types.gen'
 import { useStore } from '../../store'
 import { useI18n } from '@solid-primitives/i18n'
-
-function subscribe(slug: string, arg1: string) {
-  throw new Error('Function not implemented.')
-}
 
 const deepest = 6
 
@@ -22,7 +18,9 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ authorsSubscribed, topicsSubscribed, currentUser, modal, token }, { showModal }] = useStore()
+  const [{ authorsSubscribed, currentUser, token }, { showModal, follow, unfollow }] = useStore()
+  const [isFollowed, setFollowed] = createSignal(false)
+
 
   let commentElement
   const getCommentLevel = (c: Comment, level = 0) => {
@@ -88,11 +86,11 @@ export default (props: ArticleProps) => {
               {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a href='#bookmark' onClick={() => subscribe(props.article?.slug || '', 'articles')}>
+              <a href='#bookmark' onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
                 <Icon name='bookmark' />
                 <Show
                   when={authorsSubscribed?.includes(props.article?.slug as string)}
-                  fallback={`В&nbsp;избранное`}
+                  fallback={t('Favorite')}
                 >
                   {t('Bookmarked')}
                 </Show>
@@ -123,7 +121,7 @@ export default (props: ArticleProps) => {
               {(author: Partial<User>) => (
                 <>
                   <Show when={props.article?.authors?.includes(author as User)}>, </Show>
-                  <AuthorCard {...author} hasSubscribeButton={false} />
+                  <AuthorCard author={author} canFollow={false}/>
                 </>
               )}
             </For>

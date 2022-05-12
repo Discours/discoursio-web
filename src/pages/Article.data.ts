@@ -27,7 +27,7 @@ export const ArticleData: RouteDataFunc = (args) => {
       return articleState().fetching
     },
     get article() {
-      return articleData()
+      return articleData()?.getShoutBySlug
     }
   }
 }
