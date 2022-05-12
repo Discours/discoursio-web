@@ -97,14 +97,14 @@ export const BlogArticle: Component = () => {
                   onClick={() => (subscribed? unfollow : follow)(data.article?.slug as string, 'articles')}
                 >
                   <Icon name="bookmark" />
-                  <Show when={subscribed}>Сохранено</Show>
-                  <Show when={!subscribed}>В&nbsp;избранное</Show>
+                  <Show when={subscribed}>{t('Bookmarked')}</Show>
+                  <Show when={!subscribed}>{t('Favorite')}</Show>
                 </a>
               </div>
               <div class="shout-stats__item">
                 <a href="#share" onClick={() => (openModal('share'))}>
                   <Icon name="share" />
-                  Поделиться
+                  {t('Share')}
                 </a>
               </div>
             </div>
@@ -120,7 +120,7 @@ export const BlogArticle: Component = () => {
             </div>
 
             <div class="shout__authors-list">
-              <h4>Авторы</h4>
+              <h4>{t('Authors')}</h4>
               <For each={data.article.authors as User[]}>
                 {(user: User) => (
                   <AuthorCard author={user} compact={true} canFollow={false} />
@@ -128,7 +128,7 @@ export const BlogArticle: Component = () => {
               </For>
             </div>
 
-            <h2>Комментарии {data.comments?.length.toString() || ''}</h2>
+            <h2>{t('Comments')} {data.comments?.length.toString() || ''}</h2>
 
             <For each={data.comments}>
               {(comment: Comment) => (

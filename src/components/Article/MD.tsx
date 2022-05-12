@@ -10,7 +10,6 @@ const mit = MD({
   linkify: true,
   typographer: true
 })
-
 mit.use(mdmark)
 mit.use(mdcustom)
 mit.use(mdfig, {

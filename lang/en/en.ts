@@ -1,21 +1,7 @@
-import global from './global.json'
-import home from './home.json'
-import resources from './resources.json'
-import tutorial from './tutorial.json'
-import media from './media.json'
-import examples from './examples.json'
-import contributors from './contributors.json'
-import docs from './docs.json'
+import dis from '../ru/discours.json'
 
-const langs = () => ({
-  global,
-  home,
-  docs,
-  media,
-  resources,
-  tutorial,
-  examples,
-  contributors
-})
-
-export default langs
+export default () => {
+  let o: { [key:string]: string } = {}
+  Object.keys(dis).forEach(key => o[key] = key)
+  return o
+}

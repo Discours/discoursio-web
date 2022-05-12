@@ -64,14 +64,13 @@ const pwaOptions = {
 export default defineConfig({
   plugins: [
     {
-      ...mdx({
-        jsx: true,
-        jsxImportSource: 'solid-js',
-        providerImportSource: 'solid-mdx'
-        // remarkPlugins: [remarkGfm],
-      }),
-      enforce: 'pre'
-    },
+			...mdx({
+				jsx: true,
+				jsxImportSource: "solid-js",
+				providerImportSource: "solid-mdx"
+			}),
+			enforce: "pre"
+		},
     SolidJS({ extensions: ['.md', '.mdx'] }),
     SolidSVG(),
     false && VitePWA(pwaOptions as any)

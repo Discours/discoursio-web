@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2019",
+    "target": "ES2022",
     "module": "ESNext",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
@@ -11,7 +11,7 @@
     "newLine": "lf",
     "sourceMap": true,
     "jsxImportSource": "solid-js",
-    "types": ["vite/client", "vite-plugin-pwa/client"],
+    "types": ["vite/client", "solid-mdx/types", "vite-plugin-pwa/client"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,

@@ -50,8 +50,8 @@ export const routes: RouteDefinition[] = [
     data: TopicData // TODO: get authors and articles list
   },
   {
-    path: '/about/:slug',
-    component: lazy(() => import('./pages/About'))
+    path: '/about/manifest',
+    component: lazy(() => import('./pages/about/manifest.mdx'))
   },
   {
     path: '/*all',
