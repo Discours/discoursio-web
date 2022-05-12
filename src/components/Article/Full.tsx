@@ -4,7 +4,7 @@ import MD from './MD'
 import Icon from '../Nav/Icon'
 import ArticleComment from './Comment'
 import AuthorCard from '../Author/Card'
-import { createSignal, For, Show } from 'solid-js'
+import { createEffect, createSignal, For, Show } from 'solid-js'
 import { Comment, Maybe, Shout, Topic, User } from '../../graphql/types.gen'
 import { useStore } from '../../store'
 import { useI18n } from '@solid-primitives/i18n'
@@ -21,6 +21,9 @@ export default (props: ArticleProps) => {
   const [{ authorsSubscribed, currentUser, token }, { showModal, follow, unfollow }] = useStore()
   const [isFollowed, setFollowed] = createSignal(false)
 
+  createEffect(() => {
+    if(authorsSubscribed.includes(currentUser.slug as string)) setFollowed(true)
+  })
 
   let commentElement
   const getCommentLevel = (c: Comment, level = 0) => {
@@ -35,8 +38,8 @@ export default (props: ArticleProps) => {
 
   const mainTopic = () =>
     props.article?.topics?.find((item: Maybe<Topic>) => Boolean(item?.slug === props.article?.mainTopic))
-  const canEdit = () =>
-    Boolean(props.article?.authors?.find((a: Partial<User>) => a.slug === currentUser.slug)) // FIXME
+  //const canEdit = () =>
+  //  Boolean(props.article?.authors?.find((a: Partial<User>) => a.slug === currentUser.slug)) // FIXME
 
   return (
     <div class='article'>
@@ -92,7 +95,7 @@ export default (props: ArticleProps) => {
                   when={authorsSubscribed?.includes(props.article?.slug as string)}
                   fallback={t('Favorite')}
                 >
-                  {t('Bookmarked')}
+                  {t('Bookmarked')}``
                 </Show>
               </a>
             </div>
