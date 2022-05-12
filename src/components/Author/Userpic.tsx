@@ -1,4 +1,5 @@
 import { Show } from 'solid-js/web'
+import './Userpic.scss'
 
 export default (props) => {
   const letters = () => {
