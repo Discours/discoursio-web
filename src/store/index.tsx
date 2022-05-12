@@ -11,6 +11,8 @@ import { Topic, User } from '../graphql/types.gen'
 import signIn from '../graphql/q/sign-in'
 import topicsAll from '../graphql/q/topics-all'
 import { client } from '../graphql/client'
+import fq from '../graphql/q/follow'
+import ufq from '../graphql/q/unfollow'
 
 type ModalType = '' | 'auth' | 'subscribe'
 type WarnKind = 'error' | 'warn' | 'info'
@@ -145,19 +147,24 @@ export function StoreProvider(props: { children: any }) {
       const { error } = qdata()
 
       if (!error) setLoggedIn(false)
+      else warn(error)
     },
     forget: (email: string) => {
       console.log(`auth: forget ${email}`)
       // TODO: implement forget, reset, resend
       // const [qdata] = createQuery()
     },
-    toggleAuthor: (slug: string) => {
-      console.log(`toggle ${slug} author`)
-      // TODO: implement
+    follow: (slug: string, what: string) => {
+      console.log(`follow ${slug} from ${what}`)
+      const [qdata] = createQuery({ query: fq, variables: { what, slug }})
+      const { error } = qdata()
+      if(error) warn(error)
     },
-    toggleTopic: (slug: string) => {
-      console.log(`toggle ${slug} topic`)
-      // TODO: implement
+    unfollow: (slug: string, what: string) => {
+      console.log(`unfollow ${slug} from ${what}`)
+      const [qdata] = createQuery({ query: ufq, variables: { what, slug }})
+      const { error } = qdata()
+      if(error) warn(error)
     }
   }
 

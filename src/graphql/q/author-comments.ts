@@ -9,6 +9,7 @@ export default gql`
       updatedAt
       replyTo
       ratings {
+        _id: createdBy
         value
         createdBy
       }

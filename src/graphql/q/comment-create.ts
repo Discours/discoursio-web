@@ -7,6 +7,7 @@ export default gql`
     createComment(comment: $comment) {
       error
       comment {
+        id
         author
         body
         createdAt

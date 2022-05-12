@@ -7,6 +7,7 @@ export default gql`
       body
       createdAt
       author {
+        _id: slug
         name
         slug
         userpic
@@ -14,6 +15,7 @@ export default gql`
       updatedAt
       replyTo
       ratings {
+        _id: createdBy
         value
         createdBy
       }

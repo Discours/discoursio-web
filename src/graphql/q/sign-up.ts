@@ -6,6 +6,7 @@ export default gql`
       error
       token
       user {
+        _id: slug
         name
         slug
         userpic

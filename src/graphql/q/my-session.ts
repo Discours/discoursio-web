@@ -7,6 +7,7 @@ export default gql`
     getCurrentUser {
       error
       user {
+        _id: slug
         name
         slug
         bio

@@ -3,6 +3,7 @@ import { gql } from 'solid-urql'
 export default gql`
   query UserSubscribersQuery($slug: String!) {
     userSubcribers(slug: $slug) {
+      _id: slug
       slug
       name
       bio
@@ -12,6 +13,7 @@ export default gql`
       createdAt
       wasOnlineAt
       ratings {
+        _id: rater
         rater
         value
       }
