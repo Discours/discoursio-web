@@ -14,7 +14,7 @@ import { client } from '../graphql/client'
 import fq from '../graphql/q/follow'
 import ufq from '../graphql/q/unfollow'
 
-type ModalType = '' | 'auth' | 'subscribe'
+type ModalType = '' | 'auth' | 'subscribe' | 'feedback' | 'share' | 'thank' | 'donate'
 type WarnKind = 'error' | 'warn' | 'info'
 
 export interface Warning {

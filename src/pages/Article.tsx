@@ -24,7 +24,7 @@ export const BlogArticle: Component = () => {
 
   useRouteReadyState()
 
-  const [{ topicsSubscribed, currentUser, token }, {openModal, follow, unfollow}] = useStore();
+  const [{ topicsSubscribed, currentUser, token }, {showModal, follow, unfollow}] = useStore();
   const subscribed = topicsSubscribed.includes(data.article?.slug || '')
 
   const deepest = 6
@@ -103,7 +103,7 @@ export const BlogArticle: Component = () => {
                 </a>
               </div>
               <div class="shout-stats__item">
-                <a href="#share" onClick={() => (openModal('share'))}>
+                <a href="#share" onClick={() => (showModal('share'))}>
                   <Icon name="share" />
                   {t('Share')}
                 </a>
@@ -148,7 +148,7 @@ export const BlogArticle: Component = () => {
                 {t('To leave a comment you please')}
                 <a href={''} onClick={(evt) => {
                   evt.preventDefault();
-                  openModal('auth');
+                  showModal('auth');
                 }}><i>{t("sign up or sign in")}</i></a>
               </div>
             </Show>

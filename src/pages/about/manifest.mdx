@@ -1,9 +1,15 @@
 import { Link } from "solid-app-router"
-import Modal from '../../components/Nav/Opener'
+import Opener from '../../components/Nav/Opener'
+import Modal from '../../components/Nav/Modal'
+import Feedback from '../../components/Discours/Feedback'
+import Subscribe from '../../components/Discours/Subscribe'
 import { Title } from "solid-meta"
 import './manifest.scss'
 
 <Title> Дискурс: Манифест</Title>
+
+<Modal name='feedback'><Feedback /></Modal>
+<Modal name='subscribe'><Subscribe /></Modal>
 
 # Манифест
 
@@ -35,8 +41,8 @@ import './manifest.scss'
 
 ### Как еще можно помочь
 
-Советуйте Дискурс друзьям и знакомым. Обсуждайте и распространяйте наши публикации — все материалы открытой редакции можно читать и перепечатывать бесплатно. Подпишитесь на самиздат [ВКонтакте](https://vk.com/discoursio), в [Фейсбуке](https://facebook.com/discoursio) и в [Телеграме](https://t.me/discoursio), а также на <Modal name='subscribe'>рассылку лучших материалов</Modal> , чтобы не пропустить ничего интересного. [Рассказывайте о впечатлениях](https://forms.gle/9UnHBAz9Q3tjH5dAA) от материалов открытой редакции, <Modal name='feedback'>делитесь идеями</Modal>, интересными темами, о которых хотели бы узнать больше, и историями, которые нужно рассказать.
+Советуйте Дискурс друзьям и знакомым. Обсуждайте и распространяйте наши публикации — все материалы открытой редакции можно читать и перепечатывать бесплатно. Подпишитесь на самиздат [ВКонтакте](https://vk.com/discoursio), в [Фейсбуке](https://facebook.com/discoursio) и в [Телеграме](https://t.me/discoursio), а также на <Opener name='subscribe'>рассылку лучших материалов</Opener> , чтобы не пропустить ничего интересного. [Рассказывайте о впечатлениях](https://forms.gle/9UnHBAz9Q3tjH5dAA) от материалов открытой редакции, <Opener name='feedback'>делитесь идеями</Opener>, интересными темами, о которых хотели бы узнать больше, и историями, которые нужно рассказать.
 
 ## Будем на связи
 
-Если вы хотите предложить материал, сотрудничать, рассказать о проблеме, которую нужно осветить, сообщить об ошибке или баге, что-то обсудить, уточнить или посоветовать, пожалуйста, <Modal name='feedback'>напишите нам здесь</Modal> или на почту [welcome@discours.io](mailto:welcome@discours.io). Мы обязательно ответим и постараемся реализовать все хорошие задумки.
+Если вы хотите предложить материал, сотрудничать, рассказать о проблеме, которую нужно осветить, сообщить об ошибке или баге, что-то обсудить, уточнить или посоветовать, пожалуйста, <Opener name='feedback'>напишите нам здесь</Opener> или на почту [welcome@discours.io](mailto:welcome@discours.io). Мы обязательно ответим и постараемся реализовать все хорошие задумки.

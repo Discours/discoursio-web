@@ -52,7 +52,7 @@
 .modalwrap__content {
   padding: $container-padding-x;
 
-  @include media-breakpoin-up(lg) {
+  @media (min-width: 800px) and(max-width: 991px) {
     padding: 10rem 6rem;
   }
 }

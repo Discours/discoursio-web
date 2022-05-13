@@ -3,6 +3,7 @@ import { useStore } from '../../store'
 import './Modal.scss'
 
 interface ModalProps {
+  name: string
   children: any
 }
 
@@ -19,7 +20,7 @@ export default (props: ModalProps) => {
   })
 
   return (
-    <Show when={!!modal}>
+    <Show when={modal === props.name}>
       <div class='modalwrap' onClick={wrapClick}>
         <div class='modalwrap__inner'>
           {props.children}

@@ -45,13 +45,18 @@ export const routes: RouteDefinition[] = [
     // TODO: data: AllTopicsData,
   },
   {
+    path: '/@:slug',
+    component: lazy(() => import('./pages/Author')),
+    data: AuthorData
+  },
+  {
     path: '/topic/:slug',
     component: lazy(() => import('./pages/Topic')),
-    data: TopicData // TODO: get authors and articles list
+    data: TopicData
   },
   {
     path: '/about/manifest',
-    component: lazy(() => import('./pages/about/manifest.mdx') as any)
+    component: lazy(() => import('./pages/about/manifest.mdx'))
   },
   {
     path: '/*all',
