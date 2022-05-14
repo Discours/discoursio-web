@@ -1,26 +1,28 @@
-import { onMount } from 'solid-js'
-import { Link } from 'solid-app-router'
-import Opener from '../../components/Nav/Opener'
+import { createSignal, onMount } from 'solid-js'
 import Modal from '../../components/Nav/Modal'
-import Feedback from '../../components/Discours/Feedback'
-import Subscribe from '../../components/Discours/Subscribe'
 import { Title, Meta } from 'solid-meta'
 import './help.scss'
+import { useStore } from '../../store'
 
 export default () => {
-  let once = '',
-    monthly = 'Monthly'
-  let interval: string = monthly
-  let amountSwitchElement: HTMLDivElement
-  let amount: string
-  let customAmount, CustomerReciept
-  let widget
 
+  const once = ''
+  const monthly = 'Monthly'
   const cpOptions = {
     publicId: 'pk_0a37bab30ffc6b77b2f93d65f2aed',
     description: 'Поддержка журнала и развитие Дискурса',
     currency: 'RUB'
   }
+
+  let amountSwitchElement: HTMLDivElement | undefined
+  let customAmountElement: HTMLInputElement | undefined
+  let CustomerReciept: any
+  let widget: any
+
+  const [{}, { warn, showModal }] = useStore()
+  const [showingPayment, setShowingPayment] = createSignal(false)
+  const [period, setPeriod] = createSignal(monthly)
+  const [amount, setAmount] = createSignal(0)
 
   onMount(() => {
     widget = new (window as any).cp.CloudPayments() // Checkout(cpOptions)
@@ -30,9 +32,9 @@ export default () => {
         //товарные позиции
         {
           label: cpOptions.description, //наименование товара
-          price: parseInt(amount) || 0, //цена
+          price: amount() || 0, //цена
           quantity: 1, //количество
-          amount: parseInt(amount) || 0, //сумма
+          amount: amount() || 0, //сумма
           vat: 20, //ставка НДС
           method: 0, // тег-1214 признак способа расчета - признак способа расчета
           object: 0 // тег-1212 признак предмета расчета - признак предмета товара, работы, услуги, платежа, выплаты, иного предмета расчета
@@ -43,7 +45,7 @@ export default () => {
       // phone: '', //телефон покупателя в любом формате, если нужно отправить сообщение со ссылкой на чек
       isBso: false, //чек является бланком строгой отчетности
       amounts: {
-        electronic: parseInt(amount), // Сумма оплаты электронными деньгами
+        electronic: amount(), // Сумма оплаты электронными деньгами
         advancePayment: 0.0, // Сумма из предоплаты (зачетом аванса) (2 знака после запятой)
         credit: 0.0, // Сумма постоплатой(в кредит) (2 знака после запятой)
         provision: 0.0 // Сумма оплаты встречным предоставлением (сертификаты, др. мат.ценности) (2 знака после запятой)
@@ -54,16 +56,16 @@ export default () => {
   const show = () => {
     // $openModal = 'donate'
     console.log('help: donate clicked')
-    let choice: HTMLInputElement = amountSwitchElement.querySelector(
+    let choice: HTMLInputElement | undefined | null = amountSwitchElement?.querySelector(
       'input[type=radio]:checked'
     )
-    amount = customAmount || choice.value
+    setAmount(parseInt(customAmountElement?.value || choice?.value || '0'))
     console.log('help: input amount ' + amount)
     widget.charge(
       {
         // options
         ...cpOptions,
-        amount: parseInt(amount),
+        amount: amount(),
         skin: 'classic',
         requireEmail: true,
         retryPayment: true,
@@ -73,30 +75,31 @@ export default () => {
           CloudPayments: {
             CustomerReciept,
             recurrent: {
-              interval,
-              period: 1,
+              interval: period(), // local solid's signal
+              period: 1, // internal widget's
               CustomerReciept // чек для регулярных платежей
             }
           }
         }
       },
-      (opts) => {
+      (opts: any) => {
         // success
         // действие при успешной оплате
         console.debug(opts)
-        // $openModal = ''
-        goto('/about/thanks')
+        showModal('thank')
+        
       },
-      function (reason, options) {
+      function (reason: string, options: any) {
         // fail
         // действие при неуспешной оплате
         console.debug(options)
-        $notices.push({
+        const note = {
           type: 'error',
           text: reason,
           state: 'new',
           ts: new Date()
-        })
+        }
+        warn(note) // FIXME
       }
     )
   }
@@ -107,8 +110,7 @@ export default () => {
 <Meta name='description'>Здесь можно поддержать Дискурс материально.</Meta>
 <Meta name='keywords'>Discours.io, помощь, благотворительность</Meta>
 
-<Modal name='feedback'><Feedback /></Modal>
-<Modal name='subscribe'><Subscribe /></Modal>
+<Modal name='thank'>Благодарим!</Modal>
 
 <article class="container discours-help">
   <div class="row">
@@ -148,7 +150,7 @@ export default () => {
             <div class="form-group">
               <div
                 class="donate-buttons-container"
-                bind:this={amountSwitchElement}
+                ref={amountSwitchElement}
               >
                 <input type="radio" name="amount" id="fix250" value="250" />
                 <label for="fix250" class="btn donate-value-radio">
@@ -171,7 +173,7 @@ export default () => {
                 <input
                   class="form-control donate-input"
                   required
-                  bind:value={customAmount}
+                  ref={customAmountElement}
                   type="number"
                   name="sum"
                   placeholder="Другая сумма"
@@ -182,47 +184,38 @@ export default () => {
             <div
               class="form-group"
               id="payment-type"
-              transition:fade
-              class:showing={paymentTypeShowing}
+              classList={{ showing: showingPayment()}}
             >
               <div class="btn-group payment-choose" data-toggle="buttons">
-                {#key interval}
                   <input
                     type="radio"
                     autocomplete="off"
                     id="once"
                     name="once"
-                    on:click|preventDefault={() => (interval = once)}
-                    checked={interval === once}
+                    onClick={() => (setPeriod(once))}
+                    checked={period() === once}
                   />
                   <label
                     for="once"
                     class="btn payment-type"
-                    class:active={interval === once}>Единоразово</label
-                  >
+                    classList={{active: period() === once}}>Единоразово</label>
                   <input
                     type="radio"
                     autocomplete="off"
                     id="monthly"
                     name="monthly"
-                    on:click|preventDefault={() => (interval = monthly)}
-                    checked={interval === monthly}
+                    onClick={() => (setPeriod(monthly))}
+                    checked={period() === monthly}
                   />
-                  <label
-                    for="monthly"
-                    class="btn payment-type"
-                    class:active={interval === monthly}>Ежемесячно</label
-                  >
-                {/key}
+                  <label for="monthly" class="btn payment-type"
+                    classList={{ active: period() === monthly }}>
+                      Ежемесячно
+                  </label>
               </div>
             </div>
 
             <div class="form-group">
-              <a
-                href={''}
-                class="btn send-btn donate"
-                on:click|preventDefault={show}>Помочь журналу</a
-              >
+              <a href={''} class="btn send-btn donate" onClick={show}>Помочь журналу</a>
             </div>
           </form>
         </div>
