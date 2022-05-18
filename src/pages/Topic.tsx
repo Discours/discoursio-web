@@ -8,9 +8,9 @@ import Row2 from '../components/Article/Row2'
 import Beside from '../components/Article/Beside'
 import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
-import { useStore } from '../store'
 import './Topic.scss'
 import { byRating, byViews } from '../utils/by'
+import TopicCard from '../components/Topic/Card'
 
 export const BlogTopic: Component = () => {
   const [t] = useI18n()
@@ -21,11 +21,13 @@ export const BlogTopic: Component = () => {
     page: number
     size: number
     articles: Partial<Shout>[]
+    topics?: Topic[]
+    topicsLoading?: boolean
   }>()
   let topRated: Partial<Shout>[] = []
   let topViewed: Partial<Shout>[] = []
   let authors: Partial<User>[] = []
-  let topic: Topic = {} as Topic
+  let topic: Topic | undefined
   useRouteReadyState()
   const [mode, setMode] = createSignal('fresh')
   const sortBy = (by: string) => {
@@ -41,12 +43,17 @@ export const BlogTopic: Component = () => {
       authors = Array.from(authorset)
     }
   })
-  const [{ topics }, ] = useStore()
+  
   createEffect(() => {
-    topic = topics?.find((t:Topic) => t.slug === data.slug) as Topic
+    if(!!data.topics && !topic) {
+      topic = data.topics?.find((t:Topic) => t.slug === data.slug) as Topic
+    }
   })
   return (
   <div class="container">
+    <Show when={!data.topicsLoading && !!topic?.slug}>
+      <TopicCard topic={topic as Topic} />
+    </Show>
     <div class="row topic__controls">
       <div class="col-md-8">
         <ul class="view-switcher">
