@@ -40,7 +40,7 @@ export const Home: Component = () => {
   let topMonthTopics = [] as Topic[]
   let shoutsByTopic = {} as { [key: string]: Partial<Shout>[] }
   let shoutsByLayout = {} as { [key: string]: Partial<Shout>[] }
-  let topCommented = [] as Partial<Shout>[]
+  let top3Commented = [] as Partial<Shout>[]
 
   const postLoad = (s: Partial<Shout>): void => {
     if (s.slug) {
@@ -64,6 +64,8 @@ export const Home: Component = () => {
           if (!byTopic[t.slug]) byTopic[t.slug] = []
 
           if (t.slug in shoutsByTopic) shoutsByTopic[t.slug].push(s)
+          else shoutsByTopic[t.slug] = [s,]
+
           topicset.add(t)
         }
       })
@@ -80,13 +82,13 @@ export const Home: Component = () => {
   createEffect(() => {
 
     if(data.topRecent?.length > 0) {
-      topCommented = data.topRecent?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
+      top3Commented = data.topRecent?.filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
         .sort((a, b) => {
           if (a && b && a.stat && b.stat) return b.stat.comments - a.stat.comments
 
           return 0
         })
-      // if (topCommented?.length > 0) console.debug(topCommented)
+        .slice(0,3)
 
       data.topRecent?.forEach(postLoad)
     }
@@ -99,17 +101,13 @@ export const Home: Component = () => {
   })
 
   createEffect(() => {
-    
+
     if(Object.keys(shoutsByTopic).length) {
-      console.log(shoutsByTopic)
       const goodTopics = Object.entries(shoutsByTopic)
         .filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
         .map((f) => f[0])
       console.debug(goodTopics)
-    }
-
-    if(!randomTopics) {
-      randomTopics = shuffle(Array.from(topicset).slice(0,9))
+      randomTopics = shuffle(Array.from(goodTopics).slice(0,9))
       console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
     }
 
@@ -124,22 +122,23 @@ export const Home: Component = () => {
     <main class='home'>
       <PageLoadingBar active={data.loading} />
       <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
-        <NavTopics topics={randomTopics.slice(0, 9)} />
-        <Row5 articles={data.topRecent.slice(5, 10)} />
+        <NavTopics topics={randomTopics} />
+        <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero/>
-        <Beside beside={data.topRecent[7]} top={true} title={'Самое читаемое'} values={topMonthTopics} wrapper={'article'}/>
-        <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Beside top={true} beside={data.topRecent[8]} title={'Авторы месяца'} values={topMonthAuthors} wrapper={'author'} />
-        <Slider title={'Лучшее за месяц'} articles={data.topRecent.slice(0, 8)}/>
-        <Row2 articles={data.topRecent.slice(3, 5)} />
-        <RowShort articles={data.topRecent.slice(3, 7)} />
-        <Row1 article={data.topRecent[10]} />
-        <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Row5 articles={topCommented} />
-        <Slider title={'Избранное'} articles={data.topRecent.slice(0, 8)}/>
-        <Beside top={true} beside={data.topRecent[8]} title={'Темы месяца'} values={topMonthTopics} wrapper={'topic'} />
-        <Row3 articles={data.topRecent.slice(0, 3)} />
-        <Group articles={data.topRecent.slice(0, 8)}/>
+        <Beside beside={data.topRecent[5]} top={true} title={'Самое читаемое'} values={topMonthTopics} wrapper={'article'}/>
+        <Row3 articles={data.topRecent.slice(6, 9)} />
+        <Beside top={true} beside={data.topRecent[9]} title={'Авторы месяца'} values={topMonthAuthors} wrapper={'author'} />
+        <Slider title={'Лучшее за месяц'} articles={data.topRecent.slice(10, 18)}/>
+        <Row2 articles={data.topRecent.slice(18, 20)} />
+        <RowShort articles={data.topRecent.slice(20, 24)} />
+        <Row1 article={data.topRecent[24]} />
+        <Row3 articles={data.topRecent.slice(25, 28)} />
+        <h2>Самые комментируемые</h2>
+        <Row3 articles={top3Commented} />
+        <Slider title={'Избранное'} articles={data.topRecent.slice(28, 30)}/>
+        <Beside top={true} beside={data.topRecent[30]} title={'Темы месяца'} values={topMonthTopics} wrapper={'topic'} />
+        <Row3 articles={data.topRecent.slice(31, 34)} />
+        <Group articles={data.topRecent.slice(34, 42)}/>
         <Banner/>
       </Show>
     </main>

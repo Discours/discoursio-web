@@ -3,32 +3,29 @@ import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
 import topicArticles from '../graphql/q/articles-for-topic'
 
-export type TopicParams = {
-  lang: string
-}
-
 export const TopicData: RouteDataFunc = (args) => {
   const location = useLocation()
   const [, { locale }] = useI18n()
-  const paramList = (): TopicParams => {
-    const lang = location.query.locale ? (location.query.locale as string) : locale()
-
-    return { lang }
-  }
   const [data, state] = createQuery({ query: topicArticles, variables: { topic: args.params.slug } })
 
   return {
-    get getArticles() {
+    get articles() {
       return data()
     },
     get loading() {
       return state().fetching
     },
-    get version() {
-      return ''
+    get lang() {
+      return location.query.locale ? (location.query.locale as string) : locale()
     },
-    get params() {
-      return paramList
+    get page() {
+      return parseInt(args.params.page) || 0
+    },
+    get size() {
+      return 50
+    },
+    get slug() {
+      return args.params.slug
     }
   }
 }

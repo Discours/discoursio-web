@@ -5,6 +5,8 @@ import manifest from './src/assets/manifest.json'
 import mdx from '@mdx-js/rollup'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const pwaEnabled = false
+
 const pwaOptions = {
   registerType: 'autoUpdate',
   // Warning: don't add sitemap.xml yet:
@@ -73,7 +75,7 @@ export default defineConfig({
 		},
     SolidJS({ extensions: ['.md', '.mdx'] }),
     SolidSVG(),
-    false && VitePWA(pwaOptions as any)
+    pwaEnabled && VitePWA(pwaOptions as any)
   ],
   optimizeDeps: {
     include: [],

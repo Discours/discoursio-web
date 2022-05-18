@@ -32,7 +32,7 @@ interface Subscriber {
 }
 
 interface CommonStore {
-  readonly topics: { [key: string]: Topic }
+  readonly topics: Topic[]
   readonly currentUser: Partial<User> & Subscriber
   page?: number
   totalPagesCount?: number
@@ -66,7 +66,7 @@ export function StoreProvider(props: { children: any }) {
     get currentUser() {
       return state.session
     },
-    topics: {} as {[key:string]:Topic},
+    topics: [] as Topic[],
     page: 0,
     totalPagesCount: 0,
     token: '',

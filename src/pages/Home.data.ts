@@ -19,7 +19,7 @@ export interface HomeRouteData {
   topRecent: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
-  topics: { [key:string]: Topic }
+  topics: Topic[]
   topicsLoading: boolean
   loading: boolean
   params: HomeParams
@@ -55,11 +55,10 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
 
   return {
     get topics() {
-        console.log(tdata())
-        return tdata()?.topicsBySlugs
+      return tdata()?.topicsBySlugs
     },
     get topicsLoading() {
-        return tstate().fetching
+      return tstate().fetching
     },
     get topRecent() {
       return topRecentData()?.recents || []

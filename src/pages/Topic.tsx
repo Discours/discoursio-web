@@ -1,68 +1,141 @@
-import { Component, Show, For } from 'solid-js'
+import { Component, For, createSignal, createEffect, Show } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
-import { useRouteData, NavLink } from 'solid-app-router'
+import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-// import { useAppContext } from '../AppContext'
-// import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
-import { Shout, User } from '../graphql/types.gen'
-import MD from '../components/Article/MD'
+import { Shout, Topic, User } from '../graphql/types.gen'
+import Row3 from '../components/Article/Row3'
+import Row2 from '../components/Article/Row2'
+import Beside from '../components/Article/Beside'
+import Row1 from '../components/Article/Row1'
+import ArticleCard from '../components/Article/Card'
+import { useStore } from '../store'
 
-// FIXME: it is a copy of BlogArticle
 export const BlogTopic: Component = () => {
+
+  const byRating = (a: Partial<Shout>, b: Partial<Shout>) => {
+    const x = a?.stat?.ratings as number
+    const y = b?.stat?.ratings as number
+    if (x > y) return -1
+    if (x < y) return 1
+    return 0
+  }
+
+  const byViews = (a: Partial<Shout>, b: Partial<Shout>) => {
+    const x = a?.stat?.views as number
+    const y = b?.stat?.views as number
+    if (x > y) return -1
+    if (x < y) return 1
+    return 0
+  }
+
   const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
-    slug?: string
-    authors?: Partial<Shout>[]
-    articles?: Partial<Shout>[]
+    slug: string
+    lang: string
+    page: number
+    size: number
+    articles: Partial<Shout>[]
   }>()
-
+  let topRated: Partial<Shout>[] = []
+  let topViewed: Partial<Shout>[] = []
+  let authors: Partial<User>[] = []
+  let topic: Topic = {} as Topic
   useRouteReadyState()
-
+  const [mode, setMode] = createSignal('fresh')
+  const sortBy = (by: string) => {
+    setMode(by)
+    // TODO: something else
+  }
+  createEffect(() => {
+    if(!topRated && !!data.articles) {
+      topRated = Array.from(data.articles || []).sort(byRating)
+      topViewed = Array.from(data.articles || []).sort(byViews)
+      let authorset = new Set([] as Partial<User>[])
+      data.articles.forEach(a => a.authors?.forEach(u => authorset.add(u)))
+      authors = Array.from(authorset)
+    }
+  })
+  const [{ topics }, ] = useStore()
+  createEffect(() => {
+    topic = topics?.find((t:Topic) => t.slug === data.slug) as Topic
+  })
   return (
-    <div class='flex flex-col'>
-      <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
-        <div class='mb-10 lg:flex justify-center'>
-          <div class='space-y-10 px-4 lg:px-0'>
-            <Show fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>} when={!data.loading}>
-              <For each={data.articles}>
-                {(a: Partial<Shout>) => (
-                  <div class='container lg:px-10'>
-                    <div class='text-center space-y-5'>
-                      <img class='rounded-md mb-10 shadow-md' src={a.cover || ''} />
-                      <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                        {a.title}
-                      </h1>
-                      <div class='text-md'>
-                        Posted by{' '}
-                        <For each={a.authors}>
-                          {(author: Partial<User>) => (
-                            <a target='_blank' rel='noopener' href={author.slug}>
-                              {author.username}
-                            </a>
-                          )}
-                        </For>
-                        on {new Date(a.createdAt).toDateString()}
-                      </div>
-                    </div>
-                    <hr class='mt-10 w-3/6 mx-auto' />
-                    <article class='my-10 prose dark:prose-invert mx-auto'>
-                      <MD body={a.body || ''} />
-                    </article>
-                    <hr class='mt-10 w-3/6 mx-auto' />
-                    <div class='flex flex-row justify-center mt-10'>
-                      <NavLink href='/blog'>
-                        <figure class={`inline-block chevron`} /> Back
-                      </NavLink>
-                    </div>
-                  </div>
-                )}
-              </For>
-            </Show>
-          </div>
+  <div class="container">
+    <div class="row topic__controls">
+      <div class="col-md-8">
+        <ul class="view-switcher">
+          <li classList={{ selected: mode() === 'fresh' }}>
+            <button type="button" onClick={() => sortBy('fresh')}>
+              {t('Recent')}
+            </button>
+          </li>
+          <li classList={{ selected: mode() === 'popular' }}>
+            <button type="button" onClick={() => sortBy('popular')}>
+              {t('Popular')}
+            </button>
+          </li>
+          <li classList={{ selected: mode() === 'discuss' }}>
+            <button type="button" onClick={() => sortBy('discuss')}>
+              {t('Discussing')}
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <div class="mode-switcher">
+          {t('Show')}
+          <span class="mode-switcher__control">{t('All posts')}</span>
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <Show when={!data.loading && data.articles?.length > 0}>
+        <Row1 article={data.articles[0]} />
+        <Row3 articles={data.articles.slice(1, 4)} />
+        <Row2 articles={data.articles.slice(4, 6)} />
+        <Beside
+          title={t('Topic is supported by')}
+          values={authors.slice(0, 5)}
+          beside={data.articles[6]}
+          wrapper={'author'}
+        />
+        <div class="floor floor--important">
+          <div class="container">
+            <div class="row">
+              <h3 class="col-12">{t('Popular')}</h3>
+              <For each={topViewed}>
+                {(a:Partial<Shout>)=> (<div class="col-md-6">
+                  <ArticleCard article={a} />
+                </div>
+                )}
+              </For>
+            </div>
+          </div>
+        </div>
+        <Row3 articles={data.articles.slice(10, 13)} />
+        <Row3 articles={data.articles.slice(13, 16)} />
+        <div class="floor floor--important">
+          <div class="container">
+            <div class="row">
+              <h3 class="col-12">{t('Favorites')}</h3>
+              <For each={topRated}>
+                {(a:Partial<Shout>) => (
+                <div class="col-md-4">
+                  <ArticleCard article={a} />
+                </div>
+                )}
+              </For>
+            </div>
+          </div>
+        </div>
+        <Row2 articles={data.articles.slice(0, 2)} />
+        <Row3 articles={data.articles.slice(2, 5)} />
+        <Row2 articles={data.articles.slice(5, 7)} />
+      </Show>
+    </div>
+  </div >
   )
 }
 

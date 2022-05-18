@@ -26,7 +26,7 @@ export default gql`
       }
       publishedAt
       stat {
-        _id: createdAt
+        _id: views
         views
         comments
         ratings

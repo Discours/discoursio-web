@@ -30,7 +30,7 @@ export default (props: TopicProps) => {
     <div class='topic row'>
       <div class='col-md-7'>
         <div class='topic-title'>
-          <a href='/topic/{topic.slug}'>{capitalize(props.topic.title as string)}</a>
+          <a href={`/topic/${props.topic.slug}`}>{capitalize(props.topic.title as string)}</a>
         </div>
         <Show when={props.topic.pic}>
           <div class='topic__avatar'>
