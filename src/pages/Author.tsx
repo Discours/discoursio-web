@@ -1,12 +1,17 @@
-import { Component, Show, For } from 'solid-js'
+import { Component, Show, For, createEffect } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
-import { useRouteData, NavLink } from 'solid-app-router'
+import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
 import { Community, Shout, Topic, User } from '../graphql/types.gen'
-import MD from '../components/Article/MD'
+import Row2 from '../components/Article/Row2'
+import Row1 from '../components/Article/Row1'
+import Row3 from '../components/Article/Row3'
+import Beside from '../components/Article/Beside'
+import ArticleCard from '../components/Article/Card'
+import { byRating, byShouts, byViews } from '../utils/by'
 
-// FIXME: it is a copy of BlogArticle
+// FIXME
 export const BlogAuthor: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<{
@@ -19,66 +24,64 @@ export const BlogAuthor: Component = () => {
     topics: Topic[]
     topicsLoading: boolean
   }>()
-
+  let authorTopics: Topic[] = []
+  let topRated: Partial<Shout>[] = []
+  let topViewed: Partial<Shout>[] = []
   useRouteReadyState()
-  // const chevron = createMemo(() => (t('global.dir', {}, 'ltr') == 'rtl' ? 'chevron-right' : 'chevron-left'))
-  // const context = useAppContext()
-
+  createEffect(() => {
+    if(!topRated && !!data.articles) {
+      topRated = Array.from(data.articles || []).sort(byRating)
+      topViewed = Array.from(data.articles || []).sort(byViews)
+    }
+  })
   return (
-    <div class='flex flex-col'>
-      <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
-        <div class='mb-10 lg:flex justify-center'>
-          <div class='space-y-10 px-4 lg:px-0'>
-            <Show fallback={<div class='text-center p-10 m-10'>{t('Loading')}...</div>} when={!data.authorLoading}>
-              <div class='container lg:px-10'>
-                <div class='text-center space-y-5'>
-                  <img class='rounded-md mb-10 shadow-md' src={data.author.userpic || ''} />
-                  <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                    {data.author.username}
-                  </h1>
-                  since {new Date(data.author.createdAt).toDateString()}
-                </div>
+    <>
+    <Show when={!data.articlesLoading}>
+      <Row1 article={data.articles?.at(0) as Partial<Shout>} />
+      <Row3 articles={data.articles?.slice(1, 4) as Partial<Shout>[]} />
+      <Row2 articles={data.articles?.slice(4, 6) as Partial<Shout>[]} />
+      <Show when={!data.authorLoading}>
+        <Beside
+          title={t('Favorite topics')}
+          values={authorTopics?.sort(byShouts).slice(0, 5)}
+          beside={data.articles?.at(6)}
+          wrapper={'author'}
+        />
+      </Show>
+      <div class="floor floor--important">
+        <div class="container">
+          <div class="row">
+            <h3 class="col-12">{t('Popular')}</h3>
+            <For each={topViewed}>
+              {(a:Partial<Shout>)=> (<div class="col-md-6">
+                <ArticleCard article={a} />
               </div>
-              <hr class='mt-10 w-3/6 mx-auto' />
-
-              <For each={data.articles}>
-                {(a: Partial<Shout>) => (
-                  <div class='container lg:px-10'>
-                    <div class='text-center space-y-5'>
-                      <img class='rounded-md mb-10 shadow-md' src={a.cover || ''} />
-                      <h1 class='text-4xl font-semibold mt-10 text-discours-medium dark:text-discours-darkdefault'>
-                        {a.title}
-                      </h1>
-                      <div class='text-md'>
-                        Posted by{' '}
-                        <For each={a.authors}>
-                          {(author: Partial<User>) => (
-                            <a target='_blank' rel='noopener' href={author.slug}>
-                              {author.username}
-                            </a>
-                          )}
-                        </For>{' '}
-                        on {new Date(a.createdAt || 0).toDateString()}
-                      </div>
-                    </div>
-                    <hr class='mt-10 w-3/6 mx-auto' />
-                    <article class='my-10 prose dark:prose-invert mx-auto'>
-                      <MD body={a.body || ''} />
-                    </article>
-                    <hr class='mt-10 w-3/6 mx-auto' />
-                    <div class='flex flex-row justify-center mt-10'>
-                      <NavLink href='/blog'>
-                        <figure class={`inline-block`} /> Back
-                      </NavLink>
-                    </div>
-                  </div>
-                )}
-              </For>
-            </Show>
+              )}
+            </For>
           </div>
         </div>
       </div>
-    </div>
+      <Row3 articles={data.articles?.slice(10, 13) || []} />
+      <Row3 articles={data.articles?.slice(13, 16) || []} />
+      <div class="floor floor--important">
+        <div class="container">
+          <div class="row">
+            <h3 class="col-12">{t('Favorites')}</h3>
+            <For each={topRated}>
+              {(a:Partial<Shout>) => (
+              <div class="col-md-4">
+                <ArticleCard article={a} />
+              </div>
+              )}
+            </For>
+          </div>
+        </div>
+      </div>
+      <Row2 articles={data.articles?.slice(0, 2) || []} />
+      <Row3 articles={data.articles?.slice(2, 5) || []} />
+      <Row2 articles={data.articles?.slice(5, 7) || []} />
+    </Show>
+    </>
   )
 }
 

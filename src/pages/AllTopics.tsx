@@ -7,24 +7,9 @@ import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import PageLoadingBar from '../components/LoadingBar'
 import { useStore } from '../store'
+import { byShouts, byViews } from '../utils/by'
 
 export default () => {
-
-  const byShouts = (a: Topic, b: Topic) => {
-    const x = a?.topicStat?.shouts as number
-    const y = b?.topicStat?.shouts as number
-    if (x > y) return -1
-    if (x < y) return 1
-    return 0
-  }
-
-  const byViews = (a: Topic, b: Topic) => {
-    const x = a?.topicStat?.views as number
-    const y = b?.topicStat?.views as number
-    if (x > y) return -1
-    if (x < y) return 1
-    return 0
-  }
 
   const [{ currentUser }] = useStore()
   const [t] = useI18n()

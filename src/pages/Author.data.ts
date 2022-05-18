@@ -28,13 +28,13 @@ export const AuthorData: RouteDataFunc = (args) => {
         return tdata()?.topicsBySlugs
     },
     get topicsLoading() {
-        return tstate().fetching
+        return tstate()?.fetching
     },
     get articles() {
-      return authorArticlesData()
+      return authorArticlesData()?.shoutsByAuthor
     },
     get articlesLoading() {
-      return stauthorArticlesState().fetching
+      return stauthorArticlesState()?.fetching
     },
     get params() {
       return paramList

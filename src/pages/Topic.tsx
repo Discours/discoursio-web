@@ -9,26 +9,10 @@ import Beside from '../components/Article/Beside'
 import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import { useStore } from '../store'
-import './Topics.scss'
+import './Topic.scss'
+import { byRating, byViews } from '../utils/by'
 
 export const BlogTopic: Component = () => {
-
-  const byRating = (a: Partial<Shout>, b: Partial<Shout>) => {
-    const x = a?.stat?.ratings as number
-    const y = b?.stat?.ratings as number
-    if (x > y) return -1
-    if (x < y) return 1
-    return 0
-  }
-
-  const byViews = (a: Partial<Shout>, b: Partial<Shout>) => {
-    const x = a?.stat?.views as number
-    const y = b?.stat?.views as number
-    if (x > y) return -1
-    if (x < y) return 1
-    return 0
-  }
-
   const [t] = useI18n()
   const data = useRouteData<{
     loading: boolean
@@ -136,7 +120,7 @@ export const BlogTopic: Component = () => {
         <Row2 articles={data.articles.slice(5, 7)} />
       </Show>
     </div>
-  </div >
+  </div>
   )
 }
 
