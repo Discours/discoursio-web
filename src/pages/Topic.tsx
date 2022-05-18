@@ -9,6 +9,7 @@ import Beside from '../components/Article/Beside'
 import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import { useStore } from '../store'
+import './Topics.scss'
 
 export const BlogTopic: Component = () => {
 
