@@ -13,20 +13,10 @@ interface TopicProps {
 }
 
 export default (props: TopicProps) => {
-  const [t] = useI18n()
+  const [t, { locale }] = useI18n()
   const [subscribed, setSubscribed] = createSignal()
   const [ ,{ follow, unfollow }] = useStore()
-  createEffect(() => {
-    setSubscribed(props.subscribed)
-  })
-  const subscribe = () => {
-    follow('topic', props.topic.slug)
-    // setSubscribed(true) // shouldn't be needed
-  }
-  const unsubscribe = () => {
-    unfollow('topic', props.topic.slug)
-    // setSubscribed(false)
-  }
+  createEffect(() => { setSubscribed(props.subscribed) })
 
   return (
     <div class='topic row'>
@@ -49,21 +39,21 @@ export default (props: TopicProps) => {
         <Show when={props.topic.topicStat}>
           <div class='topic-details'>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat?.shouts} публикаци
-              {plural(props.topic.topicStat?.shouts as number, 'я', 'и', 'й')}
+              {props.topic.topicStat?.shouts} {t('post')}
+              {plural(props.topic.topicStat?.shouts as number, locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's'])}
             </span>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat?.authors} автор
-              {plural(props.topic.topicStat?.authors as number, '', 'а', 'ов')}
+              {props.topic.topicStat?.authors} {t('author')}
+              {plural(props.topic.topicStat?.authors as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
             </span>
             <Show when={!props.compact}>
               <span class='topic-details__item'>
-                {props.topic.topicStat?.views} просмотр
-                {plural(props.topic.topicStat?.views as number, '', 'а', 'ов')}
+                {props.topic.topicStat?.views} {t('view')}
+                {plural(props.topic.topicStat?.views as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
               </span>
               <span class='topic-details__item'>
-                {props.topic.topicStat?.subscriptions} подписчик
-                {plural(props.topic.topicStat?.subscriptions as number, '', 'а', 'ов')}
+                {props.topic.topicStat?.subscriptions} {t('follower')}
+                {plural(props.topic.topicStat?.subscriptions as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
               </span>
             </Show>
           </div>
@@ -72,12 +62,12 @@ export default (props: TopicProps) => {
         <Show
           when={subscribed()}
           fallback={
-            <button onClick={subscribe} class='button'>
+            <button onClick={() => follow('topic', props.topic.slug)} class='button'>
               +&nbsp;{t('Follow')}
             </button>
           }
         >
-          <button onClick={unsubscribe} class='button'>
+          <button onClick={() => unfollow('topic', props.topic.slug)} class='button'>
             -&nbsp;{t('Unfollow')}
           </button>
         </Show>

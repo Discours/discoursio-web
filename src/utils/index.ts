@@ -25,22 +25,22 @@ export const capitalize = (s: string, firstonly = false) => {
   return r
 }
 
-export const plural = (amount: number, w1: string, w2: string, w5: string) => {
+export const plural = (amount: number, w: string[]) => {
   try {
     const a = amount.toString()
     const x = parseInt(a.charAt(a.length - 1))
     const xx = parseInt(a.charAt(a.length - 2) + a.charAt(a.length - 1))
 
-    if (xx > 5 && xx < 20) return w5
+    if (xx > 5 && xx < 20) return w[0]
 
-    if (x === 1) return w1
+    if (x === 1) return w[1]
 
-    if (x > 1 && x < 5) return w2
+    if (x > 1 && x < 5) return w[2]
   } catch (e) {
     console.error(e)
   }
 
-  return w5
+  return w[0]
 }
 
 export const shuffle = (items: any[]) => {
