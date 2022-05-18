@@ -26,5 +26,8 @@
   "post": "публикаци",
   "author": "автор",
   "view": "просмотр",
-  "follower": "подписчик"
+  "follower": "подписчик",
+  "Follow the topic": "Подписаться на тему",
+  "Unfollow the topic": "Отписаться от темы",
+  "Write about the topic": "Написать в тему"
 }

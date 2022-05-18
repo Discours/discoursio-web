@@ -10,7 +10,7 @@ import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import './Topic.scss'
 import { byRating, byViews } from '../utils/by'
-import TopicCard from '../components/Topic/Card'
+import TopicFull from '../components/Topic/Full'
 
 export const BlogTopic: Component = () => {
   const [t] = useI18n()
@@ -52,7 +52,7 @@ export const BlogTopic: Component = () => {
   return (
   <div class="container">
     <Show when={!data.topicsLoading && !!topic?.slug}>
-      <TopicCard topic={topic as Topic} />
+      <TopicFull topic={topic as Topic} />
     </Show>
     <div class="row topic__controls">
       <div class="col-md-8">
