@@ -64,7 +64,7 @@ const FOOTER_LINKS = [
       },
       {
         title: 'Темы',
-        slug: '/topic'
+        slug: '/topics'
       },
       {
         title: 'Сообщества',

@@ -1,10 +1,11 @@
 import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
-import topRecent from '../graphql/q/top-recent'
-import topOverall from '../graphql/q/top-overall'
-import topMonth from '../graphql/q/top-month'
-import { Shout } from '../graphql/types.gen'
+import topRecent from '../graphql/q/articles-top-recent'
+import topOverall from '../graphql/q/articles-top-rated'
+import topMonth from '../graphql/q/articles-top-month'
+import { Shout, Topic } from '../graphql/types.gen'
+import topicsAll from '../graphql/q/topics-all'
 
 export type HomeParams = {
   lang?: string
@@ -18,6 +19,8 @@ export interface HomeRouteData {
   topRecent: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
+  topics: { [key:string]: Topic }
+  topicsLoading: boolean
   loading: boolean
   params: HomeParams
 }
@@ -48,7 +51,16 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     variables: { page: START, size: 10 }
   })
 
+  const [tdata, tstate] = createQuery({ query: topicsAll })
+
   return {
+    get topics() {
+        console.log(tdata())
+        return tdata()?.topicsBySlugs
+    },
+    get topicsLoading() {
+        return tstate().fetching
+    },
     get topRecent() {
       return topRecentData()?.recents || []
     },

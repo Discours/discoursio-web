@@ -9,7 +9,7 @@ import Icon from './Icon'
 const routes = [
   { name: 'журнал', href: '/' },
   { name: 'лента', href: '/feed' },
-  { name: 'темы', href: '/topic' }
+  { name: 'темы', href: '/topics' }
 ]
 
 export default () => {

@@ -18,8 +18,6 @@ export const BlogTopic: Component = () => {
   }>()
 
   useRouteReadyState()
-  // const chevron = createMemo(() => (t('global.dir', {}, 'ltr') == 'rtl' ? 'chevron-right' : 'chevron-left'))
-  // const context = useAppContext()
 
   return (
     <div class='flex flex-col'>

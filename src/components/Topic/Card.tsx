@@ -2,22 +2,28 @@ import { capitalize, plural } from '../../utils'
 import { Show } from 'solid-js/web'
 import './Card.scss'
 import { useStore } from '../../store'
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import { Topic } from '../../graphql/types.gen'
 
 interface TopicProps {
   topic: Topic
   compact?: boolean
+  subscribed?: boolean
 }
 
 export default (props: TopicProps) => {
   const [subscribed, setSubscribed] = createSignal()
-  const [{ currentUser }] = useStore()
+  const [ ,{ follow, unfollow }] = useStore()
+  createEffect(() => {
+    setSubscribed(props.subscribed)
+  })
   const subscribe = () => {
-    // TODO: IMPLEMENT
+    follow('topic', props.topic.slug)
+    // setSubscribed(true) // shouldn't be needed
   }
   const unsubscribe = () => {
-    // TODO: IMPLEMENT
+    unfollow('topic', props.topic.slug)
+    // setSubscribed(false)
   }
 
   return (

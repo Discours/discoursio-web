@@ -1,7 +1,7 @@
 import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
-import topicArticles from '../graphql/q/topic-articles'
+import topicArticles from '../graphql/q/articles-for-topic'
 
 export type TopicParams = {
   lang: string

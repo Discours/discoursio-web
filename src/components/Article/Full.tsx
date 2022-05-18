@@ -18,11 +18,11 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ authorsSubscribed, currentUser, token }, { showModal, follow, unfollow }] = useStore()
+  const [{ currentUser, token }, { showModal, follow, unfollow }] = useStore()
   const [isFollowed, setFollowed] = createSignal(false)
 
   createEffect(() => {
-    if(authorsSubscribed.includes(currentUser.slug as string)) setFollowed(true)
+    if(props.article?.authors?.find(a => a.slug === currentUser.slug)) setFollowed(true)
   })
 
   let commentElement
@@ -91,10 +91,7 @@ export default (props: ArticleProps) => {
             <div class='article-stats__item'>
               <a href='#bookmark' onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
                 <Icon name='bookmark' />
-                <Show
-                  when={authorsSubscribed?.includes(props.article?.slug as string)}
-                  fallback={t('Favorite')}
-                >
+                <Show when={isFollowed()} fallback={t('Favorite')}>
                   {t('Bookmarked')}``
                 </Show>
               </a>

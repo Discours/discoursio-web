@@ -1,30 +1,31 @@
 import { Component, For } from 'solid-js'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { Shout, User } from '../graphql/types.gen'
+import { Shout, Topic, User } from '../graphql/types.gen'
 
 const Feed: Component = () => {
   const data = useRouteData<{
-    loading: boolean
-    articles: Partial<Shout>
-    candidates?: Partial<Shout>
-    myTopics?: string[]
-    myAuthors?: string[]
-    myCommunities?: string[]
+    candidates?: Partial<Shout>[]
+    byTopics?: Partial<Shout>[]
+    byAuthors?: Partial<Shout>[]
+    byCommunities?: Partial<Shout>[]
+    topics: Topic[]
+    topicsLoading: boolean
   }>()
 
   useRouteReadyState()
 
-  const sortedArticles = Object.entries(data.articles).sort(
-    (entry1, entry2) => entry2[1].date - entry1[1].date
-  )
+  const sortedArticles = () => [...(data.byTopics||[]), ...(data.byAuthors||[])].sort(
+    (a: Partial<Shout>, b: Partial<Shout>) => 
+      (new Date(a.createdAt)).getTime() - (new Date(b.createdAt)).getTime()
+    )
 
   return (
     <div class='flex flex-col'>
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10'>
-            <For each={sortedArticles}>
+            <For each={sortedArticles() as any[]}>
               {([id, article]: [string, Partial<Shout>]) => (
                 <NavLink
                   href={`/blog/${id}`}

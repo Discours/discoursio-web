@@ -1,7 +1,7 @@
 import { For, Show } from 'solid-js/web'
 import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
-import FloorHeader from "../Topic/FloorHeader";
+// import FloorHeader from "../Topic/FloorHeader";
 
 export default (props: { articles: Partial<Shout>[] }) => (
   <div class="floor floor--important floor--group">
@@ -13,7 +13,7 @@ export default (props: { articles: Partial<Shout>[] }) => (
       </div>
 
       <div class="col-lg-6">
-        <ArticleCard article={props.articles[0]} nosubtitle={false} noicon={true} />
+        <ArticleCard article={props.articles[0]} settings={{nosubtitle: false, noicon: true}} />
       </div>
 
       <div class="col-lg-6">
@@ -24,7 +24,7 @@ export default (props: { articles: Partial<Shout>[] }) => (
                 {(a) => (
                 <div class="row">
                   <div class="col-md-8">
-                    <ArticleCard article={a} nosubtitle={false} noicon={true} />
+                    <ArticleCard article={a} settings={{nosubtitle: false, noicon: true}} />
                   </div>
                 </div>
                 )}

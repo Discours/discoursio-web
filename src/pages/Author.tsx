@@ -1,20 +1,23 @@
 import { Component, Show, For } from 'solid-js'
-// import { useI18n } from '@solid-primitives/i18n'
+import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData, NavLink } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
-import { Community, Shout, User } from '../graphql/types.gen'
+import { Community, Shout, Topic, User } from '../graphql/types.gen'
 import MD from '../components/Article/MD'
 
 // FIXME: it is a copy of BlogArticle
 export const BlogAuthor: Component = () => {
-  // const [t] = useI18n()
+  const [t] = useI18n()
   const data = useRouteData<{
-    loading: boolean
-    slug: string
+    authorLoading: boolean
+    params: { [key:string]: string }
     author: Partial<User>
     communities?: { [id: string]: Partial<Community> }
     articles?: Partial<Shout>[]
+    articlesLoading?: boolean
+    topics: Topic[]
+    topicsLoading: boolean
   }>()
 
   useRouteReadyState()
@@ -26,7 +29,7 @@ export const BlogAuthor: Component = () => {
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>
           <div class='space-y-10 px-4 lg:px-0'>
-            <Show fallback={<div class='text-center p-10 m-10'>Loading...</div>} when={!data.loading}>
+            <Show fallback={<div class='text-center p-10 m-10'>{t('Loading')}...</div>} when={!data.authorLoading}>
               <div class='container lg:px-10'>
                 <div class='text-center space-y-5'>
                   <img class='rounded-md mb-10 shadow-md' src={data.author.userpic || ''} />

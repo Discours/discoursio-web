@@ -19,13 +19,15 @@ export const BlogArticle: Component = () => {
     loading: boolean
     slug: string
     article: Partial<Shout>
+    topics: Topic[]
+    topicsLoading: boolean
     comments?: Comment[]
   }>()
 
   useRouteReadyState()
 
-  const [{ topicsSubscribed, currentUser, token }, {showModal, follow, unfollow}] = useStore();
-  const subscribed = topicsSubscribed.includes(data.article?.slug || '')
+  const [{ currentUser, token }, {showModal, follow, unfollow}] = useStore();
+  const subscribed = currentUser?.userSubscribedTopics?.includes(data.article?.slug || '')
 
   const deepest = 6
   const getCommentLevel = (c: Comment, level = 0) => {
@@ -50,7 +52,7 @@ export const BlogArticle: Component = () => {
               <div class="shout__header">
                 <div class="shout__topic">
                   <a href={`/topic/${data.article.mainTopic}`}
-                     textContent={(data.article?.topics?.find(topic => topic?.slug === data.article?.mainTopic)?.title as string).replace(' ', '&nbsp;')}></a>
+                    textContent={(data.article?.topics?.find(topic => topic?.slug === data.article?.mainTopic)?.title as string).replace(' ', '&nbsp;')}></a>
                 </div>
 
                 <h1>{data.article.title}</h1>

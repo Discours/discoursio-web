@@ -1,20 +1,22 @@
 import { cacheExchange } from '@urql/exchange-graphcache'
-import AUTHOR_ARTICLES from './q/author-articles'
-import MY_PROFILE from './q/my-session'
+import authorArticles from './q/articles-for-author'
+import userSession from './q/auth-session'
 import type { Shout } from './types.gen'
+
+// FIXME: this is dummy code
 
 export const cache = cacheExchange({
   updates: {
     Mutation: {
       createNote: (_result, _args, c) => {
-        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+        c.updateQuery({ query: authorArticles }, (data) => {
           data.getUserNotes.unshift(_result.createNote)
 
           return data
         })
       },
       updateNote: (_result, _args, c) => {
-        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+        c.updateQuery({ query: authorArticles }, (data) => {
           const index = data.getUserNotes.findIndex(
             (note: Shout) => note.slug === (_result.updateNote as Shout)?.slug
           )
@@ -25,14 +27,14 @@ export const cache = cacheExchange({
         })
       },
       deleteNote: (_result, _args, c) => {
-        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+        c.updateQuery({ query: authorArticles }, (data) => {
           data.getUserNotes = data.getUserNotes.filter((note: Shout) => note.slug !== _result.deleteNote)
 
           return data
         })
       },
       login: (_result, _args, c) => {
-        c.updateQuery({ query: MY_PROFILE }, (data) => {
+        c.updateQuery({ query: userSession }, (data) => {
           if (!data) {
             return {
               whoami: _result.login
@@ -43,7 +45,7 @@ export const cache = cacheExchange({
         })
       },
       logout: (_result, _args, c) => {
-        c.updateQuery({ query: AUTHOR_ARTICLES }, (data) => {
+        c.updateQuery({ query: authorArticles }, (data) => {
           data.getUserNotes = []
 
           return data

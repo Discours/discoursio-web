@@ -86,23 +86,30 @@ export const Home: Component = () => {
 
           return 0
         })
-      if (topCommented?.length > 0) console.debug(topCommented)
+      // if (topCommented?.length > 0) console.debug(topCommented)
 
       data.topRecent?.forEach(postLoad)
     }
 
     if(data.topMonth?.length > 0) {
-      console.debug(data.topMonth)
+      // console.debug(data.topMonth)
       data.topMonth?.forEach(postLoad)
     }
     if(data.topOverall?.length > 0) data.topOverall?.forEach(postLoad)
+  })
+
+  createEffect(() => {
+    
+    if(Object.keys(shoutsByTopic).length) {
+      console.log(shoutsByTopic)
+      const goodTopics = Object.entries(shoutsByTopic)
+        .filter(([, v], _i) => (v as any[]).length > 4) // 4 in the floor
+        .map((f) => f[0])
+      console.debug(goodTopics)
+    }
 
     if(!randomTopics) {
-      randomTopics = Object.entries(shoutsByTopic)
-        .filter(([, v], _i) => (v as any[]).length > 4)
-        .map((f) => f[0]) // 4 in the floor
-
-      randomTopics = shuffle(randomTopics).slice(0,9)
+      randomTopics = shuffle(Array.from(topicset).slice(0,9))
       console.debug(`mainpage: ${randomTopics.toString()} topics selected`)
     }
 
@@ -110,6 +117,7 @@ export const Home: Component = () => {
       randomLayout = 'article' // shuffle(Object.keys(shoutsByLayout).filter((l) => l !== 'article'))[0]
       console.debug(`mainpage: ${randomLayout} layout selected`)
     }
+    
   })
 
   return (

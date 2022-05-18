@@ -10,7 +10,8 @@ import { devtoolsExchange } from '@urql/devtools'
 import { cache } from './cache'
 import { createClient } from 'solid-urql'
 import { createContext, useContext } from 'solid-js'
-// import { useStore } from '../store'
+// import authExchanges from './auth'
+import { useStore } from '../store'
 
 const isClient = typeof window !== 'undefined'
 // The `ssrExchange` must be initialized with `isClient` and `initialState`
@@ -23,10 +24,15 @@ export const baseUrl = 'https://newapi.discours.io'
 export const clientOptions: ClientOptions = {
   url: `${baseUrl}`,
   requestPolicy: 'cache-and-network',
-  fetchOptions: {
-    credentials: 'include'
+  fetchOptions: () => {
+    let headers: any = {} // credentials: 'include'
+    try {
+      const [{ token }] = useStore()
+      if(token) headers = { ...headers, Auth: token }
+    } catch(e) { console.log(e) }
+    return { headers }
   },
-  exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
+  exchanges: [ devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange ]
 }
 
 const client = createClient(clientOptions)
