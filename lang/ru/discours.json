@@ -64,5 +64,10 @@
   "Top month articles": "Лучшее за месяц",
   "Top month topics": "Темы месяца",
   "Top viewed": "Самое читаемое",
-  "Top commented": "Самое комментируемое"
+  "Top commented": "Самое комментируемое",
+  "Nothing is here": "Здесь ничего нет",
+  "You've reached a non-existed page": "Вы попали на несуществующую страницу",
+  "Try to find another way": "Попробуйте найти по-другому",
+  "Error": "Ошибка",
+  "Search": "Поиск"
 }

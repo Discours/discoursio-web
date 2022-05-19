@@ -1,5 +1,4 @@
-import './assets/main.css'
-
+// import './assets/main.css'
 // import { registerSW } from 'virtual:pwa-register';
 import { createApp } from 'solid-utils'
 import { MetaProvider } from 'solid-meta'

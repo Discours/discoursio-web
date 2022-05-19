@@ -1,12 +1,13 @@
-import { defineConfig } from 'vite'
+import { defineConfig, UserConfig } from 'vite'
 import SolidJS from 'vite-plugin-solid'
 import SolidSVG from 'vite-plugin-solid-svg'
-import manifest from './src/assets/manifest.json'
+import ssr from 'vite-plugin-ssr/plugin'
+import manifest from './public/manifest.json'
 import mdx from '@mdx-js/rollup'
 import { VitePWA } from 'vite-plugin-pwa'
+import path from 'path'
 
 const pwaEnabled = false
-
 const pwaOptions = {
   registerType: 'autoUpdate',
   // Warning: don't add sitemap.xml yet:
@@ -16,16 +17,14 @@ const pwaOptions = {
   includeAssets: [
     'robots.txt',
     'og.png',
-    'img/icons/*.svg',
-    'img/favicons/*.{png,ico}',
-    'examples/*.json',
-    'img/logo.png',
-    'img/logo/*/logo.*'
+    'icons/*.svg',
+    'fonts/*.{eot,woff,woff2}',
+    '*.{png,ico,svg,jpg}'
   ],
   manifest,
   workbox: {
     // Warning: DON'T add sw.js and workbox-xxxx.js
-    globPatterns: ['*.html', 'manifest.webmanifest', 'assets/*', '*.{svg,png,jpg,woff,eot,ttf}'],
+    globPatterns: ['*.html', 'manifest.json', '*.{svg,png,jpg,woff,eot,ttf}'],
     // We need to increase the workbox size, all assets with size > 2MIB will
     // be excluded and then will not work on offline when used
     maximumFileSizeToCacheInBytes: 5000000,
@@ -62,6 +61,10 @@ const pwaOptions = {
   }
 }
 
+const isSSR = process.argv.includes('ssr')
+const ssrOptions = isSSR ? {
+  input: './src/ssr.ts'
+} : {}
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -74,22 +77,29 @@ export default defineConfig({
 			enforce: "pre"
 		},
     SolidJS({ extensions: ['.md', '.mdx'] }),
+    isSSR && ssr(),
     SolidSVG(),
     pwaEnabled && VitePWA(pwaOptions as any)
   ],
-  optimizeDeps: {
-    include: [],
-    exclude: []
-  },
-  build: {
-    polyfillDynamicImport: false,
-    target: 'esnext'
-  },
   css: {
     preprocessorOptions: {
       scss: {
         additionalData: `@import "src/styles/fonts";\n@import "src/styles/imports";\n`
       }
     }
+  },
+  optimizeDeps: {
+    include: [],
+    exclude: []
+  },
+  build: {
+    polyfillDynamicImport: false,
+    target: 'esnext',
+    rollupOptions: { ...ssrOptions }
+  },
+  resolve: {
+    alias: {
+      '$': path.resolve(__dirname, './src')
+    }
   }
-})
+} as UserConfig)

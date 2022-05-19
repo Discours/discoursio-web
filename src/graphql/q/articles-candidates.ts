@@ -2,8 +2,8 @@ import { gql } from 'solid-urql'
 // WARNING: need Auth header
 
 export default gql`
-  query ShoutsCandidatesQuery($page: Int!, $size: Int!) {
-    shoutsCandidates(page: $page, size: $size) {
+  query ShoutsCandidatesQuery {
+    shoutsCandidates {
       _id: slug
       title
       subtitle

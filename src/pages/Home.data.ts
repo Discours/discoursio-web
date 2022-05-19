@@ -14,15 +14,14 @@ export type HomeParams = {
 }
 
 export interface HomeRouteData {
-  // topics: { [key: string]: Partial<Topic> }
-  // authors: { [key: string]: Partial<User> }
+  readonly topicsdict: { [key:string]: Topic }
   topRecent: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
-  topics: Topic[]
-  topicsLoading: boolean
-  loading: boolean
-  params: HomeParams
+  readonly topics: Topic[]
+  readonly topicsLoading: boolean
+  readonly loading: boolean
+  readonly params: HomeParams
 }
 
 const START = 1
@@ -56,6 +55,11 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
   return {
     get topics() {
       return tdata()?.topicsBySlugs
+    },
+    get topicsdict() {
+      let r: {[key:string]: Topic} = {}
+      tdata()?.topicsBySlugs.forEach((t: Topic) => { r[t.slug] = t })
+      return r
     },
     get topicsLoading() {
       return tstate().fetching
