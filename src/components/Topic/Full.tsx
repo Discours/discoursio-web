@@ -6,9 +6,8 @@ import { useI18n } from '@solid-primitives/i18n'
 
 export default (props: { topic: Topic }) => {
   const [t] = useI18n()
-  const [{ currentUser }, { toggleTopic }] = useStore()
-  const subscribed = createMemo(() => Boolean(currentUser?.userSubscribedTopics?.filter((t) => t === props.topic.slug)))
-
+  const [{ currentUser }, { follow, unfollow }] = useStore()
+  const subscribed = () => createMemo(() => Boolean(currentUser?.userSubscribedTopics?.includes(props.topic.slug)))
   return (
     <div class='topic-full container'>
       <div class='row'>
@@ -17,8 +16,8 @@ export default (props: { topic: Topic }) => {
             <h1>#{props.topic.title}</h1>
               <p>{props.topic.body}</p>
             <div class='topic__actions'>
-              <button onClick={() => toggleTopic(props.topic.slug)} class='button'>
-                <Show when={!subscribed} fallback={t('Unfollow the topic')}>
+              <button onClick={() => (subscribed()? unfollow:follow)('topic', props.topic.slug)} class='button'>
+                <Show when={subscribed()} fallback={t('Unfollow the topic')}>
                   {t('Follow the topic')}
                 </Show>
               </button>

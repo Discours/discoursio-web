@@ -96,7 +96,7 @@ export const BlogTopic: Component = () => {
         <div class="floor floor--important">
           <div class="container">
             <div class="row">
-              <h3 class="col-12">{t('Popular')}</h3>
+              <h3 class="col-12">{t('Top viewed')}</h3>
               <For each={topViewed}>
                 {(a:Partial<Shout>)=> (<div class="col-md-6">
                   <ArticleCard article={a} />

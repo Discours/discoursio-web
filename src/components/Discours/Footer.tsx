@@ -2,6 +2,7 @@ import { For } from 'solid-js'
 import './Footer.scss'
 import Icon from '../Nav/Icon'
 import { useI18n } from '@solid-primitives/i18n'
+import Subscribe from './Subscribe'
 
 export default function DiscoursFooter() {
   const [t] = useI18n()
@@ -127,14 +128,14 @@ export default function DiscoursFooter() {
           <div class='col-md-3'>
             <h5>{t('Subscription')}</h5>
             <p>{t('Join our maillist')}</p>
-            [subscribe form here]
+            <Subscribe />
           </div>
         </div>
 
         <div class='footer-copyright row'>
           <div class='col-md-10'>
-            {t('The independent journal about culture, science, and society with an open, horizontal editorial board.')} ©&nbsp;Дискурс 2015-2022.{' '}
-            <a href='/about/terms-of-use'>{t('Terms of use')}</a>
+            Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией.{' '} Дискурс © 2015 - 2022
+            <br /><a href='/about/terms-of-use'>{t('Terms of use')}</a>
           </div>
           <div class='footer-copyright__social col-md-2'>
             <For each={SOCIAL}>

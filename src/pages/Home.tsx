@@ -1,6 +1,5 @@
 import { Component, createEffect, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
-// import { useI18n } from '@solid-primitives/i18n';
 import { useRouteReadyState } from '../utils/routeReadyState'
 import Banner from '../components/Discours/Banner'
 import { Maybe, Shout, Topic, User } from '../graphql/types.gen'
@@ -10,7 +9,6 @@ import Row5 from '../components/Article/Row5'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
 import Row1 from '../components/Article/Row1'
-// import { useStore } from '../store'
 import { HomeRouteData } from './Home.data'
 import Hero from '../components/Discours/Hero';
 import Beside from "../components/Article/Beside";
@@ -18,16 +16,14 @@ import RowShort from "../components/Article/RowShort";
 import Slider from "../components/Article/Slider";
 import Group from "../components/Article/Group";
 import PageLoadingBar from '../components/LoadingBar'
+import { useI18n } from '@solid-primitives/i18n'
 
 export const Home: Component = () => {
-  // const isRouting = useIsRouting();
-  // const [t] = useI18n()
+  const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
-  // const [state, actions] = useStore()
 
   useRouteReadyState()
 
-  // TODO: createSignal ? s
   let randomLayout = ''
   let randomTopics = [] as string[]
   let aslugs = new Set([] as string[])
@@ -125,18 +121,18 @@ export const Home: Component = () => {
         <NavTopics topics={randomTopics} />
         <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero/>
-        <Beside beside={data.topRecent[5]} top={true} title={'Самое читаемое'} values={topMonthTopics} wrapper={'article'}/>
+        <Beside beside={data.topRecent[5]} top={true} title={t('Top viewed')} values={topMonthTopics} wrapper={'article'}/>
         <Row3 articles={data.topRecent.slice(6, 9)} />
-        <Beside top={true} beside={data.topRecent[9]} title={'Авторы месяца'} values={topMonthAuthors} wrapper={'author'} />
-        <Slider title={'Лучшее за месяц'} articles={data.topRecent.slice(10, 18)}/>
+        <Beside top={true} beside={data.topRecent[9]} title={t('Top month authors')} values={topMonthAuthors} wrapper={'author'} />
+        <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)}/>
         <Row2 articles={data.topRecent.slice(18, 20)} />
         <RowShort articles={data.topRecent.slice(20, 24)} />
         <Row1 article={data.topRecent[24]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
-        <h2>Самые комментируемые</h2>
+        <h2>{t('Top commented')}</h2>
         <Row3 articles={top3Commented} />
-        <Slider title={'Избранное'} articles={data.topRecent.slice(28, 30)}/>
-        <Beside top={true} beside={data.topRecent[30]} title={'Темы месяца'} values={topMonthTopics} wrapper={'topic'} />
+        <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)}/>
+        <Beside top={true} beside={data.topRecent[30]} title={t('Top month topics')} values={topMonthTopics} wrapper={'topic'} />
         <Row3 articles={data.topRecent.slice(31, 34)} />
         <Group articles={data.topRecent.slice(34, 42)}/>
         <Banner/>

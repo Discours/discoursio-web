@@ -55,10 +55,14 @@
   "How it works": "Как это работает",
   "Knowledge base": "База знаний",
   "Manifest": "Манифест",
-  "The independent journal about culture, science, and society with an open, horizontal editorial board.": "Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией.",
   "More": "Ещё",
   "Report": "Пожаловаться",
   "Delete": "Удалить",
   "Edit": "Редактировать",
-  "Reply": "Ответить"
+  "Reply": "Ответить",
+  "Top month authors": "Авторы месяца",
+  "Top month articles": "Лучшее за месяц",
+  "Top month topics": "Темы месяца",
+  "Top viewed": "Самое читаемое",
+  "Top commented": "Самое комментируемое"
 }

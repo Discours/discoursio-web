@@ -63,7 +63,6 @@ pre code.hljs {
   background-size: 100% 4px;
 }
 
-/* TODO: Recreate this class in TW classes */
 .feature-block {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
   background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
