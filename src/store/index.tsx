@@ -15,6 +15,8 @@ import forgetPassword from '../graphql/q/auth-forget'
 import resetPassword from '../graphql/q/auth-reset'
 import resendCode from '../graphql/q/auth-resend'
 import { useClient } from '../graphql/client'
+import articlesForAuthor from '../graphql/q/articles-for-author'
+import articlesForTopic from '../graphql/q/articles-for-topic'
 
 type ModalType = '' | 'auth' | 'subscribe' | 'feedback' | 'share' | 'thank' | 'donate'
 type WarnKind = 'error' | 'warn' | 'info'
@@ -35,7 +37,7 @@ interface CommonStore {
   readonly topics: Topic[]
   readonly currentUser: Partial<User> & Subscriber
   page?: number
-  totalPagesCount?: number
+  size?: number
   token?: string
   appName: string
   session?: Partial<User> & Subscriber
@@ -46,7 +48,7 @@ interface CommonStore {
 
 const initState = {
   page: 0,
-  totalPagesCount: 0,
+  size: 50,
   token: '',
   appName: 'discours.io',
   session: {} as Partial<User> & Subscriber,
@@ -59,6 +61,11 @@ const StoreContext = createContext<[CommonStore, any]>([initState as CommonStore
 const StoreContextProvider = StoreContext.Provider
 
 export function StoreProvider(props: { children: any }) {
+  const moreQueries = {
+    'author': articlesForAuthor,
+    'topic': articlesForTopic,
+    // TODO: 'community': articlesForCommunity
+  }
   // const [loggedIn, setLoggedIn] = createSignal(false)
   const client = useClient()
   const [topicsUpdated, setTopicsUpdated] = createSignal(false)
@@ -68,13 +75,14 @@ export function StoreProvider(props: { children: any }) {
     },
     topics: [] as Topic[],
     page: 0,
-    totalPagesCount: 0,
+    size: 50,
     token: '',
     appName: 'discours.io',
     session: {} as (Partial<User> & Subscriber),
     handshaking: false,
     warnings: [] as Warning[],
-    modal: '' as ModalType
+    modal: '' as ModalType,
+    articles: [] as Partial<Shout>
   })
 
   const actions = {
@@ -171,6 +179,17 @@ export function StoreProvider(props: { children: any }) {
       const [qdata] = createQuery({ query: ufq, variables: { what, slug }})
       const { error } = qdata()
       if(error) warn(error)
+    },
+    more: () => {
+      Object.keys(moreQueries).forEach((what: string) => {
+        if(location.pathname.startsWith('/'+what)) {
+          const slug = location.pathname.replace(`/${what}/`, '').replace('/','')
+          let variables = { page: (state.page + 1), size: state.size }
+          variables[what] = slug
+          const [qdata] = createQuery({ query: moreQueries[what], variables })
+          setState({ ...state, articles: qdata()})
+        }
+      })
     }
   }
 

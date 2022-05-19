@@ -5,7 +5,6 @@ import ArticleCard from './Card'
 export default (props: { articles: Partial<Shout>[] }) => (
   <div class='floor floor--7'>
     <div class='wide-container row'>
-      <h2 class='col-12'>Коротко</h2>
       <For each={props.articles}>
         {(a) => (
           <div class='col-md-6 col-lg-3'>

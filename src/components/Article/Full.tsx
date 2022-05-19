@@ -8,6 +8,7 @@ import { createEffect, createSignal, For, Show } from 'solid-js'
 import { Comment, Maybe, Shout, Topic, User } from '../../graphql/types.gen'
 import { useStore } from '../../store'
 import { useI18n } from '@solid-primitives/i18n'
+import { NavLink } from 'solid-app-router'
 
 const deepest = 6
 
@@ -48,7 +49,7 @@ export default (props: ArticleProps) => {
           <article class='col-md-6 offset-md-3'>
             <div class='article__header'>
               <div class='article__topic'>
-                <a href={`/topic/${mainTopic()?.slug}`}>#{mainTopic()?.title?.replace(' ', '&nbsp;')}</a>
+                <NavLink href={`/topic/${mainTopic()?.slug}`}>#{mainTopic()?.title?.replace(' ', '&nbsp;')}</NavLink>
               </div>
 
               <h1>{props.article.title}</h1>
@@ -62,7 +63,7 @@ export default (props: ArticleProps) => {
                       <Show when={Boolean(u) && (props.article.authors as Partial<User>[]).indexOf(u) > 0}>
                         ,{' '}
                       </Show>
-                      <a href={`/@${u.slug}`}>{u.name}</a>
+                      <NavLink href={`/author/${u.slug}`}>{u.name}</NavLink>
                     </>
                   )}
                 </For>
@@ -89,7 +90,7 @@ export default (props: ArticleProps) => {
               {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a href='#bookmark' onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
+              <a onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
                 <Icon name='bookmark' />
                 <Show when={isFollowed()} fallback={t('Favorite')}>
                   {t('Bookmarked')}``
@@ -97,7 +98,7 @@ export default (props: ArticleProps) => {
               </a>
             </div>
             <div class='article-stats__item'>
-              <a href='#share' onClick={() => showModal('share')}>
+              <a onClick={() => showModal('share')}>
                 <Icon name='share' />
                 {t('Share')}
               </a>
@@ -108,7 +109,7 @@ export default (props: ArticleProps) => {
             <For each={props.article.topics as Topic[]}>
               {(topic: Topic) => (
                 <div class='article__topic'>
-                  <a href={`/topic/${topic.slug}`}>{topic.title}</a>
+                  <NavLink href={`/topic/${topic.slug}`}>{topic.title}</NavLink>
                 </div>
               )}
             </For>
@@ -145,7 +146,7 @@ export default (props: ArticleProps) => {
             fallback={() => (
               <div class='comment-warning'>
                 {t('To leave a comment please')}
-                <a href={''} onClick={() => showModal('auth')}>
+                <a onClick={() => showModal('auth')}>
                   <i>{t('sign up or sign in')}</i>
                 </a>
               </div>

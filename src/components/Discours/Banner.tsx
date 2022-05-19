@@ -1,18 +1,21 @@
-import { createSignal } from 'solid-js'
+import { useI18n } from '@solid-primitives/i18n'
+import { NavLink } from 'solid-app-router'
+import { useStore } from '../../store'
 import './Banner.scss'
-export default () => {
-  const [modal, setModal] = createSignal()
 
+export default () => {
+  const [t] = useI18n()
+  const [, {showModal}] = useStore()
   return (
     <div class='discours-banner'>
       <div class='wide-container row'>
         <div class='discours-banner__content col-md-5'>
-          <h3>Дискурс существует благодаря вашему участию</h3>
+          <h3>{t('Discours is created with our common effort')}</h3>
           <p>
-            <a href='/about/help'>Помочь журналу</a>
-            <a href='/create'>Стать автором</a>
-            <a href='#auth' onClick={() => setModal('auth')}>
-              Присоединиться к&nbsp;сообществу
+            <NavLink href='/about/help'>{t('Support us')}</NavLink>
+            <NavLink href='/create'>{t('Become an author')}</NavLink>
+            <a onClick={() => showModal('auth')}>
+              {t('Join the community')}
             </a>
           </p>
         </div>

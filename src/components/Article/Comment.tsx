@@ -4,63 +4,54 @@ import MD from './MD'
 import AuthorCard from '../Author/Card'
 import { Show } from 'solid-js/web'
 import { useStore } from '../../store'
-import { JSX } from 'solid-js/jsx-runtime'
 import { User } from '../../graphql/types.gen'
-// import dayjs from 'dayjs'
-// import 'dayjs/locale/ru'
+import { createSignal } from 'solid-js'
+import { useI18n } from '@solid-primitives/i18n'
+import { Comment as Point } from '../../graphql/types.gen'
 
-// dayjs.locale('ru')
-// {dayjs(comment.createdAt).format('D MMMM YYYY в HH:MM')}
-export default (props: { level: { toString: () => any }; comment: { author: Partial<User>; createdAt: number | boolean | Node | JSX.ArrayElement | JSX.FunctionElement | (string & {}) | null | undefined; body: string }; canEdit: string | boolean | undefined }) => {
-  const [{currentUser}, { createComment, deleteComment, loadComments }]  = useStore()
-  const edit = () => {
-    console.log('// TODO: comment editing...')
-  }
+export default (props: { level: number; comment: Partial<Point>; canEdit: boolean }) => {
+  const [{}, { deleteComment, showModal }]  = useStore()
+  const [t] = useI18n()
+  const [comment, ] = createSignal<Partial<Point>>(props.comment as Partial<Point>)
 
-  const remove = (commentId: string) => {
+  const remove = () => {
     console.log('comment: removing')
-    deleteComment(commentId)
-  }
-  const share = () => {
-    console.log('// TODO: comment share...')
-  }
-  const report = () => {
-    console.log('// TODO: comment report...')
-  }
+    !!comment()?.id && deleteComment(comment().id)
+  } 
 
   return (
     <div class={`comment${props.level ? ` comment--level-${props.level.toString()}` : ''}`}>
-      <Show when={props.comment}>
+      <Show when={!!comment()}>
         <div class='shout-controls'>
           <div class='shout-author'>
-            <AuthorCard author={props.comment.author} />
+            <AuthorCard author={comment()?.author as Partial<User>} />
           </div>
-          <div class='shout-date'>{props.comment.createdAt}</div>
+          <div class='shout-date'>{comment()?.createdAt}</div>
           {/* <div class="shout-rating">{comment.rating}</div> */}
         </div>
-        <div class='shout-body' contenteditable={props.canEdit}>
-          <MD body={props.comment.body} />
+        <div class='shout-body' contenteditable={props.canEdit as boolean}>
+          <MD body={comment()?.body || ''} />
         </div>
         <div class='comment-controls'>
           <button class='comment-control comment-control--reply'>
             <Icon name='reply' />
-            Ответить
+            {t('Reply')}
           </button>
           <Show when={props.canEdit}>
-            <button class='comment-control comment-control--edit' onClick={edit}>
+            <button class='comment-control comment-control--edit' onClick={() => showModal('editComment')}>
               <Icon name='edit' />
-              Редактировать
+              {t('Edit')}
             </button>
-            <button class='comment-control comment-control--delete' onClick={remove}>
+            <button class='comment-control comment-control--delete' onClick={() => remove()}>
               <Icon name='delete' />
-              Удалить
+              {t('Delete')}
             </button>
           </Show>
-          <button class='comment-control comment-control--share' onClick={share}>
-            Поделиться
+          <button class='comment-control comment-control--share' onClick={() => showModal('shareComment')}>
+            {t('Share')}
           </button>
-          <button class='comment-control comment-control--complain' onClick={report}>
-            Пожаловаться
+          <button class='comment-control comment-control--complain' onClick={() => showModal('reportComment')}>
+            {t('Report')}
           </button>
         </div>
       </Show>

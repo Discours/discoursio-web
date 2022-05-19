@@ -65,7 +65,7 @@ export const BlogArticle: Component = () => {
                     {(a: Partial<User>, index) => (
                       <>
                         <Show when={index() > 0}>, </Show>
-                        <a href={`/@${a.slug}`}>{a.name}</a>
+                        <a href={`/author/${a.slug}`}>{a.name}</a>
                       </>
                     )}
                   </For>

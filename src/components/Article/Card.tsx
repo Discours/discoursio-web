@@ -1,3 +1,4 @@
+import { NavLink } from 'solid-app-router'
 import { For, Show } from 'solid-js/web'
 import { Shout, Topic, User } from '../../graphql/types.gen'
 import Icon from '../Nav/Icon'
@@ -43,13 +44,13 @@ export default (props: CardProps) => {
             }
           >
             <div class='shout-card__type'>
-              <a
+              <NavLink
                 href={`/topic/${
                   (article.topics as Topic[]).filter((t) => article.mainTopic === t.slug)[0].slug
                 }`}
               >
                 <Icon name={article.layout} />
-              </a>
+              </NavLink>
             </div>
           </Show>
 
@@ -57,14 +58,14 @@ export default (props: CardProps) => {
             <For each={(article.topics as Topic[]).filter((t: Topic) => article.mainTopic === t.slug)}>
               {(topic: Topic) => (
                 <div class='shout__topic'>
-                  <a href={`/topic/${topic.slug}`}>{topic.title}</a>
+                  <NavLink href={`/topic/${topic.slug}`}>{topic.title}</NavLink>
                 </div>
               )}
             </For>
           </Show>
 
           <div class='shout-card__title'>
-            <a href={`/${article.slug}`}>{article?.title || 'unknown'}</a>
+            <NavLink href={`/${article.slug}`}>{article?.title || 'unknown'}</NavLink>
           </div>
 
           <Show when={!settings?.nosubtitle && article?.subtitle}>
@@ -76,7 +77,7 @@ export default (props: CardProps) => {
               {(a: Partial<User>) => (
                 <>
                   <Show when={(article?.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
-                  <a href={`/@${a.slug}`}>{a.name}</a>
+                  <NavLink href={`/author/${a.slug}`}>{a.name}</NavLink>
                 </>
               )}
             </For>

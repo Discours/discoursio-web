@@ -4,6 +4,7 @@ import Userpic from './Userpic'
 import Icon from '../Nav/Icon'
 import './Card.scss'
 import { useStore } from '../../store'
+import { NavLink } from 'solid-app-router'
 
 
 interface AuthorCardProps {
@@ -26,7 +27,7 @@ export default (props: AuthorCardProps) => {
           <div class="author__details">
             <div class="author__details-wrapper">
               <div class="author__name text-3xl text-2xl">
-                <a href={`/@${props.author.slug}`}>{props.author.name}</a>
+                <NavLink href={`/author/${props.author.slug}`}>{props.author.name}</NavLink>
               </div>
 
               <Show when={props.author.bio}>

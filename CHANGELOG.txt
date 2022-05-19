@@ -1,3 +1,10 @@
+[0.3.0]
+[+] markup is simpler
+[+] really use mdx
+[+] really use i18n
+[+] refactored queries
+[+] final routing
+
 [0.2.1]
 [+] custom store
 [+] playwright

@@ -6,6 +6,7 @@ import { AuthorData } from './pages/Author.data'
 import { TopicData } from './pages/Topic.data'
 import { HomeData } from './pages/Home.data'
 import { AllTopicsData } from './pages/AllTopics.data'
+import { FeedData } from './pages/Feed.data'
 
 export const routes: RouteDefinition[] = [
   {
@@ -23,18 +24,11 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import('./pages/Author')),
     data: AuthorData
   },
-  /*
   {
     path: '/feed',
     component: lazy(() => import('./pages/Feed')),
-    data: () => ({
-      subscribed: SubscribedData,
-      reviewed: ReviewedData,
-      commented: CommentedData,
-      candidates: CandidatesData
-    })
+    data: FeedData
   },
-  */
   {
     path: '/create',
     component: lazy(() => import('./pages/Create'))
@@ -44,11 +38,6 @@ export const routes: RouteDefinition[] = [
     path: '/topics',
     component: lazy(() => import('./pages/AllTopics')),
     data: AllTopicsData
-  },
-  {
-    path: '/@:slug',
-    component: lazy(() => import('./pages/Author')),
-    data: AuthorData
   },
   {
     path: '/topic/:slug',
