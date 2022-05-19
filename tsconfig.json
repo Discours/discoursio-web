@@ -1,25 +1,24 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "es2022",
-    "lib": ["es2020", "DOM"],
-    "target": "es2020",
-    "importsNotUsedAsValues": "error",
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "sourceMap": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "declaration": true,
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "newLine": "lf",
+    "sourceMap": true,
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client", "solid-mdx/types", "vite-plugin-pwa/client"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "allowJs": true,
-    "checkJs": true,
-    "paths": {
-      "$lib": ["src/lib"],
-      "$lib/*": ["src/lib/*"],
-      "$app": [".svelte-kit/runtime/app"],
-      "$app/*": [".svelte-kit/runtime/app/"]
-    }
+    "strict": true,
+    "noEmit": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"]
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte"]
+  "include": ["./src/**/*", "vite.config.ts", "./scripts", "src/types.d.ts", "./e2e/*.ts"],
+  "exclude": ["node_modules/"]
 }

@@ -1,0 +1,20 @@
+.topic__controls {
+    align-items: baseline;
+    margin-bottom: 7rem;
+    margin-top: 7rem;
+}
+
+.view-switcher {
+    margin-bottom: 0;
+}
+
+.mode-switcher {
+    @include font-size(1.5rem);
+    text-align: right;
+}
+
+.mode-switcher__control {
+    border-bottom: 1px dotted;
+    cursor: pointer;
+    font-weight: bold;
+}

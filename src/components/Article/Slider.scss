@@ -1,0 +1,64 @@
+.keen-slider__slide {
+  height: 0 !important;
+  min-height: 0 !important;
+  padding-top: 35%;
+}
+
+.slider-arrow-prev,
+.slider-arrow-next {
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  height: 100%;
+  position: absolute;
+  transform: translate(0);
+  top: 0;
+  width: 21%;
+  z-index: 1;
+
+  &:after {
+    color: #fff;
+  }
+
+  &:hover {
+    .icon {
+      opacity: 0.5;
+    }
+  }
+
+  .icon {
+    height: 36px;
+    opacity: 1;
+    transition: opacity 0.2s;
+    width: 22px;
+  }
+}
+
+.slider-arrow-prev {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 100%);
+  justify-content: flex-start;
+  left: 0;
+
+  &:after {
+    margin-left: 5rem;
+  }
+
+  .icon {
+    margin-left: 5rem;
+  }
+}
+
+.slider-arrow-next {
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  justify-content: flex-end;
+  right: 0;
+
+  &:after {
+    margin-right: 5rem;
+  }
+
+  .icon {
+    margin-right: 5rem;
+    transform: rotate(180deg);
+  }
+}
