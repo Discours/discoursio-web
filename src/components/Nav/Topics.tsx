@@ -4,7 +4,7 @@ import './Topics.scss'
 
 export default (props: any) => {
   const [filterTopic, setFilterTopic] = createSignal()
-  console.debug(props)
+  // console.debug(props)
   return (
     <nav class='subnavigation wide-container text-2xl'>
       <ul class='topics'>
@@ -12,8 +12,8 @@ export default (props: any) => {
           <For each={Array.from(props.topics as Topic[])}>
             {(t: Topic) => (
               <li class='item' classList={{ selected: filterTopic() === t.slug }}>
-                <a href={`/topic/${t}`} onClick={() => setFilterTopic(t.slug || '')}>
-                  <span classList={{ transparent: filterTopic() !== t.slug }}>#{t.title}</span>
+                <a href={`/topic/${t.slug}`} onClick={() => setFilterTopic(t.slug || '')}>
+                  <span classList={{ transparent: filterTopic() !== t.slug }}>#{t?.title || ''}</span>
                 </a>
               </li>
             )}

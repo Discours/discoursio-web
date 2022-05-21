@@ -9,7 +9,7 @@ import { Shout, Topic, User } from '../../graphql/types.gen'
 
 interface BesideProps {
   title: string
-  values: Set<any>
+  values: any[]
   top?: boolean
   beside: any
   wrapper: 'topic' | 'author' | 'article'
@@ -26,7 +26,7 @@ export default (props: BesideProps) => {
             </div>
           </Show>
           <ul class='beside-column'>
-            <For each={Array.from(props.values).slice(1, props.values.size - 1)}>
+            <For each={Array.from(props.values).slice(1, props.values.length - 1)}>
               {(value: Partial<Shout | User | Topic>) => {
                 return (
                   <li classList={{ top: props.top }}>
