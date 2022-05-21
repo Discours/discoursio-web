@@ -15,7 +15,6 @@ export type HomeParams = {
 
 export interface HomeRouteData {
   readonly topicsdict: { [key:string]: Topic }
-  readonly shoutsdict: { [key:string]: Partial<Shout> }
   topRecent: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
@@ -80,14 +79,5 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     get params() {
       return paramList()
     },
-    get shoutsdict() {
-      let r: {[key:string]: Partial<Shout>} = {} as {[key:string]: Partial<Shout>}
-      [
-        ...Array.from(topMonthData()?.topMonth),
-        ...Array.from(topOverallData()?.topOverall),
-        ...Array.from(topRecentData()?.recents)
-      ].forEach(s => { r[(s as Partial<Shout>).slug || ''] = s as Partial<Shout> })
-      return r
-    }
   } as HomeRouteData
 }

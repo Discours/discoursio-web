@@ -22,14 +22,12 @@ export const Home: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
 
-  // articles data
   const [loaded, setLoaded] = createSignal(false)
   const [byTopic, setByTopic] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
   const [byLayout, setByLayout] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
   const [topTopics, setTopTopics] = createSignal<Set<Topic>>(new Set([]))
   const [topAuthors, setTopAuthors] = createSignal<Set<Partial<User>>>(new Set([]))
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
-  // postload processing
   createEffect(() => {
     if(!data.loading && !loaded()) {
       let tt = new Set()
@@ -41,8 +39,6 @@ export const Home: Component = () => {
       })
       setTopTopics(tt as Set<Topic>)
       setTopAuthors(ta as Set<User>)
-      console.log(tt)
-      console.log(ta)
       console.log('mainpage: top authors and topics found')
       const all = [...data.topMonth, ...data.topRecent, ...data.topOverall]
       all.forEach((s: Partial<Shout>) => {
