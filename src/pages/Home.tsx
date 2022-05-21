@@ -2,9 +2,7 @@ import { Component, createEffect, createSignal, Show, Suspense } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import Banner from '../components/Discours/Banner'
-import { Maybe, Shout, Topic, User } from '../graphql/types.gen'
 import NavTopics from '../components/Nav/Topics'
-import { shuffle } from '../utils/index'
 import Row5 from '../components/Article/Row5'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
@@ -17,6 +15,9 @@ import Slider from "../components/Article/Slider";
 import Group from "../components/Article/Group";
 import PageLoadingBar from '../components/LoadingBar'
 import { useI18n } from '@solid-primitives/i18n'
+import { Maybe } from 'graphql/jsutils/Maybe'
+import { Shout, User, Topic } from '../graphql/types.gen'
+import { shuffle } from '../utils'
 
 export const Home: Component = () => {
   const [t] = useI18n()
@@ -29,7 +30,7 @@ export const Home: Component = () => {
   const [topAuthors, setTopAuthors] = createSignal<Set<Partial<User>>>(new Set([]))
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
   createEffect(() => {
-    if(!data.loading && !loaded()) {
+    if(!loaded() && !data.loading) {
       let tt = new Set()
       let ta = new Set()
       data.topMonth.forEach((s: Partial<Shout>) => {
@@ -39,8 +40,12 @@ export const Home: Component = () => {
       })
       setTopTopics(tt as Set<Topic>)
       setTopAuthors(ta as Set<User>)
-      console.log('mainpage: top authors and topics found')
-      const all = [...data.topMonth, ...data.topRecent, ...data.topOverall]
+      console.log('[data] top authors and topics found')
+      const all = [
+        ...data.topMonth,
+        ...data.topOverall,
+        ...data.topRecent
+      ]
       all.forEach((s: Partial<Shout>) => {
         // by topic
         s.topics?.forEach((t: Maybe<Topic>) => {
@@ -65,32 +70,33 @@ export const Home: Component = () => {
             (a.stat && b.stat) ? (b.stat.comments - a.stat.comments) : 0)
         )
       setLoaded(true)
-      console.log('mainpage: articles data postprocessed')
+      console.log('[data] all articles postprocessed')
     }
   })
 
-  const [randomLayout, setRandomLayout] = createSignal('article')
+  const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
   const [someTopics, setSomeTopics] = createSignal([] as Topic[])
   const [postloaded, setPostloaded] = createSignal(false)
   createEffect(() => {
-    if(loaded() && !postloaded() && Object.keys(byLayout()).length !== 0) {
+    if(loaded() && !data.topicsLoading && !postloaded() && Object.keys(byLayout()).length !== 0) {
+      let topicsdict: { [key:string]: Topic } = {}
+      data.topics.forEach((t: Topic) => { topicsdict[t.slug] = t })
       // random layout pick
       const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
-      setRandomLayout(layout)
-      console.log(`mainpage: ${layout} layout picked`)
+      setSomeLayout(byLayout()[layout])
+      console.log(`[data] '${layout}' layout picked`)
       // random topics for navbar
       const st: Topic[] = shuffle(Array.from(Object.entries(byTopic())))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0,9)
         .map((f) => f[0])
-        .map((s: string) => data.topicsdict[s])
+        .map((s: string) => topicsdict[s])
       setSomeTopics(st)
-      console.log(`mainpage: topics navbar data prepared`)
+      console.log(`[data] topics navbar prepared`)
       setPostloaded(true)
     }
   })
-
   useRouteReadyState()
   return (
     <main class='home'>
@@ -122,9 +128,9 @@ export const Home: Component = () => {
         <Row1 article={data.topRecent[24]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
         <h2>{t('Top commented')}</h2>
-        <Row3 articles={topCommented().slice(0,3)} />
+        <Row3 articles={(topCommented()).slice(0,3)} />
         <Suspense>
-          <Group articles={byLayout()[randomLayout()] || []} />
+          <Group articles={someLayout()} />
         </Suspense>
         <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)}/>
         <Beside 

@@ -1,5 +1,5 @@
-import { For, Show, createSignal, onMount } from 'solid-js'
-import { Link } from 'solid-app-router'
+import { For, Show, createSignal, onMount, createEffect } from 'solid-js'
+import { Link, NavLink } from 'solid-app-router'
 import './Header.scss'
 import { useStore } from '../../store'
 import Private from './Private'
@@ -20,8 +20,8 @@ export default () => {
   const [{ token, session, warnings }] = useStore()
 
   onMount(() => {
-    setFixed(document.body.classList.contains('fixed'))
     setResource(window.location.pathname)
+    setFixed(document.body.classList.contains('fixed'))
     if (token) {
       if (session) {
         console.log('nav/header: auth.token found and logged in')
@@ -36,23 +36,24 @@ export default () => {
       <div class='wide-container'>
         <nav class='row header__inner' classList={{ fixed: fixed() }}>
           <div class='main-logo col-auto'>
-            <a href='/'>
+            <NavLink href='/'>
               <img src='/logo.svg' alt='Дискурс' />
-            </a>
+            </NavLink>
           </div>
           <ul class='col main-navigation text-xl inline-flex' classList={{ fixed: fixed() }}>
             <For each={routes}>
               {({ href, name }) => (
                 <li classList={{ selected: resource() === href }}>
-                  <Link
+                  <NavLink
                     href={href}
                     onClick={() => {
+                      setResource(href)
                       setFixed(false)
                       document.body.classList.remove('fixed')
                     }}
                   >
                     {name}
-                  </Link>
+                  </NavLink>
                 </li>
               )}
             </For>
@@ -60,7 +61,7 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={() => setShowNotices(!showNotices())}>
+                <a onClick={() => setShowNotices(!showNotices())}>
                   <div>
                     <Icon name='bell-white' counter={warnings?.length || 1} />
                   </div>
@@ -73,7 +74,7 @@ export default () => {
                 when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <a href={'#auth'} onClick={() => setModal('auth')}>
+                    <a onClick={() => setModal('auth')}>
                       войти
                     </a>
                   </div>

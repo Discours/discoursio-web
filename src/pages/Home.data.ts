@@ -14,7 +14,6 @@ export type HomeParams = {
 }
 
 export interface HomeRouteData {
-  readonly topicsdict: { [key:string]: Topic }
   topRecent: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
@@ -37,6 +36,7 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     return { lang, page, size }
   }
   const { page, size } = paramList()
+  
   const [topRecentData, recentState] = createQuery({
     query: topRecent,
     variables: { page: page || START, size }
@@ -56,11 +56,6 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     get topics() {
       return tdata()?.topicsBySlugs
     },
-    get topicsdict() {
-      let r: {[key:string]: Topic} = {}
-      tdata()?.topicsBySlugs.forEach((t: Topic) => { r[t.slug] = t })
-      return r
-    },
     get topicsLoading() {
       return tstate().fetching
     },
@@ -78,6 +73,6 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     },
     get params() {
       return paramList()
-    },
+    }
   } as HomeRouteData
 }
