@@ -21,63 +21,34 @@ import { useI18n } from '@solid-primitives/i18n'
 export const Home: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
-  useRouteReadyState()
-
-  let aslugs = new Set([] as string[])
-  let topicset = new Set([] as Topic[])
-  let authors = [] as Partial<User>[]
-  let authorsBySlugs = {} as { [key: string]: Partial<User> }
-  let bySlugs = {} as { [key: string]: Partial<Shout> }
-  let byTopic = {} as { [key: string]: Partial<Shout>[] }
-  let topMonthAuthors = [] as Partial<User>[]
-  let topMonthTopics = [] as Topic[]
-  let shoutsByTopic = {} as { [key: string]: Partial<Shout>[] }
-  let shoutsByLayout = {} as { [key: string]: Partial<Shout>[] }
-
-  const postLoad = (s: Partial<Shout>): void => {
-    if (s.slug) {
-      bySlugs[s.slug] = s
-      // stores all the authors
-      s.authors?.forEach((a) => {
-        aslugs.add(a.slug)
-
-        if (data.topMonth?.includes(s) && !topMonthAuthors.includes(a)) topMonthAuthors.push(a) // <9 top month only
-
-        if (!(a.slug in authorsBySlugs)) {
-          authors.push(a)
-          authorsBySlugs[a.slug] = a
-        }
-      })
-      // stores mentioned topics slugs
-      s.topics?.forEach((t: Maybe<Topic>) => {
-        if (t) {
-          if (data.topMonth?.includes(s) && !topMonthTopics.includes(t)) topMonthTopics.push(t) // <9 top month only
-
-          if (!byTopic[t.slug]) byTopic[t.slug] = []
-
-          if (t.slug in shoutsByTopic) shoutsByTopic[t.slug].push(s)
-          else shoutsByTopic[t.slug] = [s,]
-
-          topicset.add(t)
-        }
-      })
-
-      if (s.layout) {
-        // stores shouts by layouts
-        if (!shoutsByLayout[s.layout]) shoutsByLayout[s.layout] = []
-
-        if (!shoutsByLayout[s.layout].includes(s)) shoutsByLayout[s.layout].push(s)
-      }
-    }
-  }
-
   // articles data
   const [loaded, setLoaded] = createSignal(false)
+  const [byTopic, setByTopic] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
+  const [byLayout, setByLayout] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
+  const [topTopics, setTopTopics] = createSignal<Set<Topic>>(new Set([]))
+  const [topAuthors, setTopAuthors] = createSignal<Set<Partial<User>>>(new Set([]))
   createEffect(() => {
     if(!data.loading && !loaded()) {
-      data.topRecent?.forEach(postLoad)
-      data.topMonth?.forEach(postLoad)
-      data.topOverall?.forEach(postLoad)
+      // prepared data structures
+      data.topMonth?.forEach((s: Partial<Shout>) => {
+        setTopTopics(new Set([...topTopics(), ...s.topics as Topic[]]))
+        setTopAuthors(new Set([...topAuthors(), ...s.authors as Partial<User>[]]))
+      });
+      ([...data.topMonth, ...data.topRecent, ...data.topOverall]).forEach((s: Partial<Shout>) => {
+        s.topics?.forEach((t: Maybe<Topic>) => {
+          if (!byTopic()[t?.slug || '']) byTopic()[t?.slug || ''] = []
+          let updated = byTopic()[t?.slug || '']
+          updated.push(s)
+          setByTopic({ ...byTopic(), ...{[t?.slug as string]: updated } })
+        })
+        let updated: Partial<Shout>[] = byLayout()[s.layout || 'article']
+        if (!updated) {
+          setByLayout({...byLayout(), ...{[s.layout || 'article']: [] }})
+          updated = []
+        }
+        updated.push(s)
+        setByLayout({...byLayout(), ...{[s.layout as string || 'article']: updated }})
+      });
       setLoaded(true)
       console.log('mainpage: articles data loaded')
     }
@@ -86,7 +57,7 @@ export const Home: Component = () => {
   // random layout pick
   const [randomLayout, setRandomLayout] = createSignal('article')
   createEffect(()=>{
-    const ok = Object.keys(shoutsByLayout).filter((l) => l !== 'article')
+    const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
     if(ok.length > 0 && randomLayout() === 'article') {
       const layout = shuffle(ok)[0]
       setRandomLayout(layout)
@@ -95,12 +66,12 @@ export const Home: Component = () => {
   })
 
   // top 3 commented articles
-  let top3Commented = [] as Partial<Shout>[]
+  const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
   createEffect(()=>{
-    if(loaded() && top3Commented === []) {
-      top3Commented = [...data.topRecent, ...data.topMonth, ...data.topOverall].filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
+    if(loaded() && topCommented() === []) {
+      setTopCommented([...data.topRecent, ...data.topMonth, ...data.topOverall].filter((s: Partial<Shout>) => s.stat && s.stat.comments > 0)
         .sort((a: Partial<Shout>, b: Partial<Shout>) => (a.stat && b.stat) ? (b.stat.comments - a.stat.comments) : 0)
-        .slice(0,3)
+        .slice(0,3))
       console.log(`mainpage: found top 3 commented`)
     }
   })
@@ -109,7 +80,7 @@ export const Home: Component = () => {
   const [someTopics, setSomeTopics] = createSignal([] as Topic[])
   createEffect(() => {
     if(loaded() && someTopics() === []) {
-      const st: Topic[] = shuffle(Array.from(Object.entries(shoutsByTopic)))
+      const st: Topic[] = shuffle(Array.from(Object.entries(byTopic())))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0,9)
         .map((f) => f[0])
@@ -119,6 +90,7 @@ export const Home: Component = () => {
     }
   })
 
+  useRouteReadyState()
   return (
     <main class='home'>
       <PageLoadingBar active={data.loading || data.topicsLoading} />
@@ -128,21 +100,33 @@ export const Home: Component = () => {
         </Suspense>
         <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero/>
-        <Beside beside={data.topRecent[5]} top={true} title={t('Top viewed')} values={topMonthTopics} wrapper={'article'}/>
+        <Beside beside={data.topRecent[5]} top={true} title={t('Top viewed')} values={topTopics()} wrapper={'article'}/>
         <Row3 articles={data.topRecent.slice(6, 9)} />
-        <Beside top={true} beside={data.topRecent[9]} title={t('Top month authors')} values={topMonthAuthors} wrapper={'author'} />
+        <Beside 
+          top={true}
+          beside={data.topRecent[9]}
+          title={t('Top month authors')}
+          values={topAuthors()}
+          wrapper={'author'}
+          />
         <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)}/>
         <Row2 articles={data.topRecent.slice(18, 20)} />
         <RowShort articles={data.topRecent.slice(20, 24)} />
         <Row1 article={data.topRecent[24]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
         <h2>{t('Top commented')}</h2>
-        <Row3 articles={top3Commented} />
+        <Row3 articles={topCommented()} />
         <Suspense>
-          <Group articles={shoutsByLayout[randomLayout()] || []} />
+          <Group articles={byLayout()[randomLayout()] || []} />
         </Suspense>
         <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)}/>
-        <Beside top={true} beside={data.topRecent[30]} title={t('Top month topics')} values={topMonthTopics} wrapper={'topic'} />
+        <Beside 
+          top={true} 
+          beside={data.topRecent[30]}
+          title={t('Top month topics')}
+          values={topTopics()}
+          wrapper={'topic'}
+          />
         <Row3 articles={data.topRecent.slice(31, 34)} />
         <Group articles={data.topRecent.slice(34, 42)}/>
         <Banner/>

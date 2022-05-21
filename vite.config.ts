@@ -1,7 +1,7 @@
 import { defineConfig, UserConfig } from 'vite'
 import SolidJS from 'vite-plugin-solid'
 import SolidSVG from 'vite-plugin-solid-svg'
-import ssr from 'vite-plugin-ssr/plugin'
+// import ssr from 'vite-plugin-ssr/plugin'
 import manifest from './public/manifest.json'
 import mdx from '@mdx-js/rollup'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -62,9 +62,7 @@ const pwaOptions = {
 }
 
 const isSSR = process.argv.includes('ssr')
-const ssrOptions = isSSR ? {
-  input: './src/ssr.ts'
-} : {}
+const rollupOptions = isSSR ? { input: './src/ssr.ts' } : {}
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -77,7 +75,7 @@ export default defineConfig({
 			enforce: "pre"
 		},
     SolidJS({ extensions: ['.md', '.mdx'] }),
-    isSSR && ssr(),
+    // TODO: isSSR && ssr(),
     SolidSVG(),
     pwaEnabled && VitePWA(pwaOptions as any)
   ],
@@ -95,7 +93,7 @@ export default defineConfig({
   build: {
     polyfillDynamicImport: false,
     target: 'esnext',
-    rollupOptions: { ...ssrOptions }
+    rollupOptions
   },
   resolve: {
     alias: {
