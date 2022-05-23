@@ -61,7 +61,7 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a onClick={() => setShowNotices(!showNotices())}>
+                <a href={''} onClick={() => setShowNotices(!showNotices())}>
                   <div>
                     <Icon name='bell-white' counter={warnings?.length || 1} />
                   </div>
@@ -74,7 +74,7 @@ export default () => {
                 when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <a onClick={() => setModal('auth')}>
+                    <a href={''} onClick={() => setModal('auth')}>
                       войти
                     </a>
                   </div>

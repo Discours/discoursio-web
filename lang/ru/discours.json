@@ -44,7 +44,7 @@
   "Sections": "Разделы",
   "Communities": "Сообщества",
   "Partners": "Партнёры",
-  "Special project": "Спецпроекты",
+  "Special projects": "Спецпроекты",
   "Work with us": "Сотрудничать с Дискурсом",
   "Participating": "Участвовать",
   "Suggest an idea": "Предложить идею",
@@ -69,5 +69,6 @@
   "You've reached a non-existed page": "Вы попали на несуществующую страницу",
   "Try to find another way": "Попробуйте найти по-другому",
   "Error": "Ошибка",
-  "Search": "Поиск"
+  "Search": "Поиск",
+  "Write": "Написать"
 }

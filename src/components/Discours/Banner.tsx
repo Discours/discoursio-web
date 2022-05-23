@@ -14,7 +14,7 @@ export default () => {
           <p>
             <NavLink href='/about/help'>{t('Support us')}</NavLink>
             <NavLink href='/create'>{t('Become an author')}</NavLink>
-            <a onClick={() => showModal('auth')}>
+            <a href={''} onClick={() => showModal('auth')}>
               {t('Join the community')}
             </a>
           </p>

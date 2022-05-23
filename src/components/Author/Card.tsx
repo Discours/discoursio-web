@@ -5,6 +5,7 @@ import Icon from '../Nav/Icon'
 import './Card.scss'
 import { useStore } from '../../store'
 import { NavLink } from 'solid-app-router'
+import { useI18n } from '@solid-primitives/i18n'
 
 
 interface AuthorCardProps {
@@ -15,12 +16,12 @@ interface AuthorCardProps {
 }
 
 export default (props: AuthorCardProps) => {
-
+  const [t] = useI18n()
   const [, { follow, unfollow}] = useStore()
 
   // TODO: reimplement AuthorCard
   return (<>
-    <Show when={!props.compact && props.author}>
+    <Show when={props.author}>
       <div class="author">
           <Userpic user={props.author} />
 
@@ -40,12 +41,12 @@ export default (props: AuthorCardProps) => {
                 <Show when={props.isFollowed} fallback={
                   <button onClick={follow} class="button button--subscribe">
                   <Icon name="author-subscribe" />
-                  <span class="button__label">+&nbsp;Подписаться</span>
+                  <span class="button__label">+&nbsp;{t('Follow')}</span>
                   </button>
                 }>
                   <button onClick={unfollow} class="button button--subscribe">
                     <Icon name="author-unsubscribe" />
-                    <span class="button__label">-&nbsp;Отписаться</span>
+                    <span class="button__label">-&nbsp;{t('Unfollow')}</span>
                   </button>
                 </Show>
 
@@ -55,7 +56,7 @@ export default (props: AuthorCardProps) => {
                 <Show when={!props.compact}>
                   <button class="button button--write">
                     <Icon name="edit" />
-                    Написать
+                    {t('Write')}
                   </button>
 
                   <For each={props.author.links as string[]}>

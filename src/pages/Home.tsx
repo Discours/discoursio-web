@@ -18,33 +18,41 @@ import { useI18n } from '@solid-primitives/i18n'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
+import { byViews } from '../utils/by'
 
 export const Home: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
+  useRouteReadyState()
 
   const [loaded, setLoaded] = createSignal(false)
   const [byTopic, setByTopic] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
   const [byLayout, setByLayout] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
-  const [topTopics, setTopTopics] = createSignal<Set<Topic>>(new Set([]))
-  const [topAuthors, setTopAuthors] = createSignal<Set<Partial<User>>>(new Set([]))
+  const [topTopics, setTopTopics] = createSignal([] as Topic[])
+  const [topAuthors, setTopAuthors] = createSignal([] as Partial<User>[])
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
   createEffect(() => {
-    if(!loaded() && !data.loading) {
-      let tt = new Set()
-      let ta = new Set()
-      data.topMonth.forEach((s: Partial<Shout>) => {
-        // tops
-        s.topics?.forEach((t) => tt.add(t))
-        s.authors?.forEach(a => ta.add(a))
-      })
-      setTopTopics(tt as Set<Topic>)
-      setTopAuthors(ta as Set<User>)
-      console.log('[data] top authors and topics found')
+    if(!loaded() && !data.topicsLoading && !data.loading) {
+      
+      console.log('[data] processing tops...')
+      let tt = new Set([] as Topic[])
+      let ta = new Set([] as Partial<User>[])
+      data.topMonth.forEach(
+        (s: Partial<Shout>) => {
+          tt = new Set(Array.from(tt).concat(...s.topics as Topic[]))
+          ta = new Set(Array.from(ta).concat(...s.authors as Partial<User>[]))
+        }
+      )
+      const rtt = Array.from(tt).sort(byViews).slice(0,3)
+      const rta = Array.from(ta).slice(0,3) // TODO: author.stat 
+      setTopTopics(rtt)
+      setTopAuthors(rta) 
+      console.debug(rta)
+      console.log('[ready] top month authors and topics')
       const all = [
-        ...data.topMonth,
-        ...data.topOverall,
-        ...data.topRecent
+        ...Array.from(data.topMonth),
+        ...Array.from(data.topOverall),
+        ...Array.from(data.topRecent)
       ]
       all.forEach((s: Partial<Shout>) => {
         // by topic
@@ -64,13 +72,14 @@ export const Home: Component = () => {
         updated.push(s)
         setByLayout({...byLayout(), ...{[l]: updated }})
       });
+      // set top commented
       setTopCommented(
         all.sort(
           (a: Partial<Shout>, b: Partial<Shout>) => 
-            (a.stat && b.stat) ? (b.stat.comments - a.stat.comments) : 0)
+            (a.stat && b.stat) ? (b.stat.comments - a.stat.comments) : 0).slice(0,3)
         )
       setLoaded(true)
-      console.log('[data] all articles postprocessed')
+      console.log('[ready] all articles data postprocessed')
     }
   })
 
@@ -78,68 +87,87 @@ export const Home: Component = () => {
   const [someTopics, setSomeTopics] = createSignal([] as Topic[])
   const [postloaded, setPostloaded] = createSignal(false)
   createEffect(() => {
-    if(loaded() && !data.topicsLoading && !postloaded() && Object.keys(byLayout()).length !== 0) {
+    if(loaded() && !data.topicsLoading && !postloaded()) {
+      // topics by slug
       let topicsdict: { [key:string]: Topic } = {}
-      data.topics.forEach((t: Topic) => { topicsdict[t.slug] = t })
+      data.topics?.forEach((t: Topic) => topicsdict[t.slug] = t)
+      // console.log(topicsdict)
       // random layout pick
       const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
       setSomeLayout(byLayout()[layout])
-      console.log(`[data] '${layout}' layout picked`)
+      console.log(`[ready] '${layout}' layout picked`)
+
       // random topics for navbar
-      const st: Topic[] = shuffle(Array.from(Object.entries(byTopic())))
+      let topicSlugs = shuffle(Array.from(Object.entries(byTopic())))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0,9)
         .map((f) => f[0])
-        .map((s: string) => topicsdict[s])
-      setSomeTopics(st)
-      console.log(`[data] topics navbar prepared`)
+      // console.log(topicSlugs)
+      setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
+      console.log(`[ready] topics navbar data prepared`)
       setPostloaded(true)
     }
   })
-  useRouteReadyState()
+
+  const [ready, setReady] = createSignal(false)
+  createEffect(() => {
+    if(loaded() && postloaded() && !ready()) {
+        console.debug(topAuthors())
+        console.info('[ready] loaded' )
+        setReady(true)
+      }
+  })
   return (
     <main class='home'>
-      <PageLoadingBar active={data.loading || data.topicsLoading} />
-      <Show when={!data.loading && data.topMonth && data.topRecent && data.topOverall}>
-        <Show when={postloaded()}>
+      <PageLoadingBar active={!ready()} />
+      <Show when={ready()}>
+        <Show when={someTopics()?.length === 9}>
           <NavTopics topics={someTopics()} />
         </Show>
         <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero/>
-        <Beside 
-          beside={data.topRecent[5]}
-          top={true}
-          title={t('Top viewed')}
-          values={Array.from(topTopics()).slice(0,3)}
-          wrapper={'article'} 
-        />
+        <Suspense>
+          <Beside 
+            beside={data.topRecent[5]}
+            top={false}
+            title={t('Top viewed')}
+            values={topTopics()}
+            wrapper={'topic'} 
+          />
+        </Suspense>
         <Row3 articles={data.topRecent.slice(6, 9)} />
-        <Beside 
-          top={true}
-          beside={data.topRecent[9]}
-          title={t('Top month authors')}
-          values={Array.from(topAuthors()).slice(0,3)}
-          wrapper={'author'}
-        />
+
+        <Suspense>
+          <Beside 
+            top={true}
+            beside={data.topRecent[9]}
+            title={t('Top month authors')}
+            values={topAuthors()}
+            wrapper={'author'}
+          />
+        </Suspense>
         <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)}/>
         <Row2 articles={data.topRecent.slice(18, 20)} />
         <RowShort articles={data.topRecent.slice(20, 24)} />
         <Row1 article={data.topRecent[24]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
         <h2>{t('Top commented')}</h2>
-        <Row3 articles={(topCommented()).slice(0,3)} />
+        <Row3 articles={topCommented()} />
         <Suspense>
           <Group articles={someLayout()} />
         </Suspense>
         <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)}/>
-        <Beside 
-          top={true} 
-          beside={data.topRecent[30]}
-          title={t('Top month topics')}
-          values={Array.from(topTopics()).slice(0,3)}
-          wrapper={'topic'}
+
+        <Suspense>
+          <Beside 
+            top={false} 
+            beside={data.topRecent[30]}
+            title={t('Top month topics')}
+            values={topTopics()}
+            wrapper={'topic'}
           />
+        </Suspense>
         <Row3 articles={data.topRecent.slice(31, 34)} />
         <Group articles={data.topRecent.slice(34, 42)}/>
         <Banner/>

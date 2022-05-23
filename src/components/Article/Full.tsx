@@ -90,7 +90,7 @@ export default (props: ArticleProps) => {
               {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
+              <a href={''} onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
                 <Icon name='bookmark' />
                 <Show when={isFollowed()} fallback={t('Favorite')}>
                   {t('Bookmarked')}``
@@ -98,7 +98,7 @@ export default (props: ArticleProps) => {
               </a>
             </div>
             <div class='article-stats__item'>
-              <a onClick={() => showModal('share')}>
+              <a href={''} onClick={() => showModal('share')}>
                 <Icon name='share' />
                 {t('Share')}
               </a>
@@ -146,7 +146,7 @@ export default (props: ArticleProps) => {
             fallback={() => (
               <div class='comment-warning'>
                 {t('To leave a comment please')}
-                <a onClick={() => showModal('auth')}>
+                <a href={''} onClick={() => showModal('auth')}>
                   <i>{t('sign up or sign in')}</i>
                 </a>
               </div>
