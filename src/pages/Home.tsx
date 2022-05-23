@@ -23,105 +23,83 @@ import { byViews } from '../utils/by'
 export const Home: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
-  useRouteReadyState()
 
   const [loaded, setLoaded] = createSignal(false)
-  const [byTopic, setByTopic] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
-  const [byLayout, setByLayout] = createSignal<{ [key: string]: Partial<Shout>[] }>({})
   const [topTopics, setTopTopics] = createSignal([] as Topic[])
   const [topAuthors, setTopAuthors] = createSignal([] as Partial<User>[])
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
+  const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
+  const [someTopics, setSomeTopics] = createSignal([] as Topic[])
   createEffect(() => {
     if(!loaded() && !data.topicsLoading && !data.loading) {
-      
-      console.log('[data] processing tops...')
+      console.log('[data] processing...')
+
+      // top authors and topics
       let tt = new Set([] as Topic[])
       let ta = new Set([] as Partial<User>[])
       data.topMonth.forEach(
         (s: Partial<Shout>) => {
-          tt = new Set(Array.from(tt).concat(...s.topics as Topic[]))
-          ta = new Set(Array.from(ta).concat(...s.authors as Partial<User>[]))
+          tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
+          ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
         }
       )
-      const rtt = Array.from(tt).sort(byViews).slice(0,3)
-      const rta = Array.from(ta).slice(0,3) // TODO: author.stat 
-      setTopTopics(rtt)
-      setTopAuthors(rta) 
-      console.debug(rta)
+      setTopTopics(Array.from(tt).sort(byViews).slice(0,3))
+      setTopAuthors(Array.from(ta).slice(0,3)) // TODO: author.stat 
       console.log('[ready] top month authors and topics')
       const all = [
         ...Array.from(data.topMonth),
         ...Array.from(data.topOverall),
         ...Array.from(data.topRecent)
       ]
+
+      // get shouts lists by
+      let byLayout: { [key:string]: Partial<Shout>[]} = {}
+      let byTopic: { [key:string]: Partial<Shout>[]} = {}
       all.forEach((s: Partial<Shout>) => {
         // by topic
         s.topics?.forEach((t: Maybe<Topic>) => {
-          if (!byTopic()[t?.slug || '']) byTopic()[t?.slug || ''] = []
-          let updated = byTopic()[t?.slug || '']
-          updated.push(s)
-          setByTopic({ ...byTopic(), ...{[t?.slug as string]: updated } })
+          if (!byTopic[t?.slug || '']) byTopic[t?.slug || ''] = []
+          byTopic[t?.slug as string].push(s)
         })
         // by layout
         const l = s.layout || 'article'
-        let updated: Partial<Shout>[] = byLayout()[l]
-        if (!updated) {
-          setByLayout({...byLayout(), ...{[l]: [] }})
-          updated = []
-        }
-        updated.push(s)
-        setByLayout({...byLayout(), ...{[l]: updated }})
+        if (!byLayout[l]) byLayout[l] = []
+        byLayout[l].push(s)
       });
+
       // set top commented
       setTopCommented(
         all.sort(
           (a: Partial<Shout>, b: Partial<Shout>) => 
             (a.stat && b.stat) ? (b.stat.comments - a.stat.comments) : 0).slice(0,3)
         )
-      setLoaded(true)
-      console.log('[ready] all articles data postprocessed')
-    }
-  })
-
-  const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
-  const [someTopics, setSomeTopics] = createSignal([] as Topic[])
-  const [postloaded, setPostloaded] = createSignal(false)
-  createEffect(() => {
-    if(loaded() && !data.topicsLoading && !postloaded()) {
+      
       // topics by slug
-      let topicsdict: { [key:string]: Topic } = {}
+      let topicsdict: { [key:string]: Topic } = {}  
       data.topics?.forEach((t: Topic) => topicsdict[t.slug] = t)
-      // console.log(topicsdict)
+      console.log('[ready] all articles data postprocessed')
+
       // random layout pick
-      const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
+      const ok = Object.keys(byLayout).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
-      setSomeLayout(byLayout()[layout])
+      setSomeLayout(byLayout[layout])
       console.log(`[ready] '${layout}' layout picked`)
 
       // random topics for navbar
-      let topicSlugs = shuffle(Array.from(Object.entries(byTopic())))
+      let topicSlugs = shuffle(Array.from(Object.entries(byTopic)))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0,9)
         .map((f) => f[0])
-      // console.log(topicSlugs)
       setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
       console.log(`[ready] topics navbar data prepared`)
-      setPostloaded(true)
+      setLoaded(true)
     }
   })
-
-  const [ready, setReady] = createSignal(false)
-  createEffect(() => {
-    if(loaded() && postloaded() && !ready()) {
-        console.debug(topAuthors())
-        console.info('[ready] loaded' )
-        setReady(true)
-      }
-  })
+  useRouteReadyState()
   return (
     <main class='home'>
-      <PageLoadingBar active={!ready()} />
-      <Show when={ready()}>
+      <PageLoadingBar active={!loaded()} />
+      <Show when={loaded()}>
         <Show when={someTopics()?.length === 9}>
           <NavTopics topics={someTopics()} />
         </Show>
