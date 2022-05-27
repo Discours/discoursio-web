@@ -16,7 +16,7 @@ interface BesideProps {
 }
 export default (props: BesideProps) => {
   // wrap, top, title, beside, values, wrapper
-  console.log(props)
+  // console.log(props)
   return (
     <div class='floor floor--9'>
       <div class='wide-container row'>

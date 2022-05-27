@@ -1,14 +1,13 @@
-import { onMount, Show } from 'solid-js'
+import { createEffect, createSignal, onMount, Show } from 'solid-js'
 import { useStore } from '../../store'
 import './Modal.scss'
-
 interface ModalProps {
   name: string
   children: any
 }
 
 export default (props: ModalProps) => {
-  const [{ modal }, { hideModal }] = useStore()
+  const [{ }, { hideModal, getModal }] = useStore()
   const wrapClick = (ev: Event) => {
     if ((ev.target as HTMLElement).classList.contains('modalwrap')) hideModal()
   }
@@ -19,8 +18,14 @@ export default (props: ModalProps) => {
     })
   })
 
+  const [visible, setVisible] = createSignal(false)
+  createEffect(() => {
+    setVisible(getModal() === props.name)
+    console.log(`[modal] ${props.name} is ${getModal() === props.name?'visible':'hidden'}`)
+  })
+
   return (
-    <Show when={modal === props.name}>
+    <Show when={visible()}>
       <div class='modalwrap' onClick={wrapClick}>
         <div class='modalwrap__inner'>
           {props.children}

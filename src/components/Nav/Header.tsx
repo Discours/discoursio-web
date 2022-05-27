@@ -5,6 +5,9 @@ import { useStore } from '../../store'
 import Private from './Private'
 import Notifications from './Notifications'
 import Icon from './Icon'
+import Modal from './Modal'
+import AuthModal from './AuthModal'
+import { useI18n } from '@solid-primitives/i18n'
 
 const routes = [
   { name: 'журнал', href: '/' },
@@ -13,15 +16,17 @@ const routes = [
 ]
 
 export default () => {
-  const [, setModal] = createSignal('')
+  const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
-  const [showNotices, setShowNotices] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [{ token, session, warnings }] = useStore()
+  const [{ token, session, warnings }, { getModal, showModal, toggleWarnings}] = useStore()
 
   onMount(() => {
     setResource(window.location.pathname)
     setFixed(document.body.classList.contains('fixed'))
+  })
+
+  createEffect(() => {
     if (token) {
       if (session) {
         console.log('nav/header: auth.token found and logged in')
@@ -32,6 +37,9 @@ export default () => {
 
   return (
     <header>
+      <Modal name='auth'>
+        <AuthModal />
+      </Modal>
       <Notifications />
       <div class='wide-container'>
         <nav class='row header__inner' classList={{ fixed: fixed() }}>
@@ -61,7 +69,7 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={() => setShowNotices(!showNotices())}>
+                <a href={''} onClick={() => toggleWarnings()}>
                   <div>
                     <Icon name='bell-white' counter={warnings?.length || 1} />
                   </div>
@@ -74,9 +82,9 @@ export default () => {
                 when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <a href={''} onClick={() => setModal('auth')}>
-                      войти
-                    </a>
+                    <Link href='#' onClick={() => showModal('auth')}>
+                      {t('enter')}
+                    </Link>
                   </div>
                 }
               >
