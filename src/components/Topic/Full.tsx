@@ -3,6 +3,7 @@ import { Show } from 'solid-js/web'
 import { useStore } from '../../store'
 import { Topic } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
+import './Full.scss';
 
 export default (props: { topic: Topic }) => {
   const [t] = useI18n()
