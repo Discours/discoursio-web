@@ -5,7 +5,7 @@ import { baseUrl } from '../../graphql/client'
 import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
-
+import './AuthModal.scss'
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
 export default (props: { code?: string; mode?: string }) => {
@@ -116,7 +116,7 @@ export default (props: { code?: string; mode?: string }) => {
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
-          <div class='auth-subtitle'>
+          <div class={`auth-subtitle ${props.mode === 'forget' ? '' : 'hidden'}`}>
             <Show
               when={mode() === 'forget'}
               fallback={
@@ -128,7 +128,7 @@ export default (props: { code?: string; mode?: string }) => {
               {t('Everything is ok, please give us your email address')}
             </Show>
           </div>
-          <div class='auth-info'>
+          <div class={`auth-info ${!state.warnings || !state.warnings.length ? 'hidden' : ''}`}>
             <For each={state.warnings}>{(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}</For>
           </div>
           <Show when={mode() !== 'reset' && mode() !== 'password'}>
