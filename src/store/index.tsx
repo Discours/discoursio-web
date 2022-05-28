@@ -38,7 +38,7 @@ interface CommonStore {
 
 const StoreContext = createContext<[CommonStore, any]>([{} as CommonStore, {}])
 const StoreContextProvider = StoreContext.Provider
-interface Warning {
+export interface Warning {
   body: string
   kind: WarnKind
   seen?: boolean
@@ -77,7 +77,7 @@ export function StoreProvider(props: { children: any }) {
       w.seen = true
       setState({ ...state, warnings: [...state.warnings, w] })
     },
-    
+
     // modal
     getModal: () => state.modal,
     showModal: (name: ModalType) => setState({ ...state, modal: name }),
@@ -174,7 +174,7 @@ export function StoreProvider(props: { children: any }) {
     more: () => {
       Object.keys(moreQueries).forEach((what: string) => {
         if(location.pathname.startsWith('/'+what)) {
-          const slug = location.pathname.replace(`/${what}/`, '').replace('/','')
+          // const slug = location.pathname.replace(`/${what}/`, '').replace('/','')
           // FIXME
           // let variables: {[k:string]: { page: number; size: number }} = { page: (state.page + 1), size: state.size }
           // variables[what] = slug
