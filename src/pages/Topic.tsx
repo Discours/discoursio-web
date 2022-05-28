@@ -43,7 +43,7 @@ export const BlogTopic: Component = () => {
       authors = Array.from(authorset)
     }
   })
-  
+
   createEffect(() => {
     if(!!data.topics && !topic) {
       topic = data.topics?.find((t:Topic) => t.slug === data.slug) as Topic
@@ -76,7 +76,7 @@ export const BlogTopic: Component = () => {
       </div>
       <div class="col-md-4">
         <div class="mode-switcher">
-          {t('Show')}
+          {`${t('Show')} `}
           <span class="mode-switcher__control">{t('All posts')}</span>
         </div>
       </div>

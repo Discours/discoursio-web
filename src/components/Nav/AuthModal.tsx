@@ -3,6 +3,7 @@ import Icon from './Icon'
 import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
 import { createSignal } from 'solid-js'
+import './AuthModal.scss'
 
 let emailElement: HTMLInputElement
 let pass2Element: HTMLInputElement
@@ -112,19 +113,19 @@ export default (props: { code?: string; mode?: string }) => {
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
-          <div class='auth-subtitle'>
+          <div class={`auth-subtitle ${props.mode === 'forget' ? '' : 'hidden'}`}>
             <Show
               when={props.mode === 'forget'}
               fallback={
                 <Show when={props.mode === 'reset'}>
-                  Введите код из письма или пройдите по ссылке в письме для подтверждения регистрации
+                  Введите код из&nbsp;письма или пройдите по&nbsp;ссылке в&nbsp;письме для подтверждения регистрации
                 </Show>
               }
             >
               Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.
             </Show>
           </div>
-          <div class='auth-info'>
+          <div class={`auth-info ${!state.warnings || !state.warnings.length ? 'hidden' : ''}`}>
             <For each={state.warnings}>{(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}</For>
           </div>
           <Show when={props.mode !== 'reset' && props.mode !== 'password'}>
