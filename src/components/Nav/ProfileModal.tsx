@@ -3,7 +3,7 @@ import { useI18n } from '@solid-primitives/i18n'
 
 export default () => {
   const [t] = useI18n()
-  const [{ currentUser }, { signOut, hideModal }] = useStore()
+  const [{ session }, { signOut, hideModal }] = useStore()
 
   const quit = () => {
     signOut()
@@ -13,7 +13,7 @@ export default () => {
   return (
     <div class='row view profile'>
       <span onClick={() => quit()}>{t('Quit')}</span>
-      <h1>{currentUser?.username}</h1>
+      <h1>{session?.username}</h1>
     </div>
   )
 }

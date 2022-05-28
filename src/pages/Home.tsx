@@ -107,7 +107,7 @@ export const Home: Component = () => {
         <Hero/>
         <Suspense>
           <Beside 
-            beside={data.topRecent[5]}
+            beside={data.topRecent.slice(5,6)[0]}
             top={false}
             title={t('Top viewed')}
             values={topTopics()}
@@ -119,7 +119,7 @@ export const Home: Component = () => {
         <Suspense>
           <Beside 
             top={true}
-            beside={data.topRecent[9]}
+            beside={data.topRecent.slice(9,10)[0]}
             title={t('Top month authors')}
             values={topAuthors()}
             wrapper={'author'}
@@ -128,7 +128,7 @@ export const Home: Component = () => {
         <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)}/>
         <Row2 articles={data.topRecent.slice(18, 20)} />
         <RowShort articles={data.topRecent.slice(20, 24)} />
-        <Row1 article={data.topRecent[24]} />
+        <Row1 article={data.topRecent.slice(24,25)[0]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
         <h2>{t('Top commented')}</h2>
         <Row3 articles={topCommented()} />
@@ -140,7 +140,7 @@ export const Home: Component = () => {
         <Suspense>
           <Beside 
             top={false} 
-            beside={data.topRecent[30]}
+            beside={data.topRecent.slice(30,31)[0]}
             title={t('Top month topics')}
             values={topTopics()}
             wrapper={'topic'}

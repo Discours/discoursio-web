@@ -3,28 +3,30 @@ import Icon from './Icon'
 import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
 import { createSignal } from 'solid-js'
-
-let emailElement: HTMLInputElement
-let pass2Element: HTMLInputElement
-let passElement: HTMLInputElement
-let usernameElement: HTMLInputElement // TODO: place this element
+import { useI18n } from '@solid-primitives/i18n'
+import { NavLink } from 'solid-app-router'
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
-const titles = {
-  'sign-up': 'Создать аккаунт',
-  'sign-in': 'Войти в Дискурс',
-  forget: 'Забыли пароль?',
-  reset: 'Подтвердите почту и действие совершится',
-  resend: 'Выслать подтверждение',
-  password: 'Введите новый пароль'
-}
-
 export default (props: { code?: string; mode?: string }) => {
+  const [t] = useI18n()
   const [mode, setMode] = createSignal<AuthMode>('sign-in')
   const [state, { hideModal, warn, signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] =
     useStore()
   // TODO: notifications destroy timeout
+
+  let emailElement: HTMLInputElement | undefined
+  let pass2Element: HTMLInputElement | undefined
+  let passElement: HTMLInputElement | undefined
+  let usernameElement: HTMLInputElement | undefined// TODO: place this element
+  const titles = {
+    'sign-up': t('Create account'), 
+    'sign-in': t('Enter the Discours'), 
+    forget: t('Forget password?'),
+    reset: t("Please, confirm your email to finish"),
+    resend: t('Resend code'),
+    password: t('Enter your new password')
+  }
 
   const oauth = (provider: string) => {
     window.open(`${baseUrl}/oauth/${provider}`, provider, 'width=740, height=420')
@@ -35,13 +37,15 @@ export default (props: { code?: string; mode?: string }) => {
     state.handshaking = true
     // 1 check format
     const emailTyped =
-      emailElement.value.length > 5 && emailElement.value.includes('@') && emailElement.value.includes('.')
+      (emailElement?.value?.length || 0) > 5 && 
+      emailElement?.value.includes('@') && 
+      emailElement.value.includes('.')
 
-    if (!emailTyped) warn({ body: 'Пожалуйста, проверьте введенный адрес почты', kind: 'error' })
+    if (!emailTyped) warn({ body: t('Please check your email address'), kind: 'error' })
     // TODO: 2 check if used
     // eslint-disable-next-line no-constant-condition
-    else if (false) {
-      const check = signCheck(emailElement.value)
+    else {
+      const check = signCheck(emailElement?.value)
 
       console.log(check)
 
@@ -49,7 +53,7 @@ export default (props: { code?: string; mode?: string }) => {
         case 'sign-up':
           if (check) {
             warn({
-              body: 'Такой адрес почты уже зарегистрирован, попробуйте залогиниться',
+              body: t('We know you, please try to login'),
               kind: 'error'
             })
           }
@@ -59,7 +63,7 @@ export default (props: { code?: string; mode?: string }) => {
         case 'sign-in':
           if (!check) {
             warn({
-              body: 'Такой адрес не найден, попробуйте зарегистрироваться',
+              body: t('No such account, please try to register'),
               kind: 'error'
             })
           }
@@ -72,11 +76,11 @@ export default (props: { code?: string; mode?: string }) => {
 
     switch (mode()) {
       case 'sign-in':
-        signIn(emailElement.value, passElement.value)
+        signIn(emailElement?.value, passElement?.value)
         break
       case 'sign-up':
-        if (pass2Element.value !== passElement.value) warn({ body: 'Пароли не совпадают', kind: 'error' })
-        else signUp(usernameElement.value, emailElement.value, passElement.value)
+        if (pass2Element?.value !== passElement?.value) warn({ body: t('Passwords are not same'), kind: 'error' })
+        else signUp(usernameElement?.value, emailElement?.value, passElement?.value)
 
         break
       case 'reset':
@@ -91,8 +95,8 @@ export default (props: { code?: string; mode?: string }) => {
     <div class='row view' classList={{ 'view--sign-up': props.mode === 'sign-up' }}>
       <div class='col-sm-6 d-md-none auth-image'>
         <div class='auth-image__text' classList={{ show: props.mode === 'sign-up' }}>
-          <h2>Дискурс</h2>
-          <h4>Присоединятесь к&nbsp;глобальному сообществу авторов со&nbsp;всего мира!</h4>
+          <h2>{t('Discours')}</h2>
+          <h4>{t(`Join the global community of authors!`)}</h4>
           <p class='auth-benefits'>
             Познакомитесь с&nbsp;выдающимися людьми нашего времени, участвуйте в&nbsp;редактировании
             и&nbsp;обсуждении статей, выступайте экспертом, оценивайте материалы других авторов
@@ -101,9 +105,9 @@ export default (props: { code?: string; mode?: string }) => {
           </p>
           <p class='disclamer'>
             Регистрируясь, вы&nbsp;даёте согласие с&nbsp;
-            <a href='/about/terms-of-use' onClick={hideModal}>
+            <NavLink href='/about/terms-of-use' onClick={hideModal}>
               правилами пользования
-            </a>
+            </NavLink>
             сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых уведомлений.
           </p>
         </div>
@@ -114,32 +118,32 @@ export default (props: { code?: string; mode?: string }) => {
 
           <div class='auth-subtitle'>
             <Show
-              when={props.mode === 'forget'}
+              when={mode() === 'forget'}
               fallback={
-                <Show when={props.mode === 'reset'}>
-                  Введите код из письма или пройдите по ссылке в письме для подтверждения регистрации
+                <Show when={mode() === 'reset'}>
+                  {t('Enter the code or click the link from email to confirm')}
                 </Show>
               }
             >
-              Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.
+              {t('Everything is ok, please give us your email address')}
             </Show>
           </div>
           <div class='auth-info'>
             <For each={state.warnings}>{(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}</For>
           </div>
-          <Show when={props.mode !== 'reset' && props.mode !== 'password'}>
-            <input autocomplete='username' ref={emailElement} type='text' placeholder='Почта' />
+          <Show when={mode() !== 'reset' && mode() !== 'password'}>
+            <input autocomplete='username' ref={emailElement} type='text' placeholder={t('Email')} />
           </Show>
 
-          <Show when={props.mode === 'sign-up' || props.mode === 'sign-in'}>
-            <input autocomplete='current-password' ref={passElement} type='password' placeholder='Пароль' />
+          <Show when={mode() === 'sign-up' || mode() === 'sign-in'}>
+            <input autocomplete='current-password' ref={passElement} type='password' placeholder={t('Password')} />
           </Show>
-          <Show when={props.mode === 'reset'}>
-            <input value={props.code} type='text' placeholder='Код восстановления' />
+          <Show when={mode() === 'reset'}>
+            <input value={props.code} type='text' placeholder={t('Reset code')} />
           </Show>
-          <Show when={props.mode === 'password'}>
-            <input ref={passElement} type='password' placeholder='Новый пароль' />
-            <input ref={pass2Element} type='password' placeholder='Подтверждение пароля' />
+          <Show when={mode() === 'password'}>
+            <input ref={passElement} type='password' placeholder={t('New password')} />
+            <input ref={pass2Element} type='password' placeholder={t('New password again')} />
           </Show>
 
           <div>
@@ -148,25 +152,19 @@ export default (props: { code?: string; mode?: string }) => {
             </button>
           </div>
 
-          <Show when={props.mode === 'sign-in'}>
+          <Show when={mode() === 'sign-in'}>
             <div class='auth-actions'>
               <a href={'#auth'} onClick={() => setMode('forget')}>
-                Забыли пароль?
+                {t('Forget password?')}
               </a>
             </div>
           </Show>
 
-          <Show when={mode() !== 'forget' && mode() !== 'reset'}>
+          <Show when={mode() === 'sign-in' || mode() === 'sign-up'}>
             <div class='social-provider'>
               <div class='providers-text'>
-                <Show
-                  when={mode() === 'sign-up'}
-                  fallback={<Show when={mode() === 'sign-in'}>Или войдите через соцсети</Show>}
-                >
-                  Или создайте аккаунт с&nbsp;помощью соцсетей
-                </Show>
+                {t('Or continue with social network')}
               </div>
-
               <div class='social'>
                 <a href={'#auth'} class='facebook-auth' onClick={() => oauth('facebook')}>
                   <Icon name='facebook' />
@@ -187,22 +185,22 @@ export default (props: { code?: string; mode?: string }) => {
           <div class='auth-control'>
             <div classList={{ show: mode() === 'sign-up' }}>
               <span class='auth-link' onClick={() => setMode('sign-in')}>
-                У&nbsp;меня есть аккаунт
+                {t('I have an account')}
               </span>
             </div>
-            <div classList={{ show: props.mode === 'sign-in' }}>
+            <div classList={{ show: mode() === 'sign-in' }}>
               <span class='auth-link' onClick={() => setMode('sign-up')}>
-                У&nbsp;меня еще нет аккаунта
+                {t('I have no account yet')}
               </span>
             </div>
-            <div classList={{ show: props.mode === 'forget' }}>
+            <div classList={{ show: mode() === 'forget' }}>
               <span class='auth-link' onClick={() => setMode('sign-in')}>
-                Я знаю пароль
+                {t('I know the password')}
               </span>
             </div>
-            <div classList={{ show: props.mode === 'reset' }}>
+            <div classList={{ show: mode() === 'reset' }}>
               <span class='auth-link' onClick={() => setMode('resend')}>
-                Отправить код повторно
+                {t('Resend code')}
               </span>
             </div>
           </div>

@@ -19,7 +19,7 @@ export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [{ token, session, warnings }, { getModal, showModal, toggleWarnings}] = useStore()
+  const [{ token, session, warnings }, { showModal, toggleWarnings}] = useStore()
 
   onMount(() => {
     setResource(window.location.pathname)
