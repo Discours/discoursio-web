@@ -82,7 +82,10 @@ export default () => {
                 when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <Link href='#' onClick={() => showModal('auth')}>
+                    <Link href='#' onClick={(evt) => {
+                      evt.preventDefault();
+                      showModal('auth')
+                    }}>
                       {t('enter')}
                     </Link>
                   </div>
