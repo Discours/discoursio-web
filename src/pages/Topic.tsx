@@ -1,4 +1,4 @@
-import { Component, For, createSignal, createEffect, Show } from 'solid-js'
+import { Component, For, createSignal, Show, createMemo } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -9,8 +9,9 @@ import Beside from '../components/Article/Beside'
 import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import './Topic.scss'
-import { byRating, byViews } from '../utils/by'
+import { byComments, byCreated, byRating, byViews } from '../utils/by'
 import TopicFull from '../components/Topic/Full'
+import { title } from 'process'
 
 export const BlogTopic: Component = () => {
   const [t] = useI18n()
@@ -24,109 +25,103 @@ export const BlogTopic: Component = () => {
     topics?: Topic[]
     topicsLoading?: boolean
   }>()
-  let topRated: Partial<Shout>[] = []
-  let topViewed: Partial<Shout>[] = []
-  let authors: Partial<User>[] = []
-  let topic: Topic | undefined
-  useRouteReadyState()
-  const [mode, setMode] = createSignal('fresh')
-  const sortBy = (by: string) => {
-    setMode(by)
-    // TODO: something else
-  }
-  createEffect(() => {
-    if(!topRated && !!data.articles) {
-      topRated = Array.from(data.articles || []).sort(byRating)
-      topViewed = Array.from(data.articles || []).sort(byViews)
-      let authorset = new Set([] as Partial<User>[])
-      data.articles.forEach(a => a.authors?.forEach(u => authorset.add(u)))
-      authors = Array.from(authorset)
-    }
-  })
 
-  createEffect(() => {
-    if(!!data.topics && !topic) {
-      topic = data.topics?.find((t:Topic) => t.slug === data.slug) as Topic
-    }
+  let authors = createMemo<Partial<User>[]>(() => {
+    let authorset = new Set([] as Partial<User>[])
+    data.articles?.forEach(a => a.authors?.forEach(u => authorset.add(u)))
+    return Array.from(authorset)
   })
+  const topic = createMemo<Topic>(() => data.topics?.find((t:Topic) => t.slug === data.slug) as Topic)
+  const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
+  const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
+  const topCommented = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byComments))
+  const topRecent = createMemo(() => Array.from(data.articles || []).sort(byCreated))
+  const [mode, setMode] = createSignal('fresh')
+  const selected = createMemo(() => {
+    const m = mode()
+    if(m === 'fresh') return topRecent()
+    if(m === 'popular') return topRated()
+    if(m === 'discuss') return topCommented()
+    return topViewed()
+  })
+  const title = createMemo(() => {
+    const m = mode()
+    if(m === 'fresh') return t('Top recent')
+    if(m === 'popular') return t('Top rated')
+    if(m === 'discuss') return t('Top discussed')
+    return t('Top viewed')
+  })
+  useRouteReadyState()
   return (
   <div class="container">
-    <Show when={!data.topicsLoading && !!topic?.slug}>
-      <TopicFull topic={topic as Topic} />
-    </Show>
-    <div class="row topic__controls">
-      <div class="col-md-8">
-        <ul class="view-switcher">
-          <li classList={{ selected: mode() === 'fresh' }}>
-            <button type="button" onClick={() => sortBy('fresh')}>
-              {t('Recent')}
-            </button>
-          </li>
-          <li classList={{ selected: mode() === 'popular' }}>
-            <button type="button" onClick={() => sortBy('popular')}>
-              {t('Popular')}
-            </button>
-          </li>
-          <li classList={{ selected: mode() === 'discuss' }}>
-            <button type="button" onClick={() => sortBy('discuss')}>
-              {t('Discussing')}
-            </button>
-          </li>
-        </ul>
-      </div>
-      <div class="col-md-4">
-        <div class="mode-switcher">
-          {`${t('Show')} `}
-          <span class="mode-switcher__control">{t('All posts')}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <Show when={!data.loading && data.articles?.length > 0}>
-        <Row1 article={data.articles[0]} />
-        <Row3 articles={data.articles.slice(1, 4)} />
-        <Row2 articles={data.articles.slice(4, 6)} />
-        <Beside
-          title={t('Topic is supported by')}
-          values={authors.slice(0, 5)}
-          beside={data.articles[6]}
-          wrapper={'author'}
-        />
-        <div class="floor floor--important">
-          <div class="container">
-            <div class="row">
-              <h3 class="col-12">{t('Top viewed')}</h3>
-              <For each={topViewed}>
-                {(a:Partial<Shout>)=> (<div class="col-md-6">
-                  <ArticleCard article={a} />
-                </div>
-                )}
-              </For>
-            </div>
-          </div>
-        </div>
-        <Row3 articles={data.articles.slice(10, 13)} />
-        <Row3 articles={data.articles.slice(13, 16)} />
-        <div class="floor floor--important">
-          <div class="container">
-            <div class="row">
-              <h3 class="col-12">{t('Favorites')}</h3>
-              <For each={topRated}>
-                {(a:Partial<Shout>) => (
-                <div class="col-md-4">
-                  <ArticleCard article={a} />
-                </div>
-                )}
-              </For>
-            </div>
-          </div>
-        </div>
-        <Row2 articles={data.articles.slice(0, 2)} />
-        <Row3 articles={data.articles.slice(2, 5)} />
-        <Row2 articles={data.articles.slice(5, 7)} />
+    <Show when={!data.topicsLoading || !data.loading}>
+      <Show when={!data.topicsLoading && !!topic()?.slug}>
+        <TopicFull topic={topic() as Topic} />
       </Show>
-    </div>
+      <div class="row topic__controls">
+        <div class="col-md-8">
+          <ul class="view-switcher">
+            <li classList={{ selected: mode() === 'fresh' }}>
+              <button type="button" onClick={() => setMode('fresh')}>
+                {t('Recent')}
+              </button>
+            </li>
+            <li classList={{ selected: mode() === 'popular' }}>
+              <button type="button" onClick={() => setMode('popular')}>
+                {t('Popular')}
+              </button>
+            </li>
+            <li classList={{ selected: mode() === 'views' }}>
+              <button type="button" onClick={() => setMode('views')}>
+                {t('Views')}
+              </button>
+            </li>
+            <li classList={{ selected: mode() === 'discuss' }}>
+              <button type="button" onClick={() => setMode('discuss')}>
+                {t('Discussing')}
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <div class="mode-switcher">
+            {`${t('Show')} `}
+            <span class="mode-switcher__control">{t('All posts')}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <Show when={!data.loading && !!data.articles}>
+          <Row1 article={data.articles.slice(0,1)[0]} />
+          <Row3 articles={data.articles.slice(1, 4)} />
+          <Row2 articles={data.articles.slice(4, 6)} />
+          <Beside
+            title={t('Topic is supported by')}
+            values={authors().slice(0, 5)}
+            beside={data.articles[6]}
+            wrapper={'author'}
+          />
+          <div class="floor floor--important">
+            <div class="container">
+              <div class="row">
+                <h3 class="col-12">{title()}</h3>
+                <For each={selected()}>
+                  {(a:Partial<Shout>)=> (
+                    <div class="col-md-6">
+                      <ArticleCard article={a} />
+                    </div>
+                  )}
+                </For>
+              </div>
+            </div>
+          </div>
+          <Row3 articles={data.articles.slice(10, 13)} />
+          <Row3 articles={data.articles.slice(13, 16)} />
+        </Show>
+      </div>
+  
+    </Show>
   </div>
   )
 }

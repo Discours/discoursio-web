@@ -8,78 +8,78 @@ export default function DiscoursFooter() {
   const [t] = useI18n()
   const FOOTER_LINKS = [
     {
-      header: t('About the project'),
+      header: 'About the project',
       items: [
         {
-          title: t('Manifest'),
+          title: 'Manifest',
           slug: '/about/manifest'
         },
         {
-          title: t('How it works'),
+          title: 'How it works',
           slug: '/about/guide'
         },
         {
-          title: t('Knowledge base'),
+          title: 'Knowledge base',
           slug: 'https://discours.io/knowledge-base'
         },
         {
-          title: t('Terms of use'),
+          title: 'Terms of use',
           slug: '/about/terms-of-use'
         },
         {
-          title: t('How to write an article'),
+          title: 'How to write an article',
           slug: '/how-to-write-a-good-article'
         }
       ]
     },
   
     {
-      header: t('Participating'),
+      header: 'Participating',
       items: [
         {
-          title: t('Suggest an idea'),
+          title: 'Suggest an idea',
           slug: '/#feedback-idea'
         },
         {
-          title: t('Become an author'),
+          title: 'Become an author',
           slug: '/create'
         },
         {
-          title: t('Support us'),
+          title: 'Support us',
           slug: '/about/help'
         },
         {
-          title: t('Feedback'),
+          title: 'Feedback',
           slug: '/#feedback'
         },
         {
-          title: t('Work with us'),
+          title: 'Work with us',
           slug: 'https://docs.google.com/forms/d/e/1FAIpQLSeNNvIzKlXElJtkPkYiXl-jQjlvsL9u4-kpnoRjz1O8Wo40xQ/viewform'
         }
       ]
     },
   
     {
-      header: t('Sections'),
+      header: 'Sections',
       items: [
         {
-          title: t('Authors'),
+          title: 'Authors',
           slug: '/user/list'
         },
         {
-          title: t('Topics'),
+          title: 'Topics',
           slug: '/topics'
         },
         {
-          title: t('Communities'),
+          title: 'Communities',
           slug: '/community'
         },
         {
-          title: t('Partners'),
+          title: 'Partners',
           slug: '/about/partners'
         },
         {
-          title: t('Special projects'),
+          title: 'Special projects',
           slug: '/about/projects'
         }
       ]
@@ -108,16 +108,16 @@ export default function DiscoursFooter() {
     <footer class='discours-footer'>
       <div class='wide-container'>
         <div class='row'>
-          <For each={FOOTER_LINKS}>
+          <For each={[...FOOTER_LINKS]}>
             {({ header, items }) => (
               <div class='col-md-3'>
-                <h5>{header}</h5>
+                <h5>{t(header)}</h5>
                 <ul>
                   <For each={items}>
                     {({ slug, title }) => (
                       <li>
                         {' '}
-                        <a href={slug}>{title}</a>{' '}
+                        <a href={slug}>{t(title)}</a>{' '}
                       </li>
                     )}
                   </For>
@@ -134,11 +134,13 @@ export default function DiscoursFooter() {
 
         <div class='footer-copyright row'>
           <div class='col-md-10'>
-            Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией.{' '} Дискурс © 2015 - 2022
-            <br /><a href='/about/terms-of-use'>{t('Terms of use')}</a>
+            Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией.
+            {' '} Дискурс © 2015 - 2022
+            <br />
+            <a href='/about/terms-of-use'>{t('Terms of use')}</a>
           </div>
           <div class='footer-copyright__social col-md-2'>
-            <For each={SOCIAL}>
+            <For each={[...SOCIAL]}>
               {(social) => (
                 <div class={`social__item social__item--${social.name}`}>
                   <a href={social.href}>

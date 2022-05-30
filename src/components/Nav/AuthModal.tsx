@@ -84,7 +84,9 @@ export default (props: { code?: string; mode?: string }) => {
 
         break
       case 'reset':
-        // TODO: implement, resend, forget
+      case 'resend':
+      case 'forget':
+        // TODO: implemenet methods
         break
       default:
         state.handshaking = false
@@ -92,9 +94,9 @@ export default (props: { code?: string; mode?: string }) => {
   }
 
   return (
-    <div class='row view' classList={{ 'view--sign-up': props.mode === 'sign-up' }}>
+    <div class='row view' classList={{ 'view--sign-up': mode() === 'sign-up' }}>
       <div class='col-sm-6 d-md-none auth-image'>
-        <div class='auth-image__text' classList={{ show: props.mode === 'sign-up' }}>
+        <div class='auth-image__text' classList={{ show: mode() === 'sign-up' }}>
           <h2>{t('Discours')}</h2>
           <h4>{t(`Join the global community of authors!`)}</h4>
           <p class='auth-benefits'>
@@ -116,7 +118,7 @@ export default (props: { code?: string; mode?: string }) => {
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
-          <div class={`auth-subtitle ${props.mode === 'forget' ? '' : 'hidden'}`}>
+          <div class={`auth-subtitle ${mode() === 'forget' ? '' : 'hidden'}`}>
             <Show
               when={mode() === 'forget'}
               fallback={

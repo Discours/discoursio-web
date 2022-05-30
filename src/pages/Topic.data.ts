@@ -7,16 +7,23 @@ import topicsAll from '../graphql/q/topics-all'
 export const TopicData: RouteDataFunc = (args) => {
   const location = useLocation()
   const [, { locale }] = useI18n()
-  const [data, state] = createQuery({ query: topicArticles, variables: { topic: args.params.slug } })
+  const page = args.params.page || 1
+  const size = args.params.size || 50
+  const [data, state] = createQuery({ query: topicArticles, variables: { topic: args.params.slug, page, size } })
   const [tdata, tstate] = createQuery({ query: topicsAll })
   return {
     get articles() {
+      if (!state()?.fetching) {
+        console.debug('[data] topic articles...')
+        console.debug(data()?.shoutsByTopic)
+      }
       return data()?.shoutsByTopic
     },
     get loading() {
       return state()?.fetching
     },
     get topics() {
+      if (!tstate()?.fetching) console.debug('[data] topics...')
       return tdata()?.topicsBySlugs
     },
     get topicsLoading() {
@@ -24,12 +31,6 @@ export const TopicData: RouteDataFunc = (args) => {
     },
     get lang() {
       return location.query.locale ? (location.query.locale as string) : locale()
-    },
-    get page() {
-      return parseInt(args.params.page) || 0
-    },
-    get size() {
-      return 50
     },
     get slug() {
       return args.params.slug

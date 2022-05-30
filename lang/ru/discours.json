@@ -1,7 +1,7 @@
 {
   "Authors": "Авторы",
   "Comments": "Комментарии",
-  "Favorite": "В избранное",
+  "Favorite": "Избранное",
   "Bookmarked": "Сохранено",
   "To leave a comment please": "Чтобы оставить комментарий, необходимо",
   "sign up or sign in": "зарегистрироваться или войти",
@@ -50,8 +50,8 @@
   "Suggest an idea": "Предложить идею",
   "Feedback": "Обратная связь",
   "Write to us": "Напишите нам",
-  "Terms of use": "Условия использования",
   "How to write an article": "Как написать статью",
+  "Terms of use": "Условия использования",
   "How it works": "Как это работает",
   "Knowledge base": "База знаний",
   "Manifest": "Манифест",
@@ -91,6 +91,7 @@
   "I have an account": "У меня есть аккаунт",
   "I have no account yet": "У меня еще нет аккаунта",
   "I know the password": "Я знаю пароль",
+  "Views": "Просмотры",
   "Passwords are not same": "Пароли не совпадают",
   "Enter the code or click the link from email to confirm": "Введите код из письма или пройдите по ссылке в письме для подтверждения регистрации",
   "Everything is ok, please give us your email address": "Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля."
