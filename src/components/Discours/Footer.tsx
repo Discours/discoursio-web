@@ -32,7 +32,7 @@ export default function DiscoursFooter() {
         }
       ]
     },
-  
+
     {
       header: 'Participating',
       items: [
@@ -58,7 +58,7 @@ export default function DiscoursFooter() {
         }
       ]
     },
-  
+
     {
       header: 'Sections',
       items: [
@@ -85,7 +85,7 @@ export default function DiscoursFooter() {
       ]
     }
   ]
-  
+
   const SOCIAL = [
     {
       name: 'facebook',
@@ -134,8 +134,8 @@ export default function DiscoursFooter() {
 
         <div class='footer-copyright row'>
           <div class='col-md-10'>
-            Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией.
-            {' '} Дискурс © 2015 - 2022
+            Независимый журнал о культуре, науке и обществе с открытой горизонтальной редакцией. Дискурс ©
+            2015 - 2022
             <br />
             <a href='/about/terms-of-use'>{t('Terms of use')}</a>
           </div>

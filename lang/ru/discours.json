@@ -18,6 +18,7 @@
   "Recent": "Свежее",
   "Popular": "Популярное",
   "Topic is supported by": "Тему поддерживают",
+  "Topics which supported by author": "Автор поддерживает темы",
   "All posts": "Все публикации",
   "Show": "Показывать",
   "Favorite topics": "Избранные темы",
@@ -64,6 +65,9 @@
   "Top month articles": "Лучшее за месяц",
   "Top month topics": "Темы месяца",
   "Top viewed": "Самое читаемое",
+  "Top rated": "Популярное",
+  "Top recent": "Самое новое",
+  "Top discussed": "Обсуждаемое",
   "Top commented": "Самое комментируемое",
   "Nothing is here": "Здесь ничего нет",
   "You've reached a non-existed page": "Вы попали на несуществующую страницу",
@@ -94,5 +98,7 @@
   "Views": "Просмотры",
   "Passwords are not same": "Пароли не совпадают",
   "Enter the code or click the link from email to confirm": "Введите код из письма или пройдите по ссылке в письме для подтверждения регистрации",
-  "Everything is ok, please give us your email address": "Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля."
+  "Everything is ok, please give us your email address": "Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.",
+  "Successfully authorized": "Авторизация успешна",
+  "Reason uknown": "Причина неизвестна"
 }

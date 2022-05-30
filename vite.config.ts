@@ -14,13 +14,7 @@ const pwaOptions = {
   // - Should check if we can include it or not
   // - If you ping crawlers it should not be on sw precache
   // - Review images to include from public/img subdirectories: bios and blog
-  includeAssets: [
-    'robots.txt',
-    'og.png',
-    'icons/*.svg',
-    'fonts/*.{eot,woff,woff2}',
-    '*.{png,ico,svg,jpg}'
-  ],
+  includeAssets: ['robots.txt', 'og.png', 'icons/*.svg', 'fonts/*.{eot,woff,woff2}', '*.{png,ico,svg,jpg}'],
   manifest,
   workbox: {
     // Warning: DON'T add sw.js and workbox-xxxx.js
@@ -67,13 +61,13 @@ const rollupOptions = isSSR ? { input: './src/ssr.ts' } : {}
 export default defineConfig({
   plugins: [
     {
-			...mdx({
-				jsx: true,
-				jsxImportSource: "solid-js",
-				providerImportSource: "solid-mdx"
-			}),
-			enforce: "pre"
-		},
+      ...mdx({
+        jsx: true,
+        jsxImportSource: 'solid-js',
+        providerImportSource: 'solid-mdx'
+      }),
+      enforce: 'pre'
+    },
     SolidJS({ extensions: ['.md', '.mdx'] }),
     // TODO: isSSR && ssr(),
     SolidSVG(),
@@ -97,7 +91,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '$': path.resolve(__dirname, './src')
+      $: path.resolve(__dirname, './src')
     }
   }
 } as UserConfig)

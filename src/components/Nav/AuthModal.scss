@@ -18,11 +18,7 @@
   }
 
   .auth-image:before {
-    background: linear-gradient(
-      0deg,
-      rgba(20, 20, 20, 0.8),
-      rgba(20, 20, 20, 0.8)
-    );
+    background: linear-gradient(0deg, rgba(20, 20, 20, 0.8), rgba(20, 20, 20, 0.8));
     content: '';
     height: 100%;
     left: 0;

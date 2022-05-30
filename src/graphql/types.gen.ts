@@ -17,6 +17,7 @@ export type Scalars = {
 export type AuthResult = {
   __typename?: 'AuthResult'
   error?: Maybe<Scalars['String']>
+  info?: Maybe<CurrentUserInfo>
   token?: Maybe<Scalars['String']>
   user?: Maybe<User>
 }
@@ -80,6 +81,13 @@ export type CommunityInput = {
   desc?: InputMaybe<Scalars['String']>
   pic?: InputMaybe<Scalars['String']>
   title: Scalars['String']
+}
+
+export type CurrentUserInfo = {
+  __typename?: 'CurrentUserInfo'
+  totalUnreadMessages?: Maybe<Scalars['Int']>
+  userSubscribedAuthors: Array<Maybe<User>>
+  userSubscribedTopics: Array<Maybe<Scalars['String']>>
 }
 
 export type Mutation = {
@@ -267,7 +275,7 @@ export type Query = {
   shoutsByTopic: Array<Maybe<Shout>>
   shoutsCandidates: Array<Maybe<Shout>>
   shoutsCommentedByUser: Array<Maybe<Shout>>
-  shoutsRatedByUser: Array<Maybe<Shout>>
+  shoutsRatedByUser: ShoutsResult
   shoutsReviewed: Array<Maybe<Shout>>
   shoutsSubscribed: Array<Maybe<Shout>>
   signIn: AuthResult
@@ -279,9 +287,10 @@ export type Query = {
   topicsByCommunity: Array<Maybe<Topic>>
   topicsBySlugs: Array<Maybe<Topic>>
   userComments: Array<Maybe<Comment>>
-  userSubscribedTopics: Array<Maybe<Topic>>
+  userSubscribedTopics: Array<Maybe<Scalars['String']>>
   userSubscribers: Array<Maybe<User>>
   userSubscriptions: Array<Maybe<User>>
+  userUnpublishedShouts: ShoutsResult
 }
 
 export type QueryGetCommunityArgs = {
@@ -349,7 +358,6 @@ export type QueryShoutsCommentedByUserArgs = {
 export type QueryShoutsRatedByUserArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
-  slug: Scalars['String']
 }
 
 export type QueryShoutsReviewedArgs = {
@@ -410,6 +418,11 @@ export type QueryUserSubscribersArgs = {
 
 export type QueryUserSubscriptionsArgs = {
   slug: Scalars['String']
+}
+
+export type QueryUserUnpublishedShoutsArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type Rating = {
@@ -488,6 +501,12 @@ export type ShoutStat = {
   comments: Scalars['Int']
   ratings: Scalars['Int']
   views: Scalars['Int']
+}
+
+export type ShoutsResult = {
+  __typename?: 'ShoutsResult'
+  error?: Maybe<Scalars['String']>
+  shouts?: Maybe<Array<Maybe<Shout>>>
 }
 
 export type Subscription = {
@@ -586,9 +605,8 @@ export type UserNotification = {
 export type UserResult = {
   __typename?: 'UserResult'
   error?: Maybe<Scalars['String']>
-  totalUnreadMessages?: Maybe<Scalars['Int']>
+  info?: Maybe<CurrentUserInfo>
   user?: Maybe<User>
-  userSubscribedTopics: Array<Maybe<Topic>>
 }
 
 import { IntrospectionQuery } from 'graphql'
@@ -613,6 +631,15 @@ export default {
             type: {
               kind: 'SCALAR',
               name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'info',
+            type: {
+              kind: 'OBJECT',
+              name: 'CurrentUserInfo',
+              ofType: null
             },
             args: []
           },
@@ -934,6 +961,50 @@ export default {
               ofType: {
                 kind: 'SCALAR',
                 name: 'Any'
+              }
+            },
+            args: []
+          }
+        ],
+        interfaces: []
+      },
+      {
+        kind: 'OBJECT',
+        name: 'CurrentUserInfo',
+        fields: [
+          {
+            name: 'totalUnreadMessages',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'userSubscribedAuthors',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'User',
+                  ofType: null
+                }
+              }
+            },
+            args: []
+          },
+          {
+            name: 'userSubscribedTopics',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
               }
             },
             args: []
@@ -2202,12 +2273,9 @@ export default {
             type: {
               kind: 'NON_NULL',
               ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'OBJECT',
-                  name: 'Shout',
-                  ofType: null
-                }
+                kind: 'OBJECT',
+                name: 'ShoutsResult',
+                ofType: null
               }
             },
             args: [
@@ -2223,16 +2291,6 @@ export default {
               },
               {
                 name: 'size',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'slug',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -2596,9 +2654,8 @@ export default {
               ofType: {
                 kind: 'LIST',
                 ofType: {
-                  kind: 'OBJECT',
-                  name: 'Topic',
-                  ofType: null
+                  kind: 'SCALAR',
+                  name: 'Any'
                 }
               }
             },
@@ -2657,6 +2714,39 @@ export default {
             args: [
               {
                 name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'userUnpublishedShouts',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'ShoutsResult',
+                ofType: null
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -3085,6 +3175,33 @@ export default {
               ofType: {
                 kind: 'SCALAR',
                 name: 'Any'
+              }
+            },
+            args: []
+          }
+        ],
+        interfaces: []
+      },
+      {
+        kind: 'OBJECT',
+        name: 'ShoutsResult',
+        fields: [
+          {
+            name: 'error',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'shouts',
+            type: {
+              kind: 'LIST',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'Shout',
+                ofType: null
               }
             },
             args: []
@@ -3661,10 +3778,11 @@ export default {
             args: []
           },
           {
-            name: 'totalUnreadMessages',
+            name: 'info',
             type: {
-              kind: 'SCALAR',
-              name: 'Any'
+              kind: 'OBJECT',
+              name: 'CurrentUserInfo',
+              ofType: null
             },
             args: []
           },
@@ -3674,21 +3792,6 @@ export default {
               kind: 'OBJECT',
               name: 'User',
               ofType: null
-            },
-            args: []
-          },
-          {
-            name: 'userSubscribedTopics',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'OBJECT',
-                  name: 'Topic',
-                  ofType: null
-                }
-              }
             },
             args: []
           }

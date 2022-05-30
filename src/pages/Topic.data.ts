@@ -9,21 +9,19 @@ export const TopicData: RouteDataFunc = (args) => {
   const [, { locale }] = useI18n()
   const page = args.params.page || 1
   const size = args.params.size || 50
-  const [data, state] = createQuery({ query: topicArticles, variables: { topic: args.params.slug, page, size } })
+  const [data, state] = createQuery({
+    query: topicArticles,
+    variables: { topic: args.params.slug, page, size }
+  })
   const [tdata, tstate] = createQuery({ query: topicsAll })
   return {
     get articles() {
-      if (!state()?.fetching) {
-        console.debug('[data] topic articles...')
-        console.debug(data()?.shoutsByTopic)
-      }
       return data()?.shoutsByTopic
     },
     get loading() {
       return state()?.fetching
     },
     get topics() {
-      if (!tstate()?.fetching) console.debug('[data] topics...')
       return tdata()?.topicsBySlugs
     },
     get topicsLoading() {

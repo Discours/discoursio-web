@@ -36,7 +36,7 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     return { lang, page, size }
   }
   const { page, size } = paramList()
-  
+
   const [topRecentData, recentState] = createQuery({
     query: topRecent,
     variables: { page: page || START, size }

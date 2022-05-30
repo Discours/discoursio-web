@@ -23,7 +23,7 @@ export default (props: ArticleProps) => {
   const [isFollowed, setFollowed] = createSignal(false)
 
   createEffect(() => {
-    if(props.article?.authors?.find(a => a.slug === currentUser.slug)) setFollowed(true)
+    if (props.article?.authors?.find((a) => a.slug === currentUser.slug)) setFollowed(true)
   })
 
   let commentElement
@@ -49,7 +49,9 @@ export default (props: ArticleProps) => {
           <article class='col-md-6 offset-md-3'>
             <div class='article__header'>
               <div class='article__topic'>
-                <NavLink href={`/topic/${mainTopic()?.slug}`}>#{mainTopic()?.title?.replace(' ', '&nbsp;')}</NavLink>
+                <NavLink href={`/topic/${mainTopic()?.slug}`}>
+                  #{mainTopic()?.title?.replace(' ', '&nbsp;')}
+                </NavLink>
               </div>
 
               <h1>{props.article.title}</h1>
@@ -90,7 +92,10 @@ export default (props: ArticleProps) => {
               {props.article?.stat?.views}
             </div>
             <div class='article-stats__item'>
-              <a href={''} onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}>
+              <a
+                href={''}
+                onClick={() => (isFollowed() ? unfollow : follow)(props.article?.slug || '', 'articles')}
+              >
                 <Icon name='bookmark' />
                 <Show when={isFollowed()} fallback={t('Favorite')}>
                   {t('Bookmarked')}``
@@ -122,7 +127,7 @@ export default (props: ArticleProps) => {
               {(author: Partial<User>) => (
                 <>
                   <Show when={props.article?.authors?.includes(author as User)}>, </Show>
-                  <AuthorCard author={author} canFollow={false}/>
+                  <AuthorCard author={author} canFollow={false} />
                 </>
               )}
             </For>

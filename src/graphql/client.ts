@@ -28,11 +28,13 @@ export const clientOptions: ClientOptions = {
     let headers: any = {} // credentials: 'include'
     try {
       const [{ token }] = useStore()
-      if(token) headers = { ...headers, Auth: token }
-    } catch(e) { console.log(e) }
+      if (token) headers = { ...headers, Auth: token }
+    } catch (e) {
+      console.log(e)
+    }
     return { headers }
   },
-  exchanges: [ devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange ]
+  exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
 }
 
 const client = createClient(clientOptions)

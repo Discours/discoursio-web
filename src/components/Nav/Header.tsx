@@ -19,7 +19,7 @@ export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [{ token, session, warnings }, { showModal, toggleWarnings}] = useStore()
+  const [{ token, session, warnings }, { showModal, toggleWarnings }] = useStore()
 
   onMount(() => {
     setResource(window.location.pathname)
@@ -45,7 +45,7 @@ export default () => {
         <nav class='row header__inner' classList={{ fixed: fixed() }}>
           <div class='main-logo col-auto'>
             <NavLink href='/'>
-              <img src='/logo.svg' alt='Дискурс' />
+              <img src='/logo.svg' alt={t('Дискурс')} />
             </NavLink>
           </div>
           <ul class='col main-navigation text-xl inline-flex' classList={{ fixed: fixed() }}>
@@ -82,10 +82,13 @@ export default () => {
                 when={!!token}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <Link href='#' onClick={(evt) => {
-                      evt.preventDefault();
-                      showModal('auth')
-                    }}>
+                    <Link
+                      href='#'
+                      onClick={(evt) => {
+                        evt.preventDefault()
+                        showModal('auth')
+                      }}
+                    >
                       {t('enter')}
                     </Link>
                   </div>

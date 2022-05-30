@@ -1,15 +1,15 @@
-import {Component, Show, For} from 'solid-js'
+import { Component, Show, For, createMemo } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 // import { useAppContext } from '../AppContext'
 // import { ListenNotesEpisode, YouTube, Tweet, Twitch } from 'solid-social'
-import {Comment, Rating, Shout, Topic, User} from '../graphql/types.gen'
+import { Comment, Rating, Shout, Topic, User } from '../graphql/types.gen'
 import { capitalize } from '../utils'
 import MD from '../components/Article/MD'
 import Icon from '../components/Nav/Icon'
 import AuthorCard from '../components/Author/Card'
-import {useStore} from '../store';
+import { useStore } from '../store'
 import ArticleComment from '../components/Article/Comment'
 import './Article.scss'
 
@@ -26,8 +26,8 @@ export const BlogArticle: Component = () => {
 
   useRouteReadyState()
 
-  const [{ currentUser, token }, {showModal, follow, unfollow}] = useStore();
-  const subscribed = currentUser?.userSubscribedTopics?.includes(data.article?.slug || '')
+  const [{ session, token }, { getInfo, showModal, follow, unfollow }] = useStore()
+  const subscribed = createMemo(() => getInfo()?.userSubscribedTopics?.includes(data.article?.slug || ''))
 
   const deepest = 6
   const getCommentLevel = (c: Comment, level = 0) => {
@@ -41,18 +41,23 @@ export const BlogArticle: Component = () => {
   }
 
   return (
-    <div class="shout">
+    <div class='shout'>
       <Show
         fallback={<div class='text-center p-10 m-10'>{t('Loading')}</div>}
         when={!data.loading && Boolean(data.article)}
       >
-        <div class="shout wide-container">
-          <div class="row">
-            <article class="col-md-6 offset-md-3">
-              <div class="shout__header">
-                <div class="shout__topic">
-                  <a href={`/topic/${data.article.mainTopic}`}
-                    textContent={(data.article?.topics?.find(topic => topic?.slug === data.article?.mainTopic)?.title as string).replace(' ', '&nbsp;')}></a>
+        <div class='shout wide-container'>
+          <div class='row'>
+            <article class='col-md-6 offset-md-3'>
+              <div class='shout__header'>
+                <div class='shout__topic'>
+                  <a
+                    href={`/topic/${data.article.mainTopic}`}
+                    textContent={(
+                      data.article?.topics?.find((topic) => topic?.slug === data.article?.mainTopic)
+                        ?.title as string
+                    ).replace(' ', '&nbsp;')}
+                  ></a>
                 </div>
 
                 <h1>{data.article.title}</h1>
@@ -60,7 +65,7 @@ export const BlogArticle: Component = () => {
                   <h4>{capitalize(data.article?.subtitle as string, false)}</h4>
                 </Show>
 
-                <div class="shout__author">
+                <div class='shout__author'>
                   <For each={data.article.authors}>
                     {(a: Partial<User>, index) => (
                       <>
@@ -71,48 +76,47 @@ export const BlogArticle: Component = () => {
                   </For>
                 </div>
 
-                <div
-                  class="shout__cover"
-                  style={`background-image: url('${data.article.cover}')`}
-                />
+                <div class='shout__cover' style={`background-image: url('${data.article.cover}')`} />
               </div>
 
-              <div class="shout__body">
+              <div class='shout__body'>
                 <MD body={data.article.body as string} />
               </div>
             </article>
           </div>
 
-          <div class="col-md-8 offset-md-2">
-            <div class="shout-stats">
-              <div class="shout-stats__item shout-stats__item--likes">
-                <Icon name="like" />
+          <div class='col-md-8 offset-md-2'>
+            <div class='shout-stats'>
+              <div class='shout-stats__item shout-stats__item--likes'>
+                <Icon name='like' />
                 {data.article?.ratings?.reduce((acc, curr) => acc + (curr as Rating).value, 0)}
-                <Icon name="like" />
+                <Icon name='like' />
               </div>
-              <div class="shout-stats__item">
-                <Icon name="view" />
+              <div class='shout-stats__item'>
+                <Icon name='view' />
                 {data.article?.stat?.views}
               </div>
-              <div class="shout-stats__item">
+              <div class='shout-stats__item'>
                 <a
-                  href="#bookmark"
-                  onClick={() => (subscribed? unfollow : follow)(data.article?.slug as string, 'articles')}
+                  href='#bookmark'
+                  onClick={() =>
+                    (subscribed() ? unfollow : follow)(data.article?.slug as string, 'articles')
+                  }
                 >
-                  <Icon name="bookmark" />
-                  <Show when={subscribed}>{t('Bookmarked')}</Show>
-                  <Show when={!subscribed}>{t('Favorite')}</Show>
+                  <Icon name='bookmark' />
+                  <Show when={subscribed()}>{t('Bookmarked')}</Show>
+                  <Show when={!subscribed()}>{t('Favorite')}</Show>
                 </a>
               </div>
-              <div class="shout-stats__item">
-                <a href="#share" onClick={() => (showModal('share'))}>
-                  <Icon name="share" />
+              <div class='shout-stats__item'>
+                <a href='#share' onClick={() => showModal('share')}>
+                  <Icon name='share' />
                   {t('Share')}
                 </a>
               </div>
             </div>
 
-            <div class="topics-list">
+            <div class='topics-list'>
               <For each={data.article.topics as Topic[]}>
                 {(topic: Topic) => (
                   <div class='shout__topic'>
@@ -122,53 +126,53 @@ export const BlogArticle: Component = () => {
               </For>
             </div>
 
-            <div class="shout__authors-list">
+            <div class='shout__authors-list'>
               <h4>{t('Authors')}</h4>
               <For each={data.article.authors as User[]}>
-                {(user: User) => (
-                  <AuthorCard author={user} compact={false} canFollow={false} />
-                )}
+                {(user: User) => <AuthorCard author={user} compact={false} canFollow={false} />}
               </For>
             </div>
 
             <Show when={data.comments?.length}>
-              <h2>{t('Comments')} {data.comments?.length.toString() || ''}</h2>
+              <h2>
+                {t('Comments')} {data.comments?.length.toString() || ''}
+              </h2>
 
               <For each={data.comments}>
                 {(comment: Comment) => (
                   <ArticleComment
                     comment={comment}
                     level={getCommentLevel(comment)}
-                    canEdit={comment.author.slug === currentUser.slug}
+                    canEdit={comment.author.slug === session?.slug}
                   />
                 )}
               </For>
             </Show>
 
             <Show when={!token}>
-              <div class="comment-warning">
+              <div class='comment-warning'>
                 {t('To leave a comment you please')}
-                <a href={''} onClick={(evt) => {
-                  evt.preventDefault();
-                  showModal('auth');
-                }}><i>{t("sign up or sign in")}</i></a>
+                <a
+                  href={''}
+                  onClick={(evt) => {
+                    evt.preventDefault()
+                    showModal('auth')
+                  }}
+                >
+                  <i>{t('sign up or sign in')}</i>
+                </a>
               </div>
             </Show>
 
             <Show when={token}>
-              <textarea
-                class="write-comment"
-                rows="1"
-                placeholder={t('Write comment')}
-              />
+              <textarea class='write-comment' rows='1' placeholder={t('Write comment')} />
             </Show>
           </div>
         </div>
       </Show>
     </div>
 
-
-/*
+    /*
     <div class="topic-full container">
       <div class="row">
         <div class="topic__header col-md-8 offset-md-2">
@@ -204,8 +208,7 @@ export const BlogArticle: Component = () => {
     </div>
 */
 
-
-/*
+    /*
     <div class='flex flex-col'>
       <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
         <div class='mb-10 lg:flex justify-center'>

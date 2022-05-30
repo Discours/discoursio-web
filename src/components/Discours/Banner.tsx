@@ -5,7 +5,7 @@ import './Banner.scss'
 
 export default () => {
   const [t] = useI18n()
-  const [, {showModal}] = useStore()
+  const [, { showModal }] = useStore()
   return (
     <div class='discours-banner'>
       <div class='wide-container row'>
@@ -20,7 +20,7 @@ export default () => {
           </p>
         </div>
         <div class='col-md-6 offset-md-1 discours-banner__image'>
-          <img src='/discours-banner.jpg' alt='Дискурс' />
+          <img src='/discours-banner.jpg' alt={t('Discours')} />
         </div>
       </div>
     </div>

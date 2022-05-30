@@ -1,9 +1,15 @@
-import { Component, For } from 'solid-js'
-import { useRouteData, NavLink } from 'solid-app-router'
+import { Component, createMemo, Show } from 'solid-js'
+import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { Shout, Topic, User } from '../graphql/types.gen'
+import { Shout, Topic } from '../graphql/types.gen'
+import Row3 from '../components/Article/Row3'
+import Row2 from '../components/Article/Row2'
+// import Row1 from '../components/Article/Row1'
+import Beside from '../components/Article/Beside'
+import { useI18n } from '@solid-primitives/i18n'
 
 const Feed: Component = () => {
+  const [t] = useI18n()
   const data = useRouteData<{
     candidates?: Partial<Shout>[]
     byTopics?: Partial<Shout>[]
@@ -13,42 +19,27 @@ const Feed: Component = () => {
     topicsLoading: boolean
   }>()
 
+  const topics = createMemo(() => Object.keys(data.byTopics || {}))
+  const articles = createMemo(() => [
+    ...(data.byTopics || []),
+    ...(data.byAuthors || []),
+    ...(data.byCommunities || [])
+  ])
   useRouteReadyState()
-
-  const sortedArticles = () => [...(data.byTopics||[]), ...(data.byAuthors||[])].sort(
-    (a: Partial<Shout>, b: Partial<Shout>) => 
-      (new Date(a.createdAt)).getTime() - (new Date(b.createdAt)).getTime()
-    )
-
   return (
     <div class='flex flex-col'>
-      <div class='my-2 lg:my-10 pt-5 pb-10 px-3 lg:px-12 container'>
-        <div class='mb-10 lg:flex justify-center'>
-          <div class='space-y-10'>
-            <For each={sortedArticles() as any[]}>
-              {([id, article]: [string, Partial<Shout>]) => (
-                <NavLink
-                  href={`/blog/${id}`}
-                  class='block px-3 lg:px-0 text-md mx-auto mb-10 pb-10 text-center'
-                >
-                  <img class='lg:w-4/6 mx-auto mb-10 shadow-md' src={article.cover || ''} />
-                  <h1 class='text-xl lg:text-2xl mb-3 font-semibold text-medium dark:text-darkdefault'>
-                    {article.title}
-                  </h1>
-                  <span class='text-md'>{article.subtitle}</span>
-                  <div class='text-xs mt-3'>
-                    By
-                    <For each={article.authors}>
-                      {(a: Partial<User>) => <a href={`/author/${a.slug}`}>{a.username}</a>}
-                    </For>
-                    on {new Date(article.createdAt).toDateString()}
-                  </div>
-                </NavLink>
-              )}
-            </For>
-          </div>
-        </div>
-      </div>
+      <Show when={!!articles()}>
+        <Beside
+          title={t('Top topics')}
+          values={topics()?.slice(0, 5)}
+          beside={articles()[0]}
+          wrapper={'topic'}
+        />
+        <Row3 articles={articles().slice(1, 4)} />
+        <Row2 articles={articles().slice(4, 6)} />
+        <Row3 articles={articles().slice(10, 13)} />
+        <Row3 articles={articles().slice(13, 16)} />
+      </Show>
     </div>
   )
 }

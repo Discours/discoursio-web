@@ -7,7 +7,7 @@ interface ModalProps {
 }
 
 export default (props: ModalProps) => {
-  const [{ }, { hideModal, getModal }] = useStore()
+  const [{}, { hideModal, getModal }] = useStore()
   const wrapClick = (ev: Event) => {
     if ((ev.target as HTMLElement).classList.contains('modalwrap')) hideModal()
   }
@@ -21,7 +21,7 @@ export default (props: ModalProps) => {
   const [visible, setVisible] = createSignal(false)
   createEffect(() => {
     setVisible(getModal() === props.name)
-    console.log(`[modal] ${props.name} is ${getModal() === props.name?'visible':'hidden'}`)
+    console.log(`[modal] ${props.name} is ${getModal() === props.name ? 'visible' : 'hidden'}`)
   })
 
   return (

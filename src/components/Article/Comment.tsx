@@ -10,14 +10,14 @@ import { useI18n } from '@solid-primitives/i18n'
 import { Comment as Point } from '../../graphql/types.gen'
 
 export default (props: { level: number; comment: Partial<Point>; canEdit: boolean }) => {
-  const [{}, { deleteComment, showModal }]  = useStore()
+  const [{}, { deleteComment, showModal }] = useStore()
   const [t] = useI18n()
-  const [comment, ] = createSignal<Partial<Point>>(props.comment as Partial<Point>)
+  const [comment] = createSignal<Partial<Point>>(props.comment as Partial<Point>)
 
   const remove = () => {
     console.log('comment: removing')
     !!comment()?.id && deleteComment(comment().id)
-  } 
+  }
 
   return (
     <div class={`comment${props.level ? ` comment--level-${props.level.toString()}` : ''}`}>
@@ -50,7 +50,10 @@ export default (props: { level: number; comment: Partial<Point>; canEdit: boolea
           <button class='comment-control comment-control--share' onClick={() => showModal('shareComment')}>
             {t('Share')}
           </button>
-          <button class='comment-control comment-control--complain' onClick={() => showModal('reportComment')}>
+          <button
+            class='comment-control comment-control--complain'
+            onClick={() => showModal('reportComment')}
+          >
             {t('Report')}
           </button>
         </div>

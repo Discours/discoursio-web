@@ -28,12 +28,14 @@ interface ArticleListProps {
 
 export default (props: ArticleListProps) => {
   const [t] = useI18n()
-  const [articles, setArticles] = createSignal(props.articles.slice(props.page*props.size, props.size*(props.page+1)) || [])
+  const [articles, setArticles] = createSignal(
+    props.articles.slice(props.page * props.size, props.size * (props.page + 1)) || []
+  )
   const [loadingMore, setLoadingMore] = createSignal(false)
   const [, { more }] = useStore()
   const handleMore = () => {
-    setArticles(props.articles.slice(props.page*props.size, props.size*(props.page+1)))
-    if(props.size*(props.page+1) > props.articles.length) {
+    setArticles(props.articles.slice(props.page * props.size, props.size * (props.page + 1)))
+    if (props.size * (props.page + 1) > props.articles.length) {
       console.log('articles: load more')
       setLoadingMore(true)
       more()

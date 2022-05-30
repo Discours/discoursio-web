@@ -18,12 +18,12 @@ export default (props: { code?: string; mode?: string }) => {
   let emailElement: HTMLInputElement | undefined
   let pass2Element: HTMLInputElement | undefined
   let passElement: HTMLInputElement | undefined
-  let usernameElement: HTMLInputElement | undefined// TODO: place this element
+  let usernameElement: HTMLInputElement | undefined // TODO: place this element
   const titles = {
-    'sign-up': t('Create account'), 
-    'sign-in': t('Enter the Discours'), 
+    'sign-up': t('Create account'),
+    'sign-in': t('Enter the Discours'),
     forget: t('Forget password?'),
-    reset: t("Please, confirm your email to finish"),
+    reset: t('Please, confirm your email to finish'),
     resend: t('Resend code'),
     password: t('Enter your new password')
   }
@@ -37,8 +37,8 @@ export default (props: { code?: string; mode?: string }) => {
     state.handshaking = true
     // 1 check format
     const emailTyped =
-      (emailElement?.value?.length || 0) > 5 && 
-      emailElement?.value.includes('@') && 
+      (emailElement?.value?.length || 0) > 5 &&
+      emailElement?.value.includes('@') &&
       emailElement.value.includes('.')
 
     if (!emailTyped) warn({ body: t('Please check your email address'), kind: 'error' })
@@ -79,7 +79,8 @@ export default (props: { code?: string; mode?: string }) => {
         signIn(emailElement?.value, passElement?.value)
         break
       case 'sign-up':
-        if (pass2Element?.value !== passElement?.value) warn({ body: t('Passwords are not same'), kind: 'error' })
+        if (pass2Element?.value !== passElement?.value)
+          warn({ body: t('Passwords are not same'), kind: 'error' })
         else signUp(usernameElement?.value, emailElement?.value, passElement?.value)
 
         break
@@ -138,7 +139,12 @@ export default (props: { code?: string; mode?: string }) => {
           </Show>
 
           <Show when={mode() === 'sign-up' || mode() === 'sign-in'}>
-            <input autocomplete='current-password' ref={passElement} type='password' placeholder={t('Password')} />
+            <input
+              autocomplete='current-password'
+              ref={passElement}
+              type='password'
+              placeholder={t('Password')}
+            />
           </Show>
           <Show when={mode() === 'reset'}>
             <input value={props.code} type='text' placeholder={t('Reset code')} />
@@ -164,9 +170,7 @@ export default (props: { code?: string; mode?: string }) => {
 
           <Show when={mode() === 'sign-in' || mode() === 'sign-up'}>
             <div class='social-provider'>
-              <div class='providers-text'>
-                {t('Or continue with social network')}
-              </div>
+              <div class='providers-text'>{t('Or continue with social network')}</div>
               <div class='social'>
                 <a href={'#auth'} class='facebook-auth' onClick={() => oauth('facebook')}>
                   <Icon name='facebook' />

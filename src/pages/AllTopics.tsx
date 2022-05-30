@@ -10,8 +10,7 @@ import { useStore } from '../store'
 import { byShouts, byViews } from '../utils/by'
 
 export default () => {
-
-  const [{ currentUser }] = useStore()
+  const [{}, { getInfo }] = useStore()
   const [t] = useI18n()
   const data = useRouteData<{
     topics: Topic[]
@@ -68,9 +67,7 @@ export default () => {
           <div class='row'>
             <div class='col-md-9'>
               <h1>{t('Topics')}</h1>
-              <p>
-                {t("Subscribe what you like to tune your personal feed")}
-              </p>
+              <p>{t('Subscribe what you like to tune your personal feed')}</p>
             </div>
           </div>
           <div class='row'>
@@ -101,7 +98,10 @@ export default () => {
                         <TopicCard
                           topic={topic}
                           compact={false}
-                          subscribed={currentUser?.userSubscribedTopics && currentUser?.userSubscribedTopics.includes(topic.slug || '')}
+                          subscribed={
+                            getInfo()?.userSubscribedTopics &&
+                            getInfo()?.userSubscribedTopics.includes(topic.slug || '')
+                          }
                         />
                       )}
                     </For>

@@ -15,8 +15,10 @@ interface TopicProps {
 export default (props: TopicProps) => {
   const [t, { locale }] = useI18n()
   const [subscribed, setSubscribed] = createSignal()
-  const [ ,{ follow, unfollow }] = useStore()
-  createEffect(() => { setSubscribed(props.subscribed) })
+  const [, { follow, unfollow }] = useStore()
+  createEffect(() => {
+    setSubscribed(props.subscribed)
+  })
 
   return (
     <div class='topic row'>
@@ -40,20 +42,32 @@ export default (props: TopicProps) => {
           <div class='topic-details'>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
               {props.topic.topicStat?.shouts} {t('post')}
-              {plural(props.topic.topicStat?.shouts as number, locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's'])}
+              {plural(
+                props.topic.topicStat?.shouts as number,
+                locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
+              )}
             </span>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
               {props.topic.topicStat?.authors} {t('author')}
-              {plural(props.topic.topicStat?.authors as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
+              {plural(
+                props.topic.topicStat?.authors as number,
+                locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+              )}
             </span>
             <Show when={!props.compact}>
               <span class='topic-details__item'>
                 {props.topic.topicStat?.views} {t('view')}
-                {plural(props.topic.topicStat?.views as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
+                {plural(
+                  props.topic.topicStat?.views as number,
+                  locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                )}
               </span>
               <span class='topic-details__item'>
                 {props.topic.topicStat?.subscriptions} {t('follower')}
-                {plural(props.topic.topicStat?.subscriptions as number, locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's'])}
+                {plural(
+                  props.topic.topicStat?.subscriptions as number,
+                  locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                )}
               </span>
             </Show>
           </div>

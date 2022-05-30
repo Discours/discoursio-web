@@ -18,10 +18,10 @@ export const ArticleData: RouteDataFunc = (args) => {
 
   return {
     get topics() {
-        return tdata()?.topicsBySlugs
+      return tdata()?.topicsBySlugs
     },
     get topicsLoading() {
-        return tstate().fetching
+      return tstate().fetching
     },
     get slug() {
       return args.params.slug
@@ -41,6 +41,6 @@ export const ArticleData: RouteDataFunc = (args) => {
     get version() {
       // TODO: implement versioning
       return articleData()?.getShoutBySlug
-    },
+    }
   }
 }

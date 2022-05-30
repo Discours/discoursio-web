@@ -12,9 +12,7 @@ interface SliderProps {
   articles: Partial<Shout>[]
 }
 
-
 export default (props: SliderProps) => {
-
   let el: HTMLDivElement | undefined
   let slider: KeenSliderInstance | undefined
   const opts = {
@@ -23,7 +21,7 @@ export default (props: SliderProps) => {
       origin: 'center',
       perView: 1.66666,
       spacing: 8
-    },
+    }
   }
   onMount(() => {
     slider = new KeenSlider(el as HTMLElement, opts as any)
@@ -35,19 +33,22 @@ export default (props: SliderProps) => {
     <div class='floor floor--important floor--slider'>
       <div class='wide-container row'>
         <h2 class='col-12'>{props.title}</h2>
-          <div class="keen-slider" ref={el}>
-            <div class='slider-arrow-prev' onClick={() => slider?.prev()}>
-              <Icon name="slider-arrow"/>
-            </div>
-            <For each={props.articles}>
-              {(a: Partial<Shout>) => (
-                <ArticleCard article={a} settings={{ additionalClass: 'shout-card--with-cover keen-slider__slide' }} />
-              )}
-            </For>
-            <div class='slider-arrow-next' onClick={() => slider?.next()}>
-              <Icon name="slider-arrow"/>
-            </div>
+        <div class='keen-slider' ref={el}>
+          <div class='slider-arrow-prev' onClick={() => slider?.prev()}>
+            <Icon name='slider-arrow' />
           </div>
+          <For each={props.articles}>
+            {(a: Partial<Shout>) => (
+              <ArticleCard
+                article={a}
+                settings={{ additionalClass: 'shout-card--with-cover keen-slider__slide' }}
+              />
+            )}
+          </For>
+          <div class='slider-arrow-next' onClick={() => slider?.next()}>
+            <Icon name='slider-arrow' />
+          </div>
+        </div>
       </div>
     </div>
   )

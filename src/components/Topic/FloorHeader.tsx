@@ -1,4 +1,4 @@
-import { useI18n } from '@solid-primitives/i18n';
+import { useI18n } from '@solid-primitives/i18n'
 import { Topic } from '../../graphql/types.gen'
 import Icon from '../Nav/Icon'
 import './FloorHeader.scss'

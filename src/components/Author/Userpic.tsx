@@ -1,7 +1,12 @@
 import { Show } from 'solid-js/web'
+import { User } from '../../graphql/types.gen'
 import './Userpic.scss'
 
-export default (props) => {
+interface UserpicProps {
+  user: Partial<User>
+}
+
+export default (props: UserpicProps) => {
   const letters = () => {
     const names = props.user && props.user.name ? props.user.name.split(' ') : []
 
@@ -15,7 +20,7 @@ export default (props) => {
         fallback={
           <img
             src={props.user.userpic ? props.user.userpic : '/icons/user-anonymous.svg'}
-            alt={props.user.name}
+            alt={props.user.name || ''}
             classList={{ anonymous: !props.user.userpic }}
           />
         }

@@ -6,7 +6,7 @@ import { createQuery } from 'solid-urql'
 import signCheck from '../graphql/q/auth-check'
 import signUp from '../graphql/q/auth-register'
 import signOut from '../graphql/q/auth-logout'
-import { Shout} from '../graphql/types.gen'
+import { CurrentUserInfo, Shout, User } from '../graphql/types.gen'
 import signIn from '../graphql/q/auth-login'
 // import topicsAll from '../graphql/q/topics-all'
 import fq from '../graphql/q/follow'
@@ -25,7 +25,8 @@ interface CommonStore {
   size?: number
   token?: string
   appName: string
-  session?: any
+  session?: Partial<User>
+  info?: CurrentUserInfo
   handshaking?: boolean
   warnings?: {
     body: string
@@ -46,8 +47,8 @@ export interface Warning {
 
 export function StoreProvider(props: { children: any }) {
   const moreQueries = {
-    'author': articlesForAuthor,
-    'topic': articlesForTopic
+    author: articlesForAuthor,
+    topic: articlesForTopic
     // TODO: 'community': articlesForCommunity
   }
   const [loggedIn, setLoggedIn] = createSignal(false)
@@ -58,7 +59,8 @@ export function StoreProvider(props: { children: any }) {
     size: 50,
     token: '',
     appName: 'discours.io',
-    session: {} as any,
+    session: {} as Partial<User>,
+    info: {} as CurrentUserInfo,
     handshaking: false,
     warnings: [] as Warning[],
     modal: '' as ModalType,
@@ -68,8 +70,8 @@ export function StoreProvider(props: { children: any }) {
 
   const actions = {
     // warnings
-    getWarnings: () => state.warnings, 
-    toggleWarnings: () => setState({...state, warningsVisible: !state.warningsVisible}),
+    getWarnings: () => state.warnings,
+    toggleWarnings: () => setState({ ...state, warningsVisible: !state.warningsVisible }),
     warn: (w: Warning) => setState({ ...state, warnings: [...state.warnings, w] }),
     unwarn: (index: number) => {
       let w: Warning = state.warnings[index]
@@ -84,21 +86,27 @@ export function StoreProvider(props: { children: any }) {
     hideModal: () => setState({ ...state, modal: '' }),
 
     // auth
-    getSession: () => {
-      const token = localStorage.getItem('jwt') || ''
-      setState({ ...state, token })
+    authorized: () => loggedIn(),
+    getInfo: () => state.info,
+    getSession: (t?: string) => {
+      const token = t || localStorage.getItem('token') || ''
+      if (token) setState({ ...state, token })
 
       if (token) {
         // eslint-disable-next-line no-shadow
-        const [qdata,] = createQuery({ query: mySession, variables: { token } })
-        const { getCurrentUser: session } = qdata()
+        const [qdata] = createQuery({ query: mySession, variables: { token } })
+        const {
+          getCurrentUser: { session, info }
+        } = qdata()
         const { error } = session
-        if(!error) setState({
-          ...state,
-          token,
-          session,
-          handshaking: false
-        })
+        if (!error)
+          setState({
+            ...state,
+            token,
+            session,
+            info,
+            handshaking: false
+          })
         else actions.warn(error)
       }
     },
@@ -133,47 +141,47 @@ export function StoreProvider(props: { children: any }) {
       return true
     },
     signOut: () => {
-      if(loggedIn()) {
+      if (loggedIn()) {
         const [qdata] = createQuery({ query: signOut })
         const { error } = qdata()
-  
+
         if (!error) setLoggedIn(false)
         else actions.warn(error)
       }
     },
     forget: (email: string) => {
       console.log(`auth: forget ${email}`)
-      const [qdata] = createQuery({ query: forgetPassword, variables: { email }})
+      const [qdata] = createQuery({ query: forgetPassword, variables: { email } })
       const { error } = qdata()
-      if(error) actions.warn(error)
+      if (error) actions.warn(error)
     },
     reset: (code: string) => {
       console.log(`auth: reset ${code}`)
-      const [qdata] = createQuery({ query: resetPassword, variables: { code }})
+      const [qdata] = createQuery({ query: resetPassword, variables: { code } })
       const { error } = qdata()
-      if(error) actions.warn(error)
+      if (error) actions.warn(error)
     },
     resend: (email: string) => {
       console.log(`auth: resend ${email}`)
-      const [qdata] = createQuery({ query: resendCode, variables: { email }})
+      const [qdata] = createQuery({ query: resendCode, variables: { email } })
       const { error } = qdata()
-      if(error) actions.warn(error)
+      if (error) actions.warn(error)
     },
     follow: (slug: string, what: string) => {
       console.log(`follow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: fq, variables: { what, slug }})
+      const [qdata] = createQuery({ query: fq, variables: { what, slug } })
       const { error } = qdata()
-      if(error) actions.warn(error)
+      if (error) actions.warn(error)
     },
     unfollow: (slug: string, what: string) => {
       console.log(`unfollow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: ufq, variables: { what, slug }})
+      const [qdata] = createQuery({ query: ufq, variables: { what, slug } })
       const { error } = qdata()
-      if(error) actions.warn(error)
+      if (error) actions.warn(error)
     },
     more: () => {
       Object.keys(moreQueries).forEach((what: string) => {
-        if(location.pathname.startsWith('/'+what)) {
+        if (location.pathname.startsWith('/' + what)) {
           // const slug = location.pathname.replace(`/${what}/`, '').replace('/','')
           // FIXME
           // let variables: {[k:string]: { page: number; size: number }} = { page: (state.page + 1), size: state.size }
@@ -186,11 +194,13 @@ export function StoreProvider(props: { children: any }) {
   }
 
   createEffect(() => {
-    if(state.token) actions.getSession()
+    if (state.token) actions.getSession()
     // if(client.url === 'https://newapi.discours.io' && !topicsUpdated()) actions.topicsAll()
   })
   // WARNING: unknown type
-  return <StoreContextProvider value={[state as unknown as CommonStore, actions]} children={props.children} />
+  return (
+    <StoreContextProvider value={[state as unknown as CommonStore, actions]} children={props.children} />
+  )
 }
 
 export function useStore() {

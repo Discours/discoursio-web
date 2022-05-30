@@ -14,33 +14,42 @@ export const AuthorData: RouteDataFunc = (args) => {
     return { lang }
   }
 
-  const [authorData, authorState] = createQuery({ query: authorBySlug, variables: { slug: args.params.slug }})
+  const [authorData, authorState] = createQuery({
+    query: authorBySlug,
+    variables: { slugs: [args.params.slug] }
+  })
 
-  const [authorArticlesData, stauthorArticlesState] = createQuery({
+  const page = args.params.page || 1
+  const size = args.params.size || 50
+  const [adata, astate] = createQuery({
     query: authorArticles,
-    variables: { topic: args.params.slug }
+    variables: {
+      author: args.params.slug,
+      page,
+      size
+    }
   })
 
   const [tdata, tstate] = createQuery({ query: topicsAll })
 
   return {
     get topics() {
-        return tdata()?.topicsBySlugs
+      return tdata()?.topicsBySlugs
     },
     get topicsLoading() {
-        return tstate()?.fetching
+      return tstate()?.fetching
     },
     get articles() {
-      return authorArticlesData()?.shoutsByAuthor
+      return adata()?.shoutsByAuthor
     },
     get articlesLoading() {
-      return stauthorArticlesState()?.fetching
+      return astate()?.fetching
     },
     get params() {
       return paramList
     },
     get author() {
-      return authorData()?.authorBySlug
+      return authorData()?.getUsersBySlugs[0]
     },
     get authorLoading() {
       return authorState()?.fetching
