@@ -6,6 +6,7 @@ import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import './AuthModal.scss'
+
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
 export default (props: { code?: string; mode?: string }) => {

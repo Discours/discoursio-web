@@ -2,10 +2,10 @@ import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
 import articlesCandidates from '../graphql/q/articles-candidates'
-import articlesForTopic from '../graphql/q/articles-for-topic'
-import articlesForAuthor from '../graphql/q/articles-for-author'
+import articlesForTopics from '../graphql/q/articles-for-topics'
+import articlesForAuthors from '../graphql/q/articles-for-authors'
 // FIXME: import articlesTopViewed from '../graphql/q/articles-top-viewed'
-import { Shout, User } from '../graphql/types.gen'
+import { Shout, Topic } from '../graphql/types.gen'
 import { useStore } from '../store'
 import topicsAll from '../graphql/q/topics-all'
 import { createMemo } from 'solid-js'
@@ -39,56 +39,44 @@ export const FeedData: RouteDataFunc = (): HomeRouteData => {
   }
   const { page, size } = paramList()
   const [{}, { getInfo }] = useStore()
-  const [tdata, tstate] = createQuery({ query: topicsAll })
+  
+  const [talldata, tallstate] = createQuery({ query: topicsAll })
   const [candata] = createQuery({ query: articlesCandidates, variables: { page, size } })
+  
+  const topTopics: string[] | any = createMemo(() => 
+    !tallstate().fetching && 
+    !getInfo()?.userSubscribedTopics && 
+    Array.from(talldata().topicsBySlugs).sort(byViews).map(((v, _i, _arr) => (v as Topic).slug))
+  )
 
-  const afeed = createMemo(() => {
-    let l = [] as Partial<Shout>[]
-    ;(getInfo()?.userSubscribedAuthors || []).forEach((author: Partial<User>) => {
-      // TODO: set backend for slugs
-      const [qdata] = createQuery({
-        query: articlesForAuthor,
-        variables: { slug: author?.slug, page, size }
-      })
-      l.concat(qdata()?.shoutsByAuthor)
-    })
-    return l
+  const [tdata, tstate] = createQuery({ 
+    query: articlesForTopics, 
+    variables: { slugs: getInfo()?.userSubscribedTopics || topTopics(), page, size } 
   })
 
-  const loadTopic = (slug: string) => {
-    if (slug) {
-      const [qdata] = createQuery({ query: articlesForTopic, variables: { slug, page, size } })
-      // TODO: separated pagination
-      return qdata()?.shoutsByTopic
-    } else return []
-  }
-
-  const topTopics = createMemo(() => {
-    if (!tstate().fetching && !getInfo()?.userSubscribedTopics) {
-      let tt = Array.from(tdata().topicsBySlugs).sort(byViews).slice(0, 5)
-      console.debug(tt)
-      return tt
-    }
-    return [] as string[]
+  const [adata, astate] = createQuery({ 
+    query: articlesForAuthors, 
+    variables: { slugs: getInfo()?.userSubscribedAuthors || [], page, size } // TODO: separate pagination?
   })
-
-  const tfeed = createMemo(() => (getInfo()?.userSubscribedTopics || topTopics()).map(loadTopic))
 
   return {
     get topics() {
-      return tdata()?.topicsBySlugs
+      return talldata()?.topicsBySlugs
     },
     get topicsLoading() {
-      return tstate().fetching
+      return tallstate().fetching
     },
     get candidates() {
       return candata()?.candidates || []
     },
     get topicsFeed() {
-      return tfeed()
+      return tdata().shoutsByTopics
     },
     get authorsFeed() {
-      return afeed()
+      return adata().shoutsByAuthors
+    },
+    get feedLoading() {
+      return tstate().fetching && astate().fetching
     },
     get params() {
       return paramList()

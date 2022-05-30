@@ -19,11 +19,11 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ currentUser, token }, { showModal, follow, unfollow }] = useStore()
+  const [{ session, token }, { showModal, follow, unfollow }] = useStore()
   const [isFollowed, setFollowed] = createSignal(false)
 
   createEffect(() => {
-    if (props.article?.authors?.find((a) => a.slug === currentUser.slug)) setFollowed(true)
+    if (props.article?.authors?.find((a) => a.slug === session?.slug)) setFollowed(true)
   })
 
   let commentElement
@@ -142,7 +142,7 @@ export default (props: ArticleProps) => {
               <ArticleComment
                 comment={comment}
                 level={getCommentLevel(comment)}
-                canEdit={comment.author.slug === currentUser.slug}
+                canEdit={comment.author.slug === session?.slug}
               />
             )}
           </For>

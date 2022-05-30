@@ -1,22 +1,26 @@
 import { cacheExchange } from '@urql/exchange-graphcache'
-import authorArticles from './q/articles-for-author'
+import authorsForArticles from './q/articles-for-authors'
 import userSession from './q/auth-session'
 import type { Shout } from './types.gen'
 
 // FIXME: this is dummy code
+const size = 50
+const page = 1
+
+// TODO: implement smart caching logix
 
 export const cache = cacheExchange({
   updates: {
     Mutation: {
-      createNote: (_result, _args, c) => {
-        c.updateQuery({ query: authorArticles }, (data) => {
+      createArticle: (_result, _args, c) => {
+        c.updateQuery({ query: authorsForArticles, variables: { slugs, page, size } }, (data) => {
           data.getUserNotes.unshift(_result.createNote)
 
           return data
         })
       },
       updateNote: (_result, _args, c) => {
-        c.updateQuery({ query: authorArticles }, (data) => {
+        c.updateQuery({ query: authorsForArticles, variables: { slugs, page, size  } }, (data) => {
           const index = data.getUserNotes.findIndex(
             (note: Shout) => note.slug === (_result.updateNote as Shout)?.slug
           )
@@ -27,7 +31,7 @@ export const cache = cacheExchange({
         })
       },
       deleteNote: (_result, _args, c) => {
-        c.updateQuery({ query: authorArticles }, (data) => {
+        c.updateQuery({ query: authorsForArticles, variables: { slugs, page, size } }, (data) => {
           data.getUserNotes = data.getUserNotes.filter((note: Shout) => note.slug !== _result.deleteNote)
 
           return data
@@ -45,7 +49,7 @@ export const cache = cacheExchange({
         })
       },
       logout: (_result, _args, c) => {
-        c.updateQuery({ query: authorArticles }, (data) => {
+        c.updateQuery({ query: authorsForArticles }, (data) => {
           data.getUserNotes = []
 
           return data

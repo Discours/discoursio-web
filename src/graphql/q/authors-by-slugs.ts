@@ -1,7 +1,7 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query GetUserBySlugQuery($slugs: [String]!) {
+  query GetAuthorsBySlugQuery($slugs: [String]!) {
     getUsersBySlugs(slugs: $slugs) {
       _id: slug
       slug

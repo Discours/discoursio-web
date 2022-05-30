@@ -1,9 +1,9 @@
 import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
-import authorArticles from '../graphql/q/articles-for-author'
+import authorArticles from '../graphql/q/articles-for-authors'
 import topicsAll from '../graphql/q/topics-all'
-import authorBySlug from '../graphql/q/author-by-slug'
+import authorsBySlugs from '../graphql/q/authors-by-slugs'
 
 export const AuthorData: RouteDataFunc = (args) => {
   const location = useLocation()
@@ -15,7 +15,7 @@ export const AuthorData: RouteDataFunc = (args) => {
   }
 
   const [authorData, authorState] = createQuery({
-    query: authorBySlug,
+    query: authorsBySlugs,
     variables: { slugs: [args.params.slug] }
   })
 

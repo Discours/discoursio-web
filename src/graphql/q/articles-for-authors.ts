@@ -1,8 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query ShoutsByAuthorQuery($author: String!, $page: Int!, $size: Int!) {
-    shoutsByAuthor(author: $author, page: $page, size: $size) {
+  query ShoutsForAuthorsQuery($slugs: [String]!, $page: Int!, $size: Int!) {
+    shoutsByAuthors(slugs: $slugs, page: $page, size: $size) {
       _id: slug
       title
       subtitle

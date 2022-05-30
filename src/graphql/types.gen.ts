@@ -270,9 +270,10 @@ export type Query = {
   isEmailFree: Scalars['Boolean']
   recentCommented: Array<Maybe<Shout>>
   recents: Array<Maybe<Shout>>
-  shoutsByAuthor: Array<Maybe<Shout>>
-  shoutsByCommunity: Array<Maybe<Shout>>
-  shoutsByTopic: Array<Maybe<Shout>>
+  shoutsByAuthors: Array<Maybe<Shout>>
+  shoutsByCommunities: Array<Maybe<Shout>>
+  shoutsByTopics: Array<Maybe<Shout>>
+  shoutsBySlugs: Array<Maybe<Shout>>
   shoutsCandidates: Array<Maybe<Shout>>
   shoutsCommentedByUser: Array<Maybe<Shout>>
   shoutsRatedByUser: ShoutsResult

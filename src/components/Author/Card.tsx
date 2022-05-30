@@ -53,7 +53,7 @@ export default (props: AuthorCardProps) => {
                   </button>
                 </Show>
 
-                <Show when={!props.isFollowed}></Show>
+                <Show when={!props.isFollowed}>{''}</Show>
 
                 <Show when={!props.compact}>
                   <button class='button button--write'>

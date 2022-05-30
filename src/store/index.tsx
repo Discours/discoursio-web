@@ -15,8 +15,8 @@ import forgetPassword from '../graphql/q/auth-forget'
 import resetPassword from '../graphql/q/auth-reset'
 import resendCode from '../graphql/q/auth-resend'
 // import { useClient } from '../graphql/client'
-import articlesForAuthor from '../graphql/q/articles-for-author'
-import articlesForTopic from '../graphql/q/articles-for-topic'
+import articlesForAuthors from '../graphql/q/articles-for-authors'
+import articlesForTopics from '../graphql/q/articles-for-topics'
 
 type ModalType = '' | 'auth' | 'subscribe' | 'feedback' | 'share' | 'thank' | 'donate'
 type WarnKind = 'error' | 'warn' | 'info'
@@ -47,8 +47,8 @@ export interface Warning {
 
 export function StoreProvider(props: { children: any }) {
   const moreQueries = {
-    author: articlesForAuthor,
-    topic: articlesForTopic
+    author: articlesForAuthors,
+    topic: articlesForTopics
     // TODO: 'community': articlesForCommunity
   }
   const [loggedIn, setLoggedIn] = createSignal(false)
