@@ -39,7 +39,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     } else {
       const extensions = createExtensions({
         config: state.config ?? store.config,
-        markdown: state.markdown ?? store.markdown,
+        markdown: (state.markdown && store.markdown) as any,
         keymap
       })
 
@@ -542,8 +542,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
         textContent += `${node.textContent}\n`
       })
       const text = parser.parse(textContent)
-
-      doc = text.toJSON()
+      doc = text?.toJSON()
     }
 
     const extensions = createExtensions({
@@ -565,7 +564,7 @@ export const createCtrl = (initial: State): [Store<State>, any] => {
     const state = unwrap(store)
     const extensions = createExtensions({
       config: { ...state.config, ...config },
-      markdown: state.markdown,
+      markdown: state.markdown as boolean,
       path: state.path,
       keymap,
       y: state.collab?.y

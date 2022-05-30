@@ -3,14 +3,14 @@ import { createEffect, createMemo } from 'solid-js'
 import { useStore } from '../store'
 
 export const AuthConfirm: RouteDataFunc = (args) => {
-  const code = createMemo(() => args.params.code)
+  const code = createMemo(() => args.params.code.replace('key-', ''))
   const [{}, { authorized, getSession }] = useStore()
   createEffect(() => {
     if (code()) {
       // oauth result
       localStorage.setItem('token', code())
       getSession()
-    } else console.error('[auth] no code')
+    }
   })
   return {
     get reason() {

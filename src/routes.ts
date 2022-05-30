@@ -78,7 +78,7 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import('./pages/about/thanks'))
   },
   {
-    path: '/auth/key-:code',
+    path: '/auth/:code',
     component: lazy(() => import('./pages/Redirect')),
     data: AuthConfirm
   },
