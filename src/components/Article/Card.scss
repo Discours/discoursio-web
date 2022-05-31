@@ -61,7 +61,7 @@
 }
 
 .shout-card__title {
-  font-size: 2.2rem;
+  @include font-size(2.2rem);
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 0.8rem;

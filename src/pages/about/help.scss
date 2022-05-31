@@ -1,5 +1,5 @@
-.donate-form :global(input),
-.donate-form :global(label),
+.donate-form input,
+.donate-form label,
 .donate-form .btn {
   font-family: 'Muller', Arial, Helvetica, sans-serif;
   border: solid 1px #595959;
@@ -137,7 +137,7 @@
   margin-top: 20px;
 }
 
-.discours-help :global(.modalwrap__inner) {
+.discours-help .modalwrap__inner {
   max-width: 500px;
 }
 

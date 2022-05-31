@@ -30,7 +30,7 @@
 
 .author__subscribe {
   @include media-breakpoint-down(lg) {
-    padding: 0.8rem 0 0 42px;
+    padding: 0 0 0 42px;
   }
 
   a {
@@ -83,12 +83,14 @@
 }
 
 .button--subscribe {
+  align-items: center;
+  aspect-ratio: 1/1;
   background: #f6f6f6;
-  border-radius: 2.5rem;
+  border-radius: 100%;
   display: inline-flex;
 
-  :global(img) {
-    vertical-align: middle;
+  img {
+    display: block;
   }
 }
 
@@ -102,11 +104,11 @@
   display: inline-flex;
   @include font-size(1.5rem);
 
-  :global(.icon) {
+  .icon {
     margin-right: 0.5em;
   }
 
-  :global(img) {
+  img {
     height: 15px;
   }
 }
