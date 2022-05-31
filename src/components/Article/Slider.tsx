@@ -7,6 +7,7 @@ import 'swiper/scss/pagination'
 import './Slider.scss'
 import { Shout } from '../../graphql/types.gen'
 import { createEffect, createMemo, createSignal, Show } from 'solid-js'
+import Icon from '../Nav/Icon'
 
 interface SliderProps {
   title?: string
@@ -58,8 +59,12 @@ export default (props: SliderProps) => {
               )}
               </For>
             </div>
-            <div class="slider-arrow-next" ref={nextEl} onClick={() => swiper()?.slideNext()}></div>
-            <div class="slider-arrow-prev" ref={prevEl} onClick={() => swiper()?.slidePrev()}></div>
+            <div class="slider-arrow-next" ref={nextEl} onClick={() => swiper()?.slideNext()}>
+              <Icon name="arrow-right-white" />
+            </div>
+            <div class="slider-arrow-prev" ref={prevEl} onClick={() => swiper()?.slidePrev()}>
+              <Icon name="arrow-right-white" />
+            </div>
             <div class="slider-pagination" ref={pagEl}></div>
           </div>
         </Show>
