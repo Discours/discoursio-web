@@ -7,6 +7,7 @@ import { createMemo, createSignal, JSX } from 'solid-js'
 import { Shout } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
 import { useStore } from '../../store'
+import './List.scss'
 
 export const Block6 = (props: { articles: Partial<Shout>[] }) => {
   const dice = createMemo(() => shuffle([OneWide, Row2, Row3]))

@@ -127,7 +127,7 @@ export default (props: ArticleProps) => {
               {(author: Partial<User>) => (
                 <>
                   <Show when={props.article?.authors?.includes(author as User)}>, </Show>
-                  <AuthorCard author={author} canFollow={false} />
+                  <AuthorCard author={author} hideFollow={true} />
                 </>
               )}
             </For>
@@ -160,7 +160,7 @@ export default (props: ArticleProps) => {
             <textarea
               class='write-comment'
               rows='1'
-              placeholder='Написать комментарий'
+              placeholder={t('Write comment')}
               ref={commentElement}
             />
           </Show>

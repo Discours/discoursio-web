@@ -36,7 +36,7 @@ export default (props: BesideProps) => {
                         <TopicCard topic={value as Topic} compact={true} />
                       </Show>
                       <Show when={props.wrapper === 'author'}>
-                        <AuthorCard author={value as Partial<User>} compact={true} />
+                        <AuthorCard author={value as Partial<User>} compact={true} hideFollow={true} />
                       </Show>
                       <Show when={props.wrapper === 'article'}>
                         <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />

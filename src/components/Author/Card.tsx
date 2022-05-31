@@ -6,18 +6,19 @@ import './Card.scss'
 import { useStore } from '../../store'
 import { NavLink } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
+import { createMemo } from 'solid-js'
 
 interface AuthorCardProps {
   compact?: boolean
-  canFollow?: boolean
-  isFollowed?: boolean
+  hideFollow?: boolean
   author: Partial<User>
 }
 
 export default (props: AuthorCardProps) => {
   const [t] = useI18n()
-  const [, { follow, unfollow }] = useStore()
-
+  const [ { session, info }, { follow, unfollow }] = useStore()
+  const subscribed = createMemo(() => !!info?.userSubscribedAuthors?.filter((u) => u?.slug === props.author.slug).pop())
+  const canFollow = createMemo(() => !props.hideFollow && (session?.slug !== props.author.slug))
   // TODO: reimplement AuthorCard
   return (
     <>
@@ -36,10 +37,10 @@ export default (props: AuthorCardProps) => {
               </Show>
             </div>
 
-            <Show when={props.canFollow}>
+            <Show when={canFollow()}>
               <div class='author__subscribe'>
                 <Show
-                  when={props.isFollowed}
+                  when={subscribed()}
                   fallback={
                     <button onClick={follow} class='button button--subscribe'>
                       <Icon name='author-subscribe' />
@@ -52,8 +53,6 @@ export default (props: AuthorCardProps) => {
                     <span class='button__label'>-&nbsp;{t('Unfollow')}</span>
                   </button>
                 </Show>
-
-                <Show when={!props.isFollowed}>{''}</Show>
 
                 <Show when={!props.compact}>
                   <button class='button button--write'>
