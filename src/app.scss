@@ -35,11 +35,10 @@ body {
   font-family: 'Muller', Arial, Helvetica, sans-serif;
   font-size: 2rem;
   line-height: 1.4;
-  min-height: 100%;
+  height: 100%;
   -webkit-text-size-adjust: 100%;
 
   &.fixed {
-    height: 100%;
     overflow: hidden;
     position: fixed;
   }
@@ -372,6 +371,15 @@ figcaption {
   }
 }
 
+#app {
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
+  justify-content: space-between;
+  min-height: 100%;
+}
+
 #main-content {
+  flex: 1 100%;
   transition: all 1s ease;
 }

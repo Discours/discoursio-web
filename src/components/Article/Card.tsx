@@ -28,7 +28,7 @@ export default (props: CardProps) => {
       if (tt?.length === 1) tt = props.article.title?.split(/{!|\?|:|;}\s/)
       if (tt && tt.length > 1) {
         const sep = props.article.title?.replace(tt[0], '').split(' ', 1)[0]
-        setTitle( tt[0] + (!(sep === '.' || sep === ':') ? sep : '')) 
+        setTitle( tt[0] + (!(sep === '.' || sep === ':') ? sep : ''))
         setSubtitle( capitalize(props.article.title?.replace(tt[0] + sep,'') as string, true) )
       }
     }
@@ -84,16 +84,18 @@ export default (props: CardProps) => {
             <div class='shout-card__subtitle'>{subtitle()}</div>
           </Show>
 
-          <div class='shout__author'>
-            <For each={props.article.authors}>
-              {(a: Partial<User>) => (
-                <>
-                  <Show when={(props.article.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
-                  <NavLink href={`/author/${a.slug}`}>{a.name}</NavLink>
-                </>
-              )}
-            </For>
-          </div>
+          <Show when={!settings?.noimage}>
+            <div class='shout__author'>
+              <For each={props.article.authors}>
+                {(a: Partial<User>) => (
+                  <>
+                    <Show when={(props.article.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
+                    <NavLink href={`/author/${a.slug}`}>{a.name}</NavLink>
+                  </>
+                )}
+              </For>
+            </div>
+          </Show>
         </div>
       </section>
   )

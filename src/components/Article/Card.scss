@@ -58,6 +58,20 @@
   }
 }
 
+.shout__author {
+  @include font-size(1.5rem);
+  margin-bottom: 2em;
+
+  a {
+    border: none;
+    color: rgba(0, 0, 0, 0.6);
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
 .shout-card__title {
   font-size: 2.2rem;
   font-weight: 700;
@@ -323,9 +337,11 @@
     display: inline;
     font-size: 2.2rem;
   }
-  .shout-card__subtitle {
-    padding-left: .5em;
+
+  .shout-card__title {
+    padding-right: .5em;
   }
+
   .shout__author {
     margin-top: 0.8rem;
   }

@@ -32,13 +32,11 @@ export const App = () => {
             <Header />
             {/* two div wrappers to make page animation work and performant */}
             <div id='main-content'>
-              <div>
-                {/* <TransitionRoutes> */}
-                <Suspense>
-                  <Routes />
-                </Suspense>
-                {/* </TransitionRoutes> */}
-              </div>
+              {/* <TransitionRoutes> */}
+              <Suspense>
+                <Routes />
+              </Suspense>
+              {/* </TransitionRoutes> */}
             </div>
             <Footer />
           </GraphqlProvider>
