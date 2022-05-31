@@ -1,11 +1,19 @@
 header {
-  border-bottom: 4px solid #000;
   margin-bottom: 2.2rem;
+
+  .wide-container {
+    @include media-breakpoint-down(sm) {
+      padding: 0 divide($container-padding-x, 2);
+    }
+  }
 }
+
 .header__inner {
   background: #fff;
+  border-bottom: 4px solid #000;
   flex-wrap: nowrap;
   justify-content: space-between;
+  margin: 0;
 
   &.fixed {
     border-bottom: 4px solid #000;
@@ -22,14 +30,10 @@ header {
   align-items: center;
   display: inline-flex;
   height: 70px;
-  padding: 0 $container-padding-x;
+  padding: 0 $container-padding-x 0 0;
   text-align: center;
   position: relative;
   z-index: 10;
-
-  @include media-breakpoint-down(sm) {
-    padding-left: divide($container-padding-x, 2);
-  }
 
   @include media-breakpoint-up(lg) {
     height: 80px;
@@ -60,6 +64,7 @@ nav {
 
 .usernav {
   display: inline-flex;
+  padding-right: 0;
   width: auto;
 
   @include media-breakpoint-down(md) {
