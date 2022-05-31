@@ -3,8 +3,9 @@
   color: #fff;
   @include font-size(1.7rem);
   font-weight: 400;
+  margin: -6.4rem 0 6.4rem;
   padding: 3.6rem 0;
-  margin-bottom: 6.4rem;
+  text-align: center;
 
   @include media-breakpoint-up(md) {
     padding: 6.2em 0;
@@ -31,7 +32,7 @@
     border-radius: 1.2em;
     display: inline-block;
     font-weight: bold;
-    margin-right: 0.3em;
+    margin-right: 0.8rem;
     margin-bottom: 0.8em;
     transition: all 0.2s;
 
