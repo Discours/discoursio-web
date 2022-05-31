@@ -195,7 +195,6 @@ export function StoreProvider(props: { children: any }) {
 
   createEffect(() => {
     if (state.token) actions.getSession()
-    // if(client.url === 'https://newapi.discours.io' && !topicsUpdated()) actions.topicsAll()
   })
   // WARNING: unknown type
   return (

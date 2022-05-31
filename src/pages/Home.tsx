@@ -26,6 +26,7 @@ export const Home: Component = () => {
   const data = useRouteData<HomeRouteData>()
   const [loaded, setLoaded] = createSignal(false)
   const [topTopics, setTopTopics] = createSignal([] as Topic[])
+  const [topViewed, setTopViewed] = createSignal([] as Partial<Shout>[])
   const [topAuthors, setTopAuthors] = createSignal([] as Partial<User>[])
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
   const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
@@ -42,14 +43,15 @@ export const Home: Component = () => {
         tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
         ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
       })
-      setTopTopics(Array.from(tt).sort(byViews).slice(0, 3))
-      setTopAuthors(Array.from(ta).slice(0, 3)) // TODO: author.stat
+      setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
+      setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
       console.log('[ready] top month authors and topics')
       const all = [
         ...Array.from(data.topMonth),
         ...Array.from(data.topOverall),
         ...Array.from(data.topRecent)
       ]
+      setTopViewed(data.topRecent.sort(byViews).slice(0,5))
 
       // get shouts lists by
       let byLayout: { [key: string]: Partial<Shout>[] } = {}
@@ -90,7 +92,7 @@ export const Home: Component = () => {
       // random topics for navbar
       let topicSlugs = shuffle(Array.from(Object.entries(byTopic)))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
-        .slice(0, 9)
+        .slice(0, 12)
         .map((f) => f[0])
       console.debug(topicSlugs)
       setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
@@ -107,26 +109,19 @@ export const Home: Component = () => {
         <NavTopics topics={someTopics()} />
         <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero />
-        <Suspense>
-          <Beside
-            beside={data.topRecent.slice(5, 6)[0]}
-            top={false}
-            title={t('Top viewed')}
-            values={topTopics()}
-            wrapper={'topic'}
-          />
-        </Suspense>
+        <Beside
+          beside={data.topRecent.slice(5, 6)[0]}
+          title={t('Top viewed')}
+          values={topViewed()}
+          wrapper={'top-article'}
+        />
         <Row3 articles={data.topRecent.slice(6, 9)} />
-
-        <Suspense>
-          <Beside
-            top={true}
-            beside={data.topRecent.slice(9, 10)[0]}
-            title={t('Top month authors')}
-            values={topAuthors()}
-            wrapper={'author'}
-          />
-        </Suspense>
+        <Beside
+          beside={data.topRecent.slice(9, 10)[0]}
+          title={t('Top authors')}
+          values={topAuthors()}
+          wrapper={'author'}
+        />
         <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)} />
         <Row2 articles={data.topRecent.slice(18, 20)} />
         <RowShort articles={data.topRecent.slice(20, 24)} />
@@ -145,9 +140,8 @@ export const Home: Component = () => {
 
         <Suspense>
           <Beside
-            top={false}
             beside={data.topRecent.slice(30, 31)[0]}
-            title={t('Top month topics')}
+            title={t('Top topics')}
             values={topTopics()}
             wrapper={'topic'}
           />

@@ -317,12 +317,15 @@
 }
 
 .floor--9 {
+  /* TODO: refactor these styles */
   .shout-card__title,
   .shout-card__subtitle {
     display: inline;
     font-size: 2.2rem;
   }
-
+  .shout-card__subtitle {
+    padding-left: .5em;
+  }
   .shout__author {
     margin-top: 0.8rem;
   }

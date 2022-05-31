@@ -33,7 +33,7 @@ export default (props: AuthorCardProps) => {
               </div>
 
               <Show when={props.author.bio}>
-                <div class='author__about'>{props.author.bio}</div>
+                <div class='author__about'>{props.author.bio || 'наш постоянный автор' }</div>
               </Show>
             </div>
 
