@@ -19,7 +19,6 @@ interface CardProps {
 }
 
 export default (props: CardProps) => {
-  // eslint-disable-next-line solid/reactivity
   const [title, setTitle] = createSignal(props.article.title)
   const [subtitle, setSubtitle] = createSignal(props.article.subtitle)
   const { settings } = props
@@ -28,12 +27,10 @@ export default (props: CardProps) => {
     let a = props.article
     if (!a.subtitle) {
       let tt = a.title?.split('.')
-      if (tt) {
+      if (tt?.length === 1) {
         seps.forEach((c) => {
-          if (tt?.length === 1) {
             tt = a.title?.split(c)
             if (tt && tt.length > 1) tt[0] = tt[0] + (c === ':' ? '' : c)
-          }
         })
       }
       setTitle(tt ? tt[0] : a.title)
