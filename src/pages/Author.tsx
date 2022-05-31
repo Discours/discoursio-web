@@ -58,9 +58,7 @@ export const BlogAuthor: Component = () => {
   return (
     <div class='container'>
       <Show when={!data.authorLoading}>
-        <Show when={!data.topicsLoading && !!author()?.slug}>
-          <AuthorFull author={author() as Partial<User>} />
-        </Show>
+        <AuthorFull author={author() as Partial<User>} />
         <div class='row group__controls'>
           <div class='col-md-8'>
             <ul class='view-switcher'>

@@ -1,11 +1,9 @@
 import { useStore } from '../../store'
 import { User } from '../../graphql/types.gen'
-import ArticleList from '../Article/List'
 import AuthorCard from './Card'
 
 export default (props: { author: Partial<User> }) => {
-  const [, { authorArticles }] = useStore()
-
+  const [ { info }, ] = useStore()
   return (
     <>
       <div class='container'>
@@ -15,7 +13,6 @@ export default (props: { author: Partial<User> }) => {
           </div>
         </div>
       </div>
-      <ArticleList articles={authorArticles()} size={10} page={0} />
     </>
   )
 }

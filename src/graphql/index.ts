@@ -9,8 +9,8 @@ import topOverall from './q/articles-top-rated'
 import topViewed from './q/articles-top-viewed'
 import topMonth from './q/articles-top-month'
 import topRecent from './q/articles-top-recent'
-import topicArticles from './q/articles-for-topics'
-import authorArticles from './q/articles-for-authors'
+import articlesForTopics from './q/articles-for-topics'
+import articlesForAuthors from './q/articles-for-authors'
 // article
 import articleBySlug from './q/article-by-slug'
 import articleComments from './q/article-comments'
@@ -39,7 +39,6 @@ export default {
   signUp,
   checkEmail,
   getSession,
-  authorArticles,
   authorBySlug,
   authorComments,
   authorRoles,
@@ -49,8 +48,9 @@ export default {
   articleComments,
   articleCreate,
   articleUpdate,
+  articlesForAuthors,
+  articlesForTopics,
   topicsAll,
-  topicArticles,
   commentCreate,
   commentDestroy,
   commentUpdate

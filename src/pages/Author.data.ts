@@ -1,7 +1,7 @@
 import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
-import authorArticles from '../graphql/q/articles-for-authors'
+import articlesForAuthors from '../graphql/q/articles-for-authors'
 import topicsAll from '../graphql/q/topics-all'
 import authorsBySlugs from '../graphql/q/authors-by-slugs'
 
@@ -22,9 +22,9 @@ export const AuthorData: RouteDataFunc = (args) => {
   const page = args.params.page || 1
   const size = args.params.size || 50
   const [adata, astate] = createQuery({
-    query: authorArticles,
+    query: articlesForAuthors,
     variables: {
-      author: args.params.slug,
+      slugs: [args.params.slug,],
       page,
       size
     }
@@ -40,7 +40,7 @@ export const AuthorData: RouteDataFunc = (args) => {
       return tstate()?.fetching
     },
     get articles() {
-      return adata()?.shoutsByAuthor
+      return adata()?.shoutsByAuthors
     },
     get articlesLoading() {
       return astate()?.fetching
