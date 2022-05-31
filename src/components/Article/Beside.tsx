@@ -6,8 +6,6 @@ import AuthorCard from '../Author/Card'
 import TopicCard from '../Topic/Card'
 import './Beside.scss'
 import { Shout, Topic, User } from '../../graphql/types.gen'
-import { useI18n } from '@solid-primitives/i18n'
-import { useStore } from '../../store'
 
 interface BesideProps {
   title: string
@@ -18,8 +16,6 @@ interface BesideProps {
 export default (props: BesideProps) => {
   // wrap, top, title, beside, values, wrapper
   console.debug(props.title)
-  const [t] = useI18n()
-  const [{ info }, { follow, unfollow }] = useStore()
   return (
     <Show when={!!props.beside?.slug && props.values?.length > 0}>
       <div class='floor floor--9'>
