@@ -17,6 +17,13 @@ export default gql`
         title
         body
         pic
+        topicStat {
+          _id: views
+          shouts
+          authors
+          views
+          subscriptions
+        }
       }
       authors {
         _id: slug

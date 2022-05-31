@@ -50,22 +50,19 @@ export default (props: TopicProps) => {
 
           <Show when={!props.compact}>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat?.shouts} {t('post')}
-              {plural(
+            {props.topic.topicStat?.shouts + ' ' + t('post') + plural(
                 props.topic.topicStat?.shouts || 0,
                 locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
               )}
             </span>
             <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat?.authors} {t('author')}
-              {plural(
-                props.topic.topicStat?.authors || 0,
-                locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
-              )}
+              {props.topic.topicStat?.authors + ' ' + t('author') + plural(
+                  props.topic.topicStat?.authors || 0,
+                  locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                )}
             </span>
               <span class='topic-details__item'>
-                {props.topic.topicStat?.views} {t('view')}
-                {plural(
+                {props.topic.topicStat?.views + ' ' + t('view') + plural(
                   props.topic.topicStat?.views || 0,
                   locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                 )}
@@ -73,8 +70,7 @@ export default (props: TopicProps) => {
             </Show>
 
             <span class='topic-details__item'>
-              {subscribers()} {t('follower')}
-              {plural(
+              {subscribers() + ' ' + t('follower') + plural(
                 subscribers() || 0,
                 locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
               )}
