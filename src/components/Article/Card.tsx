@@ -28,7 +28,7 @@ export default (props: CardProps) => {
       if (tt?.length === 1) tt = props.article.title?.split(/{!|\?|:|;}\s/)
       if (tt && tt.length > 1) {
         const sep = props.article.title?.replace(tt[0], '').split(' ', 1)[0]
-        setTitle( tt[0] + !(sep === '.' || sep === ':') && sep) 
+        setTitle( tt[0] + (!(sep === '.' || sep === ':') ? sep : '')) 
         setSubtitle( capitalize(props.article.title?.replace(tt[0] + sep,'') as string, true) )
       }
     }
