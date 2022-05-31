@@ -1,5 +1,5 @@
 import { NavLink } from 'solid-app-router'
-import { createEffect, createSignal } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 import { For, Show } from 'solid-js/web'
 import { Shout, Topic, User } from '../../graphql/types.gen'
 import { capitalize } from '../../utils'
@@ -24,9 +24,9 @@ export default (props: CardProps) => {
   const [subtitle, setSubtitle] = createSignal(props.article.subtitle)
   const { settings } = props
   const seps = [':', '?', '!']
-  createEffect(() => {
+  onMount(() => {
     let a = props.article
-    if (!!a && !a.subtitle) {
+    if (!a.subtitle) {
       let tt = a.title?.split('.')
       if (tt) {
         seps.forEach((c) => {
