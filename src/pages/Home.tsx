@@ -137,7 +137,7 @@ export const Home: Component = () => {
           <h2>{t('Top commented')}</h2>
           } />
         <Group articles={someLayout()} header={
-            <div class='shout-card__type'>
+            <div class='layout-icon'>
               <Icon name={selectedLayout()} />
             </div>
           } />
