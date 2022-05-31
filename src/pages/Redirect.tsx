@@ -1,7 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { Navigate, useRouteData } from 'solid-app-router'
 import { Component, createMemo, createSignal, onMount, Show } from 'solid-js'
-import { useRouteReadyState } from '../utils/routeReadyState'
 
 interface RedirectData {
   reason: string
@@ -17,7 +16,6 @@ export const Redirect: Component = () => {
     setTimeout(() => setNow(true), 3000)
     console.log('[mount] redirect')
   })
-  useRouteReadyState()
   return (
     <>
       <h4>{data.reason}:</h4>

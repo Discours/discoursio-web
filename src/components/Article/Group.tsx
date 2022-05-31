@@ -1,13 +1,18 @@
 import { For, Show } from 'solid-js/web'
 import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
-// import FloorHeader from "../Topic/FloorHeader";
+import './Group.scss'
 
-export default (props: { articles: Partial<Shout>[] }) => (
-  <div class='floor floor--important floor--group'>
+interface GroupProps {
+  articles: Partial<Shout>[]
+  header?: any
+}
+
+export default (props: GroupProps) => {
+  return (<div class='floor floor--important floor--group'>
     <div class='wide-container row'>
       <div class='group__header col-12'>
-        <div class='row'>{/*<FloorHeader topic={props.articles[0]}/>*/}</div>
+        {props.header}
       </div>
 
       <div class='col-lg-6'>
@@ -18,7 +23,7 @@ export default (props: { articles: Partial<Shout>[] }) => (
         <Show when={props.articles}>
           <div class='row'>
             <Show when={props.articles.length < 4}>
-              <For each={props.articles}>
+              <For each={props.articles.slice(1, props.articles.length)}>
                 {(a) => (
                   <div class='row'>
                     <div class='col-md-8'>
@@ -30,15 +35,19 @@ export default (props: { articles: Partial<Shout>[] }) => (
             </Show>
             <Show when={props.articles.length >= 4}>
               <div class='col-md-6'>
-                <For each={props.articles.slice(0, 2)}>{(a) => <ArticleCard article={a} />}</For>
+                <For each={props.articles.slice(1, 3)}>
+                  {(a) => <ArticleCard article={a} settings={{ noicon: true }} />}
+                </For>
               </div>
               <div class='col-md-6'>
-                <For each={props.articles.slice(2, 4)}>{(a) => <ArticleCard article={a} />}</For>
+                <For each={props.articles.slice(3, 5)}>
+                  {(a) => <ArticleCard article={a} settings={{ noicon: true }} />}
+                </For>
               </div>
             </Show>
           </div>
         </Show>
       </div>
     </div>
-  </div>
-)
+  </div>)
+}

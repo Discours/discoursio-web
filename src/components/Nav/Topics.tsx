@@ -1,20 +1,20 @@
-import { For, createSignal, Show } from 'solid-js'
+import { NavLink } from 'solid-app-router'
+import { For, Show, createMemo } from 'solid-js'
 import { Topic } from '../../graphql/types.gen'
 import './Topics.scss'
 
 export default (props: any) => {
-  const [filterTopic, setFilterTopic] = createSignal()
-  // console.debug(props)
+  const topics = createMemo(() => Array.from(props?.topics || [])) // TODO: something about subtopics
   return (
     <nav class='subnavigation wide-container text-2xl'>
       <ul class='topics'>
-        <Show when={props?.topics}>
-          <For each={Array.from(props.topics as Topic[])}>
+        <Show when={!!topics()}>
+          <For each={Array.from(topics() as Topic[])}>
             {(t: Topic) => (
-              <li class='item' classList={{ selected: filterTopic() === t.slug }}>
-                <a href={`/topic/${t.slug}`} onClick={() => setFilterTopic(t.slug || '')}>
-                  <span classList={{ transparent: filterTopic() !== t.slug }}>#{t?.title || ''}</span>
-                </a>
+              <li class='item'>
+                <NavLink href={`/topic/${t.slug}`}>
+                  <span>#{t?.title || ''}</span>
+                </NavLink>
               </li>
             )}
           </For>

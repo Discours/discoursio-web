@@ -19,17 +19,18 @@ import { Maybe } from 'graphql/jsutils/Maybe'
 import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
 import { byViews } from '../utils/by'
+import Icon from '../components/Nav/Icon'
 
 export const Home: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<HomeRouteData>()
-
   const [loaded, setLoaded] = createSignal(false)
   const [topTopics, setTopTopics] = createSignal([] as Topic[])
   const [topAuthors, setTopAuthors] = createSignal([] as Partial<User>[])
   const [topCommented, setTopCommented] = createSignal([] as Partial<Shout>[])
   const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
   const [someTopics, setSomeTopics] = createSignal([] as Topic[])
+  const [selectedLayout, setSelectedLayout] = createSignal('article')
   createEffect(() => {
     if (!loaded() && !data.topicsLoading && !data.loading) {
       console.log('[data] processing...')
@@ -83,6 +84,7 @@ export const Home: Component = () => {
       const ok = Object.keys(byLayout).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
       setSomeLayout(byLayout[layout])
+      setSelectedLayout(layout)
       console.log(`[ready] '${layout}' layout picked`)
 
       // random topics for navbar
@@ -90,19 +92,19 @@ export const Home: Component = () => {
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0, 9)
         .map((f) => f[0])
+      console.debug(topicSlugs)
       setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
       console.log(`[ready] topics navbar data prepared`)
       setLoaded(true)
     }
   })
+  
   useRouteReadyState()
   return (
     <main class='home'>
       <PageLoadingBar active={!loaded()} />
       <Show when={loaded()}>
-        <Show when={someTopics()?.length === 9}>
-          <NavTopics topics={someTopics()} />
-        </Show>
+        <NavTopics topics={someTopics()} />
         <Row5 articles={data.topRecent.slice(0, 5)} />
         <Hero />
         <Suspense>
@@ -130,11 +132,15 @@ export const Home: Component = () => {
         <RowShort articles={data.topRecent.slice(20, 24)} />
         <Row1 article={data.topRecent.slice(24, 25)[0]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
-        <h2>{t('Top commented')}</h2>
-        <Row3 articles={topCommented()} />
-        <Suspense>
-          <Group articles={someLayout()} />
-        </Suspense>
+        
+        <Row3 articles={topCommented()} header={
+          <h2>{t('Top commented')}</h2>
+          } />
+        <Group articles={someLayout()} header={
+            <div class='shout-card__type'>
+              <Icon name={selectedLayout()} />
+            </div>
+          } />
         <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)} />
 
         <Suspense>
@@ -147,7 +153,6 @@ export const Home: Component = () => {
           />
         </Suspense>
         <Row3 articles={data.topRecent.slice(31, 34)} />
-        <Group articles={data.topRecent.slice(34, 42)} />
         <Banner />
       </Show>
     </main>
