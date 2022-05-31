@@ -42,10 +42,10 @@ export default (props: BesideProps) => {
                         <AuthorCard author={value as Partial<User>} compact={true} />
                       </Show>
                       <Show when={props.wrapper === 'article'}>
-                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true}} />
+                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
                       </Show>
                       <Show when={props.wrapper === 'top-article'}>
-                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true, isGroup: true  }} />
+                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
                         <Show
                           when={info?.userSubscribedTopics?.includes((value as Partial<Shout>).mainTopic as string)}
                           fallback={
