@@ -1,11 +1,12 @@
-import { onCleanup, onMount } from 'solid-js'
 import { For } from 'solid-js/web'
 import ArticleCard from './Card'
-import KeenSlider, { KeenSliderInstance } from 'keen-slider'
+import { Swiper, SwiperOptions, Navigation, Pagination } from 'swiper'
+import 'swiper/scss'
+import 'swiper/scss/navigation'
+import 'swiper/scss/pagination'
 import './Slider.scss'
 import { Shout } from '../../graphql/types.gen'
-import Icon from '../Nav/Icon'
-import 'keen-slider/keen-slider.min.css'
+import { createEffect, createMemo, createSignal, Show } from 'solid-js'
 
 interface SliderProps {
   title?: string
@@ -14,41 +15,54 @@ interface SliderProps {
 
 export default (props: SliderProps) => {
   let el: HTMLDivElement | undefined
-  let slider: KeenSliderInstance | undefined
-  const opts = {
+  let pagEl: HTMLDivElement | undefined
+  let nextEl: HTMLDivElement | undefined
+  let prevEl: HTMLDivElement | undefined
+  const opts: SwiperOptions = {
     loop: true,
-    slides: {
-      origin: 'center',
-      perView: 1.66666,
-      spacing: 8
+    // origin: 'center',
+    slidesPerView: 1.66666,
+    spaceBetween: 8,
+    modules: [Navigation, Pagination],
+    speed: 500,
+    navigation: { nextEl, prevEl },
+    pagination: {
+      el: pagEl,
+      type: 'bullets',
+      clickable: true
     }
   }
-  onMount(() => {
-    slider = new KeenSlider(el as HTMLElement, opts as any)
-    setTimeout(slider.update, 500)
-  })
-  onCleanup(() => slider && slider.destroy())
 
+  const [swiper, setSwiper] = createSignal<Swiper>()
+  createEffect(() => {
+    if(!swiper() && !!el) {
+      setSwiper(new Swiper(el as HTMLDivElement, opts))
+    }
+  })
+  const articles = createMemo(() => props.articles)
   return (
     <div class='floor floor--important floor--slider'>
       <div class='wide-container row'>
         <h2 class='col-12'>{props.title}</h2>
-        <div class='keen-slider' ref={el}>
-          <div class='slider-arrow-prev' onClick={() => slider?.prev()}>
-            <Icon name='slider-arrow' />
+        <Show when={!!articles()}>
+          <div class="swiper" ref={el}>
+            <div class="swiper-wrapper">
+              <For each={articles()}>
+              {(a: Partial<Shout>) => (
+
+                <ArticleCard
+                  article={a}
+                  settings={{ additionalClass: 'shout-card--with-cover swiper-slide' }}
+                />
+                
+              )}
+              </For>
+            </div>
+            <div class="slider-arrow-next" ref={nextEl} onClick={() => swiper()?.slideNext()}></div>
+            <div class="slider-arrow-prev" ref={prevEl} onClick={() => swiper()?.slidePrev()}></div>
+            <div class="slider-pagination" ref={pagEl}></div>
           </div>
-          <For each={props.articles}>
-            {(a: Partial<Shout>) => (
-              <ArticleCard
-                article={a}
-                settings={{ additionalClass: 'shout-card--with-cover keen-slider__slide' }}
-              />
-            )}
-          </For>
-          <div class='slider-arrow-next' onClick={() => slider?.next()}>
-            <Icon name='slider-arrow' />
-          </div>
-        </div>
+        </Show>
       </div>
     </div>
   )

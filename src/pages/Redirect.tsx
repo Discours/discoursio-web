@@ -15,6 +15,7 @@ export const Redirect: Component = () => {
   const href = createMemo(() => data.where || window.location.pathname)
   onMount(() => {
     setTimeout(() => setNow(true), 3000)
+    console.log('[mount] redirect')
   })
   useRouteReadyState()
   return (
