@@ -8614,6 +8614,11 @@ solid-social@^0.7.4:
     "@solid-primitives/intersection-observer" "^1.2.2"
     "@solid-primitives/script-loader" "^1.1.0"
 
+solid-ssr@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/solid-ssr/-/solid-ssr-1.4.3.tgz#d0ecb43a25c13d9718ede645f987ab75117fb78a"
+  integrity sha512-Hw+b829PR5XAyctPiXKOKWVmGRiEXTL5g6y7crfcfK7mLNM+R0L8CL33q8n1tsLBWN9HP6Cf26Lq4nsGjhwnHg==
+
 solid-transition-group@^0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/solid-transition-group/-/solid-transition-group-0.0.10.tgz#774110616ac06c1054b7fd6e3c1bf1cf3e584558"

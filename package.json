@@ -117,6 +117,7 @@
     "solid-urql": "^0.2.0",
     "solid-utils": "^0.8.1",
     "start-server-and-test": "^1.14.0",
+    "solid-ssr": "^1.4.3",
     "stylelint": "^14.8.2",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^7.0.0",

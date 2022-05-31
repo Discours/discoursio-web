@@ -24,17 +24,16 @@ export default (props: CardProps) => {
   const { settings } = props
   onMount(() => {
     if (!props.article.subtitle) {
-      let tt = props.article.title?.split('.')
+      let tt = props.article.title?.split('. ')
       if (tt?.length === 1) tt = props.article.title?.split(/{!|\?|:|;}\s/)
       if (tt && tt.length > 1) {
         const sep = props.article.title?.replace(tt[0], '').split(' ', 1)[0]
-        setTitle( tt[0] + sep )
+        setTitle( tt[0] + !(sep === '.' || sep === ':') && sep) 
         setSubtitle( capitalize(props.article.title?.replace(tt[0] + sep,'') as string, true) )
       }
     }
   })
   return (
-    <>
       <section
         class={`shout-card ${settings?.additionalClass}`}
         classList={{
@@ -97,6 +96,5 @@ export default (props: CardProps) => {
           </div>
         </div>
       </section>
-    </>
   )
 }
