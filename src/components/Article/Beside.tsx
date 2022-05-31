@@ -46,18 +46,6 @@ export default (props: BesideProps) => {
                       </Show>
                       <Show when={props.wrapper === 'top-article'}>
                         <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
-                        <Show
-                          when={info?.userSubscribedTopics?.includes((value as Partial<Shout>).mainTopic as string)}
-                          fallback={
-                            <button onClick={() => follow('topic', (value as Partial<Shout>).mainTopic)} class='follow'>
-                              +&nbsp;{t('Follow')}
-                            </button>
-                          }
-                        >
-                          <button onClick={() => unfollow('topic', (value as Partial<Shout>).mainTopic)} class='follow'>
-                            -&nbsp;{t('Unfollow')}
-                          </button>
-                        </Show>
                       </Show>
                     </li>
                   )}

@@ -55,15 +55,15 @@ export default (props: SliderProps) => {
                   article={a}
                   settings={{ additionalClass: 'shout-card--with-cover swiper-slide' }}
                 />
-                
+
               )}
               </For>
             </div>
             <div class="slider-arrow-next" ref={nextEl} onClick={() => swiper()?.slideNext()}>
-              <Icon name="arrow-right-white" />
+              <Icon name="slider-arrow" />
             </div>
             <div class="slider-arrow-prev" ref={prevEl} onClick={() => swiper()?.slidePrev()}>
-              <Icon name="arrow-right-white" />
+              <Icon name="slider-arrow" />
             </div>
             <div class="slider-pagination" ref={pagEl}></div>
           </div>
