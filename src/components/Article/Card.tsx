@@ -22,19 +22,15 @@ export default (props: CardProps) => {
   const [title, setTitle] = createSignal(props.article.title)
   const [subtitle, setSubtitle] = createSignal(props.article.subtitle)
   const { settings } = props
-  const seps = [':', '?', '!']
   onMount(() => {
-    let a = props.article
-    if (!a.subtitle) {
-      let tt = a.title?.split('.')
-      if (tt?.length === 1) {
-        seps.forEach((c) => {
-            tt = a.title?.split(c)
-            if (tt && tt.length > 1) tt[0] = tt[0] + (c === ':' ? '' : c)
-        })
+    if (!props.article.subtitle) {
+      let tt = props.article.title?.split('.')
+      if (tt?.length === 1) tt = props.article.title?.split(/{!|\?|:|;}\s/)
+      if (tt && tt.length > 1) {
+        const sep = props.article.title?.replace(tt[0], '').split(' ', 1)[0]
+        setTitle( tt[0] + sep )
+        setSubtitle( capitalize(props.article.title?.replace(tt[0] + sep,'') as string, true) )
       }
-      setTitle(tt ? tt[0] : a.title)
-      if (tt && tt.length > 1) setSubtitle(capitalize(tt[1], true))
     }
   })
   return (
