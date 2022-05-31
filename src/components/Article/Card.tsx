@@ -1,6 +1,8 @@
 import { NavLink } from 'solid-app-router'
+import { createEffect, createSignal } from 'solid-js'
 import { For, Show } from 'solid-js/web'
 import { Shout, Topic, User } from '../../graphql/types.gen'
+import { capitalize } from '../../utils'
 import Icon from '../Nav/Icon'
 import './Card.scss'
 
@@ -18,10 +20,28 @@ interface CardProps {
 
 export default (props: CardProps) => {
   // eslint-disable-next-line solid/reactivity
-  const { settings, article } = props
-
+  const [title, setTitle] = createSignal(props.article.title)
+  const [subtitle, setSubtitle] = createSignal(props.article.subtitle)
+  const { settings } = props
+  const seps = [':', '?', '!']
+  createEffect(() => {
+    let a = props.article
+    if (!!a && !a.subtitle) {
+      let tt = a.title?.split('.')
+      if (tt) {
+        seps.forEach((c) => {
+          if (tt?.length === 1) {
+            tt = a.title?.split(c)
+            if (tt && tt.length > 1) tt[0] = tt[0] + (c === ':' ? '' : c)
+          }
+        })
+      }
+      setTitle(tt ? tt[0] : a.title)
+      if (tt && tt.length > 1) setSubtitle(capitalize(tt[1], true))
+    }
+  })
   return (
-    <Show when={!!article}>
+    <>
       <section
         class={`shout-card ${settings?.additionalClass}`}
         classList={{
@@ -29,10 +49,10 @@ export default (props: CardProps) => {
           'shout-card--photo-bottom': settings?.noimage && settings?.photoBottom
         }}
       >
-        <Show when={!settings?.noimage && article?.cover}>
+        <Show when={!settings?.noimage && props.article.cover}>
           <div class='shout-card__cover-container'>
             <div class='shout-card__cover'>
-              <img src={article.cover || ''} alt={article.title || ''} loading='lazy' />
+              <img src={props.article.cover || ''} alt={props.article.title || ''} loading='lazy' />
             </div>
           </div>
         </Show>
@@ -40,22 +60,22 @@ export default (props: CardProps) => {
         <div class='shout-card__content'>
           <Show
             when={
-              article?.layout && article.layout !== 'article' && !(settings?.noicon || settings?.noimage)
+              props.article.layout && props.article.layout !== 'article' && !(settings?.noicon || settings?.noimage)
             }
           >
             <div class='shout-card__type'>
               <NavLink
                 href={`/topic/${
-                  (article.topics as Topic[]).filter((t) => article.mainTopic === t.slug)[0].slug
+                  (props.article.topics as Topic[]).filter((t) => props.article.mainTopic === t.slug)[0].slug
                 }`}
               >
-                <Icon name={article.layout} />
+                <Icon name={props.article.layout} />
               </NavLink>
             </div>
           </Show>
 
-          <Show when={!settings?.isGroup && article?.topics}>
-            <For each={(article.topics as Topic[]).filter((t: Topic) => article.mainTopic === t.slug)}>
+          <Show when={!settings?.isGroup && props.article.topics}>
+            <For each={(props.article.topics as Topic[]).filter((t: Topic) => props.article.mainTopic === t.slug)}>
               {(topic: Topic) => (
                 <div class='shout__topic'>
                   <NavLink href={`/topic/${topic.slug}`}>{topic.title}</NavLink>
@@ -65,18 +85,18 @@ export default (props: CardProps) => {
           </Show>
 
           <div class='shout-card__title'>
-            <NavLink href={`/${article.slug}`}>{article?.title || 'unknown'}</NavLink>
+            <NavLink href={`/${props.article.slug}`}>{title()}</NavLink>
           </div>
 
-          <Show when={!settings?.nosubtitle && article?.subtitle}>
-            <div class='shout-card__subtitle'>{props.article.subtitle}</div>
+          <Show when={!settings?.nosubtitle && subtitle()}>
+            <div class='shout-card__subtitle'>{subtitle()}</div>
           </Show>
 
           <div class='shout__author'>
-            <For each={article?.authors}>
+            <For each={props.article.authors}>
               {(a: Partial<User>) => (
                 <>
-                  <Show when={(article?.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
+                  <Show when={(props.article.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
                   <NavLink href={`/author/${a.slug}`}>{a.name}</NavLink>
                 </>
               )}
@@ -84,6 +104,6 @@ export default (props: CardProps) => {
           </div>
         </div>
       </section>
-    </Show>
+    </>
   )
 }
