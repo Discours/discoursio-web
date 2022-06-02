@@ -15,6 +15,12 @@
     }
   }
 
+  &:hover {
+    .shout-card__cover img {
+      transform: scale(1.05);
+    }
+  }
+
   a {
     border: none;
   }
@@ -27,6 +33,7 @@
 .shout-card__cover {
   height: 0;
   margin-bottom: 1.6rem;
+  overflow: hidden;
   padding-bottom: 56.2%;
   position: relative;
 
@@ -34,6 +41,8 @@
     height: 100%;
     object-fit: cover;
     position: absolute;
+    transform-origin: 50% 50%;
+    transition: transform 1s ease-in-out;
     width: 100%;
   }
 }
