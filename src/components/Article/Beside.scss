@@ -8,16 +8,16 @@
   }
 
   li {
-    border-bottom: 1px solid #e1e1e1;
-    display: flex;
-    margin-bottom: 1.6rem;
-    padding-bottom: 1.6rem;
-
-    &:last-child {
-      border: none;
-    }
-
     &.top {
+      border-bottom: 1px solid #e1e1e1;
+      display: flex;
+      margin-bottom: 1.6rem;
+      padding-bottom: 1.6rem;
+
+      &:last-child {
+        border: none;
+      }
+
       &:before {
         content: counter(item, upper-roman);
         counter-increment: item;
