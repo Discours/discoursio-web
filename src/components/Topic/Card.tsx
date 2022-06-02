@@ -43,39 +43,44 @@ export default (props: TopicProps) => {
             </a>
           </div>
         </Show>
-        <div class='topic-description'>
-          {props.topic.body || ''}
-        </div>
-          <div class='topic-details'>
 
-          <Show when={!props.compact}>
-            <span class='topic-details__item' classList={{ compact: props.compact }}>
-            {props.topic.topicStat?.shouts + ' ' + t('post') + plural(
-                props.topic.topicStat?.shouts || 0,
-                locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
-              )}
-            </span>
-            <span class='topic-details__item' classList={{ compact: props.compact }}>
-              {props.topic.topicStat?.authors + ' ' + t('author') + plural(
-                  props.topic.topicStat?.authors || 0,
-                  locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+        <Show when={!props.compact}>
+          <div class='topic-description'>
+            {props.topic.body || ''}
+          </div>
+        </Show>
+
+        <Show when={props.topic.topicStat}>
+          <div class='topic-details'>
+            <Show when={!props.compact}>
+              <span class='topic-details__item' classList={{ compact: props.compact }}>
+              {props.topic.topicStat?.shouts + ' ' + t('post') + plural(
+                  props.topic.topicStat?.shouts || 0,
+                  locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
                 )}
-            </span>
+              </span>
+              <span class='topic-details__item' classList={{ compact: props.compact }}>
+                {props.topic.topicStat?.authors + ' ' + t('author') + plural(
+                    props.topic.topicStat?.authors || 0,
+                    locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                  )}
+              </span>
+                <span class='topic-details__item'>
+                  {props.topic.topicStat?.views + ' ' + t('view') + plural(
+                    props.topic.topicStat?.views || 0,
+                    locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                  )}
+                </span>
+              </Show>
+
               <span class='topic-details__item'>
-                {props.topic.topicStat?.views + ' ' + t('view') + plural(
-                  props.topic.topicStat?.views || 0,
+                {subscribers() + ' ' + t('follower') + plural(
+                  subscribers() || 0,
                   locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                 )}
               </span>
-            </Show>
-
-            <span class='topic-details__item'>
-              {subscribers() + ' ' + t('follower') + plural(
-                subscribers() || 0,
-                locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
-              )}
-            </span>
-          </div>
+            </div>
+        </Show>
 
         <Show
           when={subscribed()}

@@ -44,7 +44,7 @@ export default (props: SliderProps) => {
   })
   const articles = createMemo(() => props.articles)
   return (
-    <div class='floor floor--important floor--slider'>
+    <div class='floor floor--important'>
       <div class='wide-container row'>
         <h2 class='col-12'>{props.title}</h2>
         <Show when={!!articles()}>

@@ -216,6 +216,19 @@
   .shout__author {
     margin-top: 0.8rem;
   }
+
+  .col-md-6 {
+    .shout-card__title,
+    .shout-card__subtitle {
+      display: inline;
+      @include font-size(2.6rem);
+      line-height: 1.2;
+    }
+
+    .shout-card__title {
+      margin-right: 0.3em;
+    }
+  }
 }
 
 .shout-card--with-cover {
@@ -409,6 +422,7 @@
 }
 
 .col-md-6,
+.col-lg-6,
 .col-md-8 {
   .shout-card__title {
     display: block;

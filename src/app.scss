@@ -366,7 +366,7 @@ figcaption {
 
     &:hover {
       background: $link-color;
-      color: #fff;
+      color: #fff !important;
     }
   }
 }
