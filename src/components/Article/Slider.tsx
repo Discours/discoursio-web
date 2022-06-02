@@ -6,7 +6,7 @@ import 'swiper/scss/navigation'
 import 'swiper/scss/pagination'
 import './Slider.scss'
 import { Shout } from '../../graphql/types.gen'
-import { createEffect, createMemo, createSignal, Show } from 'solid-js'
+import { createEffect, createMemo, createSignal, Show, onMount } from 'solid-js'
 import Icon from '../Nav/Icon'
 
 interface SliderProps {
@@ -21,7 +21,7 @@ export default (props: SliderProps) => {
   let prevEl: HTMLDivElement | undefined
   const opts: SwiperOptions = {
     loop: true,
-    // origin: 'center',
+    centeredSlides: true,
     slidesPerView: 1.66666,
     spaceBetween: 8,
     modules: [Navigation, Pagination],
@@ -37,7 +37,9 @@ export default (props: SliderProps) => {
   const [swiper, setSwiper] = createSignal<Swiper>()
   createEffect(() => {
     if(!swiper() && !!el) {
-      setSwiper(new Swiper(el as HTMLDivElement, opts))
+      setTimeout(() => {
+        setSwiper(new Swiper(el as HTMLDivElement, opts));
+      }, 100);
     }
   })
   const articles = createMemo(() => props.articles)
