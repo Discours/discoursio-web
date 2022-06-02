@@ -51,8 +51,12 @@ img {
     font-weight: 500;
     font-style: italic;
     line-height: 1.4;
-    margin: 1.5em 0 1.5em -16.6666%;
+    margin: 1.5em 0;
     padding: 0 0 0 1em;
+
+    @include media-breakpoint-up(md) {
+      margin-left: -16.6666%;
+    }
   }
 
   mark {
