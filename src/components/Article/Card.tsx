@@ -13,6 +13,7 @@ interface CardProps {
     noicon?: boolean
     noimage?: boolean
     nosubtitle?: boolean
+    noauthor?: boolean
     isGroup?: boolean
     photoBottom?: boolean
     additionalClass?: string
@@ -89,7 +90,7 @@ export default (props: CardProps) => {
             <div class='shout-card__subtitle'>{subtitle()}</div>
           </Show>
 
-          <Show when={!settings?.noimage}>
+          <Show when={!settings?.noauthor}>
             <div class='shout__author'>
               <For each={props.article.authors}>
                 {(a: Partial<User>) => (

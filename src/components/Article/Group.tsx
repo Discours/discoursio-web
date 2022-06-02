@@ -9,7 +9,7 @@ interface GroupProps {
 }
 
 export default (props: GroupProps) => {
-  return (<div class='floor floor--important floor--group'>
+  return (<div class='floor floor--important'>
     <div class='wide-container row'>
       <div class='group__header col-12'>
         {props.header}
@@ -36,12 +36,12 @@ export default (props: GroupProps) => {
             <Show when={props.articles.length >= 4}>
               <div class='col-md-6'>
                 <For each={props.articles.slice(1, 3)}>
-                  {(a) => <ArticleCard article={a} settings={{ noicon: true }} />}
+                  {(a) => <ArticleCard article={a} settings={{ noicon: true, noimage: true }} />}
                 </For>
               </div>
               <div class='col-md-6'>
                 <For each={props.articles.slice(3, 5)}>
-                  {(a) => <ArticleCard article={a} settings={{ noicon: true }} />}
+                  {(a) => <ArticleCard article={a} settings={{ noicon: true, noimage: true }} />}
                 </For>
               </div>
             </Show>

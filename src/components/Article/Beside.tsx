@@ -41,7 +41,7 @@ export default (props: BesideProps) => {
                         <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
                       </Show>
                       <Show when={props.wrapper === 'top-article'}>
-                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
+                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true, noauthor: true }} />
                       </Show>
                     </li>
                   )}

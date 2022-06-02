@@ -203,6 +203,41 @@
   }
 }
 
+.floor--important {
+  padding-bottom: $container-padding-x;
+  padding-top: $container-padding-x;
+
+  @include media-breakpoint-up(md) {
+    padding-bottom: $grid-gutter-width;
+    padding-top: $grid-gutter-width;
+  }
+
+  h2 {
+    @include font-size(4.4rem);
+    text-align: center;
+  }
+
+  .shout-card {
+    margin-bottom: $grid-gutter-width;
+  }
+
+  .shout__author {
+    margin-top: 0.8rem;
+  }
+
+  .col-md-6 {
+    .shout-card__title,
+    .shout-card__subtitle {
+      display: inline;
+      @include font-size(2.6rem);
+      line-height: 1.2;
+    }
+
+    .shout-card__title {
+      margin-right: 0.3em;
+    }
+  }
+}
 
 .shout-card--with-cover {
   padding: 56.2% 2.4rem 0;
@@ -314,6 +349,7 @@
 }
 
 .col-md-6,
+.col-lg-6,
 .col-md-8 {
   .shout-card__title {
     display: block;
