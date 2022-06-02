@@ -1,5 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { createSignal } from 'solid-js'
+import './Subscribe.scss'
 
 export default () => {
   let emailElement: HTMLInputElement | undefined
