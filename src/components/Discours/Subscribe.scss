@@ -17,9 +17,11 @@
   }
 
   a {
-    background: #f7f7f7;
+    align-items: center;
+    background: #fff;
     border: none;
     color: #000;
+    display: flex;
     @include font-size(1.5rem);
     padding: 0 0.5em;
   }

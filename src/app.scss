@@ -65,6 +65,15 @@ section {
   padding: 0 $container-padding-x;
 }
 
+h1,
+h2 {
+  .wrapped {
+    background: #000;
+    color: #fff;
+    padding: 0 0.15em;
+  }
+}
+
 h1 {
   @include font-size(4.8rem);
   line-height: 1.1;
