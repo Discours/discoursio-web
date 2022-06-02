@@ -7,6 +7,7 @@ import './404.css'
 const FourOhFour: Component<any> = () => {
   const [t] = useI18n()
   const search = (ev: Event) => {
+    // TODO: search logix
     console.debug(ev)
   }
   return (

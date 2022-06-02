@@ -18,3 +18,30 @@
   cursor: pointer;
   font-weight: bold;
 }
+
+.floor--important {
+  background: #000;
+  color: #fff;
+  padding: $grid-gutter-width 0;
+
+  .all-materials,
+  .article-card__title,
+  .shout-card__title {
+    a {
+      color: #fff;
+    }
+  }
+
+  .article__topic,
+  .shout__topic,
+  .shout__author {
+    a {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  a:hover {
+    background: #fff;
+    color: #000 !important;
+  }
+}

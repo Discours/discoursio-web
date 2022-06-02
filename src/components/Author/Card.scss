@@ -12,6 +12,7 @@
   display: flex;
   flex: 1;
   padding-right: 1.2rem;
+  width: max-content;
 }
 
 .author__details-wrapper {
@@ -86,6 +87,7 @@
   background: #f6f6f6;
   border-radius: 2.5rem;
   display: inline-flex;
+  float: right;
 
   :global(img) {
     vertical-align: middle;

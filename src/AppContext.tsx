@@ -6,10 +6,12 @@ import { createI18nContext, I18nContext } from '@solid-primitives/i18n'
 
 interface AppContextInterface {
   isDark: boolean
+  lang: string
 }
 
 const AppContext = createContext<AppContextInterface>({
-  isDark: false
+  isDark: false,
+  lang: 'ru'
 })
 
 const langs: { [lang: string]: any } = {
@@ -27,17 +29,17 @@ type DataParams = {
   page: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AppContextProvider: Component<any> = (props) => {
   const now = new Date()
   const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
-  const [settings, set] = createCookieStorage()
+  const [settings, setSettings] = createCookieStorage()
   const browserLang = navigator.language.slice(0, 2)
   const location = useLocation()
 
-  if (location.query.locale) set('locale', location.query.locale, cookieOptions)
-  // eslint-disable-next-line no-prototype-builtins
-  else if (!settings.locale && langs.hasOwnProperty(browserLang)) set('locale', browserLang)
+  if (location.query.lang) 
+    setSettings('locale', location.query.lang, cookieOptions)
+  else if (!settings.locale && langs.hasOwnProperty(browserLang)) 
+    setSettings('locale', browserLang)
 
   const i18n = createI18nContext({}, (settings.locale || 'en') as string)
   const [t, { add, locale }] = i18n
@@ -49,21 +51,24 @@ export const AppContextProvider: Component<any> = (props) => {
   }
 
   // eslint-disable-next-line no-shadow
-  const [lang] = createResource(params, ({ locale }) => langs[locale]())
+  const [langstore] = createResource(params, ({ locale }) => langs[locale]())
   const isDark = () => settings.dark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches
 
-  createEffect(() => set('locale', i18n[1].locale()), cookieOptions)
+  createEffect(() => setSettings('locale', i18n[1].locale()), cookieOptions)
   createEffect(() => {
-    if (!lang.loading) add(i18n[1].locale(), lang() as Record<string, any>)
+    if (!langstore.loading) add(i18n[1].locale(), langstore() as Record<string, any>)
   })
   createEffect(() => document.documentElement.classList[isDark() ? 'add' : 'remove']('dark'))
 
   const store = {
     set isDark(value) {
-      set('dark', value === true ? 'true' : 'false', cookieOptions)
+      setSettings('dark', value === true ? 'true' : 'false', cookieOptions)
     },
     get isDark() {
       return isDark()
+    },
+    get lang() {
+      return langstore()
     }
   }
 

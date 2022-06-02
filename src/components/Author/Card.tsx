@@ -7,6 +7,7 @@ import { useStore } from '../../store'
 import { NavLink } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createMemo } from 'solid-js'
+import { translit } from '../../utils/ru2en'
 
 interface AuthorCardProps {
   compact?: boolean
@@ -15,10 +16,12 @@ interface AuthorCardProps {
 }
 
 export default (props: AuthorCardProps) => {
-  const [t] = useI18n()
+  const [t, { locale }] = useI18n()
   const [ { session, info }, { follow, unfollow }] = useStore()
   const subscribed = createMemo(() => !!info?.userSubscribedAuthors?.filter((u) => u?.slug === props.author.slug).pop())
   const canFollow = createMemo(() => !props.hideFollow && (session?.slug !== props.author.slug))
+  const bio = createMemo(() => props.author.bio || t('Our regular contributor'))
+  const name = createMemo(() => translit(props.author.name || '', locale() || 'ru'))
   // TODO: reimplement AuthorCard
   return (
     <>
@@ -29,12 +32,10 @@ export default (props: AuthorCardProps) => {
           <div class='author__details'>
             <div class='author__details-wrapper'>
               <div class='author__name text-3xl text-2xl'>
-                <NavLink href={`/author/${props.author.slug}`}>{props.author.name}</NavLink>
+                <NavLink href={`/author/${props.author.slug}`}>{name()}</NavLink>
               </div>
 
-              <Show when={props.author.bio}>
-                <div class='author__about'>{props.author.bio || 'наш постоянный автор' }</div>
-              </Show>
+              <div class='author__about'>{bio()}</div>
             </div>
 
             <Show when={canFollow()}>

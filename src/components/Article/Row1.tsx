@@ -1,6 +1,7 @@
 import { Show } from 'solid-js'
 import { Shout } from '../../graphql/types.gen'
 import ArticleCard from './Card'
+import './Row1.scss'
 
 export default (props: { article: Partial<Shout> }) => (
   <Show when={!!props.article}>

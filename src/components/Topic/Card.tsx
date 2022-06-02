@@ -2,10 +2,9 @@ import { capitalize, plural } from '../../utils'
 import { Show } from 'solid-js/web'
 import './Card.scss'
 import { useStore } from '../../store'
-import { createSignal } from 'solid-js'
+import { createMemo, createResource, createSignal } from 'solid-js'
 import { Topic } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
-import MD from '../Article/MD'
 
 interface TopicProps {
   topic: Topic
@@ -14,11 +13,12 @@ interface TopicProps {
 }
 
 export default (props: TopicProps) => {
-  console.debug(props.topic)
+  // console.debug(props.topic)
   const [t, { locale }] = useI18n()
   const [subscribed, setSubscribed] = createSignal<boolean>(props.subscribed as boolean)
-  const [subscribers,setSubscribers] = createSignal<number>(props.topic.topicStat?.subscriptions as number)
+  const [subscribers,setSubscribers] = createSignal<number>(props.topic.topicStat?.subscriptions as number || 0)
   const [, { follow, unfollow }] = useStore()
+  const body = createResource(props.topic.body, () => props.topic?.body)
   const subscribe = ( really = true ) => {
     if (really) {
       follow('topic', props.topic.slug)
@@ -44,7 +44,7 @@ export default (props: TopicProps) => {
           </div>
         </Show>
         <div class='topic-description'>
-          {props.topic.body || ''}
+          {props.topic.body || 'Тема не раскрыта'}
         </div>
           <div class='topic-details'>
 
@@ -67,28 +67,24 @@ export default (props: TopicProps) => {
                   locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                 )}
               </span>
-            </Show>
-
-            <span class='topic-details__item'>
-              {subscribers() + ' ' + t('follower') + plural(
-                subscribers() || 0,
+            <span class='topic-details__item followers'>
+              {subscribers().toString() + ' ' + t('follower') + plural(
+                subscribers(),
                 locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
               )}
             </span>
+          </Show>
+          <Show when={subscribed()} fallback={
+              <button onClick={() => subscribe(true)} class='button'>
+                +&nbsp;{t('Follow')}
+              </button>
+            }>
+              <button onClick={() => subscribe(false)} class='button'>
+                -&nbsp;{t('Unfollow')}
+              </button>
+          </Show>
           </div>
 
-        <Show
-          when={subscribed()}
-          fallback={
-            <button onClick={() => subscribe(true)} class='button'>
-              +&nbsp;{t('Follow')}
-            </button>
-          }
-        >
-          <button onClick={() => subscribe(false)} class='button'>
-            -&nbsp;{t('Unfollow')}
-          </button>
-        </Show>
       </div>
       <div class='col-md-3'>{/* TODO: add topics' pics to db  */}</div>
     </div>

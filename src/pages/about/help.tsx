@@ -19,7 +19,7 @@ export default () => {
   let widget: any
 
   const [{}, { warn, showModal }] = useStore()
-  const [showingPayment, setShowingPayment] = createSignal(false)
+  const [showingPayment, setShowingPayment] = createSignal<boolean>()
   const [period, setPeriod] = createSignal(monthly)
   const [amount, setAmount] = createSignal(0)
 
@@ -54,6 +54,7 @@ export default () => {
 
   const show = () => {
     // $openModal = 'donate'
+    setShowingPayment(true)
     console.log('help: donate clicked')
     let choice: HTMLInputElement | undefined | null =
       amountSwitchElement?.querySelector('input[type=radio]:checked')

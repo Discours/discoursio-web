@@ -51,7 +51,7 @@ export const Home: Component = () => {
         ...Array.from(data.topOverall),
         ...Array.from(data.topRecent)
       ]
-      setTopViewed(data.topRecent.sort(byViews).slice(0,5))
+      setTopViewed(Array.from(data.topRecent).sort(byViews).slice(0,5))
 
       // get shouts lists by
       let byLayout: { [key: string]: Partial<Shout>[] } = {}
@@ -94,7 +94,7 @@ export const Home: Component = () => {
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0, 12)
         .map((f) => f[0])
-      console.debug(topicSlugs)
+      //console.debug(topicSlugs)
       setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
       console.log(`[ready] topics navbar data prepared`)
       setLoaded(true)

@@ -100,5 +100,9 @@
   "Enter the code or click the link from email to confirm": "Введите код из письма или пройдите по ссылке в письме для подтверждения регистрации",
   "Everything is ok, please give us your email address": "Ничего страшного, просто укажите свою почту, чтобы получить ссылку для сброса пароля.",
   "Successfully authorized": "Авторизация успешна",
-  "Reason uknown": "Причина неизвестна"
+  "Reason uknown": "Причина неизвестна",
+  "Our regular contributor": "Наш постоянный автор",
+  "zine": "журнал",
+  "feed": "лента",
+  "topics": "темы"
 }

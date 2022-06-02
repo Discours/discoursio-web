@@ -55,6 +55,7 @@
 .topic-details {
   @include font-size(1.7rem);
   color: #9fa1a7;
+  width: max-content;
 }
 
 .topic-details__item {
@@ -65,5 +66,11 @@
   }
   &.compact {
     font-size: small;
+  }
+  &.followers {
+    word-break: keep-all;
+  }
+  &.button {
+    float: right;
   }
 }

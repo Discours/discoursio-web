@@ -1,8 +1,10 @@
+import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import { createSignal, onMount } from 'solid-js'
 import { For, Show } from 'solid-js/web'
 import { Shout, Topic, User } from '../../graphql/types.gen'
 import { capitalize } from '../../utils'
+import { translit } from '../../utils/ru2en'
 import Icon from '../Nav/Icon'
 import './Card.scss'
 
@@ -19,6 +21,7 @@ interface CardProps {
 }
 
 export default (props: CardProps) => {
+  const [,{ locale } ] = useI18n()
   const [title, setTitle] = createSignal(props.article.title)
   const [subtitle, setSubtitle] = createSignal(props.article.subtitle)
   const { settings } = props
@@ -33,6 +36,8 @@ export default (props: CardProps) => {
       }
     }
   })
+
+  const tag = (t: Topic) => (/[а-яА-ЯЁё]/.test(t.title || '') && locale() !== 'ru') ? t.slug : t.title
   return (
       <section
         class={`shout-card ${settings?.additionalClass}`}
@@ -70,7 +75,7 @@ export default (props: CardProps) => {
             <For each={(props.article.topics as Topic[]).filter((t: Topic) => props.article.mainTopic === t.slug)}>
               {(topic: Topic) => (
                 <div class='shout__topic'>
-                  <NavLink href={`/topic/${topic.slug}`}>{topic.title}</NavLink>
+                  <NavLink href={`/topic/${topic.slug}`}>{tag(topic)}</NavLink>
                 </div>
               )}
             </For>
@@ -90,7 +95,7 @@ export default (props: CardProps) => {
                 {(a: Partial<User>) => (
                   <>
                     <Show when={(props.article.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
-                    <NavLink href={`/author/${a.slug}`}>{a.name}</NavLink>
+                    <NavLink href={`/author/${a.slug}`}>{translit(a.name || '', locale() || 'ru')}</NavLink>
                   </>
                 )}
               </For>

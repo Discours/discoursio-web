@@ -1,4 +1,4 @@
-import { For, Show, createSignal, onMount, createEffect } from 'solid-js'
+import { For, Show, createSignal, onMount, createEffect, createMemo } from 'solid-js'
 import { Link, NavLink } from 'solid-app-router'
 import './Header.scss'
 import { useStore } from '../../store'
@@ -9,18 +9,12 @@ import Modal from './Modal'
 import AuthModal from './AuthModal'
 import { useI18n } from '@solid-primitives/i18n'
 
-const routes = [
-  { name: 'журнал', href: '/' },
-  { name: 'лента', href: '/feed' },
-  { name: 'темы', href: '/topics' }
-]
-
 export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
   const [{ token, session, warnings }, { showModal, toggleWarnings }] = useStore()
-
+ 
   onMount(() => {
     setResource(window.location.pathname)
     setFixed(document.body.classList.contains('fixed'))
@@ -34,6 +28,12 @@ export default () => {
       }
     }
   })
+
+  const rrr = createMemo(() => ([
+    { name: t('zine'), href: '/' },
+    { name: t('feed'), href: '/feed' },
+    { name: t('topics'), href: '/topics' }
+  ]))
 
   return (
     <header>
@@ -49,18 +49,18 @@ export default () => {
             </NavLink>
           </div>
           <ul class='col main-navigation text-xl inline-flex' classList={{ fixed: fixed() }}>
-            <For each={routes}>
-              {({ href, name }) => (
-                <li classList={{ selected: resource() === href }}>
+            <For each={rrr()}>
+              {(r: { href:string; name:string; }) => (
+                <li classList={{ selected: resource() === r.href }}>
                   <NavLink
-                    href={href}
+                    href={r.href}
                     onClick={() => {
-                      setResource(href)
+                      setResource(r.href)
                       setFixed(false)
                       document.body.classList.remove('fixed')
                     }}
                   >
-                    {name}
+                    {r.name}
                   </NavLink>
                 </li>
               )}

@@ -1,3 +1,17 @@
+.floor--slider {
+  .shout-card {
+    .shout-card__cover-container {
+      z-index: 1;
+    }
+
+    .shout-card__cover {
+      &:after {
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 75%);
+      }
+    }
+  }
+}
+
 .swiper-slide {
   height: 0 !important;
   min-height: 0 !important;

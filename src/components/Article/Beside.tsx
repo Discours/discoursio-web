@@ -15,7 +15,7 @@ interface BesideProps {
 }
 export default (props: BesideProps) => {
   // wrap, top, title, beside, values, wrapper
-  console.debug(props.title)
+  // console.debug(props.title)
   return (
     <Show when={!!props.beside?.slug && props.values?.length > 0}>
       <div class='floor floor--9'>
