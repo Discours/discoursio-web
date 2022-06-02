@@ -51,7 +51,7 @@ export default (props: TopicProps) => {
         </Show>
 
         <Show when={props.topic.topicStat}>
-          
+
             <div class='topic-details'>
 
               <Show when={!props.compact}>
@@ -89,18 +89,19 @@ export default (props: TopicProps) => {
               </span>
             </div>
           </Show>
-
-          <Show when={subscribed()} fallback={
-              <button onClick={() => subscribe(true)} class='button'>
-                +&nbsp;{t('Follow')}
-              </button>
-            }>
-              <button onClick={() => subscribe(false)} class='button'>
-                -&nbsp;{t('Unfollow')}
-              </button>
-          </Show>
       </div>
-      <div class='col-md-3'>{/* TODO: add topics' pics to db  */}</div>
+      <div class='col-md-3'>
+        <Show when={subscribed()} fallback={
+            <button onClick={() => subscribe(true)} class='button'>
+              +&nbsp;{t('Follow')}
+            </button>
+          }>
+            <button onClick={() => subscribe(false)} class='button'>
+              -&nbsp;{t('Unfollow')}
+            </button>
+        </Show>
+        {/* TODO: add topics' pics to db  */}
+      </div>
     </div>
   )
 }

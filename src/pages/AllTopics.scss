@@ -35,9 +35,13 @@
     text-transform: capitalize;
   }
 
-  .container {
-    padding-left: 0;
-    padding-right: $container-padding-x;
-    width: auto;
+  .topic {
+    @include media-breakpoint-down(md) {
+      margin-top: 1.6rem;
+    }
   }
+}
+
+.container {
+  width: auto;
 }

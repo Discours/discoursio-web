@@ -400,9 +400,12 @@ figcaption {
 
 .container {
   max-width: 1400px;
-  padding-left: 227px;
   //margin-left: 201px;
   //width: auto;
+
+  @include media-breakpoint-up(md) {
+    //padding-left: 227px;
+  }
 }
 
 .shift-content {

@@ -63,7 +63,7 @@ export default () => {
     <>
       <PageLoadingBar active={data.topicsLoading} />
       <Show when={!data.topicsLoading}>
-        <div class='container'>
+        <div class='container shift-content'>
           <div class='row'>
             <div class='col-md-9'>
               <h1>{t('Topics')}</h1>
@@ -116,7 +116,7 @@ export default () => {
                         <div class='row'>
                           <For each={topicsGroupedByAlphabet[letter]}>
                             {(topic: Partial<Topic>) => (
-                              <div class='topic col-3'>
+                              <div class='topic col-sm-6 col-md-3'>
                                 <div class='topic-title'>
                                   <a href={`/topic/${topic.slug}`}>{topic.title}</a>
                                 </div>
