@@ -62,7 +62,11 @@ section {
 .wide-container {
   margin: 0 auto;
   max-width: 1400px;
-  padding: 0 $container-padding-x;
+  padding: 0 divide($container-padding-x, 2);
+
+  @include media-breakpoint-up(sm) {
+    padding: 0 $container-padding-x;
+  }
 }
 
 h1,
@@ -108,7 +112,6 @@ main {
 }
 
 body,
-div,
 span,
 a,
 p,
@@ -354,10 +357,12 @@ figcaption {
     padding-left: divide($container-padding-x, 2);
     padding-right: divide($container-padding-x, 2);
 
+    /*
     .row {
       margin-left: divide(-$container-padding-x, 2);
       margin-right: divide(-$container-padding-x, 2);
     }
+    */
   }
 }
 
@@ -391,4 +396,21 @@ figcaption {
 #main-content {
   flex: 1 100%;
   transition: all 1s ease;
+}
+
+.container {
+  max-width: 1400px;
+  padding-left: 227px;
+  //margin-left: 201px;
+  //width: auto;
+}
+
+.shift-content {
+  @include media-breakpoint-up(md) {
+    margin-left: 127px;
+  }
+
+  @include media-breakpoint-up(lg) {
+    margin-left: 201px;
+  }
 }

@@ -45,3 +45,12 @@
     color: #000 !important;
   }
 }
+
+.container {
+  padding-left: $container-padding-x;
+}
+
+.floor {
+  padding-left: 0;
+  padding-right: 0;
+}

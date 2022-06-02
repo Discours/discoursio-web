@@ -21,8 +21,12 @@ header {
     position: fixed;
     right: 0;
     top: 0;
-    padding: 0 $container-padding-x;
+    padding: 0 divide($container-padding-x, 2);
     z-index: 10;
+
+    @include media-breakpoint-up(sm) {
+      padding: 0 $container-padding-x;
+    }
   }
 }
 

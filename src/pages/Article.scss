@@ -20,7 +20,7 @@ img {
   margin-bottom: 2em;
 
   @include media-breakpoint-up(md) {
-    margin: 0 -16.6666% 2em;
+    margin: 0 0 2em;
   }
 }
 

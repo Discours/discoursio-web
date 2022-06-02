@@ -47,45 +47,43 @@ export const BlogArticle: Component = () => {
         when={!data.loading && Boolean(data.article)}
       >
         <div class='shout wide-container'>
-          <div class='row'>
-            <article class='col-md-6 offset-md-3'>
-              <div class='shout__header'>
-                <div class='shout__topic'>
-                  <a
-                    href={`/topic/${data.article.mainTopic}`}
-                    textContent={(
-                      data.article?.topics?.find((topic) => topic?.slug === data.article?.mainTopic)
-                        ?.title as string
-                    ).replace(' ', '&nbsp;')}
-                  ></a>
-                </div>
-
-                <h1>{data.article.title}</h1>
-                <Show when={data.article.subtitle}>
-                  <h4>{capitalize(data.article?.subtitle as string, false)}</h4>
-                </Show>
-
-                <div class='shout__author'>
-                  <For each={data.article.authors}>
-                    {(a: Partial<User>, index) => (
-                      <>
-                        <Show when={index() > 0}>, </Show>
-                        <a href={`/author/${a.slug}`}>{a.name}</a>
-                      </>
-                    )}
-                  </For>
-                </div>
-
-                <div class='shout__cover' style={`background-image: url('${data.article.cover}')`} />
+          <article class='col-md-6 shift-content'>
+            <div class='shout__header'>
+              <div class='shout__topic'>
+                <a
+                  href={`/topic/${data.article.mainTopic}`}
+                  innerHTML={(
+                    data.article?.topics?.find((topic) => topic?.slug === data.article?.mainTopic)
+                      ?.title as string
+                  ).replace(' ', '&nbsp;')}
+                ></a>
               </div>
 
-              <div class='shout__body'>
-                <MD body={data.article.body as string} />
-              </div>
-            </article>
-          </div>
+              <h1>{data.article.title}</h1>
+              <Show when={data.article.subtitle}>
+                <h4>{capitalize(data.article?.subtitle as string, false)}</h4>
+              </Show>
 
-          <div class='col-md-8 offset-md-2'>
+              <div class='shout__author'>
+                <For each={data.article.authors}>
+                  {(a: Partial<User>, index) => (
+                    <>
+                      <Show when={index() > 0}>, </Show>
+                      <a href={`/author/${a.slug}`}>{a.name}</a>
+                    </>
+                  )}
+                </For>
+              </div>
+
+              <div class='shout__cover' style={`background-image: url('${data.article.cover}')`} />
+            </div>
+
+            <div class='shout__body'>
+              <MD body={data.article.body as string} />
+            </div>
+          </article>
+
+          <div class='col-md-8 shift-content'>
             <div class='shout-stats'>
               <div class='shout-stats__item shout-stats__item--likes'>
                 <Icon name='like' />

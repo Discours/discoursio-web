@@ -32,6 +32,12 @@
   li {
     margin-top: 0.8rem;
   }
+
+  .wide-container {
+    @include media-breakpoint-down(sm) {
+      padding: 0 $container-padding-x;
+    }
+  }
 }
 
 .discours-footer__content {

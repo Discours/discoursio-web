@@ -39,7 +39,7 @@ export default (props: SliderProps) => {
     if(!swiper() && !!el) {
       setTimeout(() => {
         setSwiper(new Swiper(el as HTMLDivElement, opts));
-      }, 100);
+      }, 500);
     }
   })
   const articles = createMemo(() => props.articles)
