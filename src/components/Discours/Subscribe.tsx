@@ -1,25 +1,21 @@
 import { useI18n } from '@solid-primitives/i18n'
-import { createSignal } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 import './Subscribe.scss'
 
 export default () => {
   let emailElement: HTMLInputElement | undefined
   const [t] = useI18n()
-  const [title, setTitle] = createSignal(t('Subscribe'))
-  const [email, setEmail] = createSignal('')
+  const [title, setTitle] = createSignal('')
   const subscribe = async () => {
     setTitle(t('...subscribing'))
-    setEmail(emailElement?.value || '')
-    const r = await fetch(`/api/maillist?email=${email()}`)
+    const r = await fetch(`/maillist?email=${emailElement?.value}`)
     setTitle(r.ok ? t('You are subscribed') : t('Subscribe'))
   }
-
+  onMount(() => setTitle(t('Subscribe')))
   return (
     <div class='subscribe-form'>
-      <input type='email' name='email' value={email()} ref={emailElement} placeholder='email' />
-      <a href='#subscribe' onClick={() => email() && subscribe()}>
-        {title()}
-      </a>
+      <input type='email' name='email' ref={emailElement} placeholder='email' />
+      <button onClick={() => (emailElement?.value && subscribe())} value={title() as string} />
     </div>
   )
 }

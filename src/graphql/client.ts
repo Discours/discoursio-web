@@ -20,7 +20,7 @@ const ssrCache = ssrExchange({
   initialState: isClient ? (window as any).__URQL_DATA__ : undefined
 })
 
-export const baseUrl = 'https://newapi.discours.io'
+export const baseUrl = 'https://new.discours.io/data'
 export const clientOptions: ClientOptions = {
   url: `${baseUrl}`,
   requestPolicy: 'cache-and-network',

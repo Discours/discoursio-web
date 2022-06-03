@@ -11,6 +11,6 @@
         }
     ],
     "rewrites": [
-        { "source": "/api/:match*", "destination": "https://newapi.discours.io/:match*" }
+        { "source": "/data/:match*", "destination": "https://newapi.discours.io/:match*" }
     ]
 }
