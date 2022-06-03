@@ -9,5 +9,8 @@
                 }
             ]
         }
+    ],
+    "rewrites": [
+        { "source": "/api/:match*", "destination": "https://newapi.discours.io/:match*" }
     ]
 }
