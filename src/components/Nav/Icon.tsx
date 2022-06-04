@@ -8,7 +8,7 @@ export default (_props: any) => {
     <div class='icon'>
       <img src={`/icons/${props.name}.svg`} alt={props.title ?? props.name} />
       <Show when={props.counter}>
-        <div class='counter'>{props.counter.toString()}</div>
+        <div class='notifications-counter'>{props.counter.toString()}</div>
       </Show>
     </div>
   )
