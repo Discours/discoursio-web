@@ -1,5 +1,7 @@
-import { defineConfig, UserConfig } from 'vite'
+import { defineConfig, UserConfig, UserConfigFn } from 'vite'
 import SolidJS from 'vite-plugin-solid'
+import pluginTSConfigPaths from 'vite-tsconfig-paths'
+import pluginCompression from 'vite-plugin-compression'
 import SolidSVG from 'vite-plugin-solid-svg'
 // import ssr from 'vite-plugin-ssr/plugin'
 import manifest from './public/manifest.json'
@@ -54,9 +56,8 @@ const pwaOptions = {
     ]
   }
 }
-
+const dev = process.env.NODE_ENV !== 'production'
 const isSSR = process.argv.includes('ssr')
-const rollupOptions = isSSR ? { input: './src/ssr.ts' } : {}
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -68,8 +69,9 @@ export default defineConfig({
       }),
       enforce: 'pre'
     },
-    SolidJS({ extensions: ['.md', '.mdx'] }),
-    // TODO: isSSR && ssr(),
+    SolidJS({ extensions: ['.md', '.mdx'], dev }),
+    pluginTSConfigPaths(),
+    pluginCompression({ algorithm: 'brotliCompress' }),
     SolidSVG(),
     pwaEnabled && VitePWA(pwaOptions as any)
   ],
@@ -85,13 +87,15 @@ export default defineConfig({
     exclude: []
   },
   build: {
+    assetsInlineLimit: 0,
+    cssCodeSplit: false,
     polyfillDynamicImport: false,
     target: 'esnext',
-    rollupOptions
+    rollupOptions: isSSR ? { input: './src/ssr.ts' } : {}
   },
   resolve: {
     alias: {
       $: path.resolve(__dirname, './src')
     }
   }
-} as UserConfig)
+} as UserConfig) as UserConfigFn

@@ -1,4 +1,4 @@
-import { For, Show, createSignal, onMount, createEffect, createMemo } from 'solid-js'
+import { For, Show, createSignal, onMount, createMemo } from 'solid-js'
 import { Link, NavLink } from 'solid-app-router'
 import './Header.scss'
 import { useStore } from '../../store'
@@ -13,20 +13,11 @@ export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [{ token, session, warnings }, { showModal, toggleWarnings }] = useStore()
- 
+  const [state, actions] = useStore()
+
   onMount(() => {
     setResource(window.location.pathname)
     setFixed(document.body.classList.contains('fixed'))
-  })
-
-  createEffect(() => {
-    if (token) {
-      if (session) {
-        console.log('nav/header: auth.token found and logged in')
-        // NOTE: session
-      }
-    }
   })
 
   const rrr = createMemo(() => ([
@@ -45,7 +36,7 @@ export default () => {
         <nav class='row header__inner' classList={{ fixed: fixed() }}>
           <div class='main-logo col-auto'>
             <NavLink href='/'>
-              <img src='/logo.svg' alt={t('Дискурс')} />
+              <img src='/logo.svg' alt={t('Discours')} />
             </NavLink>
           </div>
           <ul class='col main-navigation text-xl inline-flex' classList={{ fixed: fixed() }}>
@@ -69,9 +60,9 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={() => toggleWarnings()}>
+                <a href={''} onClick={() => actions.toggleWarnings()}>
                   <div>
-                    <Icon name='bell-white' counter={warnings?.length || 1} />
+                    <Icon name='bell-white' counter={state.warnings?.length || 1} />
                   </div>
                 </a>
               </div>
@@ -79,14 +70,15 @@ export default () => {
                 <Notifications />
               </div>
               <Show
-                when={!!token}
+                when={actions.authorized()}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
                     <Link
                       href='#'
                       onClick={(evt) => {
                         evt.preventDefault()
-                        showModal('auth')
+                        setFixed(false)
+                        actions.showModal('auth')
                       }}
                     >
                       {t('enter')}

@@ -68,6 +68,8 @@ export function StoreProvider(props: { children: any }) {
     warningsVisible: false
   })
 
+
+
   const actions = {
     // warnings
     getWarnings: () => state.warnings,
@@ -90,16 +92,14 @@ export function StoreProvider(props: { children: any }) {
     getInfo: () => state.info,
     getSession: (t?: string) => {
       const token = t || localStorage.getItem('token') || ''
-      if (token) setState({ ...state, token })
-
-      if (token) {
-        // eslint-disable-next-line no-shadow
+      if (token && !state.session?.username) {
         const [qdata] = createQuery({ query: mySession, variables: { token } })
         const {
           getCurrentUser: { session, info }
         } = qdata()
         const { error } = session
-        if (!error)
+        setLoggedIn(!error)
+        if (!error) {
           setState({
             ...state,
             token,
@@ -107,8 +107,9 @@ export function StoreProvider(props: { children: any }) {
             info,
             handshaking: false
           })
-        else actions.warn(error)
+        } else { actions.warn(error) }
       }
+      return state.session
     },
     signIn: (email: string, password: string) => {
       const [qdata] = createQuery({ query: signIn, variables: { email, password } })
@@ -117,7 +118,7 @@ export function StoreProvider(props: { children: any }) {
       if (!error) setState({ ...state, token, session: user, handshaking: false })
 
       setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
-      // setLoggedIn(true)
+      setLoggedIn(true)
     },
     signUp: (username: string, email: string, password: string) => {
       const [qdata] = createQuery({ query: signUp, variables: { username, email, password } })
@@ -126,7 +127,7 @@ export function StoreProvider(props: { children: any }) {
       if (!error) setState({ ...state, token, session: user, handshaking: false })
 
       setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
-      // setLoggedIn(true)
+      setLoggedIn(true)
     },
     signCheck: (email: string) => {
       const [qdata] = createQuery({ query: signCheck, variables: { email } })

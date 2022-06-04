@@ -2,7 +2,7 @@ import { For, Show } from 'solid-js/web'
 import Icon from './Icon'
 import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
-import { createSignal } from 'solid-js'
+import { createSignal, onMount, onCleanup } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import './AuthModal.scss'
@@ -19,6 +19,7 @@ export default (props: { code?: string; mode?: string }) => {
   let emailElement: HTMLInputElement | undefined
   let pass2Element: HTMLInputElement | undefined
   let passElement: HTMLInputElement | undefined
+  let codeElement: HTMLInputElement | undefined
   let usernameElement: HTMLInputElement | undefined // TODO: place this element
   const titles = {
     'sign-up': t('Create account'),
@@ -28,13 +29,42 @@ export default (props: { code?: string; mode?: string }) => {
     resend: t('Resend code'),
     password: t('Enter your new password')
   }
+  
+  const expectCookie = () => {
+    console.log('[auth] expecting token cookie...')
+    // timer = setInterval(moveCookie, 1000)
+  }
+  const listenStorage = (ev: StorageEvent) => {
+    // console.log('[auth] storage event')
+    if(ev.storageArea === window.localStorage) {
+      // console.debug('[auth] local storage changed...')
+      const t = window.localStorage.getItem('token')
+      console.debug(t)
+      if(t && state.token !== t) {
+        state.token = t // store setter
+        console.log('[auth] token was updated')
+        console.debug(state)
+      }
+    }
+  }
+  onMount(() => {
+    console.log('[auth] mounted')
+    window.removeEventListener('storage', listenStorage)
+  })
+  onCleanup(() => {
+    window.addEventListener('storage', listenStorage, false)
+  })
 
   const oauth = (provider: string) => {
-    window.open(`${baseUrl}/oauth/${provider}`, provider, 'width=740, height=420')
+    const popup = window.open(`${baseUrl}/oauth/${provider}`, provider, 'width=740, height=420')
+    popup?.focus()
     hideModal()
+    expectCookie()
   }
 
   const auth = () => {
+    console.log('[auth] handshaking')
+    console.log(prompt())
     state.handshaking = true
     // 1 check format
     const emailTyped =
@@ -42,10 +72,11 @@ export default (props: { code?: string; mode?: string }) => {
       emailElement?.value.includes('@') &&
       emailElement.value.includes('.')
 
-    if (!emailTyped) warn({ body: t('Please check your email address'), kind: 'error' })
-    // TODO: 2 check if used
-    // eslint-disable-next-line no-constant-condition
-    else {
+    // 2 check email
+    if (!emailTyped) {
+      warn({ body: t('Please check your email address'), kind: 'error' })
+      console.log('[auth] email checked')
+    } else {
       const check = signCheck(emailElement?.value)
 
       console.log(check)
@@ -83,12 +114,18 @@ export default (props: { code?: string; mode?: string }) => {
         if (pass2Element?.value !== passElement?.value)
           warn({ body: t('Passwords are not same'), kind: 'error' })
         else signUp(usernameElement?.value, emailElement?.value, passElement?.value)
-
         break
       case 'reset':
+        // send reset-code to login with email
+        console.log('[auth] reset code: ' + codeElement?.value)
+        // TODO: signInReset(codeElement?.value)
+        break
       case 'resend':
+        // send code to email
+        break
       case 'forget':
-        // TODO: implemenet methods
+        // shows forget mode of auth-modal
+        // warn({ body: t('Passwords are not same'), kind: 'error' })
         break
       default:
         state.handshaking = false
@@ -116,7 +153,7 @@ export default (props: { code?: string; mode?: string }) => {
           </p>
         </div>
       </div>
-      <form class='col-sm-6 auth'>
+      <form class='col-sm-6 auth' onSubmit={console.debug}>
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
@@ -148,7 +185,7 @@ export default (props: { code?: string; mode?: string }) => {
             />
           </Show>
           <Show when={mode() === 'reset'}>
-            <input value={props.code} type='text' placeholder={t('Reset code')} />
+            <input ref={codeElement} value={props.code} type='text' placeholder={t('Reset code')} />
           </Show>
           <Show when={mode() === 'password'}>
             <input ref={passElement} type='password' placeholder={t('New password')} />
@@ -163,7 +200,7 @@ export default (props: { code?: string; mode?: string }) => {
 
           <Show when={mode() === 'sign-in'}>
             <div class='auth-actions'>
-              <a href={'#auth'} onClick={() => setMode('forget')}>
+              <a href={''} onClick={() => setMode('forget')}>
                 {t('Forget password?')}
               </a>
             </div>
@@ -173,16 +210,16 @@ export default (props: { code?: string; mode?: string }) => {
             <div class='social-provider'>
               <div class='providers-text'>{t('Or continue with social network')}</div>
               <div class='social'>
-                <a href={'#auth'} class='facebook-auth' onClick={() => oauth('facebook')}>
+                <a href={''} class='facebook-auth' onClick={() => oauth('facebook')}>
                   <Icon name='facebook' />
                 </a>
-                <a href={'#auth'} class='google-auth' onClick={() => oauth('google')}>
+                <a href={''} class='google-auth' onClick={() => oauth('google')}>
                   <Icon name='google' />
                 </a>
-                <a href={'#auth'} class='vk-auth' onClick={() => oauth('vk')}>
+                <a href={''} class='vk-auth' onClick={() => oauth('vk')}>
                   <Icon name='vk' />
                 </a>
-                <a href={'#auth'} class='github-auth' onClick={() => oauth('github')}>
+                <a href={''} class='github-auth' onClick={() => oauth('github')}>
                   <Icon name='github' />
                 </a>
               </div>
