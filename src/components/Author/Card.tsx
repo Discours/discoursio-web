@@ -61,7 +61,7 @@ export default (props: AuthorCardProps) => {
                     {t('Write')}
                   </button>
 
-                  <For each={props.author.links as string[]}>{(link: string) => <a href={link}>*</a>}</For>
+                  <For each={props.author.links as string[]}>{(link: string) => <a href={link}></a>}</For>
                 </Show>
               </div>
             </Show>

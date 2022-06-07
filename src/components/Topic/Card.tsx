@@ -75,12 +75,14 @@ export default (props: TopicProps) => {
                 </span>
               </Show>
 
+{/*
               <span class='topic-details__item'>
                 {subscribers().toString() + ' ' + t('follower') + plural(
                   subscribers(),
                   locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                 )}
               </span>
+*/}
             </div>
           </Show>
       </div>

@@ -90,19 +90,27 @@ export const BlogAuthor: Component = () => {
               <span class='mode-switcher__control'>{t('All posts')}</span>
             </div>
           </div>
-          <div class='floor floor--important'>
-            <div class='container'>
-              <div class='row'>
-                <h3 class='col-12'>{title()}</h3>
-                <For each={selected()}>
-                  {(a: Partial<Shout>) => (
+        </div>
+
+        <div class='floor'>
+          <div class='row'>
+            <h3 class='col-12'>{title()}</h3>
+            <For each={selected()}>
+              {(a: Partial<Shout>, index) => (
+                <>
+                  <Show when={selected().length > 3 && index() % 5 < 2 || selected().length < 3}>
                     <div class='col-md-6'>
-                      <ArticleCard article={a} />
+                      <ArticleCard article={a} settings={{noauthor: true}}/>
                     </div>
-                  )}
-                </For>
-              </div>
-            </div>
+                  </Show>
+                  <Show when={selected().length = 3 || index() % 5 > 1}>
+                    <div class='col-md-4'>
+                      <ArticleCard article={a} settings={{noauthor: true}}/>
+                    </div>
+                  </Show>
+                </>
+              )}
+            </For>
           </div>
         </div>
 
