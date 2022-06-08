@@ -2,6 +2,7 @@ import { For, Show, createSignal, onMount, createMemo } from 'solid-js'
 import { Link, NavLink } from 'solid-app-router'
 import './Header.scss'
 import { useStore } from '../../store'
+import { useAuth } from '../../store/auth'
 import Private from './Private'
 import Notifications from './Notifications'
 import Icon from './Icon'
@@ -13,25 +14,39 @@ export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [state, actions] = useStore()
-
+  const [, { authorized }] = useAuth()
+  const [{ warnings }, { showModal }] = useStore()
+  const [visibleWarnings, setVisibleWarnings] = createSignal(false)
+  const toggleWarnings = () => setVisibleWarnings(!visibleWarnings())
   onMount(() => {
     setResource(window.location.pathname)
     setFixed(document.body.classList.contains('fixed'))
   })
 
-  const rrr = createMemo(() => ([
+  const rrr = createMemo(() => [
     { name: t('zine'), href: '/' },
     { name: t('feed'), href: '/feed' },
     { name: t('topics'), href: '/topics' }
-  ]))
-
+  ])
+  const openModal = (evt: Event) => {
+    evt.preventDefault()
+    setFixed(false)
+    showModal('auth')
+  }
+  const routeModal = (r: { name: string; href: string }) => {
+    setResource(r.href)
+    setFixed(false)
+    document.body.classList.remove('fixed')
+  }
+  const toggleBurger = () => {
+    setFixed(!fixed())
+    document.body.classList.toggle('fixed')
+  }
   return (
     <header>
       <Modal name='auth'>
         <AuthModal />
       </Modal>
-      <Notifications />
       <div class='wide-container'>
         <nav class='row header__inner' classList={{ fixed: fixed() }}>
           <div class='main-logo col-auto'>
@@ -41,16 +56,9 @@ export default () => {
           </div>
           <ul class='col main-navigation text-xl inline-flex' classList={{ fixed: fixed() }}>
             <For each={rrr()}>
-              {(r: { href:string; name:string; }) => (
+              {(r: { href: string; name: string }) => (
                 <li classList={{ selected: resource() === r.href }}>
-                  <NavLink
-                    href={r.href}
-                    onClick={() => {
-                      setResource(r.href)
-                      setFixed(false)
-                      document.body.classList.remove('fixed')
-                    }}
-                  >
+                  <NavLink href={r.href} onClick={() => routeModal(r)}>
                     {r.name}
                   </NavLink>
                 </li>
@@ -60,27 +68,24 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={() => actions.toggleWarnings()}>
+                <a href={''} onClick={toggleWarnings}>
                   <div>
-                    <Icon name='bell-white' counter={state.warnings?.length || 1} />
+                    <Icon name='bell-white' counter={warnings?.length || 1} />
                   </div>
                 </a>
               </div>
-              <div class='usercontrol__item notifications'>
-                <Notifications />
-              </div>
+
+              <Show when={visibleWarnings()}>
+                <div class='usercontrol__item notifications'>
+                  <Notifications />
+                </div>
+              </Show>
+              
               <Show
-                when={actions.authorized()}
+                when={authorized()}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <Link
-                      href='#'
-                      onClick={(evt) => {
-                        evt.preventDefault()
-                        setFixed(false)
-                        actions.showModal('auth')
-                      }}
-                    >
+                    <Link href='#' onClick={openModal}>
                       {t('enter')}
                     </Link>
                   </div>
@@ -91,14 +96,7 @@ export default () => {
             </div>
           </div>
           <div class='burger-container'>
-            <div
-              class='burger'
-              classList={{ fixed: fixed() }}
-              onClick={() => {
-                setFixed(!fixed())
-                document.body.classList.toggle('fixed')
-              }}
-            >
+            <div class='burger' classList={{ fixed: fixed() }} onClick={toggleBurger}>
               <div />
             </div>
           </div>

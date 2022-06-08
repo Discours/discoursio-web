@@ -3,14 +3,16 @@ import Icon from '../Nav/Icon'
 import MD from './MD'
 import AuthorCard from '../Author/Card'
 import { Show } from 'solid-js/web'
-import { useStore } from '../../store'
 import { User } from '../../graphql/types.gen'
 import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { Comment as Point } from '../../graphql/types.gen'
+import { useStore } from '../../store'
+import { useZine } from '../../store/zine'
 
 export default (props: { level: number; comment: Partial<Point>; canEdit: boolean }) => {
-  const [{}, { deleteComment, showModal }] = useStore()
+  const [{}, { deleteComment }] = useZine()
+  const [{}, { showModal }] = useStore()
   const [t] = useI18n()
   const [comment] = createSignal<Partial<Point>>(props.comment as Partial<Point>)
 

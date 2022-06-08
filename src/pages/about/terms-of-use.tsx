@@ -14,7 +14,9 @@ export default () => {
       <article class='container'>
         <div class='row'>
           <div class='col-md-8 offset-md-2'>
-            <h1><span class="wrapped">Пользовательское соглашение</span></h1>
+            <h1>
+              <span class='wrapped'>Пользовательское соглашение</span>
+            </h1>
           </div>
           <div class='col-md-8 col-lg-6 offset-md-3'>
             <p>

@@ -6,7 +6,7 @@ import { shuffle } from '../../utils'
 import { createMemo, createSignal, JSX } from 'solid-js'
 import { Shout } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
-import { useStore } from '../../store'
+import { useZine } from '../../store/zine'
 import './List.scss'
 
 export const Block6 = (props: { articles: Partial<Shout>[] }) => {
@@ -33,7 +33,7 @@ export default (props: ArticleListProps) => {
     props.articles.slice(props.page * props.size, props.size * (props.page + 1)) || []
   )
   const [loadingMore, setLoadingMore] = createSignal(false)
-  const [, { more }] = useStore()
+  const [, { more }] = useZine()
   const handleMore = () => {
     setArticles(props.articles.slice(props.page * props.size, props.size * (props.page + 1)))
     if (props.size * (props.page + 1) > props.articles.length) {

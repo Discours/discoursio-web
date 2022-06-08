@@ -22,7 +22,7 @@ export default (props: BesideProps) => {
         <div class='wide-container row'>
           <Show when={!!props.values}>
             <div class='col-md-4'>
-              <Show when={Boolean(props.title)}>
+              <Show when={!!(props.title)}>
                 <div class='beside-column-title'>
                   <h4>{props.title}</h4>
                 </div>
@@ -41,7 +41,10 @@ export default (props: BesideProps) => {
                         <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true }} />
                       </Show>
                       <Show when={props.wrapper === 'top-article'}>
-                        <ArticleCard article={value as Partial<Shout>} settings={{ noimage: true, noauthor: true }} />
+                        <ArticleCard
+                          article={value as Partial<Shout>}
+                          settings={{ noimage: true, noauthor: true }}
+                        />
                       </Show>
                     </li>
                   )}

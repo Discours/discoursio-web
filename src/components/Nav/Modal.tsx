@@ -1,5 +1,5 @@
 import { createEffect, createSignal, onMount, Show } from 'solid-js'
-import { useStore } from '../../store'
+import { useStore } from '../../store/index'
 import './Modal.scss'
 interface ModalProps {
   name: string

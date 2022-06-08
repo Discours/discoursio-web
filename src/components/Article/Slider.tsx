@@ -36,10 +36,10 @@ export default (props: SliderProps) => {
 
   const [swiper, setSwiper] = createSignal<Swiper>()
   createEffect(() => {
-    if(!swiper() && !!el) {
+    if (!swiper() && !!el) {
       setTimeout(() => {
-        setSwiper(new Swiper(el as HTMLDivElement, opts));
-      }, 500);
+        setSwiper(new Swiper(el as HTMLDivElement, opts))
+      }, 500)
     }
   })
   const articles = createMemo(() => props.articles)
@@ -48,26 +48,24 @@ export default (props: SliderProps) => {
       <div class='wide-container row'>
         <h2 class='col-12'>{props.title}</h2>
         <Show when={!!articles()}>
-          <div class="swiper" ref={el}>
-            <div class="swiper-wrapper">
+          <div class='swiper' ref={el}>
+            <div class='swiper-wrapper'>
               <For each={articles()}>
-              {(a: Partial<Shout>) => (
-
-                <ArticleCard
-                  article={a}
-                  settings={{ additionalClass: 'shout-card--with-cover swiper-slide' }}
-                />
-
-              )}
+                {(a: Partial<Shout>) => (
+                  <ArticleCard
+                    article={a}
+                    settings={{ additionalClass: 'shout-card--with-cover swiper-slide' }}
+                  />
+                )}
               </For>
             </div>
-            <div class="slider-arrow-next" ref={nextEl} onClick={() => swiper()?.slideNext()}>
-              <Icon name="slider-arrow" />
+            <div class='slider-arrow-next' ref={nextEl} onClick={() => swiper()?.slideNext()}>
+              <Icon name='slider-arrow' />
             </div>
-            <div class="slider-arrow-prev" ref={prevEl} onClick={() => swiper()?.slidePrev()}>
-              <Icon name="slider-arrow" />
+            <div class='slider-arrow-prev' ref={prevEl} onClick={() => swiper()?.slidePrev()}>
+              <Icon name='slider-arrow' />
             </div>
-            <div class="slider-pagination" ref={pagEl}></div>
+            <div class='slider-pagination' ref={pagEl}></div>
           </div>
         </Show>
       </div>

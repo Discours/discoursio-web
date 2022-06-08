@@ -6,11 +6,11 @@ import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import PageLoadingBar from '../components/LoadingBar'
-import { useStore } from '../store'
 import { byShouts, byViews } from '../utils/by'
+import { useAuth } from '../store/auth'
 
 export default () => {
-  const [{}, { getInfo }] = useStore()
+  const [{ info }, {}] = useAuth()
   const [t] = useI18n()
   const data = useRouteData<{
     topics: Topic[]
@@ -23,16 +23,20 @@ export default () => {
   let topicsGroupedByAlphabet: { [key: string]: Topic[] } = {}
   const groupBy = (arr: any[]) => {
     let f = null
+
     return arr.reduce(
       (acc, tt) => {
         let c = tt.title.slice(0, 1)
+
         if (/[a-zA-Z0-9]/.test(c)) {
           c = 'A-Z'
         } else if (!acc[c]) {
           f = c
           acc[f] = []
         }
+
         acc[c].push(tt)
+
         return acc
       },
       { 'A-Z': [] }
@@ -99,8 +103,8 @@ export default () => {
                           topic={topic}
                           compact={false}
                           subscribed={
-                            getInfo()?.userSubscribedTopics &&
-                            getInfo()?.userSubscribedTopics.includes(topic.slug || '')
+                            info?.userSubscribedTopics &&
+                            info?.userSubscribedTopics.includes(topic.slug || '')
                           }
                         />
                       )}

@@ -1,9 +1,9 @@
 import { Title, Meta } from 'solid-meta'
 import { Show } from 'solid-js/web'
-import { useStore } from '../../store'
+import { useAuth } from '../../store/auth'
 
 export default () => {
-  const [{ token }] = useStore()
+  const [{ token }] = useAuth()
 
   return (
     <>
@@ -19,7 +19,9 @@ export default () => {
       <article class='container'>
         <div class='row'>
           <div class='col-md-8 offset-md-2'>
-            <h1><span class="wrapped">Как устроен Дискурс</span></h1>
+            <h1>
+              <span class='wrapped'>Как устроен Дискурс</span>
+            </h1>
           </div>
           <div class='col-md-8 col-lg-6 offset-md-3'>
             <p>

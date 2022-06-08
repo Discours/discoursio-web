@@ -15,7 +15,7 @@ export default () => {
   return (
     <div class='subscribe-form'>
       <input type='email' name='email' ref={emailElement} placeholder='email' />
-      <button onClick={() => (emailElement?.value && subscribe())} value={title() as string} />
+      <button onClick={() => emailElement?.value && subscribe()} value={title() as string} />
     </div>
   )
 }

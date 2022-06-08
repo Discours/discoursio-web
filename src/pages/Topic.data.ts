@@ -3,17 +3,19 @@ import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
 import articlesForTopics from '../graphql/q/articles-for-topics'
 import topicsAll from '../graphql/q/topics-all'
+import { useZine } from '../store/zine'
 
 export const TopicData: RouteDataFunc = (args) => {
   const location = useLocation()
   const [, { locale }] = useI18n()
-  const page = args.params.page || 1
-  const size = args.params.size || 50
+  const [{ page, size }, { more }] = useZine()
+  // TODO: topic's articles pagination
   const [data, state] = createQuery({
     query: articlesForTopics,
-    variables: { slugs: [args.params.slug,], page, size }
+    variables: { slugs: [args.params.slug], page, size }
   })
   const [tdata, tstate] = createQuery({ query: topicsAll })
+
   return {
     get articles() {
       return data()?.shoutsByTopics

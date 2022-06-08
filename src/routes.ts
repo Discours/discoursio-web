@@ -7,7 +7,6 @@ import { TopicData } from './pages/Topic.data'
 import { HomeData } from './pages/Home.data'
 import { AllTopicsData } from './pages/AllTopics.data'
 import { FeedData } from './pages/Feed.data'
-import { AuthConfirm } from './pages/AuthConfirm'
 
 export const routes: RouteDefinition[] = [
   {
@@ -29,6 +28,11 @@ export const routes: RouteDefinition[] = [
     path: '/feed',
     component: lazy(() => import('./pages/Feed')),
     data: FeedData
+  },
+  {
+    path: '/feed/settings',
+    component: lazy(() => import('./pages/FeedSettings')),
+    // data: FeedData
   },
   {
     path: '/create',
@@ -76,11 +80,6 @@ export const routes: RouteDefinition[] = [
   {
     path: '/about/thanks',
     component: lazy(() => import('./pages/about/thanks'))
-  },
-  {
-    path: '/auth/:code',
-    component: lazy(() => import('./pages/Redirect')),
-    data: AuthConfirm
   },
   {
     path: '/*all',

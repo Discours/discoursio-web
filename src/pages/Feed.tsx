@@ -1,7 +1,7 @@
-import { Component, createMemo, Show } from 'solid-js'
+import { Component, createMemo, For, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { Shout, Topic } from '../graphql/types.gen'
+import { Shout, Topic, User } from '../graphql/types.gen'
 import Row3 from '../components/Article/Row3'
 import Row2 from '../components/Article/Row2'
 // import Row1 from '../components/Article/Row1'
@@ -9,6 +9,8 @@ import Beside from '../components/Article/Beside'
 import { useI18n } from '@solid-primitives/i18n'
 import "./Feed.scss"
 import Icon from "../components/Nav/Icon";
+import { useAuth } from '../store/auth'
+import { byShouts } from '../utils/by'
 
 const Feed: Component = () => {
   const [t] = useI18n()
@@ -18,16 +20,27 @@ const Feed: Component = () => {
     byAuthors?: Partial<Shout>[]
     byCommunities?: Partial<Shout>[]
     topics: Topic[]
+    topicsBySlug: { [slug: string]: Topic }
     topicsLoading: boolean
+    feedLoading: boolean
   }>()
-
-  const topics = createMemo(() => Object.keys(data.byTopics || {}))
+  const [{ info }] = useAuth()
+  const topicIsReaded = (topic: string) => {
+    // TODO: topic is readed method
+    return false
+  }
+  const authorIsReaded = (slug: string) => {
+    // TODO: author is readed method
+    return false
+  }
   const articles = createMemo(() => [
     ...(data.byTopics || []),
     ...(data.byAuthors || []),
     ...(data.byCommunities || [])
   ])
+
   useRouteReadyState()
+
   return (
     <>
       <div class="container">
@@ -43,10 +56,32 @@ const Feed: Component = () => {
             </ul>
             <ul>
               <li><a href="#"><strong>Мои подписки</strong></a></li>
-              <li><a href="#" class="unread">Культура</a></li>
+              <For each={info?.userSubscribedAuthors as Partial<User>[]}>
+                {(author: Partial<User>) => (
+                  <li>
+                    <a
+                      href={`/author/${author.slug}`}
+                      classList={{ unread: authorIsReaded(author.slug as string) }}>
+                      {author.name}
+                    </a>
+                  </li>
+                )}
+              </For>
               <li><a href="#">Eto_ya sam</a></li>
               <li><a href="#" class="unread">Технопарк sam</a></li>
               <li><a href="#" class="unread">Надежда Фролова</a></li>
+
+              <For each={info?.userSubscribedTopics as string[]}>
+                {(topic: string) => (
+                  <li>
+                    <a
+                      href={`/author/${topic}`}
+                      classList={{ unread: topicIsReaded(topic) }}>
+                      {data.topicsBySlug[topic]?.title}
+                    </a>
+                  </li>
+                )}
+              </For>
               <li><a href="#">#Лучшее</a></li>
               <li><a href="#">#Реклама</a></li>
               <li><a href="#" class="unread">#Искусство</a></li>
@@ -59,7 +94,7 @@ const Feed: Component = () => {
             </ul>
 
             <p class="settings">
-              <a href="#"><strong>Настроить ленту</strong></a>
+              <a href="/feed/settings"><strong>Настроить ленту</strong></a>
               <Icon name="settings"/>
             </p>
           </div>
@@ -98,15 +133,16 @@ const Feed: Component = () => {
                 </div>
               </div>
             </div>
+
           </aside>
         </div>
       </div>
 
       <div class='flex flex-col'>
-        <Show when={!!articles()}>
+        <Show when={!data.feedLoading}>
           <Beside
             title={t('Top topics')}
-            values={topics()?.slice(0, 5)}
+            values={data.topics.sort(byShouts)?.slice(0, 5)}
             beside={articles()[0]}
             wrapper={'topic'}
           />

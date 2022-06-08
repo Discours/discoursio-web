@@ -2,18 +2,19 @@ import { For, Show } from 'solid-js/web'
 import Icon from './Icon'
 import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
-import { createSignal, onMount, onCleanup } from 'solid-js'
+import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import './AuthModal.scss'
+import { useAuth } from '../../store/auth'
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
 export default (props: { code?: string; mode?: string }) => {
   const [t] = useI18n()
   const [mode, setMode] = createSignal<AuthMode>('sign-in')
-  const [state, { hideModal, warn, signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] =
-    useStore()
+  const [state, { hideModal, warn }] = useStore()
+  const [auth, { signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useAuth()
   // TODO: notifications destroy timeout
 
   let emailElement: HTMLInputElement | undefined
@@ -29,43 +30,16 @@ export default (props: { code?: string; mode?: string }) => {
     resend: t('Resend code'),
     password: t('Enter your new password')
   }
-  
-  const expectCookie = () => {
-    console.log('[auth] expecting token cookie...')
-    // timer = setInterval(moveCookie, 1000)
-  }
-  const listenStorage = (ev: StorageEvent) => {
-    // console.log('[auth] storage event')
-    if(ev.storageArea === window.localStorage) {
-      // console.debug('[auth] local storage changed...')
-      const t = window.localStorage.getItem('token')
-      console.debug(t)
-      if(t && state.token !== t) {
-        state.token = t // store setter
-        console.log('[auth] token was updated')
-        console.debug(state)
-      }
-    }
-  }
-  onMount(() => {
-    console.log('[auth] mounted')
-    window.removeEventListener('storage', listenStorage)
-  })
-  onCleanup(() => {
-    window.addEventListener('storage', listenStorage, false)
-  })
 
   const oauth = (provider: string) => {
     const popup = window.open(`${baseUrl}/oauth/${provider}`, provider, 'width=740, height=420')
     popup?.focus()
     hideModal()
-    expectCookie()
   }
 
-  const auth = () => {
+  const localAuth = () => {
     console.log('[auth] handshaking')
-    console.log(prompt())
-    state.handshaking = true
+    auth.handshaking = true
     // 1 check format
     const emailTyped =
       (emailElement?.value?.length || 0) > 5 &&
@@ -106,6 +80,8 @@ export default (props: { code?: string; mode?: string }) => {
       }
     }
 
+    console.log(prompt())
+
     switch (mode()) {
       case 'sign-in':
         signIn(emailElement?.value, passElement?.value)
@@ -128,7 +104,7 @@ export default (props: { code?: string; mode?: string }) => {
         // warn({ body: t('Passwords are not same'), kind: 'error' })
         break
       default:
-        state.handshaking = false
+        auth.handshaking = false
     }
   }
 
@@ -193,8 +169,8 @@ export default (props: { code?: string; mode?: string }) => {
           </Show>
 
           <div>
-            <button class='submitbtn' disabled={state.handshaking} onClick={auth}>
-              {state.handshaking ? '...' : titles[mode()]}
+            <button class='submitbtn' disabled={auth.handshaking} onClick={localAuth}>
+              {auth.handshaking ? '...' : titles[mode()]}
             </button>
           </div>
 

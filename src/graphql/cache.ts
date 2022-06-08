@@ -1,18 +1,13 @@
 import { cacheExchange } from '@urql/exchange-graphcache'
 import authorsForArticles from './q/articles-for-authors'
-import userSession from './q/auth-session'
-import type { Shout } from './types.gen'
-
-// FIXME: this is dummy code
-const size = 50
-const page = 1
 
 // TODO: implement smart caching logix
 
 export const cache = cacheExchange({
   updates: {
     Mutation: {
-      createArticle: (_result, _args, c) => {
+      /*
+       createArticle: (_result, _args, c) => {
         c.updateQuery({ query: authorsForArticles, variables: { slugs, page, size } }, (data) => {
           data.getUserNotes.unshift(_result.createNote)
 
@@ -55,6 +50,7 @@ export const cache = cacheExchange({
           return data
         })
       }
+      */
     }
   }
 })

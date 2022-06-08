@@ -27,7 +27,9 @@ export const BlogTopic: Component = () => {
 
   let authors = createMemo<Partial<User>[]>(() => {
     let authorset = new Set([] as Partial<User>[])
+
     data.articles?.forEach((a) => a.authors?.forEach((u) => authorset.add(u)))
+
     return Array.from(authorset)
   })
   const topic = createMemo<Topic>(() => data.topics?.find((t: Topic) => t.slug === data.slug) as Topic)
@@ -38,23 +40,33 @@ export const BlogTopic: Component = () => {
   const [mode, setMode] = createSignal('fresh')
   const selected = createMemo(() => {
     const m = mode()
+
     if (m === 'fresh') return topRecent()
+
     if (m === 'popular') return topRated()
+
     if (m === 'discuss') return topCommented()
+
     return topViewed()
   })
   const title = createMemo(() => {
     const m = mode()
+
     if (m === 'fresh') return t('Top recent')
+
     if (m === 'popular') return t('Top rated')
+
     if (m === 'discuss') return t('Top discussed')
+
     return t('Top viewed')
   })
+
   useRouteReadyState()
+
   return (
     <div class='container'>
       <Show when={!data.topicsLoading || !data.loading}>
-        <Show when={!data.topicsLoading && !!topic()?.slug}>
+        <Show when={!data.topicsLoading && Boolean(topic()?.slug)}>
           <TopicFull topic={topic() as Topic} />
         </Show>
         <div class='row group__controls'>
@@ -105,7 +117,7 @@ export const BlogTopic: Component = () => {
         </div>
 
         <div class='row'>
-          <Show when={!data.loading && !!data.articles}>
+          <Show when={!data.loading && Boolean(data.articles)}>
             <Beside
               title={t('Topic is supported by')}
               values={authors().slice(0, 5)}

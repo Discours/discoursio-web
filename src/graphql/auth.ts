@@ -11,10 +11,10 @@ const logout = () => {
 
 const willAuthError = (a: any) => {
   const { operation, authState } = a
-  if (!authState) {
-    // Detect our login mutation and let this operation through:
-    return !(
-      operation.kind === 'mutation' &&
+
+  // Detect our login mutation and let this operation through:
+  return !authState && !(
+    operation.kind === 'mutation' &&
       // Here we find any mutation definition with the "login" field
       operation.query.definitions.some(
         (definition: { kind: string; selectionSet: { selections: any[] } }) => {
@@ -27,12 +27,7 @@ const willAuthError = (a: any) => {
           )
         }
       )
-    )
-  } /* JWT is expired */ else {
-    return true
-  }
-
-  return false
+  )
 }
 
 const didAuthError = (r: any) =>
@@ -42,6 +37,7 @@ const didAuthError = (r: any) =>
 
 const addAuthToOperation = (a: any) => {
   const { authState, operation } = a
+
   if (!authState || !authState.token) {
     return operation
   }
@@ -65,12 +61,15 @@ const addAuthToOperation = (a: any) => {
 
 const getAuth = async (a: any) => {
   const { authState, mutate } = a
+
   if (!authState) {
     const token = localStorage.getItem('token')
     const refreshToken = localStorage.getItem('refreshToken')
+
     if (token && refreshToken) {
       return { token, refreshToken }
     }
+
     return null
   }
   // TODO: refreshToken query
@@ -99,6 +98,7 @@ export default [
   errorExchange({
     onError: (error: { graphQLErrors: any[] }) => {
       const isAuthError = error.graphQLErrors.some((e) => e.extensions?.code === 'FORBIDDEN')
+
       if (isAuthError) logout()
     }
   }),

@@ -1,15 +1,16 @@
 import { createMemo } from 'solid-js'
 import { Show } from 'solid-js/web'
-import { useStore } from '../../store'
+import { useZine } from '../../store/zine'
+import { useAuth } from '../../store/auth'
 import { Topic } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
 import './Full.scss'
 
 export default (props: { topic: Topic }) => {
   const [t] = useI18n()
-  const [{ currentUser }, { follow, unfollow }] = useStore()
-  const subscribed = () =>
-    createMemo(() => Boolean(currentUser?.userSubscribedTopics?.includes(props.topic.slug)))
+  const [, { follow, unfollow }] = useZine()
+  const [{ info }] = useAuth()
+  const subscribed = createMemo(() => info?.userSubscribedTopics?.includes(props.topic.slug))
   return (
     <div class='topic-full container'>
       <div class='row'>

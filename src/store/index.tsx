@@ -1,44 +1,39 @@
-// see https://github.com/joshwilsonvu/eslint-plugin-solid/issues/18
-import { createContext, createSignal, createEffect, useContext } from 'solid-js'
+import { createI18nContext, I18nContext } from '@solid-primitives/i18n'
+import { createCookieStorage } from '@solid-primitives/storage'
+import { useLocation } from 'solid-app-router'
+import { createContext, createEffect, createMemo, createResource, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import mySession from '../graphql/q/auth-session'
-import { createQuery } from 'solid-urql'
-import signCheck from '../graphql/q/auth-check'
-import signUp from '../graphql/q/auth-register'
-import signOut from '../graphql/q/auth-logout'
-import { CurrentUserInfo, Shout, User } from '../graphql/types.gen'
-import signIn from '../graphql/q/auth-login'
-// import topicsAll from '../graphql/q/topics-all'
-import fq from '../graphql/q/follow'
-import ufq from '../graphql/q/unfollow'
-import forgetPassword from '../graphql/q/auth-forget'
-import resetPassword from '../graphql/q/auth-reset'
-import resendCode from '../graphql/q/auth-resend'
-// import { useClient } from '../graphql/client'
-import articlesForAuthors from '../graphql/q/articles-for-authors'
-import articlesForTopics from '../graphql/q/articles-for-topics'
+import { Meta, Title } from 'solid-meta'
+import { AuthStoreProvider } from './auth'
+import { ZineStoreProvider } from './zine'
 
 type ModalType = '' | 'auth' | 'subscribe' | 'feedback' | 'share' | 'thank' | 'donate'
 type WarnKind = 'error' | 'warn' | 'info'
+
 interface CommonStore {
-  page?: number
-  size?: number
-  token?: string
-  appName: string
-  session?: Partial<User>
-  info?: CurrentUserInfo
-  handshaking?: boolean
   warnings?: {
     body: string
     kind: WarnKind
     seen?: boolean
   }[]
   modal?: ModalType
-  warningsVisible: boolean
+  isDark: boolean
+  lang: string
 }
 
+const langs: { [lang: string]: any } = {
+  en: async () => (await import('../../lang/en/en')).default(),
+  ru: async () => (await import('../../lang/ru/ru')).default()
+}
+
+// Some browsers does not map correctly to some locale code
+// due to offering multiple locale code for similar language (e.g. tl and fil)
+// This object maps it to correct `langs` key
+const langAliases: Record<string, string> = { fil: 'tl' }
+
 const StoreContext = createContext<[CommonStore, any]>([{} as CommonStore, {}])
-const StoreContextProvider = StoreContext.Provider
+const Provider = StoreContext.Provider
+
 export interface Warning {
   body: string
   kind: WarnKind
@@ -46,34 +41,42 @@ export interface Warning {
 }
 
 export function StoreProvider(props: { children: any }) {
-  const moreQueries = {
-    author: articlesForAuthors,
-    topic: articlesForTopics
-    // TODO: 'community': articlesForCommunity
+
+  const now = new Date()
+  const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
+  const [settings, setSettings] = createCookieStorage()
+  const browserLang = navigator.language.slice(0, 2)
+  const location = useLocation()
+  const i18n = createI18nContext({}, (settings.locale || 'en') as string)
+  const [t, { add, locale }] = i18n
+  const isDark = createMemo(() => settings.dark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches)
+
+  // request query params
+  const params = () => {
+    const lcl = i18n[1].locale()
+    const page = location.pathname.slice(1) || 'home'
+    return { locale: lcl in langAliases ? langAliases[lcl] : lcl, page }
   }
-  const [loggedIn, setLoggedIn] = createSignal(false)
-  // const client = useClient()
-  // const [topicsUpdated, setTopicsUpdated] = createSignal(false)
+
+  const [langstore] = createResource(params(), ({ locale }) => langs[locale]())
+
+  // if ?lang=
+  if (location.query.lang) setSettings('locale', location.query.lang, cookieOptions)
+  else if (!settings.locale && langs.hasOwnProperty(browserLang)) setSettings('locale', browserLang)
+
+  createEffect(() => setSettings('locale', i18n[1].locale()), cookieOptions)
+  createEffect(() => !langstore.loading && add(i18n[1].locale(), langstore() as Record<string, any>))
+  createEffect(() => document.documentElement.classList[isDark() ? 'add' : 'remove']('dark'))
+
   const [state, setState] = createStore({
-    page: 0,
-    size: 50,
-    token: '',
-    appName: 'discours.io',
-    session: {} as Partial<User>,
-    info: {} as CurrentUserInfo,
-    handshaking: false,
     warnings: [] as Warning[],
     modal: '' as ModalType,
-    articles: [] as Partial<Shout>,
-    warningsVisible: false
+    isDark: false,
+    lang: 'ru'
   })
-
-
 
   const actions = {
     // warnings
-    getWarnings: () => state.warnings,
-    toggleWarnings: () => setState({ ...state, warningsVisible: !state.warningsVisible }),
     warn: (w: Warning) => setState({ ...state, warnings: [...state.warnings, w] }),
     unwarn: (index: number) => {
       let w: Warning = state.warnings[index]
@@ -81,125 +84,36 @@ export function StoreProvider(props: { children: any }) {
       w.seen = true
       setState({ ...state, warnings: [...state.warnings, w] })
     },
+    resetWarns: () => {
+      let warnings = state.warnings.map(x => {
+        x.seen = false
+
+        return x
+      })
+
+      setState({ ...state, warnings })
+    },
+    clearWarns: () => setState({...state, warnings: []}),
 
     // modal
     getModal: () => state.modal,
     showModal: (name: ModalType) => setState({ ...state, modal: name }),
     hideModal: () => setState({ ...state, modal: '' }),
 
-    // auth
-    authorized: () => loggedIn(),
-    getInfo: () => state.info,
-    getSession: (t?: string) => {
-      const token = t || localStorage.getItem('token') || ''
-      if (token && !state.session?.username) {
-        const [qdata] = createQuery({ query: mySession, variables: { token } })
-        const {
-          getCurrentUser: { session, info }
-        } = qdata()
-        const { error } = session
-        setLoggedIn(!error)
-        if (!error) {
-          setState({
-            ...state,
-            token,
-            session,
-            info,
-            handshaking: false
-          })
-        } else { actions.warn(error) }
-      }
-      return state.session
-    },
-    signIn: (email: string, password: string) => {
-      const [qdata] = createQuery({ query: signIn, variables: { email, password } })
-      const { user, token, error } = qdata()
-
-      if (!error) setState({ ...state, token, session: user, handshaking: false })
-
-      setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
-      setLoggedIn(true)
-    },
-    signUp: (username: string, email: string, password: string) => {
-      const [qdata] = createQuery({ query: signUp, variables: { username, email, password } })
-      const { user, token, error } = qdata()
-
-      if (!error) setState({ ...state, token, session: user, handshaking: false })
-
-      setState({ ...state, warnings: [...state.warnings, error], handshaking: false })
-      setLoggedIn(true)
-    },
-    signCheck: (email: string) => {
-      const [qdata] = createQuery({ query: signCheck, variables: { email } })
-      const { error } = qdata()
-
-      if (error) {
-        setState({ ...state, warnings: [...state.warnings, error] })
-
-        return false
-      }
-
-      return true
-    },
-    signOut: () => {
-      if (loggedIn()) {
-        const [qdata] = createQuery({ query: signOut })
-        const { error } = qdata()
-
-        if (!error) setLoggedIn(false)
-        else actions.warn(error)
-      }
-    },
-    forget: (email: string) => {
-      console.log(`auth: forget ${email}`)
-      const [qdata] = createQuery({ query: forgetPassword, variables: { email } })
-      const { error } = qdata()
-      if (error) actions.warn(error)
-    },
-    reset: (code: string) => {
-      console.log(`auth: reset ${code}`)
-      const [qdata] = createQuery({ query: resetPassword, variables: { code } })
-      const { error } = qdata()
-      if (error) actions.warn(error)
-    },
-    resend: (email: string) => {
-      console.log(`auth: resend ${email}`)
-      const [qdata] = createQuery({ query: resendCode, variables: { email } })
-      const { error } = qdata()
-      if (error) actions.warn(error)
-    },
-    follow: (slug: string, what: string) => {
-      console.log(`follow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: fq, variables: { what, slug } })
-      const { error } = qdata()
-      if (error) actions.warn(error)
-    },
-    unfollow: (slug: string, what: string) => {
-      console.log(`unfollow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: ufq, variables: { what, slug } })
-      const { error } = qdata()
-      if (error) actions.warn(error)
-    },
-    more: () => {
-      Object.keys(moreQueries).forEach((what: string) => {
-        if (location.pathname.startsWith('/' + what)) {
-          // const slug = location.pathname.replace(`/${what}/`, '').replace('/','')
-          // FIXME
-          // let variables: {[k:string]: { page: number; size: number }} = { page: (state.page + 1), size: state.size }
-          // variables[what] = slug
-          // const [qdata] = createQuery({ query: moreQueries[what], variables })
-          // setState({ ...state, articles: qdata()})
-        }
-      })
-    }
   }
 
-  createEffect(() => {
-    if (state.token) actions.getSession()
-  })
-  // WARNING: unknown type
-  return (
-    <StoreContextProvider value={[state as unknown as CommonStore, actions]} children={props.children} />
+  return  (
+    <Provider value={[state,actions]}>
+      <I18nContext.Provider value={i18n}>
+        <Title>{t('global.title', {}, 'discours.io')}</Title>
+        <Meta name='lang' content={locale()} />
+        <AuthStoreProvider>
+          <ZineStoreProvider>
+            {props.children}
+          </ZineStoreProvider>
+        </AuthStoreProvider>
+      </I18nContext.Provider>
+    </Provider>
   )
 }
 

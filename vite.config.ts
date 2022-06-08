@@ -57,7 +57,7 @@ const pwaOptions = {
   }
 }
 const dev = process.env.NODE_ENV !== 'production'
-const isSSR = process.argv.includes('ssr')
+const ssr = process.argv.includes('ssr')
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -69,7 +69,7 @@ export default defineConfig({
       }),
       enforce: 'pre'
     },
-    SolidJS({ extensions: ['.md', '.mdx'], dev }),
+    SolidJS({ extensions: ['.md', '.mdx'], dev, ssr }),
     pluginTSConfigPaths(),
     pluginCompression({ algorithm: 'brotliCompress' }),
     SolidSVG(),
@@ -91,7 +91,7 @@ export default defineConfig({
     cssCodeSplit: false,
     polyfillDynamicImport: false,
     target: 'esnext',
-    rollupOptions: isSSR ? { input: './src/ssr.ts' } : {}
+    rollupOptions: ssr ? { input: './src/ssr.tsx' } : {}
   },
   resolve: {
     alias: {

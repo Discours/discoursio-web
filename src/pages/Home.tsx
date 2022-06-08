@@ -32,6 +32,7 @@ export const Home: Component = () => {
   const [someLayout, setSomeLayout] = createSignal([] as Partial<Shout>[])
   const [someTopics, setSomeTopics] = createSignal([] as Topic[])
   const [selectedLayout, setSelectedLayout] = createSignal('article')
+
   createEffect(() => {
     if (!loaded() && !data.topicsLoading && !data.loading) {
       console.log('[data] processing...')
@@ -39,6 +40,7 @@ export const Home: Component = () => {
       // top authors and topics
       let tt = new Set([] as Topic[])
       let ta = new Set([] as Partial<User>[])
+
       data.topMonth.forEach((s: Partial<Shout>) => {
         tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
         ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
@@ -51,20 +53,25 @@ export const Home: Component = () => {
         ...Array.from(data.topOverall),
         ...Array.from(data.topRecent)
       ]
-      setTopViewed(Array.from(data.topRecent).sort(byViews).slice(0,5))
+
+      setTopViewed(Array.from(data.topRecent).sort(byViews).slice(0, 5))
 
       // get shouts lists by
       let byLayout: { [key: string]: Partial<Shout>[] } = {}
       let byTopic: { [key: string]: Partial<Shout>[] } = {}
+
       all.forEach((s: Partial<Shout>) => {
         // by topic
-        s.topics?.forEach((t: Maybe<Topic>) => {
-          if (!byTopic[t?.slug || '']) byTopic[t?.slug || ''] = []
-          byTopic[t?.slug as string].push(s)
+        s.topics?.forEach((tpc: Maybe<Topic>) => {
+          if (!byTopic[tpc?.slug || '']) byTopic[tpc?.slug || ''] = []
+
+          byTopic[tpc?.slug as string].push(s)
         })
         // by layout
         const l = s.layout || 'article'
+
         if (!byLayout[l]) byLayout[l] = []
+
         byLayout[l].push(s)
       })
 
@@ -79,12 +86,14 @@ export const Home: Component = () => {
 
       // topics by slug
       let topicsdict: { [key: string]: Topic } = {}
-      data.topics?.forEach((t: Topic) => (topicsdict[t.slug] = t))
-      console.log('[ready] all articles data postprocessed')
+
+      data.topics?.forEach((tpc: Topic) => (topicsdict[tpc.slug] = tpc))
+      console.log('[ready] all topics were indexed')
 
       // random layout pick
       const ok = Object.keys(byLayout).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
+
       setSomeLayout(byLayout[layout])
       setSelectedLayout(layout)
       console.log(`[ready] '${layout}' layout picked`)
@@ -94,14 +103,16 @@ export const Home: Component = () => {
         .filter(([, v], _i) => (v as Topic[]).length > 4)
         .slice(0, 12)
         .map((f) => f[0])
+
       //console.debug(topicSlugs)
       setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
       console.log(`[ready] topics navbar data prepared`)
       setLoaded(true)
     }
   })
-  
+
   useRouteReadyState()
+
   return (
     <main class='home'>
       <PageLoadingBar active={!loaded()} />
@@ -127,15 +138,16 @@ export const Home: Component = () => {
         <RowShort articles={data.topRecent.slice(20, 24)} />
         <Row1 article={data.topRecent.slice(24, 25)[0]} />
         <Row3 articles={data.topRecent.slice(25, 28)} />
-        
-        <Row3 articles={topCommented()} header={
-          <h2>{t('Top commented')}</h2>
-          } />
-        <Group articles={someLayout()} header={
+
+        <Row3 articles={topCommented()} header={<h2>{t('Top commented')}</h2>} />
+        <Group
+          articles={someLayout()}
+          header={
             <div class='layout-icon'>
               <Icon name={selectedLayout()} />
             </div>
-          } />
+          }
+        />
         <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)} />
 
         <Suspense>

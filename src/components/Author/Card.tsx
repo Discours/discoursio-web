@@ -3,11 +3,12 @@ import { User } from '../../graphql/types.gen'
 import Userpic from './Userpic'
 import Icon from '../Nav/Icon'
 import './Card.scss'
-import { useStore } from '../../store'
+import { useZine } from '../../store/zine'
 import { NavLink } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createMemo } from 'solid-js'
 import { translit } from '../../utils/ru2en'
+import { useAuth } from '../../store/auth'
 
 interface AuthorCardProps {
   compact?: boolean
@@ -17,9 +18,12 @@ interface AuthorCardProps {
 
 export default (props: AuthorCardProps) => {
   const [t, { locale }] = useI18n()
-  const [ { session, info }, { follow, unfollow }] = useStore()
-  const subscribed = createMemo(() => !!info?.userSubscribedAuthors?.filter((u) => u?.slug === props.author.slug).pop())
-  const canFollow = createMemo(() => !props.hideFollow && (session?.slug !== props.author.slug))
+  const [{}, { follow, unfollow }] = useZine()
+  const [{ session, info }] = useAuth()
+  const subscribed = createMemo(
+    () => !!info?.userSubscribedAuthors?.filter((u) => u?.slug === props.author.slug).pop()
+  )
+  const canFollow = createMemo(() => !props.hideFollow && session?.slug !== props.author.slug)
   const bio = createMemo(() => props.author.bio || t('Our regular contributor'))
   const name = createMemo(() => translit(props.author.name || '', locale() || 'ru'))
   // TODO: reimplement AuthorCard

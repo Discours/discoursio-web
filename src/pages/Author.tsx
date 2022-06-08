@@ -107,7 +107,7 @@ export const BlogAuthor: Component = () => {
         </div>
 
         <div class='row'>
-          <Show when={!data.articlesLoading && !!data.articles}>
+          <Show when={!data.articlesLoading && Boolean(data.articles)}>
             <Beside
               title={t('Topics which supported by author')}
               values={authorTopics()?.slice(0, 5)}
