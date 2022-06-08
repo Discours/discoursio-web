@@ -1,5 +1,6 @@
 import { User } from '../../graphql/types.gen'
 import AuthorCard from './Card'
+import './Full.scss'
 
 export default (props: { author: Partial<User> }) => {
   return (
