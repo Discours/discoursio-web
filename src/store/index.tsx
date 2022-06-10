@@ -1,7 +1,7 @@
 import { createI18nContext, I18nContext } from '@solid-primitives/i18n'
 import { createCookieStorage } from '@solid-primitives/storage'
 import { useLocation } from 'solid-app-router'
-import { createContext, onMount, useContext } from 'solid-js'
+import { createContext, createEffect, createResource, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Meta, Title } from 'solid-meta'
 import { AuthStoreProvider } from './auth'
@@ -9,6 +9,11 @@ import { ZineStoreProvider } from './zine'
 
 type ModalType = '' | 'auth' | 'subscribe' | 'feedback' | 'share' | 'thank' | 'donate'
 type WarnKind = 'error' | 'warn' | 'info'
+
+// Some browsers does not map correctly to some locale code
+// due to offering multiple locale code for similar language (e.g. tl and fil)
+// This object maps it to correct `langs` key
+const langAliases: Record<string, string> = { fil: 'tl' }
 
 interface CommonStore {
   warnings?: {
@@ -35,11 +40,30 @@ export interface Warning {
   seen?: boolean
 }
 
-export function StoreProvider(props: { children: any }) {
-  const location = useLocation()
-  const i18n = createI18nContext({}, 'ru')
-  const [t, { locale }] = i18n
+export function StoreProvider(props: { children: any }) {                                                                                                            
+  const now = new Date()
+  const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
   const [settings, setSettings] = createCookieStorage()
+  const browserLang = navigator.language.slice(0, 2)
+  const location = useLocation()
+
+  if (location.query.lang)
+    setSettings('locale', location.query.lang, cookieOptions)
+  else if (!settings.locale && langs.hasOwnProperty(browserLang))
+    setSettings('locale', browserLang)
+
+  const i18n = createI18nContext({}, (settings.locale || 'ru') as string)
+  const [t, { add, locale }] = i18n
+  const params = () => {
+    const lcl = i18n[1].locale()
+    const page = location.pathname.slice(1) || 'home'
+    return { locale: lcl in langAliases ? langAliases[lcl] : lcl, page }
+  }
+  const [langstore] = createResource(params, ({ locale }) => langs[locale]())
+  const isDark = () => settings.dark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches
+  createEffect(() => setSettings('locale', i18n[1].locale(), cookieOptions))
+  createEffect(() => { if(!langstore.loading) add(i18n[1].locale(), langstore() as Record<string, any>) })
+  createEffect(() => { if(isDark()) document.documentElement.classList.add('dark') })
 
   const [state, setState] = createStore({
     warnings: [] as Warning[],
