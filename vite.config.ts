@@ -91,7 +91,7 @@ export default defineConfig({
     cssCodeSplit: false,
     polyfillDynamicImport: false,
     target: 'esnext',
-    rollupOptions: ssr ? { input: './src/ssr.tsx' } : {}
+    rollupOptions: ssr ? { input: './src/ssr.tsx' } : dev ? { index: './src/debug.tsx' } : {}
   },
   resolve: {
     alias: {

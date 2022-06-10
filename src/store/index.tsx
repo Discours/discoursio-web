@@ -1,7 +1,7 @@
 import { createI18nContext, I18nContext } from '@solid-primitives/i18n'
 import { createCookieStorage } from '@solid-primitives/storage'
 import { useLocation } from 'solid-app-router'
-import { createContext, createEffect, createMemo, createResource, useContext } from 'solid-js'
+import { createContext, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Meta, Title } from 'solid-meta'
 import { AuthStoreProvider } from './auth'
@@ -26,11 +26,6 @@ const langs: { [lang: string]: any } = {
   ru: async () => (await import('../../lang/ru/ru')).default()
 }
 
-// Some browsers does not map correctly to some locale code
-// due to offering multiple locale code for similar language (e.g. tl and fil)
-// This object maps it to correct `langs` key
-const langAliases: Record<string, string> = { fil: 'tl' }
-
 const StoreContext = createContext<[CommonStore, any]>([{} as CommonStore, {}])
 const Provider = StoreContext.Provider
 
@@ -41,38 +36,29 @@ export interface Warning {
 }
 
 export function StoreProvider(props: { children: any }) {
-
-  const now = new Date()
-  const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
-  const [settings, setSettings] = createCookieStorage()
-  const browserLang = navigator.language.slice(0, 2)
   const location = useLocation()
-  const i18n = createI18nContext({}, (settings.locale || 'en') as string)
-  const [t, { add, locale }] = i18n
-  const isDark = createMemo(() => settings.dark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches)
-
-  // request query params
-  const params = () => {
-    const lcl = i18n[1].locale()
-    const page = location.pathname.slice(1) || 'home'
-    return { locale: lcl in langAliases ? langAliases[lcl] : lcl, page }
-  }
-
-  const [langstore] = createResource(params(), ({ locale }) => langs[locale]())
-
-  // if ?lang=
-  if (location.query.lang) setSettings('locale', location.query.lang, cookieOptions)
-  else if (!settings.locale && langs.hasOwnProperty(browserLang)) setSettings('locale', browserLang)
-
-  createEffect(() => setSettings('locale', i18n[1].locale()), cookieOptions)
-  createEffect(() => !langstore.loading && add(i18n[1].locale(), langstore() as Record<string, any>))
-  createEffect(() => document.documentElement.classList[isDark() ? 'add' : 'remove']('dark'))
+  const i18n = createI18nContext({}, 'ru')
+  const [t, { locale }] = i18n
+  const [settings, setSettings] = createCookieStorage()
 
   const [state, setState] = createStore({
     warnings: [] as Warning[],
     modal: '' as ModalType,
     isDark: false,
     lang: 'ru'
+  })
+
+  onMount(() => {
+    console.info('[store] app context is mounted')
+    const now = new Date()
+    const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
+    if (location.query.lang) setSettings('locale', location.query.lang, cookieOptions)
+    else {
+      const browserLang = navigator.language.slice(0,2)
+      if (location.query.lang) setSettings('locale', browserLang, cookieOptions)
+      else if (!settings.locale && langs.hasOwnProperty(browserLang)) setSettings('locale', i18n[1].locale(), cookieOptions)
+    }
+    console.info('[store] mounted locale is ' + locale())
   })
 
   const actions = {

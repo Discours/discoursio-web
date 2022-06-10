@@ -1,0 +1,42 @@
+{
+  "name": "solid-debugger",
+  "version": "0.0.1",
+  "description": "",
+  "module": "./dist/solid-debugger.es.js",
+  "exports": {
+    ".": "./dist/solid-debugger.es.js",
+    "./styles": "./dist/style.css"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig-build.json",
+    "format": "prettier -w .",
+    "dev": "vite -c vite-demo.config.ts",
+    "build-demo": "vite build -c vite-demo.config.ts"
+  },
+  "author": "modderme123",
+  "contributors": [
+    "modderme123",
+    "Cole Kissane <cole.kissane@gmail.com>"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/babel__core": "^7.1.16",
+    "@types/d3": "^7.1.0",
+    "@types/node": "^16.11.11",
+    "prettier": "^2.5.1",
+    "solid-js": "^1.2.5",
+    "typescript": "^4.5.2"
+  },
+  "dependencies": {
+    "d3": "^7.2.0",
+    "vite": "^2.6.14",
+    "vite-plugin-solid": "^2.1.2"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.0"
+  }
+}

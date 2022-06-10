@@ -24,20 +24,20 @@ export const App = () => {
 
   return (
     <Router>
-      <StoreProvider>
-        <GraphqlProvider value={client}>
-          <Header />
-          {/* two div wrappers to make page animation work and performant */}
-          <div id='main-content'>
-            {/* <TransitionRoutes> */}
-            <Suspense>
-              <Routes />
-            </Suspense>
-            {/* </TransitionRoutes> */}
-          </div>
-          <Footer />
-        </GraphqlProvider>
-      </StoreProvider>
+      <GraphqlProvider value={client}>
+        <StoreProvider>
+            <Header />
+            {/* two div wrappers to make page animation work and performant */}
+            <div id='main-content'>
+              {/* <TransitionRoutes> */}
+              <Suspense>
+                <Routes />
+              </Suspense>
+              {/* </TransitionRoutes> */}
+            </div>
+            <Footer />
+        </StoreProvider>
+      </GraphqlProvider>
     </Router>
   )
 }
