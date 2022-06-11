@@ -9,6 +9,7 @@ interface GroupProps {
 }
 
 export default (props: GroupProps) => {
+  if(!props.articles) props.articles = []
   return (<div class='floor floor--important'>
     <div class='wide-container row'>
       <div class='group__header col-12'>
@@ -20,7 +21,6 @@ export default (props: GroupProps) => {
       </div>
 
       <div class='col-lg-6'>
-        <Show when={props.articles}>
           <div class='row'>
             <Show when={props.articles.length < 4}>
               <For each={props.articles.slice(1, props.articles.length)}>
@@ -46,7 +46,6 @@ export default (props: GroupProps) => {
               </div>
             </Show>
           </div>
-        </Show>
       </div>
     </div>
   </div>)
