@@ -54,7 +54,7 @@ export default (props: { code?: string; mode?: string }) => {
       const check = signCheck(emailElement?.value)
 
       console.log(check)
-
+      console.log(prompt())
       switch (mode()) {
         case 'sign-up':
           if (check) {
@@ -107,7 +107,10 @@ export default (props: { code?: string; mode?: string }) => {
         auth.handshaking = false
     }
   }
-
+  const submitHandler = (ev: Event) => {
+    console.debug(ev)
+    ev.preventDefault()
+  }
   return (
     <div class='row view' classList={{ 'view--sign-up': mode() === 'sign-up' }}>
       <div class='col-sm-6 d-md-none auth-image'>
@@ -129,7 +132,7 @@ export default (props: { code?: string; mode?: string }) => {
           </p>
         </div>
       </div>
-      <form class='col-sm-6 auth' onSubmit={console.debug}>
+      <form class='col-sm-6 auth' onSubmit={submitHandler}>
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 

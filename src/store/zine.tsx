@@ -4,7 +4,9 @@ import { createStore } from 'solid-js/store'
 import { createMutation, createQuery } from 'solid-urql'
 import articlesForAuthors from '../graphql/q/articles-for-authors'
 import articlesForTopics from '../graphql/q/articles-for-topics'
-import articlesTopRecent from '../graphql/q/articles-top-recent'
+import articlesRecentPublished from '../graphql/q/articles-recent-published'
+import articlesRecentAll from '../graphql/q/articles-recent-all'
+import articlesForCommunities from '../graphql/q/articles-for-communities'
 import followQuery from '../graphql/q/follow'
 import unfollowQuery from '../graphql/q/unfollow'
 import deleteComment from '../graphql/q/comment-destroy'
@@ -23,8 +25,9 @@ const ZineProvider = ZineContext.Provider
 const moreQueries: { [key: string]: any } = {
   author: articlesForAuthors,
   topic: articlesForTopics,
-  // 'community': articlesForCommunity,
-  '': articlesTopRecent
+  feed: articlesRecentAll,
+  community: articlesForCommunities,
+  '': articlesRecentPublished
 }
 
 export function ZineStoreProvider(props: { children: any }) {
@@ -76,8 +79,8 @@ export function ZineStoreProvider(props: { children: any }) {
       // TODO: implement update comment
     },
     deleteComment: (slug: string, commentId: string) => {
-      // TODO: implement delete comment
-      // const [data] = createMutation( { query: deleteComment, variables: { commentId } })
+      // FIXME: delete comment mutation
+      // const [data] = createMutation( { query: deleteComment as string, variables: { comment_id: commentId } })
     },
 
     follow: (slug: string, what: string) => {

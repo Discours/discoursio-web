@@ -1,6 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
-import { createMemo, createSignal, onMount } from 'solid-js'
+import { createSignal, onMount } from 'solid-js'
 import { For, Show } from 'solid-js/web'
 import { Shout, Topic, User } from '../../graphql/types.gen'
 import { capitalize } from '../../utils'

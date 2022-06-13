@@ -8,7 +8,8 @@ import getSession from './q/auth-reset'
 import topOverall from './q/articles-top-rated'
 import topViewed from './q/articles-top-viewed'
 import topMonth from './q/articles-top-month'
-import topRecent from './q/articles-top-recent'
+import recentPublished from './q/articles-recent-published'
+import recentAll from './q/articles-recent-all'
 import articlesForTopics from './q/articles-for-topics'
 import articlesForAuthors from './q/articles-for-authors'
 // article
@@ -30,7 +31,8 @@ import commentUpdate from './q/comment-update'
 import commentDestroy from './q/comment-destroy'
 
 export default {
-  topRecent,
+  recentPublished,
+  recentAll,
   topMonth,
   topOverall,
   topViewed,

@@ -1,7 +1,7 @@
 import { useLocation, RouteDataFunc } from 'solid-app-router'
 import { useI18n } from '@solid-primitives/i18n'
 import { createQuery } from 'solid-urql'
-import topRecent from '../graphql/q/articles-top-recent'
+import recentPublished from '../graphql/q/articles-recent-published'
 import topOverall from '../graphql/q/articles-top-rated'
 import topMonth from '../graphql/q/articles-top-month'
 import { Shout, Topic } from '../graphql/types.gen'
@@ -38,7 +38,7 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
   const { page, size } = paramList()
 
   const [topRecentData, recentState] = createQuery({
-    query: topRecent,
+    query: recentPublished,
     variables: { page: page || START, size }
   })
   const [topMonthData, topMonthState] = createQuery({

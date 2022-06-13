@@ -1,16 +1,14 @@
-{    
-    "headers": [
+{
+  "headers": [
+    {
+      "source": "/auth/(.*)",
+      "headers": [
         {
-            "source": "/auth/(.*)",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "no-cache"
-                }
-            ]
+          "key": "Cache-Control",
+          "value": "no-cache"
         }
-    ],
-    "rewrites": [
-        { "source": "/data/:match*", "destination": "https://newapi.discours.io/:match*" }
-    ]
+      ]
+    }
+  ],
+  "rewrites": [{ "source": "/data/:match*", "destination": "https://newapi.discours.io/:match*" }]
 }

@@ -1,8 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query RecentShoutsQuery($page: Int!, $size: Int!) {
-    recents(page: $page, size: $size) {
+  query RecentAllQuery($page: Int!, $size: Int!) {
+    recentAll(page: $page, size: $size) {
       _id: slug
       title
       subtitle

@@ -25,13 +25,14 @@ export const clientOptions: ClientOptions = {
   url: `${baseUrl}`,
   requestPolicy: 'cache-and-network',
   fetchOptions: () => {
-    console.debug('[graphql] fetch options update...')
     let headers: any = {} // credentials: 'include'
 
     try {
       const [{ token }] = useAuth()
-
-      if (token) headers = { ...headers, Auth: token }
+      if (!!token) {
+        headers = { Auth: token }
+        console.log('[graphql] fetch options  with auth ', token)
+      }
     } catch (e) {
       console.log(e)
     }

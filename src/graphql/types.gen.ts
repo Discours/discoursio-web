@@ -269,7 +269,8 @@ export type Query = {
   getUsersBySlugs: Array<Maybe<User>>
   isEmailFree: Scalars['Boolean']
   recentCommented: Array<Maybe<Shout>>
-  recents: Array<Maybe<Shout>>
+  recentPublished: Array<Maybe<Shout>>
+  recentAll: Array<Maybe<Shout>>
   shoutsByAuthors: Array<Maybe<Shout>>
   shoutsByCommunities: Array<Maybe<Shout>>
   shoutsByTopics: Array<Maybe<Shout>>
