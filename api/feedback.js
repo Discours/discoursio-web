@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     await transporter.sendMail({
       to: 'welcome@discours.io',
       from: contact + ' <robot@discours.io>',
-      subject: `Обратная связь от ${contact}`,
+      subject: `Feedback: ${contact}`,
       text: message
     })
     res.status(200).json({ message: 'Successfully send your message!' })

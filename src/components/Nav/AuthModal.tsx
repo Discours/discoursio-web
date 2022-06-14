@@ -12,16 +12,19 @@ type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'passwor
 
 export default (props: { code?: string; mode?: string }) => {
   const [t] = useI18n()
-  const [mode, setMode] = createSignal<AuthMode>('sign-in')
-  const [state, { hideModal, warn }] = useStore()
+  const [mode, setModeSignal] = createSignal<AuthMode>('sign-in')
+  const [state, { hideModal, warn, clearWarns }] = useStore()
   const [auth, { signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useAuth()
   // TODO: notifications destroy timeout
-
+  const setMode = (m: AuthMode) => {
+    clearWarns()
+    setModeSignal(m)
+  }
   let emailElement: HTMLInputElement | undefined
   let pass2Element: HTMLInputElement | undefined
   let passElement: HTMLInputElement | undefined
   let codeElement: HTMLInputElement | undefined
-  let usernameElement: HTMLInputElement | undefined // TODO: place this element
+  let usernameElement: HTMLInputElement | undefined
   const titles = {
     'sign-up': t('Create account'),
     'sign-in': t('Enter the Discours'),
@@ -38,58 +41,55 @@ export default (props: { code?: string; mode?: string }) => {
   }
 
   const localAuth = () => {
-    console.log('[auth] handshaking')
-    auth.handshaking = true
+    console.log('[auth] native account processing')
     // 1 check format
     const emailTyped =
       (emailElement?.value?.length || 0) > 5 &&
       emailElement?.value.includes('@') &&
       emailElement.value.includes('.')
-
+    console.log(`[auth] email is ${emailTyped?'':'NOT '}properly typed`)
     // 2 check email
     if (!emailTyped) {
-      warn({ body: t('Please check your email address'), kind: 'error' })
+      warn({
+        body: t('Please check your email address'),
+        kind: 'error' 
+      })
       console.log('[auth] email checked')
     } else {
-      const check = signCheck(emailElement?.value)
-
-      console.log('check: ', check)
-      console.log(prompt())
+      let check = false
       switch (mode()) {
         case 'sign-up':
+          check = signCheck(emailElement?.value)
           if (check) {
             warn({
               body: t('We know you, please try to login'),
               kind: 'error'
             })
           }
-
           // TODO: validation status on form
           break
         case 'sign-in':
+          check = signCheck(emailElement?.value)
           if (!check) {
             warn({
               body: t('No such account, please try to register'),
               kind: 'error'
             })
           }
-
           break
         default:
-          console.log('auth: passing email check')
+          console.log('[auth] passing email check')
       }
     }
-
-    console.log(prompt())
-
     switch (mode()) {
       case 'sign-in':
         signIn(emailElement?.value, passElement?.value)
         break
       case 'sign-up':
         if (pass2Element?.value !== passElement?.value)
-          warn({ body: t('Passwords are not same'), kind: 'error' })
-        else signUp(usernameElement?.value, emailElement?.value, passElement?.value)
+          warn({ body: t('Passwords are not equal'), kind: 'error' })
+        else signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
+        console.log(prompt())
         break
       case 'reset':
         // send reset-code to login with email
@@ -101,16 +101,13 @@ export default (props: { code?: string; mode?: string }) => {
         break
       case 'forget':
         // shows forget mode of auth-modal
-        // warn({ body: t('Passwords are not same'), kind: 'error' })
+        // warn({ body: t('Passwords are not equal'), kind: 'error' })
         break
       default:
-        auth.handshaking = false
+        console.log('[auth] unknown auth mode', mode())
     }
   }
-  const submitHandler = (ev: Event) => {
-    console.debug(ev)
-    ev.preventDefault()
-  }
+  
   return (
     <div class='row view' classList={{ 'view--sign-up': mode() === 'sign-up' }}>
       <div class='col-sm-6 d-md-none auth-image'>
@@ -118,21 +115,19 @@ export default (props: { code?: string; mode?: string }) => {
           <h2>{t('Discours')}</h2>
           <h4>{t(`Join the global community of authors!`)}</h4>
           <p class='auth-benefits'>
-            Познакомитесь с&nbsp;выдающимися людьми нашего времени, участвуйте в&nbsp;редактировании
-            и&nbsp;обсуждении статей, выступайте экспертом, оценивайте материалы других авторов
-            со&nbsp;всего мира и&nbsp;определяйте, какие статьи будут опубликованы в&nbsp;журнале. Каждый
-            день вас ждут новые истории и&nbsp;ещё много всего интересного!
+            {t('Get to know the most intelligent people of our time, edit and discuss the articles, share your expertise, rate and decide what to publish in the magazine')}.&nbsp;
+            {t('Every day: new stories and even more!')}
           </p>
           <p class='disclamer'>
-            Регистрируясь, вы&nbsp;даёте согласие с&nbsp;
+            {t('You agree with our')}&nbsp;
             <NavLink href='/about/terms-of-use' onClick={hideModal}>
-              правилами пользования
+              {t('terms of use')}
             </NavLink>
-            сайтом, на&nbsp;обработку персональных данных и&nbsp;на&nbsp;получение почтовых уведомлений.
+            ,&nbsp;{t('personal data processing and email notifications by signing up')}.
           </p>
         </div>
       </div>
-      <form class='col-sm-6 auth' onSubmit={submitHandler}>
+      <form class='col-sm-6 auth' onSubmit={(ev) => ev.preventDefault()}>
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
@@ -149,10 +144,22 @@ export default (props: { code?: string; mode?: string }) => {
             </Show>
           </div>
           <div class={`auth-info ${!state.warnings || !state.warnings.length ? 'hidden' : ''}`}>
-            <For each={state.warnings}>{(w: Warning) => <span class='warn'>{w.body}.&nbsp;</span>}</For>
+            <ul>
+              <For each={state.warnings}>
+                {(w?: Warning) => {
+                  console.debug(w)
+                  if (w && w.body) return (<li class='warn'>{w?.body}&nbsp;</li>)
+                  else return
+                }}
+              </For>
+            </ul>
           </div>
+
+          <Show when={mode() === 'sign-up'}>
+            <input autocomplete='username' ref={usernameElement} type='text' placeholder={t('Username')} />
+          </Show>
           <Show when={mode() !== 'reset' && mode() !== 'password'}>
-            <input autocomplete='username' ref={emailElement} type='text' placeholder={t('Email')} />
+            <input autocomplete='email' ref={emailElement} type='text' placeholder={t('Email')} />
           </Show>
 
           <Show when={mode() === 'sign-up' || mode() === 'sign-in'}>
@@ -168,9 +175,10 @@ export default (props: { code?: string; mode?: string }) => {
           </Show>
           <Show when={mode() === 'password'}>
             <input ref={passElement} type='password' placeholder={t('New password')} />
-            <input ref={pass2Element} type='password' placeholder={t('New password again')} />
           </Show>
-
+          <Show when={mode() === 'password' || mode() === 'sign-up'}>
+            <input ref={pass2Element} type='password' placeholder={t('Password again')} autocomplete="" />
+          </Show>
           <div>
             <button class='submitbtn' disabled={auth.handshaking} onClick={localAuth}>
               {auth.handshaking ? '...' : titles[mode()]}

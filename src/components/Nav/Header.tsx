@@ -14,7 +14,7 @@ export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
-  const [, { authorized }] = useAuth()
+  const [authState,] = useAuth()
   const [{ warnings }, { showModal }] = useStore()
   const [visibleWarnings, setVisibleWarnings] = createSignal(false)
   const toggleWarnings = () => setVisibleWarnings(!visibleWarnings())
@@ -82,7 +82,7 @@ export default () => {
               </Show>
               
               <Show
-                when={authorized()}
+                when={authState?.authorized}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
                     <Link href='#' onClick={openModal}>

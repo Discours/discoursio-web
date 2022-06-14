@@ -82,7 +82,7 @@ export function StoreProvider(props: { children: any }) {
       if (location.query.lang) setSettings('locale', browserLang, cookieOptions)
       else if (!settings.locale && langs.hasOwnProperty(browserLang)) setSettings('locale', i18n[1].locale(), cookieOptions)
     }
-    console.info('[store] mounted locale is ' + locale())
+    console.info('[store] locale is ' + locale())
   })
 
   const actions = {
@@ -90,17 +90,14 @@ export function StoreProvider(props: { children: any }) {
     warn: (w: Warning) => setState({ ...state, warnings: [...state.warnings, w] }),
     unwarn: (index: number) => {
       let w: Warning = state.warnings[index]
-
       w.seen = true
       setState({ ...state, warnings: [...state.warnings, w] })
     },
     resetWarns: () => {
       let warnings = state.warnings.map(x => {
         x.seen = false
-
         return x
       })
-
       setState({ ...state, warnings })
     },
     clearWarns: () => setState({...state, warnings: []}),

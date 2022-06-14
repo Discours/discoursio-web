@@ -2,7 +2,7 @@
 import { createContext, createSignal, useContext, onMount, onCleanup } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import mySession from '../graphql/q/auth-session'
-import { createQuery } from 'solid-urql'
+import { createMutation, createQuery, useClient } from 'solid-urql'
 import signCheck from '../graphql/q/auth-check'
 import signUp from '../graphql/q/auth-register'
 import signOut from '../graphql/q/auth-logout'
@@ -12,49 +12,48 @@ import forgetPassword from '../graphql/q/auth-forget'
 import resetPassword from '../graphql/q/auth-reset'
 import resendCode from '../graphql/q/auth-resend'
 import { useStore } from './index'
+import { useI18n } from '@solid-primitives/i18n'
+import { baseUrl } from '../graphql/client'
 
 interface AuthStore {
   readonly authorized?: boolean
+  readonly handshaking?: boolean
   token?: string
   session?: Partial<User>
   info?: CurrentUserInfo
-  handshaking?: boolean
 }
 
 const AuthContext = createContext<[AuthStore, any]>([{} as AuthStore, {}])
 const AuthProvider = AuthContext.Provider
 
 export const AuthStoreProvider = (props: any) => {
+  const client = useClient()
+  const [t] = useI18n()
   const [loggedIn, setLoggedIn] = createSignal(false)
+  const [loading, setLoading] = createSignal(false)
   const [, actions] = useStore()
   const [state, setState] = createStore({
     get authorized() {
       return loggedIn()
     },
+    get handshaking() {
+      return loading()
+    },
     token: '',
     session: {} as Partial<User>,
-    info: {} as CurrentUserInfo,
-    handshaking: false
+    info: {} as CurrentUserInfo
   })
 
   const listenStorage = (ev: StorageEvent) => {
-    // console.log('[auth] storage event')
-    console.debug(ev)
-
     if (ev.storageArea === window.localStorage) {
       // token update
       const t = window.localStorage.getItem('token')
-
-      console.debug(t)
-
       if (t && state.token !== t) {
         setState((state) => {
           state.token = t
-
           return state
         }) // store setter
         console.log('[store] auth token was updated')
-        console.debug(state)
       }
     }
   }
@@ -68,17 +67,13 @@ export const AuthStoreProvider = (props: any) => {
   })
 
   const authActions = {
-    // auth
-    authorized: () => loggedIn(),
-    getInfo: () => state.info,
     getSession: (t?: string) => {
+      setLoading(true)
       const token = t || localStorage.getItem('token') || ''
 
       if (token && !state.session?.username) {
-        const [qdata] = createQuery({ query: mySession, variables: { token } })
-        const {
-          getCurrentUser: { session, info }
-        } = qdata()
+        const [qdata, qstate] = createQuery( {query: mySession, variables: { token }})
+        const { getCurrentUser: { session, info } } = qdata()
         const { error } = session
 
         setLoggedIn(!error)
@@ -88,70 +83,91 @@ export const AuthStoreProvider = (props: any) => {
             ...state,
             token,
             session,
-            info,
-            handshaking: false
+            info
           })
         } else {
           actions.warn(error)
         }
       }
-
+      setLoading(false)
       return state.session
     },
-    signIn: (email: string, password: string) => {
-      const [qdata] = createQuery({ query: signIn, variables: { email, password } })
-      const { user, token, error } = qdata()
+    signIn: async (email: string, password: string) => {
+      console.log(`[auth] sign in`, email)
+      setLoading(true)
+      const [qdata, qstate] = await createQuery( { query: signIn, variables: { email, password }})
+      if(!qstate()?.fetching) {
+        const { user, token, error } = qdata().signIn
+        if (!error) setState({ ...state, token, session: user })
+        actions.resetWarns()
+        setLoggedIn(true)
+      }
+      if(qstate().error) {
+        console.error(qstate().error)
+        setLoggedIn(false)
+      }
 
-      if (!error) setState({ ...state, token, session: user, handshaking: false })
-
-      setState({ ...state, handshaking: false })
-      actions.resetWarns()
-      setLoggedIn(true)
+      setLoading(false)
     },
-    signUp: (username: string, email: string, password: string) => {
-      const [qdata] = createQuery({ query: signUp, variables: { username, email, password } })
-      const { user, token, error } = qdata()
+    signUp: async (email: string, password: string, username?: string) => {
+      console.log(`[auth] sign up`, email)
+      setLoading(true)
+      const [mutRead, mutExec] = createMutation(signUp)
+      const m = await mutExec({ email, password, username })
+      console.debug(m)
+      //if (!mstate().fetching) setState({ ...state, token: mdata().token, session: mdata().user})
+      if(mutRead().error) {
+        setLoggedIn(false)
+      } else {
+        actions.resetWarns()
+        setLoggedIn(true)
+      }
 
-      if (!error) setState({ ...state, token, session: user, handshaking: false })
-
-      setState({ ...state, handshaking: false })
-      actions.resetWarns()
-      setLoggedIn(true)
+      setLoading(false)
     },
     signCheck: (email: string) => {
-      const [qdata] = createQuery({ query: signCheck, variables: { email } })
+      console.log(`[auth] checking email`, email)
+      setLoading(true)
+      const [qdata, qstate] = createQuery({ query: signCheck, variables: { email }, context: { url: baseUrl } })
       const isEmailFree = qdata()
-      if (!isEmailFree) actions.warn('Email is used')
+      if (!isEmailFree) {
+        actions.warn({ body: t('Email is used'), kind: 'error'})
+      }
+      setLoading(false)
     },
     signOut: () => {
+      console.log(`[auth] sign out`)
+      setLoading(true)
       if (loggedIn()) {
         const [qdata] = createQuery({ query: signOut })
-        const { error } = qdata()
-
-        if (!error) setLoggedIn(false)
-        else actions.warn(error)
+        const { error } = qdata().signOut
+        if (error) actions.warn(error)
       }
+      setLoading(false)
     },
     forget: (email: string) => {
-      console.log(`auth: forget ${email}`)
+      console.log(`[auth] forget ${email}`)
+      setLoading(true)
       const [qdata] = createQuery({ query: forgetPassword, variables: { email } })
       const { error } = qdata()
-
       if (error) actions.warn(error)
+      setLoading(false)
     },
     reset: (code: string) => {
       console.log(`auth: reset ${code}`)
+      setLoading(true)
       const [qdata] = createQuery({ query: resetPassword, variables: { code } })
       const { error } = qdata()
-
       if (error) actions.warn(error)
+      setLoading(false)
     },
     resend: (email: string) => {
       console.log(`auth: resend ${email}`)
+      setLoading(true)
       const [qdata] = createQuery({ query: resendCode, variables: { email } })
       const { error } = qdata()
-
       if (error) actions.warn(error)
+      setLoading(false)
     }
   }
 
