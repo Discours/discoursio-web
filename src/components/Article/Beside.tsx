@@ -10,7 +10,7 @@ import { Shout, Topic, User } from '../../graphql/types.gen'
 interface BesideProps {
   title: string
   values: any[]
-  beside: Partial<Shout>
+  beside: Partial<Shout> | undefined
   wrapper: 'topic' | 'author' | 'article' | 'top-article'
 }
 export default (props: BesideProps) => {

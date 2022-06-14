@@ -14,7 +14,7 @@ export type HomeParams = {
 }
 
 export interface HomeRouteData {
-  topRecent: Partial<Shout>[]
+  recentPublished: Partial<Shout>[]
   topMonth: Partial<Shout>[]
   topOverall: Partial<Shout>[]
   readonly topics: Topic[]
@@ -37,7 +37,7 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
   }
   const { page, size } = paramList()
 
-  const [topRecentData, recentState] = createQuery({
+  const [recentPublishedData, recentState] = createQuery({
     query: recentPublished,
     variables: { page: page || START, size }
   })
@@ -59,8 +59,8 @@ export const HomeData: RouteDataFunc = (): HomeRouteData => {
     get topicsLoading() {
       return tstate().fetching
     },
-    get topRecent() {
-      return topRecentData()?.recents || []
+    get recentPublished() {
+      return recentPublishedData()?.recentPublished || []
     },
     get topMonth() {
       return topMonthData()?.topMonth || []

@@ -1,4 +1,4 @@
-import { Component, createMemo, For, Show } from 'solid-js'
+import { Component, createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout, Topic, User } from '../graphql/types.gen'
@@ -15,7 +15,7 @@ import { byShouts } from '../utils/by'
 const Feed: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<{
-    candidates?: Partial<Shout>[]
+    recentAll: Partial<Shout>[]
     byTopics?: Partial<Shout>[]
     byAuthors?: Partial<Shout>[]
     byCommunities?: Partial<Shout>[]
@@ -33,11 +33,15 @@ const Feed: Component = () => {
     // TODO: author is readed method
     return false
   }
-  const articles = createMemo(() => [
-    ...(data.byTopics || []),
-    ...(data.byAuthors || []),
-    ...(data.byCommunities || [])
-  ])
+  const [articles, setArticles] = createSignal<Partial<Shout>[]>()
+  createEffect(() => {
+    if(!data.feedLoading) setArticles([
+      ...(data.recentAll || []),
+      ...(data.byTopics || []),
+      ...(data.byAuthors || []),
+      ...(data.byCommunities || [])
+    ])
+})
 
   useRouteReadyState()
 
@@ -143,13 +147,13 @@ const Feed: Component = () => {
           <Beside
             title={t('Top topics')}
             values={data.topics.sort(byShouts)?.slice(0, 5)}
-            beside={articles()[0]}
+            beside={articles()?.slice(0,1).pop()}
             wrapper={'topic'}
           />
-          <Row3 articles={articles().slice(1, 4)}/>
-          <Row2 articles={articles().slice(4, 6)}/>
-          <Row3 articles={articles().slice(10, 13)}/>
-          <Row3 articles={articles().slice(13, 16)}/>
+          <Row3 articles={articles()?.slice(1, 4) || []}/>
+          <Row2 articles={articles()?.slice(4, 6) || []}/>
+          <Row3 articles={articles()?.slice(10, 13) || []}/>
+          <Row3 articles={articles()?.slice(13, 16) || []}/>
         </Show>
       </div>
     </>

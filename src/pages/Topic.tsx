@@ -27,26 +27,20 @@ export const BlogTopic: Component = () => {
 
   let authors = createMemo<Partial<User>[]>(() => {
     let authorset = new Set([] as Partial<User>[])
-
     data.articles?.forEach((a) => a.authors?.forEach((u) => authorset.add(u)))
-
     return Array.from(authorset)
   })
   const topic = createMemo<Topic>(() => data.topics?.find((t: Topic) => t.slug === data.slug) as Topic)
   const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
   const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
   const topCommented = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byComments))
-  const topRecent = createMemo(() => Array.from(data.articles || []).sort(byCreated))
+  const recentPublished = createMemo(() => Array.from(data.articles || []).sort(byCreated))
   const [mode, setMode] = createSignal('fresh')
   const selected = createMemo(() => {
     const m = mode()
-
-    if (m === 'fresh') return topRecent()
-
+    if (m === 'fresh') return recentPublished()
     if (m === 'popular') return topRated()
-
     if (m === 'discuss') return topCommented()
-
     return topViewed()
   })
   const title = createMemo(() => {

@@ -51,10 +51,10 @@ export const Home: Component = () => {
       const all = [
         ...Array.from(data.topMonth),
         ...Array.from(data.topOverall),
-        ...Array.from(data.topRecent)
+        ...Array.from(data.recentPublished)
       ]
 
-      setTopViewed(Array.from(data.topRecent).sort(byViews).slice(0, 5))
+      setTopViewed(Array.from(data.recentPublished).sort(byViews).slice(0, 5))
 
       // get shouts lists by
       let byLayout: { [key: string]: Partial<Shout>[] } = {}
@@ -118,26 +118,26 @@ export const Home: Component = () => {
       <PageLoadingBar active={!loaded()} />
       <Show when={loaded()}>
         <NavTopics topics={someTopics()} />
-        <Row5 articles={data.topRecent.slice(0, 5)} />
+        <Row5 articles={data.recentPublished.slice(0, 5)} />
         <Hero />
         <Beside
-          beside={data.topRecent.slice(5, 6)[0]}
+          beside={data.recentPublished.slice(5, 6)[0]}
           title={t('Top viewed')}
           values={topViewed()}
           wrapper={'top-article'}
         />
-        <Row3 articles={data.topRecent.slice(6, 9)} />
+        <Row3 articles={data.recentPublished.slice(6, 9)} />
         <Beside
-          beside={data.topRecent.slice(9, 10)[0]}
+          beside={data.recentPublished.slice(9, 10)[0]}
           title={t('Top authors')}
           values={topAuthors()}
           wrapper={'author'}
         />
-        <Slider title={t('Top month articles')} articles={data.topRecent.slice(10, 18)} />
-        <Row2 articles={data.topRecent.slice(18, 20)} />
-        <RowShort articles={data.topRecent.slice(20, 24)} />
-        <Row1 article={data.topRecent.slice(24, 25)[0]} />
-        <Row3 articles={data.topRecent.slice(25, 28)} />
+        <Slider title={t('Top month articles')} articles={data.recentPublished.slice(10, 18)} />
+        <Row2 articles={data.recentPublished.slice(18, 20)} />
+        <RowShort articles={data.recentPublished.slice(20, 24)} />
+        <Row1 article={data.recentPublished.slice(24, 25)[0]} />
+        <Row3 articles={data.recentPublished.slice(25, 28)} />
 
         <Row3 articles={topCommented()} header={<h2>{t('Top commented')}</h2>} />
         <Group
@@ -148,17 +148,17 @@ export const Home: Component = () => {
             </div>
           }
         />
-        <Slider title={t('Favorite')} articles={data.topRecent.slice(28, 30)} />
+        <Slider title={t('Favorite')} articles={data.recentPublished.slice(28, 30)} />
 
         <Suspense>
           <Beside
-            beside={data.topRecent.slice(30, 31)[0]}
+            beside={data.recentPublished.slice(30, 31)[0]}
             title={t('Top topics')}
             values={topTopics()}
             wrapper={'topic'}
           />
         </Suspense>
-        <Row3 articles={data.topRecent.slice(31, 34)} />
+        <Row3 articles={data.recentPublished.slice(31, 34)} />
         <Banner />
       </Show>
     </main>

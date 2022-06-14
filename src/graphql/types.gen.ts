@@ -88,6 +88,7 @@ export type CurrentUserInfo = {
   totalUnreadMessages?: Maybe<Scalars['Int']>
   userSubscribedAuthors: Array<Maybe<User>>
   userSubscribedTopics: Array<Maybe<Scalars['String']>>
+  userSubscribedCommmunities: Array<Maybe<Scalars['String']>>
 }
 
 export type Mutation = {
@@ -275,7 +276,6 @@ export type Query = {
   shoutsByCommunities: Array<Maybe<Shout>>
   shoutsByTopics: Array<Maybe<Shout>>
   shoutsBySlugs: Array<Maybe<Shout>>
-  shoutsCandidates: Array<Maybe<Shout>>
   shoutsCommentedByUser: Array<Maybe<Shout>>
   shoutsRatedByUser: ShoutsResult
   shoutsReviewed: Array<Maybe<Shout>>
@@ -324,11 +324,14 @@ export type QueryRecentCommentedArgs = {
   size: Scalars['Int']
 }
 
-export type QueryRecentsArgs = {
+export type QueryRecentAllArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
-
+export type QueryRecentPublishedArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+}
 export type QueryShoutsByAuthorArgs = {
   author: Scalars['String']
   page: Scalars['Int']
@@ -345,10 +348,6 @@ export type QueryShoutsByTopicArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
   topic: Scalars['String']
-}
-
-export type QueryShoutsCandidatesArgs = {
-  size?: InputMaybe<Scalars['Int']>
 }
 
 export type QueryShoutsCommentedByUserArgs = {
@@ -999,6 +998,20 @@ export default {
           },
           {
             name: 'userSubscribedTopics',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
+              }
+            },
+            args: []
+          },
+          {
+            name: 'userSubscribedCommunities',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2028,7 +2041,43 @@ export default {
             ]
           },
           {
-            name: 'recents',
+            name: 'recentAll',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Shout',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'recentPublished',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2197,29 +2246,6 @@ export default {
                     kind: 'SCALAR',
                     name: 'Any'
                   }
-                }
-              }
-            ]
-          },
-          {
-            name: 'shoutsCandidates',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'OBJECT',
-                  name: 'Shout',
-                  ofType: null
-                }
-              }
-            },
-            args: [
-              {
-                name: 'size',
-                type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
                 }
               }
             ]

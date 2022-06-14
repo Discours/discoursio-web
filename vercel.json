@@ -10,5 +10,5 @@
       ]
     }
   ],
-  "rewrites": [{ "source": "/data/:match*", "destination": "https://newapi.discours.io/:match*" }]
+  "rewrites": [{ "source": "https://newapi.discours.io/:match*", "destination": "http://localhost:8080" }]
 }
