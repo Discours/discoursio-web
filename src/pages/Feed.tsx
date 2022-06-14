@@ -33,7 +33,7 @@ const Feed: Component = () => {
     // TODO: author is readed method
     return false
   }
-  const [articles, setArticles] = createSignal<Partial<Shout>[]>()
+  const [articles, setArticles] = createSignal<Partial<Shout>[]>([])
   createEffect(() => {
     if(!data.feedLoading) setArticles([
       ...(data.recentAll || []),
@@ -143,11 +143,11 @@ const Feed: Component = () => {
       </div>
 
       <div class='flex flex-col'>
-        <Show when={!data.feedLoading}>
+        <Show when={!data.feedLoading && !!articles()}>
           <Beside
             title={t('Top topics')}
             values={data.topics.sort(byShouts)?.slice(0, 5)}
-            beside={articles()?.slice(0,1).pop()}
+            beside={articles()[0]}
             wrapper={'topic'}
           />
           <Row3 articles={articles()?.slice(1, 4) || []}/>

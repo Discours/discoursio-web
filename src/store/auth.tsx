@@ -120,11 +120,8 @@ export const AuthStoreProvider = (props: any) => {
     },
     signCheck: (email: string) => {
       const [qdata] = createQuery({ query: signCheck, variables: { email } })
-      const { error } = qdata().isEmailFree
-
-      if (error) actions.warn(error)
-
-      return true
+      const isEmailFree = qdata()
+      if (!isEmailFree) actions.warn('Email is used')
     },
     signOut: () => {
       if (loggedIn()) {

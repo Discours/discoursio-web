@@ -53,7 +53,7 @@ export default (props: { code?: string; mode?: string }) => {
     } else {
       const check = signCheck(emailElement?.value)
 
-      console.log(check)
+      console.log('check: ', check)
       console.log(prompt())
       switch (mode()) {
         case 'sign-up':
