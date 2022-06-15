@@ -11,7 +11,7 @@ export const ArticleData: RouteDataFunc = (args) => {
   })
   const [commentsData, commentsState] = createQuery({
     query: articleComments,
-    variables: { slug: args.params.slug }
+    variables: { shout: args.params.slug }
   })
 
   const [tdata, tstate] = createQuery({ query: topicsAll })

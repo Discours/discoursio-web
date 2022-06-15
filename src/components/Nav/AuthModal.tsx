@@ -155,7 +155,7 @@ export default (props: { code?: string; mode?: string }) => {
             </ul>
           </div>
 
-          <Show when={mode() === 'sign-up'}>
+          <Show when={false && mode() === 'sign-up'}>
             <input autocomplete='username' ref={usernameElement} type='text' placeholder={t('Username')} />
           </Show>
           <Show when={mode() !== 'reset' && mode() !== 'password'}>

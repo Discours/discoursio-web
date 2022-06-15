@@ -18,7 +18,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
-import { byViews } from '../utils/by'
+import { byComments, byViews } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
 
 export const Home: Component = () => {
@@ -76,13 +76,7 @@ export const Home: Component = () => {
       })
 
       // set top commented
-      setTopCommented(
-        all
-          .sort((a: Partial<Shout>, b: Partial<Shout>) =>
-            a.stat && b.stat ? b.stat.comments - a.stat.comments : 0
-          )
-          .slice(0, 3)
-      )
+      setTopCommented(all.sort(byComments).slice(0, 3))
 
       // topics by slug
       let topicsdict: { [key: string]: Topic } = {}

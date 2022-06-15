@@ -10,7 +10,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import "./Feed.scss"
 import Icon from "../components/Nav/Icon";
 import { useAuth } from '../store/auth'
-import { byShouts } from '../utils/by'
+import { byShouts } from '../utils/sortby'
 
 const Feed: Component = () => {
   const [t] = useI18n()
@@ -34,14 +34,15 @@ const Feed: Component = () => {
     return false
   }
   const [articles, setArticles] = createSignal<Partial<Shout>[]>([])
+
   createEffect(() => {
-    if(!data.feedLoading) setArticles([
+    if(!data.feedLoading) {setArticles([
       ...(data.recentAll || []),
       ...(data.byTopics || []),
       ...(data.byAuthors || []),
       ...(data.byCommunities || [])
-    ])
-})
+    ])}
+  })
 
   useRouteReadyState()
 
@@ -125,7 +126,7 @@ const Feed: Component = () => {
                   voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
                   cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </div>
-                <div class="comment__author-image"></div>
+                <div class="comment__author-image" />
               </div>
               <div class="comment__details">
                 <a href="#">Екатерина Ильина</a>
@@ -143,7 +144,7 @@ const Feed: Component = () => {
       </div>
 
       <div class='flex flex-col'>
-        <Show when={!data.feedLoading && !!articles()}>
+        <Show when={!data.feedLoading && Boolean(articles())}>
           <Beside
             title={t('Top topics')}
             values={data.topics.sort(byShouts)?.slice(0, 5)}

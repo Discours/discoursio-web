@@ -6,7 +6,7 @@ import articlesForCommunities from '../graphql/q/articles-for-communities'
 import { Shout, Topic } from '../graphql/types.gen'
 import { useAuth } from '../store/auth'
 import topicsAll from '../graphql/q/topics-all'
-import { byViews } from '../utils/by'
+import { byViews } from '../utils/sortby'
 import { useZine } from '../store/zine'
 import articlesRecentAll from '../graphql/q/articles-recent-all'
 

@@ -9,7 +9,7 @@ import Beside from '../components/Article/Beside'
 // import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import './Topic.scss'
-import { byComments, byCreated, byRating, byViews } from '../utils/by'
+import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
 import TopicFull from '../components/Topic/Full'
 
 export const BlogTopic: Component = () => {
@@ -30,7 +30,7 @@ export const BlogTopic: Component = () => {
     data.articles?.forEach((a) => a.authors?.forEach((u) => authorset.add(u)))
     return Array.from(authorset)
   })
-  const topic = createMemo<Topic>(() => data.topics?.find((t: Topic) => t.slug === data.slug) as Topic)
+  const topic = createMemo<Topic>(() => data.topics?.find((tpc: Topic) => tpc.slug === data.slug) as Topic)
   const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
   const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
   const topCommented = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byComments))

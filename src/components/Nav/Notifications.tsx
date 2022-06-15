@@ -7,7 +7,9 @@ export default () => {
     <Show when={notSeen()}>
       <Portal>
         <ul class='warns'>
-          <For each={state.warnings}>{(w: Warning) => <li>{w.body}</li>}</For>
+          <For each={state.warnings}>
+            {(w: Warning) => (<li>{w?.body}</li>)}
+          </For>
         </ul>
       </Portal>
     </Show>

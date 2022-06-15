@@ -6,7 +6,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import PageLoadingBar from '../components/LoadingBar'
-import { byShouts, byViews } from '../utils/by'
+import { byShouts, byViews } from '../utils/sortby'
 import { useAuth } from '../store/auth'
 
 export default () => {

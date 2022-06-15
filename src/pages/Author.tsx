@@ -9,7 +9,7 @@ import Row3 from '../components/Article/Row3'
 import Beside from '../components/Article/Beside'
 import ArticleCard from '../components/Article/Card'
 import AuthorFull from '../components/Author/Full'
-import { byComments, byCreated, byRating, byViews } from '../utils/by'
+import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
 import './Topic.scss'
 
 // FIXME

@@ -40,18 +40,12 @@ export interface Warning {
   seen?: boolean
 }
 
-export function StoreProvider(props: { children: any }) {                                                                                                            
-  const now = new Date()
-  const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
+const now = new Date()
+const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
+
+export function StoreProvider(props: { children: any }) {
   const [settings, setSettings] = createCookieStorage()
-  const browserLang = navigator.language.slice(0, 2)
   const location = useLocation()
-
-  if (location.query.lang)
-    setSettings('locale', location.query.lang, cookieOptions)
-  else if (!settings.locale && langs.hasOwnProperty(browserLang))
-    setSettings('locale', browserLang)
-
   const i18n = createI18nContext({}, (settings.locale || 'ru') as string)
   const [t, { add, locale }] = i18n
   const params = () => {
@@ -59,7 +53,7 @@ export function StoreProvider(props: { children: any }) {
     const page = location.pathname.slice(1) || 'home'
     return { locale: lcl in langAliases ? langAliases[lcl] : lcl, page }
   }
-  const [langstore] = createResource(params, ({ locale }) => langs[locale]())
+  const [langstore] = createResource(params, ({ locale: langcode }) => langs[langcode]())
   const isDark = () => settings.dark === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches
   createEffect(() => setSettings('locale', i18n[1].locale(), cookieOptions))
   createEffect(() => { if(!langstore.loading) add(i18n[1].locale(), langstore() as Record<string, any>) })
@@ -74,17 +68,14 @@ export function StoreProvider(props: { children: any }) {
 
   onMount(() => {
     console.info('[store] app context is mounted')
-    const now = new Date()
-    const cookieOptions = { expires: new Date(now.getFullYear() + 1, now.getMonth(), now.getDate()) }
     if (location.query.lang) setSettings('locale', location.query.lang, cookieOptions)
     else {
-      const browserLang = navigator.language.slice(0,2)
-      if (location.query.lang) setSettings('locale', browserLang, cookieOptions)
-      else if (!settings.locale && langs.hasOwnProperty(browserLang)) setSettings('locale', i18n[1].locale(), cookieOptions)
+      const browserLang = navigator.language.slice(0, 2)
+      if (langs[browserLang]) setSettings('locale', browserLang)
+      else setSettings('locale', i18n[1].locale(), cookieOptions)
+      console.info(`[store] locale is ${  locale()}`)
     }
-    console.info('[store] locale is ' + locale())
   })
-
   const actions = {
     // warnings
     warn: (w: Warning) => setState({ ...state, warnings: [...state.warnings, w] }),

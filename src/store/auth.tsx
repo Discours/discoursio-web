@@ -27,7 +27,6 @@ const AuthContext = createContext<[AuthStore, any]>([{} as AuthStore, {}])
 const AuthProvider = AuthContext.Provider
 
 export const AuthStoreProvider = (props: any) => {
-  const client = useClient()
   const [t] = useI18n()
   const [loggedIn, setLoggedIn] = createSignal(false)
   const [loading, setLoading] = createSignal(false)
@@ -47,13 +46,19 @@ export const AuthStoreProvider = (props: any) => {
   const listenStorage = (ev: StorageEvent) => {
     if (ev.storageArea === window.localStorage) {
       // token update
-      const t = window.localStorage.getItem('token')
-      if (t && state.token !== t) {
-        setState((state) => {
-          state.token = t
-          return state
-        }) // store setter
-        console.log('[store] auth token was updated')
+      const tkn = window.localStorage.getItem('token')
+
+      if (tkn) {
+        if(state.token !== tkn) {
+          setState((curState) => {
+            curState.token = tkn
+
+            return state
+          }) // store setter
+          console.log('[auth] token was updated from localStorage')
+        } else {
+          console.log('[auth] token in localStorage is up to date')
+        }
       }
     }
   }
@@ -67,9 +72,9 @@ export const AuthStoreProvider = (props: any) => {
   })
 
   const authActions = {
-    getSession: (t?: string) => {
+    getSession: (tkn?: string) => {
       setLoading(true)
-      const token = t || localStorage.getItem('token') || ''
+      const token = tkn || localStorage.getItem('token') || ''
 
       if (token && !state.session?.username) {
         const [qdata, qstate] = createQuery( {query: mySession, variables: { token }})
@@ -93,7 +98,7 @@ export const AuthStoreProvider = (props: any) => {
       return state.session
     },
     signIn: async (email: string, password: string) => {
-      console.log(`[auth] sign in`, email)
+      console.log(`[auth] signing in`, email)
       setLoading(true)
       const [qdata, qstate] = await createQuery( { query: signIn, variables: { email, password }})
       if(!qstate()?.fetching) {
@@ -110,12 +115,10 @@ export const AuthStoreProvider = (props: any) => {
       setLoading(false)
     },
     signUp: async (email: string, password: string, username?: string) => {
-      console.log(`[auth] sign up`, email)
+      console.log(`[auth] signing up`, email)
       setLoading(true)
       const [mutRead, mutExec] = createMutation(signUp)
       const m = await mutExec({ email, password, username })
-      console.debug(m)
-      //if (!mstate().fetching) setState({ ...state, token: mdata().token, session: mdata().user})
       if(mutRead().error) {
         setLoggedIn(false)
       } else {

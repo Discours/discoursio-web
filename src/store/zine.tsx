@@ -86,7 +86,7 @@ export function ZineStoreProvider(props: { children: any }) {
     follow: (slug: string, what: string) => {
       console.log(`[zine] follow ${slug} from ${what}`)
       const [qdata] = createQuery({ query: followQuery, variables: { what, slug } })
-      const { error } = qdata()
+      const { error } = qdata().follow
 
       if (error) actions.warn(error)
     },
@@ -94,7 +94,7 @@ export function ZineStoreProvider(props: { children: any }) {
     unfollow: (slug: string, what: string) => {
       console.log(`[zine] unfollow ${slug} from ${what}`)
       const [qdata] = createQuery({ query: unfollowQuery, variables: { what, slug } })
-      const { error } = qdata()
+      const { error } = qdata().unfollow
 
       if (error) actions.warn(error)
     },

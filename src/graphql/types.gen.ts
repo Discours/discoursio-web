@@ -1,3 +1,4 @@
+/* eslint no-use-before-define: 0 */
 // import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
@@ -55,7 +56,7 @@ export type CommentResult = {
   error?: Maybe<Scalars['String']>
 }
 
-export enum CommentStatus {
+enum CommentStatus {
   Deleted = 'DELETED',
   New = 'NEW',
   Updated = 'UPDATED',
