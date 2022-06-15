@@ -1,5 +1,5 @@
 // see https://github.com/joshwilsonvu/eslint-plugin-solid/issues/18
-import { createContext, createSignal, useContext, onMount, onCleanup } from 'solid-js'
+import { createContext, createSignal, useContext, onMount, onCleanup, createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import mySession from '../graphql/q/auth-session'
 import { createMutation, createQuery, useClient } from 'solid-urql'
@@ -47,12 +47,10 @@ export const AuthStoreProvider = (props: any) => {
     if (ev.storageArea === window.localStorage) {
       // token update
       const tkn = window.localStorage.getItem('token')
-
       if (tkn) {
         if(state.token !== tkn) {
           setState((curState) => {
             curState.token = tkn
-
             return state
           }) // store setter
           console.log('[auth] token was updated from localStorage')
@@ -62,7 +60,6 @@ export const AuthStoreProvider = (props: any) => {
       }
     }
   }
-
   onMount(() => {
     console.log('[store] listening localStorage changes')
     window.addEventListener('storage', listenStorage)
@@ -78,16 +75,13 @@ export const AuthStoreProvider = (props: any) => {
 
       if (token && !state.session?.username) {
         const [qdata, qstate] = createQuery( {query: mySession, variables: { token }})
-        const { getCurrentUser: { session, info } } = qdata()
-        const { error } = session
-
+        const { user, info, error } = qdata().getCurrentUser
         setLoggedIn(!error)
-
         if (!error) {
           setState({
             ...state,
             token,
-            session,
+            session: user,
             info
           })
         } else {
@@ -95,7 +89,6 @@ export const AuthStoreProvider = (props: any) => {
         }
       }
       setLoading(false)
-      return state.session
     },
     signIn: async (email: string, password: string) => {
       console.log(`[auth] signing in`, email)
@@ -173,6 +166,9 @@ export const AuthStoreProvider = (props: any) => {
       setLoading(false)
     }
   }
+  createEffect(() => {
+    if(state.token && !loggedIn()) actions.getSession()
+  })
 
   return <AuthProvider value={[state as unknown as AuthStore, authActions]} children={props.children} />
 }

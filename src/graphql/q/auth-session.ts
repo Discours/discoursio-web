@@ -17,6 +17,7 @@ export default gql`
       totalUnreadMessages
       userSubscribedTopics
       userSubscribedAuthors
+      userSubscribedCommunities
     }
   }
 `
