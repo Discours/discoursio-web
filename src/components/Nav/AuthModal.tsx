@@ -60,7 +60,7 @@ export default (props: { code?: string; mode?: string }) => {
       switch (mode()) {
         case 'sign-up':
           check = signCheck(emailElement?.value)
-          if (check) {
+          if (!check) {
             warn({
               body: t('We know you, please try to login'),
               kind: 'error'
@@ -70,7 +70,7 @@ export default (props: { code?: string; mode?: string }) => {
           break
         case 'sign-in':
           check = signCheck(emailElement?.value)
-          if (!check) {
+          if (check) {
             warn({
               body: t('No such account, please try to register'),
               kind: 'error'
