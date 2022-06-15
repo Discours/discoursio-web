@@ -10,5 +10,5 @@
       ]
     }
   ],
-  "rewrites": [{ "source": "https://newapi.discours.io/:match*", "destination": "http://localhost:8080" }]
+  "rewrites": [{ "source": "/graphql", "destination": "https://newapi.discours.io" }]
 }
