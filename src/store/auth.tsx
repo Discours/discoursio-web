@@ -132,8 +132,8 @@ export const AuthStoreProvider = (props: any) => {
       console.log(`[auth] checking email`, email)
       setLoading(true)
       const [qdata, qstate] = createQuery({ query: signCheck, variables: { email }, context: { url: baseUrl } })
-      const isEmailFree = qdata()
-      if (!isEmailFree) {
+      const isEmailUsed = qdata()
+      if (isEmailUsed) {
         actions.warn({ body: t('Email is used'), kind: 'error'})
       }
       setLoading(false)

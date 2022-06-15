@@ -269,7 +269,7 @@ export type Query = {
   getShoutComments: Array<Maybe<Comment>>
   getUserRoles: Array<Maybe<Role>>
   getUsersBySlugs: Array<Maybe<User>>
-  isEmailFree: Scalars['Boolean']
+  isEmailUsed: Scalars['Boolean']
   recentCommented: Array<Maybe<Shout>>
   recentPublished: Array<Maybe<Shout>>
   recentAll: Array<Maybe<Shout>>
@@ -316,7 +316,7 @@ export type QueryGetUsersBySlugsArgs = {
   slugs: Array<InputMaybe<Scalars['String']>>
 }
 
-export type QueryIsEmailFreeArgs = {
+export type QueryisEmailUsedArgs = {
   email: Scalars['String']
 }
 
@@ -1984,7 +1984,7 @@ export default {
             ]
           },
           {
-            name: 'isEmailFree',
+            name: 'isEmailUsed',
             type: {
               kind: 'NON_NULL',
               ofType: {

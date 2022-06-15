@@ -29,8 +29,8 @@ export default () => {
         </NavLink>
       </div>
       <div class='usercontrol__item usercontrol__item--inbox'>
-        <a href='/user/inbox'>
-          <div classList={{ entered: resource() === '/user/inbox' }}>
+        <a href='/inbox'>
+          <div classList={{ entered: resource() === '/inbox' }}>
             <Icon name='inbox-white' counter={info?.totalUnreadMessages} />
           </div>
         </a>
