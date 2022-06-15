@@ -70,7 +70,7 @@ export default () => {
               <div class='usercontrol__item'>
                 <a href={''} onClick={toggleWarnings}>
                   <div>
-                    <Icon name='bell-white' counter={warnings?.length || 1} />
+                    <Icon name='bell-white' counter={warnings?.length || (authState.authorized ? 1 : 0)} />
                   </div>
                 </a>
               </div>
