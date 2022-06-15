@@ -22,7 +22,7 @@ header {
     right: 0;
     top: 0;
     padding: 0 divide($container-padding-x, 2);
-    z-index: 10;
+    z-index: 9;
 
     @include media-breakpoint-up(sm) {
       padding: 0 $container-padding-x;
@@ -37,7 +37,7 @@ header {
   padding: 0 $container-padding-x 0 0;
   text-align: center;
   position: relative;
-  z-index: 10;
+  z-index: 9;
 
   @include media-breakpoint-up(lg) {
     height: 80px;

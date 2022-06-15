@@ -1,3 +1,4 @@
+import { Link, NavLink } from 'solid-app-router'
 import { createSignal, onMount } from 'solid-js'
 import { User } from '../../graphql/types.gen'
 import { useAuth } from '../../store/auth'
@@ -23,9 +24,9 @@ export default () => {
         </a>
       </div>
       <div class='usercontrol__item usercontrol__item--search'>
-        <a href='/search'>
+        <NavLink href='/search'>
           <Icon name='search' />
-        </a>
+        </NavLink>
       </div>
       <div class='usercontrol__item usercontrol__item--inbox'>
         <a href='/user/inbox'>
@@ -35,11 +36,11 @@ export default () => {
         </a>
       </div>
       <div class='usercontrol__item'>
-        <a href='/user'>
-          <div classList={{ entered: resource() === '/user' }}>
+        <Link href={`/${session?.slug}`}>
+          <div classList={{ entered: resource() === `/${session?.slug}` }}>
             <Userpic user={session as Partial<User>} />
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   )
