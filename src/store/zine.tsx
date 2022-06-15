@@ -34,7 +34,7 @@ export function ZineStoreProvider(props: { children: any }) {
   const [, actions] = useStore()
   const location = useLocation()
   const [zine, setZine] = createStore({
-    page: 0,
+    page: 1,
     size: 50,
     articles: [] as Partial<Shout>, // byDate
     authors: [] as Partial<User>[]

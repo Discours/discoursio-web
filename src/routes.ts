@@ -7,7 +7,7 @@ import { TopicData } from './pages/Topic.data'
 import { HomeData } from './pages/Home.data'
 import { AllTopicsData } from './pages/AllTopics.data'
 import { FeedData } from './pages/Feed.data'
-
+import { InboxData } from './pages/Inbox.data'
 export const routes: RouteDefinition[] = [
   {
     path: '/',
@@ -28,6 +28,11 @@ export const routes: RouteDefinition[] = [
     path: '/feed',
     component: lazy(() => import('./pages/Feed')),
     data: FeedData
+  },
+  {
+    path: '/inbox',
+    component: lazy(() => import('./pages/Inbox')),
+    data: InboxData
   },
   {
     path: '/feed/settings',
