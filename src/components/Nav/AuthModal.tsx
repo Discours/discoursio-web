@@ -2,7 +2,7 @@ import { For, Show } from 'solid-js/web'
 import Icon from './Icon'
 import { useStore, Warning } from '../../store'
 import { baseUrl } from '../../graphql/client'
-import { createSignal } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import './AuthModal.scss'
@@ -88,8 +88,9 @@ export default (props: { code?: string; mode?: string }) => {
       case 'sign-up':
         if (pass2Element?.value !== passElement?.value)
           warn({ body: t('Passwords are not equal'), kind: 'error' })
-        else signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
-        console.log(prompt())
+        else {
+          signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
+        }
         break
       case 'reset':
         // send reset-code to login with email
@@ -107,7 +108,9 @@ export default (props: { code?: string; mode?: string }) => {
         console.log('[auth] unknown auth mode', mode())
     }
   }
-  
+  createEffect(() => {
+    if (auth.authorized && state.modal === 'auth') hideModal()
+  })
   return (
     <div class='row view' classList={{ 'view--sign-up': mode() === 'sign-up' }}>
       <div class='col-sm-6 d-md-none auth-image'>
