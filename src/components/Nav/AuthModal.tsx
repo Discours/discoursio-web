@@ -54,12 +54,12 @@ export default (props: { code?: string; mode?: string }) => {
         body: t('Please check your email address'),
         kind: 'error' 
       })
-      console.log('[auth] email checked')
+      console.log('[auth] email wrong format')
     } else {
       let check = false
       switch (mode()) {
         case 'sign-up':
-          check = signCheck(emailElement?.value)
+          signCheck(emailElement?.value)
           if (!check) {
             warn({
               body: t('We know you, please try to login'),

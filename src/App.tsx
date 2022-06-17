@@ -4,35 +4,38 @@ import { useRoutes, Router } from 'solid-app-router'
 import { routes } from './routes'
 import Header from './components/Nav/Header'
 import Footer from './components/Discours/Footer'
-import { StoreProvider } from './store/index'
+import { StoreProvider as CommonStoreProvider } from './store/index'
+import { AuthStoreProvider, useAuth } from './store/auth'
 import { preventSmoothScrollOnTabbing } from './utils'
 import { createClient, Provider as GraphqlProvider } from 'solid-urql'
-import { useAuth } from './store/auth'
 import { baseUrl, createOptions } from './graphql/client'
+import { ZineStoreProvider } from './store/zine'
 
 export const App = () => {
   const Routes = useRoutes(routes)
   preventSmoothScrollOnTabbing()
   const [authState, {}] = useAuth()
-  const client = createMemo(() => {
-    if(!authState.authorized) return createClient({ url: baseUrl })
-    else return createClient(createOptions(authState.token))
-  })
+  const client = createMemo(() => (!authState.authorized) ? 
+      createClient({ url: baseUrl }) : createClient(createOptions(authState.token)))
   return (
     <Router>
       <GraphqlProvider value={client()}>
-        <StoreProvider>
-            <Header />
-            {/* two div wrappers to make page animation work and performant */}
-            <div id='main-content'>
-              {/* <TransitionRoutes> */}
-              <Suspense>
-                <Routes />
-              </Suspense>
-              {/* </TransitionRoutes> */}
-            </div>
-            <Footer />
-        </StoreProvider>
+        <CommonStoreProvider>
+          <AuthStoreProvider client={client()}>
+            <ZineStoreProvider>
+              <Header />
+              {/* two div wrappers to make page animation work and performant */}
+              <div id='main-content'>
+                {/* <TransitionRoutes> */}
+                <Suspense>
+                  <Routes />
+                </Suspense>
+                {/* </TransitionRoutes> */}
+              </div>
+              <Footer />
+            </ZineStoreProvider>
+          </AuthStoreProvider>
+        </CommonStoreProvider>
       </GraphqlProvider>
     </Router>
   )
