@@ -47,7 +47,7 @@ export const FeedData: RouteDataFunc = (): FeedRouteData => {
   })
   const [cdata, cstate] = createQuery({
     query: articlesForCommunities,
-    variables: { slugs: info?.userSubscribedCommmunities || [], page, size }
+    variables: { slugs: info?.userSubscribedCommunities || [], page, size }
     // TODO: info about subscribed communities
     // TODO: separate pagination?
   })
