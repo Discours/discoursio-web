@@ -1,5 +1,5 @@
 import { Component, createEffect, createMemo, createSignal, For, Show } from 'solid-js'
-import { useRouteData } from 'solid-app-router'
+import { NavLink, useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout, Topic, User } from '../graphql/types.gen'
 import Row3 from '../components/Article/Row3'
@@ -43,7 +43,8 @@ const Feed: Component = () => {
       ...(data.byCommunities || [])
     ])}
   })
-
+  const topTopics = createMemo(() => [...(data.topics || [])].sort(byShouts).slice(0, 5))
+  
   useRouteReadyState()
 
   return (
@@ -99,7 +100,7 @@ const Feed: Component = () => {
             </ul>
 
             <p class="settings">
-              <a href="/feed/settings"><strong>Настроить ленту</strong></a>
+              <NavLink href="/feed/settings"><strong>{t('Feed settings')}</strong></NavLink>
               <Icon name="settings"/>
             </p>
           </div>
@@ -115,7 +116,7 @@ const Feed: Component = () => {
           </div>
 
           <aside class="col-md-3">
-            <h4>Комментарии</h4>
+            <h4>{t('Comments')}</h4>
 
             <div class="comment">
               <div class="comment__content">
@@ -147,7 +148,7 @@ const Feed: Component = () => {
         <Show when={!data.feedLoading && Boolean(articles())}>
           <Beside
             title={t('Top topics')}
-            values={data.topics.sort(byShouts)?.slice(0, 5)}
+            values={topTopics()}
             beside={articles()[0]}
             wrapper={'topic'}
           />
