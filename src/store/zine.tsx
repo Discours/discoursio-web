@@ -41,10 +41,15 @@ export function ZineStoreProvider(props: { children: any }) {
   })
 
   // if ?page=
-  if (location.query.page) setZine({ ...zine, page: parseInt(location.query.page || '0') })
+  if (location.query.page) setZine((zine) => {
+    zine.page = parseInt(location.query.page || '1')
+    return zine
+  })
 
   // if ?size=
-  if (location.query.size) setZine({ ...zine, size: parseInt(location.query.size || '50') })
+  if (location.query.size) setZine((zine) => {
+    zine.size = parseInt(location.query.size || '50')
+  })
 
   const zineActions = {
     addPost: (data: Partial<Shout>) => {
@@ -83,15 +88,17 @@ export function ZineStoreProvider(props: { children: any }) {
       // const [data] = createMutation( { query: deleteComment as string, variables: { comment_id: commentId } })
     },
 
-    follow: (slug: string, what: string) => {
+    follow: async (slug: string, what: string) => {
       console.log(`[zine] follow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: followQuery, variables: { what, slug } })
-      const { error } = qdata().follow
-
-      if (error) actions.warn(error)
+      const [mutRead, mutExec] = createMutation(followQuery)
+      const m = await mutExec({ what, slug })
+      const r = mutRead()
+      console.debug(m)
+      console.debug(r)
+      // if (error) actions.warn(error)
     },
 
-    unfollow: (slug: string, what: string) => {
+    unfollow: async (slug: string, what: string) => {
       console.log(`[zine] unfollow ${slug} from ${what}`)
       const [qdata] = createQuery({ query: unfollowQuery, variables: { what, slug } })
       const { error } = qdata().unfollow
