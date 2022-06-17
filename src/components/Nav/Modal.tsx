@@ -1,4 +1,4 @@
-import { createEffect, createSignal, onMount, Show } from 'solid-js'
+import { createEffect, createMemo, createSignal, onMount, Show } from 'solid-js'
 import { useStore } from '../../store/index'
 import './Modal.scss'
 interface ModalProps {
@@ -7,7 +7,8 @@ interface ModalProps {
 }
 
 export default (props: ModalProps) => {
-  const [{}, { hideModal, getModal }] = useStore()
+  const [state, { hideModal }] = useStore()
+  const getModal = createMemo(() => state.modal)
   const wrapClick = (ev: Event) => {
     if ((ev.target as HTMLElement).classList.contains('modalwrap')) hideModal()
   }
