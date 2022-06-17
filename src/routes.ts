@@ -8,6 +8,8 @@ import { HomeData } from './pages/Home.data'
 import { AllTopicsData } from './pages/AllTopics.data'
 import { FeedData } from './pages/Feed.data'
 import { InboxData } from './pages/Inbox.data'
+import { CommunityData } from './pages/Community.data'
+
 export const routes: RouteDefinition[] = [
   {
     path: '/',
@@ -53,6 +55,11 @@ export const routes: RouteDefinition[] = [
     path: '/topic/:slug',
     component: lazy(() => import('./pages/Topic')),
     data: TopicData
+  },
+  {
+    path: '/community',
+    component: lazy(() => import('./pages/Community')),
+    data: CommunityData
   },
   {
     path: '/about/manifest',
