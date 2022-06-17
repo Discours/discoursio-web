@@ -10,25 +10,27 @@ import Modal from './Modal'
 import AuthModal from './AuthModal'
 import { useI18n } from '@solid-primitives/i18n'
 
+
 export default () => {
   const [t] = useI18n()
   const [fixed, setFixed] = createSignal(false)
   const [resource, setResource] = createSignal()
   const [authState,] = useAuth()
-  const [{ warnings }, { showModal }] = useStore()
+  const [, { showModal, clearWarns, getWarns }] = useStore()
   const [visibleWarnings, setVisibleWarnings] = createSignal(false)
   const toggleWarnings = () => setVisibleWarnings(!visibleWarnings())
   onMount(() => {
     setResource(window.location.pathname)
     setFixed(document.body.classList.contains('fixed'))
   })
-
   const rrr = createMemo(() => [
     { name: t('zine'), href: '/' },
     { name: t('feed'), href: '/feed' },
-    { name: t('topics'), href: '/topics' }
+    { name: t('topics'), href: '/topics' },
+    { name: t('community'), href: '/community' }
   ])
   const openModal = (evt: Event) => {
+    clearWarns()
     evt.preventDefault()
     setFixed(false)
     showModal('auth')
@@ -42,6 +44,7 @@ export default () => {
     setFixed(!fixed())
     document.body.classList.toggle('fixed')
   }
+  const authorized = createMemo(() => authState?.authorized)
   return (
     <header>
       <Modal name='auth'>
@@ -68,9 +71,9 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={toggleWarnings}>
+                <a href={''} onClick={authState.authorized ? toggleWarnings : openModal}>
                   <div>
-                    <Icon name='bell-white' counter={warnings?.length || (authState.authorized ? 1 : 0)} />
+                    <Icon name='bell-white' counter={authState.authorized ? getWarns().length : 1} />
                   </div>
                 </a>
               </div>
@@ -82,7 +85,7 @@ export default () => {
               </Show>
               
               <Show
-                when={authState?.authorized}
+                when={authorized()}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
                     <Link href='#' onClick={openModal}>
