@@ -25,7 +25,10 @@ export default (props: AuthorCardProps) => {
   )
   const canFollow = createMemo(() => !props.hideFollow && session?.slug !== props.author.slug)
   const bio = createMemo(() => props.author.bio || t('Our regular contributor'))
-  const name = createMemo(() => translit(props.author.name || '', locale() || 'ru'))
+  const name = createMemo(() => {
+    if(props.author.name === 'Дискурс' && locale() !== 'ru') return 'Discours'
+    else return translit(props.author.name || '', locale() || 'ru')
+  })
   // TODO: reimplement AuthorCard
   return (
     <>
