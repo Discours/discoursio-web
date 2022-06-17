@@ -69,7 +69,7 @@ export default () => {
   const onCollab = () => {
     const state = unwrap(store)
 
-    store.collab?.started ? ctrl.stopCollab(state) : ctrl.startCollab(state)
+    store.collab?.started ? ctrl.stopCollab(state) : console.log(state)
   }
 
   const onOpenInApp = () => {
