@@ -40,7 +40,10 @@ export default (props: CardProps) => {
       setSubtitle(props.article.subtitle || '')
     }
   })
-
+  const author = (a: Partial<User>) => {
+    if(a.name === 'Дискурс' && locale() !== 'ru') return 'Discours'
+    else return translit(a.name || '', locale() || 'ru')
+  }
   const tag = (t: Topic) => (/[а-яА-ЯЁё]/.test(t.title || '') && locale() !== 'ru' ? t.slug : t.title)
   return (
     <section
@@ -105,7 +108,7 @@ export default (props: CardProps) => {
               {(a: Partial<User>) => (
                 <>
                   <Show when={(props.article?.authors as Partial<User>[]).indexOf(a) > 0}>, </Show>
-                  <NavLink href={`/author/${a.slug}`}>{translit(a.name || '', locale() || 'ru')}</NavLink>
+                  <NavLink href={`/author/${a.slug}`}>{author(a)}</NavLink>
                 </>
               )}
             </For>
