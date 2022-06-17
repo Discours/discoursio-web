@@ -56,7 +56,7 @@ export type CommentResult = {
   error?: Maybe<Scalars['String']>
 }
 
-enum CommentStatus {
+export enum CommentStatus {
   Deleted = 'DELETED',
   New = 'NEW',
   Updated = 'UPDATED',
@@ -88,14 +88,12 @@ export type CurrentUserInfo = {
   __typename?: 'CurrentUserInfo'
   totalUnreadMessages?: Maybe<Scalars['Int']>
   userSubscribedAuthors: Array<Maybe<User>>
+  userSubscribedCommunities: Array<Maybe<Scalars['String']>>
   userSubscribedTopics: Array<Maybe<Scalars['String']>>
-  userSubscribedCommmunities: Array<Maybe<Scalars['String']>>
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
-  authorSubscribe: Result
-  authorUnsubscribe: Result
   confirmEmail: AuthResult
   createComment: CommentResult
   createCommunity: Community
@@ -109,8 +107,8 @@ export type Mutation = {
   rateUser: Result
   registerUser: AuthResult
   requestPasswordUpdate: Result
-  topicSubscribe: Result
-  topicUnsubscribe: Result
+  subscribe: Result
+  unsubscribe: Result
   updateComment: CommentResult
   updateCommunity: Community
   updatePassword: Result
@@ -118,14 +116,6 @@ export type Mutation = {
   updateShout: ShoutResult
   updateTopic: TopicResult
   viewShout: Result
-}
-
-export type MutationAuthorSubscribeArgs = {
-  slug: Scalars['String']
-}
-
-export type MutationAuthorUnsubscribeArgs = {
-  slug: Scalars['String']
 }
 
 export type MutationConfirmEmailArgs = {
@@ -187,12 +177,14 @@ export type MutationRequestPasswordUpdateArgs = {
   email: Scalars['String']
 }
 
-export type MutationTopicSubscribeArgs = {
+export type MutationSubscribeArgs = {
   slug: Scalars['String']
+  subscription: SubscriptionType
 }
 
-export type MutationTopicUnsubscribeArgs = {
+export type MutationUnsubscribeArgs = {
   slug: Scalars['String']
+  subscription: SubscriptionType
 }
 
 export type MutationUpdateCommentArgs = {
@@ -270,13 +262,12 @@ export type Query = {
   getUserRoles: Array<Maybe<Role>>
   getUsersBySlugs: Array<Maybe<User>>
   isEmailUsed: Scalars['Boolean']
+  recentAll: Array<Maybe<Shout>>
   recentCommented: Array<Maybe<Shout>>
   recentPublished: Array<Maybe<Shout>>
-  recentAll: Array<Maybe<Shout>>
   shoutsByAuthors: Array<Maybe<Shout>>
   shoutsByCommunities: Array<Maybe<Shout>>
   shoutsByTopics: Array<Maybe<Shout>>
-  shoutsBySlugs: Array<Maybe<Shout>>
   shoutsCommentedByUser: Array<Maybe<Shout>>
   shoutsRatedByUser: ShoutsResult
   shoutsReviewed: Array<Maybe<Shout>>
@@ -316,8 +307,13 @@ export type QueryGetUsersBySlugsArgs = {
   slugs: Array<InputMaybe<Scalars['String']>>
 }
 
-export type QueryisEmailUsedArgs = {
+export type QueryIsEmailUsedArgs = {
   email: Scalars['String']
+}
+
+export type QueryRecentAllArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type QueryRecentCommentedArgs = {
@@ -325,30 +321,27 @@ export type QueryRecentCommentedArgs = {
   size: Scalars['Int']
 }
 
-export type QueryRecentAllArgs = {
-  page: Scalars['Int']
-  size: Scalars['Int']
-}
 export type QueryRecentPublishedArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
-export type QueryShoutsByAuthorArgs = {
-  author: Scalars['String']
+
+export type QueryShoutsByAuthorsArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
+  slugs: Array<InputMaybe<Scalars['String']>>
 }
 
-export type QueryShoutsByCommunityArgs = {
-  community: Scalars['String']
+export type QueryShoutsByCommunitiesArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
+  slugs: Array<InputMaybe<Scalars['String']>>
 }
 
-export type QueryShoutsByTopicArgs = {
+export type QueryShoutsByTopicsArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
-  topic: Scalars['String']
+  slugs: Array<InputMaybe<Scalars['String']>>
 }
 
 export type QueryShoutsCommentedByUserArgs = {
@@ -462,6 +455,7 @@ export type Shout = {
   createdAt: Scalars['DateTime']
   deletedAt?: Maybe<Scalars['DateTime']>
   deletedBy?: Maybe<Scalars['Int']>
+  id: Scalars['Int']
   layout?: Maybe<Scalars['String']>
   mainTopic?: Maybe<Scalars['String']>
   publishedAt?: Maybe<Scalars['DateTime']>
@@ -516,7 +510,6 @@ export type Subscription = {
   commentUpdated: CommentUpdatedResult
   onlineUpdated: Array<User>
   shoutUpdated: Shout
-  topicUpdated: Shout
   userUpdated: User
 }
 
@@ -524,8 +517,10 @@ export type SubscriptionCommentUpdatedArgs = {
   shout: Scalars['String']
 }
 
-export type SubscriptionTopicUpdatedArgs = {
-  user_slug: Scalars['String']
+export enum SubscriptionType {
+  Author = 'AUTHOR',
+  Community = 'COMMUNITY',
+  Topic = 'TOPIC'
 }
 
 export type Token = {
@@ -998,7 +993,7 @@ export default {
             args: []
           },
           {
-            name: 'userSubscribedTopics',
+            name: 'userSubscribedCommunities',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1012,7 +1007,7 @@ export default {
             args: []
           },
           {
-            name: 'userSubscribedCommunities',
+            name: 'userSubscribedTopics',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1032,52 +1027,6 @@ export default {
         kind: 'OBJECT',
         name: 'Mutation',
         fields: [
-          {
-            name: 'authorSubscribe',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'authorUnsubscribe',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
           {
             name: 'confirmEmail',
             type: {
@@ -1442,7 +1391,7 @@ export default {
             ]
           },
           {
-            name: 'topicSubscribe',
+            name: 'subscribe',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1461,11 +1410,21 @@ export default {
                     name: 'Any'
                   }
                 }
+              },
+              {
+                name: 'subscription',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
               }
             ]
           },
           {
-            name: 'topicUnsubscribe',
+            name: 'unsubscribe',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1477,6 +1436,16 @@ export default {
             args: [
               {
                 name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'subscription',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -2006,7 +1975,7 @@ export default {
             ]
           },
           {
-            name: 'recentCommented',
+            name: 'recentAll',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2042,7 +2011,7 @@ export default {
             ]
           },
           {
-            name: 'recentAll',
+            name: 'recentCommented',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2114,7 +2083,7 @@ export default {
             ]
           },
           {
-            name: 'shoutsByAuthor',
+            name: 'shoutsByAuthors',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2127,16 +2096,6 @@ export default {
               }
             },
             args: [
-              {
-                name: 'author',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
               {
                 name: 'page',
                 type: {
@@ -2154,13 +2113,26 @@ export default {
                   ofType: {
                     kind: 'SCALAR',
                     name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'slugs',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'LIST',
+                    ofType: {
+                      kind: 'SCALAR',
+                      name: 'Any'
+                    }
                   }
                 }
               }
             ]
           },
           {
-            name: 'shoutsByCommunity',
+            name: 'shoutsByCommunities',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2173,16 +2145,6 @@ export default {
               }
             },
             args: [
-              {
-                name: 'community',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
               {
                 name: 'page',
                 type: {
@@ -2200,13 +2162,26 @@ export default {
                   ofType: {
                     kind: 'SCALAR',
                     name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'slugs',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'LIST',
+                    ofType: {
+                      kind: 'SCALAR',
+                      name: 'Any'
+                    }
                   }
                 }
               }
             ]
           },
           {
-            name: 'shoutsByTopic',
+            name: 'shoutsByTopics',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2240,12 +2215,15 @@ export default {
                 }
               },
               {
-                name: 'topic',
+                name: 'slugs',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
+                    kind: 'LIST',
+                    ofType: {
+                      kind: 'SCALAR',
+                      name: 'Any'
+                    }
                   }
                 }
               }
@@ -3005,6 +2983,17 @@ export default {
             args: []
           },
           {
+            name: 'id',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any'
+              }
+            },
+            args: []
+          },
+          {
             name: 'layout',
             type: {
               kind: 'SCALAR',
@@ -3294,29 +3283,6 @@ export default {
               }
             },
             args: []
-          },
-          {
-            name: 'topicUpdated',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Shout',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'user_slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
           },
           {
             name: 'userUpdated',
