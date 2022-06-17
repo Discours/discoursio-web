@@ -98,7 +98,7 @@ export default (props: { code?: string; mode?: string }) => {
         // TODO: signInReset(codeElement?.value)
         break
       case 'resend':
-        // send code to email
+        // TODO: send code to email
         break
       case 'forget':
         // shows forget mode of auth-modal
@@ -109,7 +109,10 @@ export default (props: { code?: string; mode?: string }) => {
     }
   }
   createEffect(() => {
-    if (auth.authorized && state.modal === 'auth') hideModal()
+    if (auth.authorized && state.modal === 'auth') {
+      console.log('[auth] success, hiding modal')
+      hideModal()
+    }
   })
   return (
     <div class='row view' classList={{ 'view--sign-up': mode() === 'sign-up' }}>
@@ -119,14 +122,14 @@ export default (props: { code?: string; mode?: string }) => {
           <h4>{t(`Join the global community of authors!`)}</h4>
           <p class='auth-benefits'>
             {t('Get to know the most intelligent people of our time, edit and discuss the articles, share your expertise, rate and decide what to publish in the magazine')}.&nbsp;
-            {t('Every day: new stories and even more!')}
+            {t('New stories every day and even more!')}
           </p>
           <p class='disclamer'>
-            {t('You agree with our')}&nbsp;
+            {t('By signing up you agree with our')}
             <NavLink href='/about/terms-of-use' onClick={hideModal}>
-              {t('terms of use')}
+              {' ' + t('terms of use')}
             </NavLink>
-            ,&nbsp;{t('personal data processing and email notifications by signing up')}.
+            , {t('personal data usage and email notifications')}.
           </p>
         </div>
       </div>
