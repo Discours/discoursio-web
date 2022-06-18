@@ -1,18 +1,23 @@
 import { useLocation } from 'solid-app-router'
-import { createContext, useContext } from 'solid-js'
+import { createContext, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { createMutation, createQuery } from 'solid-urql'
+import { createMutation, createQuery, OperationResult, TypedDocumentNode } from 'solid-urql'
 import articlesForAuthors from '../graphql/q/articles-for-authors'
 import articlesForTopics from '../graphql/q/articles-for-topics'
 import articlesRecentPublished from '../graphql/q/articles-recent-published'
 import articlesRecentAll from '../graphql/q/articles-recent-all'
 import articlesForCommunities from '../graphql/q/articles-for-communities'
+import articleCreate from '../graphql/q/article-create'
 import followQuery from '../graphql/q/follow'
 import unfollowQuery from '../graphql/q/unfollow'
-import deleteComment from '../graphql/q/comment-destroy'
 import { Shout, User } from '../graphql/types.gen'
 import { useStore } from './index'
-
+import { usePromiseQuery } from '../utils/promiseQuery'
+import articleUpdate from '../graphql/q/article-update'
+import articleDestroy from '../graphql/q/article-destroy'
+import commentCreate from '../graphql/q/comment-create'
+import commentUpdate from '../graphql/q/comment-update'
+import commentDestroy from '../graphql/q/comment-destroy'
 interface ZineStore {
   page?: number
   size?: number
@@ -30,7 +35,9 @@ const moreQueries: { [key: string]: any } = {
   '': articlesRecentPublished
 }
 
-export function ZineStoreProvider(props: { children: any }) {
+export const ZineStoreProvider = (props: any) => {
+  const [promiseQuery, promiseMutation] = usePromiseQuery(props.client)
+  const [loading, setLoading] = createSignal(false)
   const [, actions] = useStore()
   const location = useLocation()
   const [zine, setZine] = createStore({
@@ -53,70 +60,125 @@ export function ZineStoreProvider(props: { children: any }) {
 
   const zineActions = {
     addPost: (data: Partial<Shout>) => {
-      // TODO: implement add post
+      promiseMutation(articleCreate, { ...data })
+        .then((articleCreateResult: OperationResult) => {
+          const { data, error } = articleCreateResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent articles dataset here
+          }
+        })
     },
     updatePost: (data: Partial<Shout>) => {
-      // TODO: implement update post
+      setLoading(true)
+      promiseMutation(articleUpdate, { ...data })
+        .then((articleUpdateResult: OperationResult) => {
+          const { data, error } = articleUpdateResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent articles dataset here
+          }
+          setLoading(false)
+        })
     },
     deletePost: (slug: string) => {
-      // TODO: implement delete post
-      // const [data] = createMutation( { query: deletePost, variables: { slug } })
-    },
-
-    inviteAuthor: (author: string, draft: string) => {}, // TODO: invite co-author
-    removeAuthor: (author: string, draft: string) => {}, // TODO: remove co-author
-
-    //addSuggestion: (slug: string, suggestion: Partial<Suggestion>) => {
-    // TODO: implement add suggestion
-    //},
-    //updateSuggestion: (slug: string, suggestion: Partial<Suggestion>) => {
-    // TODO: implement update suggestion
-    //},
-    deleteSuggestion: (slug: string, suggestionId: string) => {
-      // TODO: implement delete suggestion
-      // const [data] = createMutation( { query: deleteSuggestion, variables: { commentId } })
+      setLoading(true)
+      promiseMutation(articleDestroy, { slug })
+        .then((articleDestroyResult: OperationResult) => {
+          const { data, error } = articleDestroyResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent articles dataset here
+          }
+          setLoading(false)
+        })
     },
 
     addComment: (slug: string, comment: Partial<Comment>) => {
-      // TODO: implement add comment
+      setLoading(true)
+      promiseMutation(commentCreate, { slug, comment })
+        .then((commentCreateResult: OperationResult) => {
+          const { data, error } = commentCreateResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent comments dataset here
+          }
+          setLoading(false)
+        })
     },
     updateComment: (slug: string, comment: Partial<Comment>) => {
-      // TODO: implement update comment
+      setLoading(true)
+      promiseMutation(commentUpdate, { slug, comment })
+        .then((commentUpdateResult: OperationResult) => {
+          const { data, error } = commentUpdateResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent comments dataset here
+          }
+          setLoading(false)
+        })
     },
     deleteComment: (slug: string, commentId: string) => {
-      // FIXME: delete comment mutation
-      // const [data] = createMutation( { query: deleteComment as string, variables: { comment_id: commentId } })
+      setLoading(true)
+      promiseMutation(commentDestroy,{ slug, commentId })
+        .then((commentDestroyResult: OperationResult) => {
+          const { data, error } = commentDestroyResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent comments dataset here
+          }
+          setLoading(false)
+        })
     },
 
     follow: async (slug: string, what: string) => {
       console.log(`[zine] follow ${slug} from ${what}`)
-      const [mutRead, mutExec] = createMutation(followQuery)
-      const m = await mutExec({ what, slug })
-      const r = mutRead()
-      console.debug(m)
-      console.debug(r)
-      // if (error) actions.warn(error)
+      promiseMutation(followQuery,{ slug, what })
+        .then((followQueryResult: OperationResult) => {
+          const { data, error } = followQueryResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent comments dataset here
+          }
+          setLoading(false)
+        })
     },
 
     unfollow: async (slug: string, what: string) => {
       console.log(`[zine] unfollow ${slug} from ${what}`)
-      const [qdata] = createQuery({ query: unfollowQuery, variables: { what, slug } })
-      const { error } = qdata().unfollow
-
-      if (error) actions.warn(error)
+      promiseMutation(unfollowQuery,{ slug, what })
+        .then((unfollowQueryResult: OperationResult) => {
+          const { data, error } = unfollowQueryResult
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            console.debug(data)
+            // TODO: update recent comments dataset here
+          }
+          setLoading(false)
+        })
     },
 
     more: () => {
       Object.keys(moreQueries).forEach((what: string) => {
         const query = moreQueries[what]
-
         if (location.pathname.startsWith(`/${what}`)) {
           console.log(`[zine] more articles from ${what}`)
+          setLoading(true)
           const slug = location.pathname.replace(`/${what}/`, '').replace('/', '')
           let variables = { page: zine.page + 1, size: zine.size, [what]: slug }
-          const [qdata] = createQuery({ query, variables })
-
-          setZine({ ...zine, articles: qdata() })
+          promiseQuery(query, variables)
+            .then((moreResult: OperationResult) => {
+              const { error, data } = moreResult
+              // TODO: update recent articles
+              setLoading(false)
+            })
         }
       })
     }

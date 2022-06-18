@@ -22,7 +22,7 @@ export const App = () => {
       <GraphqlProvider value={client()}>
         <CommonStoreProvider>
           <AuthStoreProvider client={client()}>
-            <ZineStoreProvider>
+            <ZineStoreProvider client={client()}>
               <Header />
               {/* two div wrappers to make page animation work and performant */}
               <div id='main-content'>
