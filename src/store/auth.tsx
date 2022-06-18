@@ -188,10 +188,10 @@ export const AuthStoreProvider = (props: any) => {
         })
     }
   }
-  createEffect(async () => {
+  createEffect(() => {
     if(state.token && !loggedIn()) {
       console.log('[auth] getting session by token', state.token)
-      await authActions.getSession()
+      authActions.getSession()
     }
   })
   return <AuthProvider value={[state as unknown as AuthStore, authActions]} children={props.children} />
