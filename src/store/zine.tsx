@@ -174,9 +174,13 @@ export const ZineStoreProvider = (props: any) => {
           const slug = location.pathname.replace(`/${what}/`, '').replace('/', '')
           let variables = { page: zine.page + 1, size: zine.size, [what]: slug }
           promiseQuery(query, variables)
-            .then((moreResult: OperationResult) => {
-              const { error, data } = moreResult
-              // TODO: update recent articles
+            .then(({data, error}: OperationResult) => {
+                if(error) actions.warn({ kind: 'error', body: error.message })
+                else {
+                  const d = Object.values(data)[0]
+                  console.debug(d)
+                  // TODO: update recent articles
+                }
               setLoading(false)
             })
         }

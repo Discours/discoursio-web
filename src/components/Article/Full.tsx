@@ -21,12 +21,12 @@ interface ArticleProps {
 
 export default (props: ArticleProps) => {
   const [t] = useI18n()
-  const [{ session, token, info }] = useAuth()
+  const [{ user, token, info }] = useAuth()
   const [, { follow, unfollow }] = useZine()
   const [, { showModal }] = useStore()
   const subscribed = createMemo(() => info?.userSubscribedTopics?.includes(props.article?.slug || ''))
   const mainTopic = () => (props.article?.topics?.find((topic) => topic?.slug === props.article?.mainTopic)?.title as string).replace(' ', '&nbsp;')
-  const canEdit = () => !!(props.article?.authors?.find((a: Partial<User>) => a.slug === session?.slug)) // FIXME
+  const canEdit = () => !!(props.article?.authors?.find((a: Partial<User>) => a.slug === user?.slug)) // FIXME
   const getCommentLevel = (c: Comment, level = 0) => {
     if (c && c.replyTo && level < deepest) {
       level += 1
@@ -132,7 +132,7 @@ export default (props: ArticleProps) => {
               <ArticleComment
                 comment={comment}
                 level={getCommentLevel(comment)}
-                canEdit={comment.author.slug === session?.slug}
+                canEdit={comment.author.slug === user?.slug}
               />
             )}
           </For>

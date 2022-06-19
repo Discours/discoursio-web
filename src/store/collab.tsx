@@ -3,11 +3,11 @@ import { createContext, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { Client, OperationResult } from 'solid-urql'
 import { useStore } from './index'
-import suggestionCreateQuery from '../graphql/q/suggestion-create'
-import suggestionUpdateQuery from '../graphql/q/suggestion-update'
-import suggestionDestroyQuery from '../graphql/q/suggestion-destroy'
+import proposalCreateQuery from '../graphql/q/proposal-create'
+import proposalUpdateQuery from '../graphql/q/proposal-update'
+import proposalDestroyQuery from '../graphql/q/proposal-destroy'
 import { usePromiseQuery } from '../utils/promiseQuery'
-import { Suggestion } from '../graphql/types.gen'
+import { Proposal } from '../graphql/types.gen'
 
 interface CollabStore {
 
@@ -28,41 +28,41 @@ export default (props: { client: Client, children: any }) => {
         inviteAuthor: (author: string, draft: string) => { }, // TODO: invite co-author
         removeAuthor: (author: string, draft: string) => { }, // TODO: remove co-author
 
-        addSuggestion: (slug: string, suggestion: Suggestion) => {
+        addProposal: (slug: string, proposal: Proposal) => {
             setLoading(true)
-            promiseMutation(suggestionCreateQuery, { slug, suggestion })
-                .then((suggestionCreateResult: OperationResult) => {
-                    const { data, error } = suggestionCreateResult
+            promiseMutation(proposalCreateQuery, { slug, proposal })
+                .then((proposalCreateResult: OperationResult) => {
+                    const { data, error } = proposalCreateResult
                     if (error) commonActions.warn({ body: error.message, kind: 'warn' })
                     else {
                         console.debug(data)
-                        // TODO: update recent suggestions dataset here
+                        // TODO: update recent proposals dataset here
                     }
                     setLoading(false)
                 })
         },
-        updateSuggestion: (slug: string, suggestion: Suggestion) => {
+        updateProposal: (slug: string, proposal: Proposal) => {
             setLoading(true)
-            promiseMutation(suggestionUpdateQuery, { slug, suggestion })
-                .then((suggestionUpdateResult: OperationResult) => {
-                    const { data, error } = suggestionUpdateResult
+            promiseMutation(proposalUpdateQuery, { slug, proposal })
+                .then((proposalUpdateResult: OperationResult) => {
+                    const { data, error } = proposalUpdateResult
                     if (error) commonActions.warn({ body: error.message, kind: 'warn' })
                     else {
                         console.debug(data)
-                        // TODO: update recent suggestions dataset here
+                        // TODO: update recent proposals dataset here
                     }
                     setLoading(false)
                 })
         },
-        deleteSuggestion: (slug: string, suggestionId: string) => {
+        deleteProposal: (slug: string, proposalId: string) => {
             setLoading(true)
-            promiseMutation(suggestionDestroyQuery, { slug, suggestionId })
-                .then((suggestionDestroyResult: OperationResult) => {
-                    const { data, error } = suggestionDestroyResult
+            promiseMutation(proposalDestroyQuery, { slug, proposalId })
+                .then((proposalDestroyResult: OperationResult) => {
+                    const { data, error } = proposalDestroyResult
                     if (error) commonActions.warn({ body: error.message, kind: 'warn' })
                     else {
                         console.debug(data)
-                        // TODO: update recent suggestions dataset here
+                        // TODO: update recent proposals dataset here
                     }
                     setLoading(false)
                 })

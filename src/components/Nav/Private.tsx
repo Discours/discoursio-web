@@ -7,7 +7,7 @@ import Icon from './Icon'
 import './Private.scss'
 
 export default () => {
-  const [{ session, info }] = useAuth()
+  const [{ user, info }] = useAuth()
   const [resource, setResource] = createSignal('')
 
   onMount(async () => {
@@ -36,9 +36,9 @@ export default () => {
         </a>
       </div>
       <div class='usercontrol__item'>
-        <Link href={`/${session?.slug}`}>
-          <div classList={{ entered: resource() === `/${session?.slug}` }}>
-            <Userpic user={session as Partial<User>} />
+        <Link href={`/${user?.slug}`}>
+          <div classList={{ entered: resource() === `/${user?.slug}` }}>
+            <Userpic user={user as Partial<User>} />
           </div>
         </Link>
       </div>

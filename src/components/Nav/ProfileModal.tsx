@@ -8,7 +8,7 @@ import { useAuth } from '../../store/auth'
 
 export default () => {
   const [t] = useI18n()
-  const [{ session }, { signOut }] = useAuth()
+  const [{ user }, { signOut }] = useAuth()
   const [, { hideModal }] = useStore()
 
   const quit = () => {
@@ -18,10 +18,10 @@ export default () => {
   // TODO: ProfileModal markup and styles
   return (
     <div class='row view profile'>
-      <h1>{session?.username}</h1>
-      <AuthorCard author={session as Partial<User>} />
-      <div class='profile-bio'>{session?.bio}</div>
-      <For each={session?.links}>{(l) => <Link href={l || ''} />}</For>
+      <h1>{user?.username}</h1>
+      <AuthorCard author={user as Partial<User>} />
+      <div class='profile-bio'>{user?.bio}</div>
+      <For each={user?.links}>{(l) => <Link href={l || ''} />}</For>
       <span onClick={quit}>{t('Quit')}</span>
     </div>
   )

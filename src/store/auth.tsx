@@ -19,7 +19,7 @@ interface AuthStore {
   readonly authorized?: boolean
   readonly handshaking?: boolean
   token?: string
-  session?: Partial<User>
+  user?: Partial<User>
   info?: CurrentUserInfo
 }
 
@@ -40,7 +40,7 @@ export const AuthStoreProvider = (props: any) => {
       return loading()
     },
     token: '',
-    session: {} as Partial<User>,
+    user: {} as Partial<User>,
     info: {} as CurrentUserInfo
   })
 
@@ -74,19 +74,17 @@ export const AuthStoreProvider = (props: any) => {
       if(state.token) {
         setLoading(true)
         promiseQuery(mySession, { token: state.token })
-          .then((mySessionResult: OperationResult) => {
-            const { data, error: queryError } = mySessionResult
-            // console.debug(mySessionResult)
-            const { getCurrentUser: { user: session, info, error } } = data
-            if (!error && !queryError) {
-              console.log('[auth] got fresh session')
-              setState({ ...state, session, info })
-              setLoggedIn(true)
-            } else {
-              console.warn('[auth] session query error',queryError)
-              console.log('[auth] failed', error)
-              actions.warn(error)
-              setLoggedIn(false)
+          .then(({data, error}: OperationResult) => {
+            if (error) actions.warn({ kind: 'error', body: error?.message })
+            else {
+              if(data.getCurrentUser.error) {
+                actions.warn({ kind: 'warn', body: data.getCurrentUser.error})
+                setLoggedIn(false)
+              } else {
+                setState({ ...state, ...data.getCurrentUser })
+                actions.resetWarns()
+                setLoggedIn(true)
+              }
             }
             setLoading(false)
           })
@@ -96,17 +94,17 @@ export const AuthStoreProvider = (props: any) => {
       console.log(`[auth] signing in`, email)
       setLoading(true)
       promiseQuery(signIn, { email, password })
-        .then((signInResult: OperationResult) => {
-          const { data: { signIn: signData }, error } = signInResult
-          // console.debug(signInResult)
+        .then(({ data, error }: OperationResult) => {
           if(error) {
-            console.error(error)
+            actions.warn({ body: error.message, kind: 'warn'})
             setLoggedIn(false)
-          }
-          if (!signData?.error) {
-            setState({ ...state, token: signData?.token, session: signData?.user })
-            actions.resetWarns()
-            setLoggedIn(true)
+          } else {
+            if (data?.signIn?.error) actions.warn({ body: t(data?.signIn?.error), kind: 'warn'})
+            else {
+              setState({ ...state, ...data.signIn })
+              actions.resetWarns()
+              setLoggedIn(true)
+            }
           }
           setLoading(false)
         })
@@ -115,15 +113,15 @@ export const AuthStoreProvider = (props: any) => {
       console.log(`[auth] signing up`, email)
       setLoading(true)
       promiseMutation(signUpMutation, { email, password, username })
-        .then((signUpResult: OperationResult) => {
-          const { data, error: queryError } = signUpResult
-          if(!queryError) { 
-            const { registerUser: { user, error, token }} = data
-            if(!error) setState({ ...state, session: user, token })
-            setLoggedIn(false)
-          } else {
-            actions.warn({ kind: 'warn', body: t(queryError.message) })
-            setLoggedIn(true)
+        .then(({ data, error }: OperationResult) => {
+          if(error) actions.warn({ body: error.message, kind: 'warn' })
+          else {
+            if(data?.registerUser?.error) actions.warn({ body: data?.registerUser?.error, kind: 'warn' })
+            else {
+              setState({ ...state, ...data.registerUser })
+              actions.resetWarns()
+              setLoggedIn(true)
+            }
           }
           setLoading(false)
         })
@@ -132,15 +130,9 @@ export const AuthStoreProvider = (props: any) => {
       console.log(`[auth] checking email`, email)
       setLoading(true)
       promiseQuery(signCheckQuery, { email })
-        .then((signCheckResult: OperationResult) => {
-          // console.debug(signCheckResult)
-          const { data, error } = signCheckResult
-          if (data.isEmailUsed) {
-            actions.warn({ body: t('Email is used'), kind: 'warn'})
-          }
-          if (error) {
-            actions.warn({ body: t(error.message), kind: 'warn'})
-          }
+        .then(({ data, error }: OperationResult) => {
+          if (data?.isEmailUsed) actions.warn({ body: t('Email is used'), kind: 'warn'})
+          if (error) actions.warn({ body: error.message, kind: 'warn'})
           setLoading(false)
         })
     },
@@ -149,9 +141,9 @@ export const AuthStoreProvider = (props: any) => {
       setLoading(true)
       if (loggedIn()) {
         promiseQuery(signOutQuery)
-          .then((signOutResult: OperationResult) => {
-            const { data, error } = signOutResult
+          .then(({ data, error }: OperationResult) => {
             if (error) actions.warn({ body: error.message, kind: 'error' })
+            if (data?.signOut?.error) actions.warn({ body: data?.signOut?.error, kind: 'warn'})
             else setLoggedIn(false)
             setLoading(false)
           })
@@ -164,6 +156,7 @@ export const AuthStoreProvider = (props: any) => {
         .then((signOutResult: OperationResult) => {
           const { error, data } = signOutResult
           if (error) actions.warn({ body: error.message, kind: 'error' })
+          if (data?.forget?.error) actions.warn({ body: data.forget.error, kind: 'warn' })
           setLoading(false)
         })
     },
@@ -174,6 +167,7 @@ export const AuthStoreProvider = (props: any) => {
         .then((resetResult: OperationResult) => {
           const { error, data } = resetResult
           if (error) actions.warn({body: error.message, kind: 'warn'})
+          if (data?.reset?.error) actions.warn({ body: data.error, kind: 'warn' })
           setLoading(false)
         })
     },
@@ -182,15 +176,20 @@ export const AuthStoreProvider = (props: any) => {
       setLoading(true)
       promiseQuery(resendCode, { email })
         .then((resendResult: OperationResult) =>{
-          const { data, error: queryError } = resendResult
-          if (queryError) actions.warn({kind: 'error', body: queryError.message })
+          const { data, error } = resendResult
+          if (error) {
+            actions.warn({ kind: 'error', body: error.message })
+          } else {
+            if(data?.resend?.error) actions.warn({ kind: 'warn', body: data.resend.error })
+            else console.log('[auth] resending code')
+          }
           setLoading(false)
         })
     }
   }
   createEffect(() => {
     if(state.token && !loggedIn()) {
-      console.log('[auth] getting session by token', state.token)
+      console.log('[auth] getting user session by token', state.token)
       authActions.getSession()
     }
   })

@@ -19,11 +19,11 @@ interface AuthorCardProps {
 export default (props: AuthorCardProps) => {
   const [t, { locale }] = useI18n()
   const [{}, { follow, unfollow }] = useZine()
-  const [{ session, info }] = useAuth()
+  const [{ user, info }] = useAuth()
   const subscribed = createMemo(
     () => !!info?.userSubscribedAuthors?.filter((u) => u?.slug === props.author.slug).pop()
   )
-  const canFollow = createMemo(() => !props.hideFollow && session?.slug !== props.author.slug)
+  const canFollow = createMemo(() => !props.hideFollow && user?.slug !== props.author.slug)
   const bio = createMemo(() => props.author.bio || t('Our regular contributor'))
   const name = createMemo(() => {
     if(props.author.name === 'Дискурс' && locale() !== 'ru') return 'Discours'
