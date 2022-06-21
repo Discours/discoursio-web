@@ -31,49 +31,51 @@ export default (props: TopicProps) => {
     }
   }
   return (
-    <div class='topic'>
-      <div class='topic-title'>
-        <a href={`/topic/${props.topic.slug}`}>{capitalize(props.topic.title || '')}</a>
-      </div>
-
-      <Show when={props.topic.pic}>
-        <div class='topic__avatar'>
-          <a href={props.topic.slug}>
-            <img src={props.topic.pic as string} alt={props.topic.title as string} />
-          </a>
+    <div class='topic' classList={{'row': !props.compact}}>
+      <div classList={{'col-md-7': !props.compact}}>
+        <div class='topic-title'>
+          <a href={`/topic/${props.topic.slug}`}>{capitalize(props.topic.title || '')}</a>
         </div>
-      </Show>
+        <Show when={props.topic.pic}>
+          <div class='topic__avatar'>
+            <a href={props.topic.slug}>
+              <img src={props.topic.pic as string} alt={props.topic.title as string} />
+            </a>
+          </div>
+        </Show>
 
-      <Show when={!body.loading}>
-        <div class='topic-description'>
-          {body}
-        </div>
-      </Show>
+        <Show when={!props.compact && !body.loading}>
+          <div class='topic-description'>
+            {body}
+          </div>
+        </Show>
 
-      <Show when={props.topic.topicStat}>
-        <div class='topic-details'>
-          <Show when={!props.compact}>
+        <Show when={props.topic.topicStat}>
+
+            <div class='topic-details'>
+
+              <Show when={!props.compact}>
                 <span class='topic-details__item' classList={{ compact: props.compact }}>
                 {props.topic.topicStat?.shouts + ' ' + t('post') + plural(
-                  props.topic.topicStat?.shouts || 0,
-                  locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
-                )}
-                </span>
-            <span class='topic-details__item' classList={{ compact: props.compact }}>
-                  {props.topic.topicStat?.authors + ' ' + t('author') + plural(
-                    props.topic.topicStat?.authors || 0,
-                    locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                    props.topic.topicStat?.shouts || 0,
+                    locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
                   )}
                 </span>
-            <span class='topic-details__item'>
+                <span class='topic-details__item' classList={{ compact: props.compact }}>
+                  {props.topic.topicStat?.authors + ' ' + t('author') + plural(
+                      props.topic.topicStat?.authors || 0,
+                      locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                    )}
+                </span>
+                <span class='topic-details__item'>
                   {props.topic.topicStat?.views + ' ' + t('view') + plural(
                     props.topic.topicStat?.views || 0,
                     locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                   )}
                 </span>
-          </Show>
+              </Show>
 
-          {/*
+{/*
               <span class='topic-details__item'>
                 {subscribers().toString() + ' ' + t('follower') + plural(
                   subscribers(),
@@ -81,18 +83,21 @@ export default (props: TopicProps) => {
                 )}
               </span>
 */}
-        </div>
-      </Show>
-      <Show when={subscribed()} fallback={
-        <button onClick={() => subscribe(true)} class='button'>
-          +&nbsp;{t('Follow')}
-        </button>
-      }>
-        <button onClick={() => subscribe(false)} class='button'>
-          -&nbsp;{t('Unfollow')}
-        </button>
-      </Show>
-      {/* TODO: add topics' pics to db  */}
+            </div>
+          </Show>
+      </div>
+      <div classList={{'col-md-3': !props.compact}}>
+        <Show when={subscribed()} fallback={
+            <button onClick={() => subscribe(true)} class='button'>
+              +&nbsp;{t('Follow')}
+            </button>
+          }>
+            <button onClick={() => subscribe(false)} class='button'>
+              -&nbsp;{t('Unfollow')}
+            </button>
+        </Show>
+        {/* TODO: add topics' pics to db  */}
+      </div>
     </div>
   )
 }
