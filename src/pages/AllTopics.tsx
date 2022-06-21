@@ -67,72 +67,74 @@ export default () => {
     <>
       <PageLoadingBar active={data.topicsLoading} />
       <Show when={!data.topicsLoading}>
-        <div class='container shift-content'>
-          <div class='row'>
-            <div class='col-md-9'>
-              <h1>{t('Topics')}</h1>
-              <p>{t('Subscribe what you like to tune your personal feed')}</p>
+        <div class="wide-container">
+          <div class='shift-content'>
+            <div class='row'>
+              <div class='col-md-9'>
+                <h1>{t('Topics')}</h1>
+                <p>{t('Subscribe what you like to tune your personal feed')}</p>
+              </div>
             </div>
-          </div>
-          <div class='row'>
-            <div class='col'>
-              <ul class='view-switcher'>
-                <li classList={{ selected: mode() === 'views' }}>
-                  <a href='/topics?by=views' onClick={() => sortViews()}>
-                    {t('By views')}
-                  </a>
-                </li>
-                <li classList={{ selected: mode() === 'shouts' }}>
-                  <a href='/topics?by=shouts' onClick={() => sortShouts()}>
-                    {t('By shouts')}
-                  </a>
-                </li>
-                <li classList={{ selected: mode() === 'alphabet' }}>
-                  <a href='/topics?by=alphabet' onClick={() => sortAbc()}>
-                    {t('By alphabet')}
-                  </a>
-                </li>
-              </ul>
-              <Show
-                when={mode() === 'alphabet'}
-                fallback={() => (
-                  <div class='stats'>
-                    <For each={sortedTopics()}>
-                      {(topic: Topic) => (
-                        <TopicCard
-                          topic={topic}
-                          compact={false}
-                          subscribed={
-                            info?.userSubscribedTopics &&
-                            info?.userSubscribedTopics.includes(topic.slug || '')
-                          }
-                        />
-                      )}
-                    </For>
-                  </div>
-                )}
-              >
-                <For each={sortedKeys()}>
-                  {(letter: string) => (
-                    <div class='group'>
-                      <h2>{letter}</h2>
-                      <div class='container'>
-                        <div class='row'>
-                          <For each={topicsGroupedByAlphabet[letter]}>
-                            {(topic: Partial<Topic>) => (
-                              <div class='topic col-sm-6 col-md-3'>
-                                <div class='topic-title'>
-                                  <a href={`/topic/${topic.slug}`}>{topic.title}</a>
-                                </div>
-                              </div>
-                            )}
-                          </For>
-                        </div>
-                      </div>
+            <div class='row'>
+              <div class='col'>
+                <ul class='view-switcher'>
+                  <li classList={{selected: mode() === 'views'}}>
+                    <a href='/topics?by=views' onClick={() => sortViews()}>
+                      {t('By views')}
+                    </a>
+                  </li>
+                  <li classList={{selected: mode() === 'shouts'}}>
+                    <a href='/topics?by=shouts' onClick={() => sortShouts()}>
+                      {t('By shouts')}
+                    </a>
+                  </li>
+                  <li classList={{selected: mode() === 'alphabet'}}>
+                    <a href='/topics?by=alphabet' onClick={() => sortAbc()}>
+                      {t('By alphabet')}
+                    </a>
+                  </li>
+                </ul>
+                <Show
+                  when={mode() === 'alphabet'}
+                  fallback={() => (
+                    <div class='stats'>
+                      <For each={sortedTopics()}>
+                        {(topic: Topic) => (
+                          <TopicCard
+                            topic={topic}
+                            compact={false}
+                            subscribed={
+                              info?.userSubscribedTopics &&
+                              info?.userSubscribedTopics.includes(topic.slug || '')
+                            }
+                          />
+                        )}
+                      </For>
                     </div>
                   )}
-                </For>
-              </Show>
+                >
+                  <For each={sortedKeys()}>
+                    {(letter: string) => (
+                      <div class='group'>
+                        <h2>{letter}</h2>
+                        <div class='container'>
+                          <div class='row'>
+                            <For each={topicsGroupedByAlphabet[letter]}>
+                              {(topic: Partial<Topic>) => (
+                                <div class='topic col-sm-6 col-md-3'>
+                                  <div class='topic-title'>
+                                    <a href={`/topic/${topic.slug}`}>{topic.title}</a>
+                                  </div>
+                                </div>
+                              )}
+                            </For>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </For>
+                </Show>
+              </div>
             </div>
           </div>
         </div>
