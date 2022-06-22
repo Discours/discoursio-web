@@ -39,9 +39,7 @@ export default (props: AuthorCardProps) => {
 
           <div class='author__details'>
             <div class='author__details-wrapper'>
-              <div class='author__name text-3xl text-2xl'>
-                <NavLink href={`/author/${props.author.slug}`}>{name()}</NavLink>
-              </div>
+              <div class='author__name text-3xl text-2xl'>{name()}</div>
 
               <Show when={!props.hideDescription}>
                 <div class='author__about'>{bio()}</div>
