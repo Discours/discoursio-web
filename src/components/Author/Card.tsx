@@ -12,6 +12,7 @@ import { useAuth } from '../../store/auth'
 
 interface AuthorCardProps {
   compact?: boolean
+  hideDescription?: boolean,
   hideFollow?: boolean
   author: Partial<User>
 }
@@ -42,7 +43,9 @@ export default (props: AuthorCardProps) => {
                 <NavLink href={`/author/${props.author.slug}`}>{name()}</NavLink>
               </div>
 
-              <div class='author__about'>{bio()}</div>
+              <Show when={!props.hideDescription}>
+                <div class='author__about'>{bio()}</div>
+              </Show>
             </div>
 
             <Show when={canFollow()}>
