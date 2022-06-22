@@ -70,7 +70,7 @@ export default () => {
         <div class="wide-container">
           <div class='shift-content'>
             <div class='row'>
-              <div class='col-md-9'>
+              <div class='col-md-9 page-header'>
                 <h1>{t('Topics')}</h1>
                 <p>{t('Subscribe what you like to tune your personal feed')}</p>
               </div>

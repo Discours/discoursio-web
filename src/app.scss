@@ -313,7 +313,9 @@ figcaption {
 }
 
 .floor {
-  margin-bottom: 6.4rem;
+  @include media-breakpoint-up(md) {
+    margin-bottom: 6.4rem;
+  }
 
   .wide-container {
     padding: 0;
@@ -329,6 +331,10 @@ figcaption {
   background: #000;
   color: #fff;
   padding: $grid-gutter-width 0;
+
+  @include media-breakpoint-down(md) {
+    margin-bottom: 5rem;
+  }
 
   .all-materials,
   .article-card__title,
