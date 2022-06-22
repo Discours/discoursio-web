@@ -3,7 +3,6 @@ import { createContext, createSignal, useContext, onMount, onCleanup, createEffe
 import { createStore } from 'solid-js/store'
 import mySession from '../graphql/q/auth-session'
 import { OperationResult } from 'solid-urql'
-import signCheckQuery from '../graphql/q/auth-check'
 import signUpMutation from '../graphql/q/auth-register'
 import signOutQuery from '../graphql/q/auth-logout'
 import { CurrentUserInfo, User } from '../graphql/types.gen'
@@ -122,19 +121,6 @@ export const AuthStoreProvider = (props: any) => {
               actions.resetWarns()
               setLoggedIn(true)
             }
-          }
-          setLoading(false)
-        })
-    },
-    signCheck: (email: string) => {
-      console.log(`[auth] checking email`, email)
-      setLoading(true)
-      promiseQuery(signCheckQuery, { email })
-        .then(({ data, error }: OperationResult) => {
-          if (error) actions.warn({ body: error.message, kind: 'warn'})
-          else {
-            if (data?.isEmailUsed) actions.warn({ body: t('Email is used'), kind: 'warn'})
-            else console.log('[auth] email is ok')
           }
           setLoading(false)
         })

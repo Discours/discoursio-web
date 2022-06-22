@@ -1,23 +1,26 @@
 import { For, Show } from 'solid-js/web'
 import Icon from './Icon'
-import { useStore, Warning } from '../../store'
+import { useStore } from '../../store'
 import { baseUrl } from '../../graphql/client'
 import { createEffect, createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import './AuthModal.scss'
 import { useAuth } from '../../store/auth'
+import { OperationResult, useClient } from 'solid-urql'
+import { usePromiseQuery } from '../../utils/promiseQuery'
+import signCheckQuery from '../../graphql/q/auth-check'
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
 export default (props: { code?: string; mode?: string }) => {
   const [t] = useI18n()
   const [mode, setModeSignal] = createSignal<AuthMode>('sign-in')
-  const [state, { hideModal, warn, clearWarns }] = useStore()
-  const [auth, { signIn, signUp, signCheck /* TODO: forget, resend, reste */ }] = useAuth()
-  // TODO: notifications destroy timeout
+  const [state, { hideModal }] = useStore()
+  const [auth, { signIn, signUp, forget, resend, reset }] = useAuth()
+  const [formValidations, setValidations] = createSignal<string[]>([])
   const setMode = (m: AuthMode) => {
-    clearWarns()
+    setValidations([])
     setModeSignal(m)
   }
   let emailElement: HTMLInputElement | undefined
@@ -39,8 +42,25 @@ export default (props: { code?: string; mode?: string }) => {
     popup?.focus()
     hideModal()
   }
+  const client = useClient()
+  const [promiseQuery, ] = usePromiseQuery(client)
+  const signCheck = (email: string): Promise<boolean> => promiseQuery(signCheckQuery, { email })
+    .then(({ data, error }: OperationResult) => {
+      let result = false
+      if (error) {
+        setValidations(v => [...v, error.message]) // TODO: kind error
+      } else {
+        if (data?.isEmailUsed) {
+          setValidations(v => [...v, t('Email is used')]) // TODO: kind warn
+          result = true
+        } else {
+          console.log('[auth] email was not used')
+        }
+      }
+      return Promise.resolve(result)
+    })
 
-  const localAuth = () => {
+  const localAuth = async () => {
     console.log('[auth] native account processing')
     // 1 check format
     const emailTyped =
@@ -50,32 +70,22 @@ export default (props: { code?: string; mode?: string }) => {
     console.log(`[auth] email is ${emailTyped?'':'NOT '}properly typed`)
     // 2 check email
     if (!emailTyped) {
-      warn({
-        body: t('Please check your email address'),
-        kind: 'error' 
-      })
+      setValidations((v: string[]) => [...v, t('Please check your email address')])
       console.log('[auth] email wrong format')
     } else {
-      let check = false
       switch (mode()) {
         case 'sign-up':
-          signCheck(emailElement?.value)
-          if (!check) {
-            warn({
-              body: t('We know you, please try to login'),
-              kind: 'error'
+          signCheck(emailElement?.value || '')
+            .then((result: boolean) => {
+              if (result) setValidations(v => [...v, t('We know you, please try to login')]) // error
+              // TODO: validation status on form
             })
-          }
-          // TODO: validation status on form
           break
         case 'sign-in':
-          check = signCheck(emailElement?.value)
-          if (check) {
-            warn({
-              body: t('No such account, please try to register'),
-              kind: 'error'
+          signCheck(emailElement?.value || '')
+            .then((result: boolean) => {
+              if (!result) setValidations(v => [...v, t('No such account, please try to register')]) // error
             })
-          }
           break
         default:
           console.log('[auth] passing email check')
@@ -87,7 +97,7 @@ export default (props: { code?: string; mode?: string }) => {
         break
       case 'sign-up':
         if (pass2Element?.value !== passElement?.value)
-          warn({ body: t('Passwords are not equal'), kind: 'error' })
+          setValidations(v=>[...v, t('Passwords are not equal')]) //, kind: 'error' })
         else {
           signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
         }
@@ -149,14 +159,10 @@ export default (props: { code?: string; mode?: string }) => {
               {t('Everything is ok, please give us your email address')}
             </Show>
           </div>
-          <div class={`auth-info ${!state.warnings || !state.warnings.length ? 'hidden' : ''}`}>
+          <div class={`auth-info`}>
             <ul>
-              <For each={state.warnings}>
-                {(w?: Warning) => {
-                  console.debug(w)
-                  if (w && w.body) return (<li class='warn'>{w?.body}&nbsp;</li>)
-                  else return
-                }}
+              <For each={formValidations()}>
+                {(w: string) => (<li class='warn'>{w}</li>)}
               </For>
             </ul>
           </div>
