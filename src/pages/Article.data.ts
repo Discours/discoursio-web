@@ -27,7 +27,7 @@ export const ArticleData: RouteDataFunc = (args) => {
       return args.params.slug
     },
     get comments() {
-      return commentsData()
+      return commentsData().getShoutComments
     },
     get loadingComments() {
       return commentsState().fetching

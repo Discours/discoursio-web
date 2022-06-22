@@ -26,8 +26,8 @@ export default () => {
   const rrr = createMemo(() => [
     { name: t('zine'), href: '/' },
     { name: t('feed'), href: '/feed' },
-    // { name: t('topics'), href: '/topics' },
-    { name: t('community'), href: '/community' }
+    { name: t('topics'), href: '/topics' },
+    //{ name: t('community'), href: '/community' }
   ])
   const openModal = (evt: Event) => {
     clearWarns()
@@ -35,7 +35,7 @@ export default () => {
     setFixed(false)
     showModal('auth')
   }
-  const routeModal = (r: { name: string; href: string }) => {
+  const navigate = (r: { name: string; href: string }) => {
     setResource(r.href)
     setFixed(false)
     document.body.classList.remove('fixed')
@@ -61,12 +61,19 @@ export default () => {
             <For each={rrr()}>
               {(r: { href: string; name: string }) => (
                 <li classList={{ selected: resource() === r.href }}>
-                  <NavLink href={r.href} onClick={() => routeModal(r)}>
+                  <NavLink href={r.href} onClick={() => navigate(r)}>
                     {r.name}
                   </NavLink>
                 </li>
               )}
             </For>
+            <Show when={authState.authorized}>
+              <li classList={{ selected: resource() === '/community' }}>
+                <NavLink href={'/community'} onClick={() => navigate({ name: t('community'), href: '/community'})}>
+                  {t('community')}
+                </NavLink>
+              </li>
+            </Show>
           </ul>
           <div class='usernav'>
             <div class='usercontrol col'>
