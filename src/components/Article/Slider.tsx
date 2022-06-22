@@ -6,7 +6,7 @@ import 'swiper/scss/navigation'
 import 'swiper/scss/pagination'
 import './Slider.scss'
 import { Shout } from '../../graphql/types.gen'
-import { createEffect, createMemo, createSignal, Show, onMount } from 'solid-js'
+import { createEffect, createMemo, createSignal, Show } from 'solid-js'
 import Icon from '../Nav/Icon'
 
 interface SliderProps {

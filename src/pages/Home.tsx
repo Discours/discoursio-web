@@ -64,14 +64,11 @@ export const Home: Component = () => {
         // by topic
         s.topics?.forEach((tpc: Maybe<Topic>) => {
           if (!byTopic[tpc?.slug || '']) byTopic[tpc?.slug || ''] = []
-
           byTopic[tpc?.slug as string].push(s)
         })
         // by layout
         const l = s.layout || 'article'
-
         if (!byLayout[l]) byLayout[l] = []
-
         byLayout[l].push(s)
       })
 
@@ -80,26 +77,23 @@ export const Home: Component = () => {
 
       // topics by slug
       let topicsdict: { [key: string]: Topic } = {}
-
       data.topics?.forEach((tpc: Topic) => (topicsdict[tpc.slug] = tpc))
       console.log('[ready] all topics were indexed')
 
       // random layout pick
       const ok = Object.keys(byLayout).filter((l) => l !== 'article')
       const layout = shuffle(ok)[0]
-
       setSomeLayout(byLayout[layout])
       setSelectedLayout(layout)
       console.log(`[ready] '${layout}' layout picked`)
 
       // random topics for navbar
-      let topicSlugs = shuffle(Array.from(Object.entries(byTopic)))
+      setSomeTopics(shuffle(Array.from(Object.entries(byTopic)))
         .filter(([, v], _i) => (v as Topic[]).length > 4)
+        .map((f) => topicsdict[f[0]])
         .slice(0, 12)
-        .map((f) => f[0])
+      )
 
-      //console.debug(topicSlugs)
-      setSomeTopics(topicSlugs.map((s: string) => topicsdict[s]))
       console.log(`[ready] topics navbar data prepared`)
       setLoaded(true)
     }
@@ -111,7 +105,7 @@ export const Home: Component = () => {
     <main class='home'>
       <PageLoadingBar active={!loaded()} />
       <Show when={loaded()}>
-        <NavTopics topics={someTopics()} />
+        <Show when={!data.topicsLoading}><NavTopics topics={someTopics()} /></Show>
         <Row5 articles={data.recentPublished.slice(0, 5)} />
         <Hero />
         <Beside

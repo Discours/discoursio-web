@@ -131,8 +131,11 @@ export const AuthStoreProvider = (props: any) => {
       setLoading(true)
       promiseQuery(signCheckQuery, { email })
         .then(({ data, error }: OperationResult) => {
-          if (data?.isEmailUsed) actions.warn({ body: t('Email is used'), kind: 'warn'})
           if (error) actions.warn({ body: error.message, kind: 'warn'})
+          else {
+            if (data?.isEmailUsed) actions.warn({ body: t('Email is used'), kind: 'warn'})
+            else console.log('[auth] email is ok')
+          }
           setLoading(false)
         })
     },

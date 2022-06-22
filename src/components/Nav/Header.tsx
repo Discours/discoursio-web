@@ -26,7 +26,7 @@ export default () => {
   const rrr = createMemo(() => [
     { name: t('zine'), href: '/' },
     { name: t('feed'), href: '/feed' },
-    { name: t('topics'), href: '/topics' },
+    // { name: t('topics'), href: '/topics' },
     { name: t('community'), href: '/community' }
   ])
   const openModal = (evt: Event) => {

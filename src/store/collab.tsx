@@ -6,27 +6,58 @@ import { useStore } from './index'
 import proposalCreateQuery from '../graphql/q/proposal-create'
 import proposalUpdateQuery from '../graphql/q/proposal-update'
 import proposalDestroyQuery from '../graphql/q/proposal-destroy'
+import inviteAuthorQuery from '../graphql/q/collab-invite'
+import removeAuthorQuery from '../graphql/q/collab-remove'
 import { usePromiseQuery } from '../utils/promiseQuery'
 import { Proposal } from '../graphql/types.gen'
 
 interface CollabStore {
-
+    readonly loading: boolean
 }
 
 const CollabContext = createContext()
 const CollabProvider = CollabContext.Provider
 
 export default (props: { client: Client, children: any }) => {
-    const [ promiseQuery, promiseMutation ] = usePromiseQuery(props.client)
-    const [ commonStore, commonActions ] = useStore()
+    const [ , promiseMutation ] = usePromiseQuery(props.client)
+    const [ , commonActions ] = useStore()
     const [ loading, setLoading ] = createSignal(false)
     const collabStore = createStore<CollabStore>({
+        get loading() {
+            return loading()
+        },
 
     })
     const collabActions = {
 
-        inviteAuthor: (author: string, draft: string) => { }, // TODO: invite co-author
-        removeAuthor: (author: string, draft: string) => { }, // TODO: remove co-author
+         // invite co-author
+        inviteAuthor: (author: string, shout: string) => {
+            promiseMutation(inviteAuthorQuery, { shout, author })
+                .then(({ data, error }: OperationResult) => {
+                    if (error) commonActions.warn({ body: error.message, kind: 'warn' })
+                    else {
+                        console.debug(data)
+                        
+                        // TODO: implement invite success
+                    }
+                    setLoading(false)
+                })
+        },
+
+        // remove co-author
+        removeAuthor: (author: string, shout: string) => {
+            promiseMutation(removeAuthorQuery, { shout, author })
+                .then(({ data, error }: OperationResult) => {
+                    if (error) commonActions.warn({ body: error.message, kind: 'error' })
+                    else {
+                        if(data.error) commonActions.warn({ body: error, kind: 'warn' })
+                        else {
+                            // TODO: implement remove success
+                        }
+                    }
+                    setLoading(false)
+                })
+        },
 
         addProposal: (slug: string, proposal: Proposal) => {
             setLoading(true)

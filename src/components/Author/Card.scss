@@ -82,6 +82,12 @@
       background-image: url(/icons/vk-white.svg);
     }
   }
+
+  a[href*='tumblr.com/'] {
+    &:before {
+      background-image: url(/icons/tumblr-white.svg);
+    }
+  }
 }
 
 .button--subscribe {
