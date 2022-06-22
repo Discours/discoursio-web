@@ -2,12 +2,18 @@
   align-items: flex-start;
   margin-top: 3.2rem;
 
-  @include media-breakpoint-down(sm) {
-    margin-left: divide(-$container-padding-x, 2);
-  }
+  .stats & {
+    @include media-breakpoint-down(sm) {
+      margin-left: 0;
+    }
 
-  .stats .topic-details__item {
-    margin-bottom: 3.2rem;
+    .topic-details__item {
+      margin-bottom: 1.2rem;
+
+      @include media-breakpoint-up(md) {
+        margin-bottom: 3.2rem;
+      }
+    }
   }
 
   .button {

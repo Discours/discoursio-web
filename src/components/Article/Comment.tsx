@@ -26,7 +26,7 @@ export default (props: { level: number; comment: Partial<Point>; canEdit: boolea
       <Show when={!!comment()}>
         <div class='shout-controls'>
           <div class='shout-author'>
-            <AuthorCard author={comment()?.author as Partial<User>} />
+            <AuthorCard author={comment()?.author as Partial<User>} hideDescription={true} hideFollow={true} />
           </div>
           <div class='shout-date'>{comment()?.createdAt}</div>
           {/* <div class="shout-rating">{comment.rating}</div> */}

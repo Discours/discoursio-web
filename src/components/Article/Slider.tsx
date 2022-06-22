@@ -22,7 +22,7 @@ export default (props: SliderProps) => {
   const opts: SwiperOptions = {
     loop: true,
     centeredSlides: true,
-    slidesPerView: 1.66666,
+    slidesPerView: 1,
     spaceBetween: 8,
     modules: [Navigation, Pagination],
     speed: 500,
@@ -31,6 +31,11 @@ export default (props: SliderProps) => {
       el: pagEl,
       type: 'bullets',
       clickable: true
+    },
+    breakpoints: {
+      768: {
+        slidesPerView: 1.66666,
+      }
     }
   }
 
