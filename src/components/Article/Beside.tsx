@@ -11,7 +11,9 @@ interface BesideProps {
   title: string
   values: any[]
   beside: Partial<Shout>
-  wrapper: 'topic' | 'author' | 'article' | 'top-article'
+  wrapper: 'topic' | 'author' | 'article' | 'top-article',
+  isTopicCompact?: boolean,
+  topicShortDescription?: boolean
 }
 export default (props: BesideProps) => {
   // wrap, top, title, beside, values, wrapper
@@ -32,7 +34,7 @@ export default (props: BesideProps) => {
                   {(value: Partial<Shout | User | Topic>) => (
                     <li classList={{ top: props.wrapper.startsWith('top-') }}>
                       <Show when={props.wrapper === 'topic'}>
-                        <TopicCard topic={value as Topic} compact={true} />
+                        <TopicCard topic={value as Topic} compact={props.isTopicCompact} shortDescription={props.topicShortDescription} />
                       </Show>
                       <Show when={props.wrapper === 'author'}>
                         <AuthorCard author={value as Partial<User>} compact={true} />

@@ -61,6 +61,13 @@
   }
 }
 
+.topic-description--short {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .topic-details {
   @include font-size(1.7rem);
   color: #9fa1a7;

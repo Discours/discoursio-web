@@ -10,6 +10,7 @@ interface TopicProps {
   topic: Topic
   compact?: boolean
   subscribed?: boolean
+  shortDescription?: boolean
 }
 
 export default (props: TopicProps) => {
@@ -45,7 +46,7 @@ export default (props: TopicProps) => {
         </Show>
 
         <Show when={!props.compact && !body.loading}>
-          <div class='topic-description'>
+          <div class='topic-description' classList={{'topic-description--short': props.shortDescription}}>
             {body}
           </div>
         </Show>

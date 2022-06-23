@@ -44,7 +44,7 @@ const Feed: Component = () => {
     ])}
   })
   const topTopics = createMemo(() => [...(data.topics || [])].sort(byShouts).slice(0, 5))
-  
+
   useRouteReadyState()
 
   return (

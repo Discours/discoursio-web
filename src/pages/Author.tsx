@@ -121,6 +121,7 @@ export const BlogAuthor: Component = () => {
               values={authorTopics()?.slice(0, 5)}
               beside={data.articles[0]}
               wrapper={'topic'}
+              topicShortDescription={true}
             />
             <Row3 articles={data.articles.slice(1, 4)} />
             <Row2 articles={data.articles.slice(4, 6)} />

@@ -144,6 +144,7 @@ export const Home: Component = () => {
             title={t('Top topics')}
             values={topTopics()}
             wrapper={'topic'}
+            isTopicCompact={true}
           />
         </Suspense>
         <Row3 articles={data.recentPublished.slice(31, 34)} />
