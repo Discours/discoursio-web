@@ -17,12 +17,13 @@ interface CardProps {
     isGroup?: boolean
     photoBottom?: boolean
     additionalClass?: string
+    isFeedMode?: boolean
   }
   article: Partial<Shout>
 }
 
 export default (props: CardProps) => {
-  const [, { locale }] = useI18n()
+  const [t, { locale }] = useI18n()
   const [title, setTitle] = createSignal<string>('')
   const [subtitle, setSubtitle] = createSignal<string>('')
   const { settings } = props
@@ -36,7 +37,7 @@ export default (props: CardProps) => {
         setTitle(tt[0] + (!(sep === '.' || sep === ':') ? sep : ''))
         setSubtitle(capitalize(props.article.title?.replace(tt[0] + sep, '') as string, true))
       }
-    } else { 
+    } else {
       setSubtitle(props.article.subtitle || '')
     }
   })
@@ -47,10 +48,11 @@ export default (props: CardProps) => {
   const tag = (t: Topic) => (/[а-яА-ЯЁё]/.test(t.title || '') && locale() !== 'ru' ? t.slug : t.title)
   return (
     <section
-      class={`shout-card ${settings?.additionalClass}`}
+      class={`shout-card ${settings?.additionalClass ? settings?.additionalClass : ''}`}
       classList={{
         'shout-card--short': settings?.noimage,
-        'shout-card--photo-bottom': settings?.noimage && settings?.photoBottom
+        'shout-card--photo-bottom': settings?.noimage && settings?.photoBottom,
+        'shout-card--feed': settings?.isFeedMode
       }}
     >
       <Show when={!settings?.noimage && props.article?.cover}>
@@ -113,6 +115,33 @@ export default (props: CardProps) => {
               )}
             </For>
           </div>
+        </Show>
+
+        <Show when={settings?.isFeedMode}>
+          <section class="shout-card__details">
+            <div class="shout-card__details-content">
+              <div class="shout-card__details-item rating">
+                <button class="rating__control">&minus;</button>
+                <span class="rating__value">{props.article.stat.ratings}</span>
+                <button class="rating__control">+</button>
+              </div>
+
+              <div class="shout-card__details-item shout-card__comments">
+                <Icon name="comment"/>
+                {props.article.stat.comments}
+              </div>
+
+              <div class="shout-card__details-item">
+                <button><Icon name="bookmark"/></button>
+              </div>
+
+              <div class="shout-card__details-item">
+                <button><Icon name="ellipsis"/></button>
+              </div>
+            </div>
+
+            <button class="button--light shout-card__edit-control">{t('Help to edit')}</button>
+          </section>
         </Show>
       </div>
     </section>

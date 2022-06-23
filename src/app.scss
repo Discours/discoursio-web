@@ -148,12 +148,17 @@ ul {
   margin-bottom: 1.5em;
 }
 
-.button {
-  background: #000;
+button {
+  background: none;
   border: none;
-  color: #fff;
   cursor: pointer;
   font-family: inherit;
+  padding: 0;
+}
+
+.button {
+  background: #000;
+  color: #fff;
   font-size: 100%;
   font-weight: 500;
   padding: 0.6rem 1.2rem;
@@ -171,6 +176,15 @@ ul {
 .button--subscribe {
   padding: 0.6rem 1.2rem;
   font-size: 1.5rem;
+}
+
+.button--light {
+  background-color: #f6f6f6;
+  color: #000;
+  @include font-size(1.5rem);
+  font-weight: 400;
+  margin-top: 0.6rem;
+  padding: 0.6rem 1.2rem 1rem 1rem;
 }
 
 input[type='text'],

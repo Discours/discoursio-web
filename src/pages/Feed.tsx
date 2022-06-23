@@ -2,15 +2,13 @@ import { Component, createEffect, createMemo, createSignal, For, Show } from 'so
 import { NavLink, useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout, Topic, User } from '../graphql/types.gen'
-import Row3 from '../components/Article/Row3'
-import Row2 from '../components/Article/Row2'
-// import Row1 from '../components/Article/Row1'
-import Beside from '../components/Article/Beside'
 import { useI18n } from '@solid-primitives/i18n'
-import "./Feed.scss"
+import './Feed.scss'
 import Icon from "../components/Nav/Icon";
 import { useAuth } from '../store/auth'
 import { byShouts } from '../utils/sortby'
+import TopicCard from "../components/Topic/Card";
+import ArticleCard from "../components/Article/Card";
 
 const Feed: Component = () => {
   const [t] = useI18n()
@@ -113,6 +111,14 @@ const Feed: Component = () => {
               <li><a href="#">Обсуждаемое</a></li>
               <li><a href="#">Сортировка</a></li>
             </ul>
+
+            <Show when={!data.feedLoading && Boolean(articles())}>
+              <For each={articles()}>
+                {(a: Partial<Shout>) => (
+                  <ArticleCard article={a} settings={{isFeedMode: true}} />
+                )}
+              </For>
+            </Show>
           </div>
 
           <aside class="col-md-3">
@@ -140,23 +146,13 @@ const Feed: Component = () => {
               </div>
             </div>
 
+            <For each={Array.from(topTopics())}>
+              {(value: Partial<Shout | User | Topic>) => (
+              <TopicCard topic={value as Topic} subscribeButtonBottom={true} />
+              )}
+            </For>
           </aside>
         </div>
-      </div>
-
-      <div class='flex flex-col'>
-        <Show when={!data.feedLoading && Boolean(articles())}>
-          <Beside
-            title={t('Top topics')}
-            values={topTopics()}
-            beside={articles()[0]}
-            wrapper={'topic'}
-          />
-          <Row3 articles={articles()?.slice(1, 4) || []}/>
-          <Row2 articles={articles()?.slice(4, 6) || []}/>
-          <Row3 articles={articles()?.slice(10, 13) || []}/>
-          <Row3 articles={articles()?.slice(13, 16) || []}/>
-        </Show>
       </div>
     </>
   )

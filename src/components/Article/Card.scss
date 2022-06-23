@@ -337,6 +337,73 @@
   }
 }
 
+.shout-card--feed {
+  border-bottom: 1px solid #e8e8e8;
+  margin-bottom: 2em;
+
+  .shout-card__content {
+    margin-bottom: 0;
+  }
+}
+
+.shout-card__details {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  @include font-size(1.5rem);
+  padding: 1em 0 1.5em;
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+.shout-card__details-content {
+  display: flex;
+}
+
+.shout-card__details-item {
+  align-items: center;
+  display: flex;
+  margin-right: 1.7em;
+
+  img {
+    vertical-align: middle;
+  }
+}
+
+.shout-card__comments {
+  align-items: center;
+  display: flex;
+
+  .icon {
+    margin-right: 0.3em;
+  }
+}
+
+.rating {
+  align-items: center;
+  display: flex;
+}
+
+.rating__value {
+  font-weight: bold;
+  margin: 0 0.5em;
+}
+
+.rating__control {
+  border: 2px solid;
+  border-radius: 100%;
+  height: 1.1em;
+  line-height: 0;
+  @include font-size(3rem);
+  width: 1.1em;
+
+  &:hover {
+    background: #000;
+    color: #fff;
+  }
+}
+
 .floor--7 {
   @include media-breakpoint-down(md) {
     margin-bottom: 1em;

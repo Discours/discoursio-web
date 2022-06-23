@@ -15,17 +15,6 @@
       }
     }
   }
-
-  .button {
-    background-color: #f6f6f6;
-    color: #000;
-    border: none;
-    cursor: pointer;
-    @include font-size(1.5rem);
-    font-weight: 400;
-    margin-top: 0.6rem;
-    padding: 0.6rem 1.2rem 1rem 1rem;
-  }
 }
 
 .topic-title {

@@ -10,7 +10,8 @@ interface TopicProps {
   topic: Topic
   compact?: boolean
   subscribed?: boolean
-  shortDescription?: boolean
+  shortDescription?: boolean,
+  subscribeButtonBottom?: boolean
 }
 
 export default (props: TopicProps) => {
@@ -32,8 +33,8 @@ export default (props: TopicProps) => {
     }
   }
   return (
-    <div class='topic' classList={{'row': !props.compact}}>
-      <div classList={{'col-md-7': !props.compact}}>
+    <div class='topic' classList={{'row': !props.compact && !props.subscribeButtonBottom}}>
+      <div classList={{'col-md-7': !props.compact && !props.subscribeButtonBottom}}>
         <div class='topic-title'>
           <a href={`/topic/${props.topic.slug}`}>{capitalize(props.topic.title || '')}</a>
         </div>
@@ -68,12 +69,14 @@ export default (props: TopicProps) => {
                       locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                     )}
                 </span>
-                <span class='topic-details__item'>
-                  {props.topic.topicStat?.views + ' ' + t('view') + plural(
-                    props.topic.topicStat?.views || 0,
-                    locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
-                  )}
-                </span>
+                <Show when={!props.subscribeButtonBottom}>
+                  <span class='topic-details__item'>
+                    {props.topic.topicStat?.views + ' ' + t('view') + plural(
+                      props.topic.topicStat?.views || 0,
+                      locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
+                    )}
+                  </span>
+                </Show>
               </Show>
 
 {/*
@@ -87,13 +90,13 @@ export default (props: TopicProps) => {
             </div>
           </Show>
       </div>
-      <div classList={{'col-md-3': !props.compact}}>
+      <div classList={{'col-md-3': !props.compact && !props.subscribeButtonBottom}}>
         <Show when={subscribed()} fallback={
-            <button onClick={() => subscribe(true)} class='button'>
+            <button onClick={() => subscribe(true)} class='button--light'>
               +&nbsp;{t('Follow')}
             </button>
           }>
-            <button onClick={() => subscribe(false)} class='button'>
+            <button onClick={() => subscribe(false)} class='button--light'>
               -&nbsp;{t('Unfollow')}
             </button>
         </Show>
