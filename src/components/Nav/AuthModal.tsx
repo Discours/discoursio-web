@@ -10,19 +10,20 @@ import { useAuth } from '../../store/auth'
 import { OperationResult, useClient } from 'solid-urql'
 import { usePromiseQuery } from '../../utils/promiseQuery'
 import signCheckQuery from '../../graphql/q/auth-check'
+import { Form } from 'solid-js-form'
+import * as Yup from 'yup'
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
 export default (props: { code?: string; mode?: string }) => {
   const [t] = useI18n()
-  const [mode, setModeSignal] = createSignal<AuthMode>('sign-in')
+  const [mode, setMode] = createSignal<AuthMode>('sign-in')
+  const [error, setError] = createSignal('')
   const [state, { hideModal }] = useStore()
   const [auth, { signIn, signUp, forget, resend, reset }] = useAuth()
-  const [formValidations, setValidations] = createSignal<string[]>([])
-  const setMode = (m: AuthMode) => {
-    setValidations([])
-    setModeSignal(m)
-  }
+  const [validation, setValidation] = createSignal({})
+  const [initial, setInitial] = createSignal({})
+
   let emailElement: HTMLInputElement | undefined
   let pass2Element: HTMLInputElement | undefined
   let passElement: HTMLInputElement | undefined
@@ -37,55 +38,85 @@ export default (props: { code?: string; mode?: string }) => {
     password: t('Enter your new password')
   }
 
-  const oauth = (provider: string) => {
+  // switching initial values and validatiors
+  createEffect(() => {
+    let ini: { [key:string]: string } = { email: '' }
+    let vs: { [key:string]: any } = { email: Yup.string().required() }
+    switch(mode()) {
+      case 'sign-in':
+        ini = { username: '', password: '' }
+        vs = {
+          username: Yup.string().required(),
+          password: Yup.string().required(),
+        }
+        signCheck(emailElement?.value || '')
+        break
+      case 'sign-up':
+        ini = { username: '', password: '', email: '' }
+        vs = {
+          username: Yup.string(),
+          email: Yup.string().required(),
+          password: Yup.string().required(),
+        }
+        signCheck(emailElement?.value || '')
+        break
+      case 'forget':
+        ini = { email: '' }
+        vs = { email: Yup.string().required() }
+        break
+      case 'reset':
+        ini = { code: '' }
+        vs = { code: Yup.string().required() }
+        break
+      case 'resend':
+        ini = { email: '' }
+        vs = { email: Yup.string().required() }
+        break
+      case 'password':
+        ini = { password: '', password2: '' }
+        vs = { password: Yup.string().required(), password2: Yup.string().required() }
+        break
+      default:
+        break
+    }
+    setValidation(vs)
+    setInitial(ini)
+  })
+
+  // 3rd party provedier auth handler
+  const oauth = (provider: string): void => {
     const popup = window.open(`${baseUrl}/oauth/${provider}`, provider, 'width=740, height=420')
     popup?.focus()
     hideModal()
   }
+
+  // check email properly typed
+  const isProperEmail = (email: string): boolean => (email.length || 0) > 5 && email.includes('@') && email.includes('.')
+
+  // check email request
   const client = useClient()
   const [promiseQuery, ] = usePromiseQuery(client)
-  const signCheck = (email: string): Promise<boolean> => promiseQuery(signCheckQuery, { email })
+  const signCheck = (email: string, register = false) => promiseQuery(signCheckQuery, { email })
     .then(({ data, error }: OperationResult) => {
-      let result = false
-      if (error) {
-        setValidations(v => [...v, error.message]) // TODO: kind error
-      } else {
-        if (data?.isEmailUsed) {
-          setValidations(v => [...v, t('Email is used')]) // TODO: kind warn
-          result = true
-        } else {
-          console.log('[auth] email was not used')
-        }
-      }
-      return Promise.resolve(result)
+      if(error) setError(error.message)
+      if (data?.isEmailUsed && register) setError(t('We know you, please try to sign in'))
+      if (!data?.isEmailUsed && !register) setError(t('Email is unknown, please try to sign up'))
     })
 
+  // local auth handler
   const localAuth = async () => {
     console.log('[auth] native account processing')
-    // 1 check format
-    const emailTyped =
-      (emailElement?.value?.length || 0) > 5 &&
-      emailElement?.value.includes('@') &&
-      emailElement.value.includes('.')
-    console.log(`[auth] email is ${emailTyped?'':'NOT '}properly typed`)
-    // 2 check email
-    if (!emailTyped) {
-      setValidations((v: string[]) => [...v, t('Please check your email address')])
+    // check email
+    if (!isProperEmail(emailElement?.value || '')) {
+      setError(t('Please check your email address'))
       console.log('[auth] email wrong format')
     } else {
       switch (mode()) {
         case 'sign-up':
-          signCheck(emailElement?.value || '')
-            .then((result: boolean) => {
-              if (result) setValidations(v => [...v, t('We know you, please try to login')]) // error
-              // TODO: validation status on form
-            })
+          signCheck(emailElement?.value || '', true)
           break
         case 'sign-in':
           signCheck(emailElement?.value || '')
-            .then((result: boolean) => {
-              if (!result) setValidations(v => [...v, t('No such account, please try to register')]) // error
-            })
           break
         default:
           console.log('[auth] passing email check')
@@ -97,7 +128,7 @@ export default (props: { code?: string; mode?: string }) => {
         break
       case 'sign-up':
         if (pass2Element?.value !== passElement?.value)
-          setValidations(v=>[...v, t('Passwords are not equal')]) //, kind: 'error' })
+          setError(t('Passwords are not equal'))
         else {
           signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
         }
@@ -105,19 +136,22 @@ export default (props: { code?: string; mode?: string }) => {
       case 'reset':
         // send reset-code to login with email
         console.log('[auth] reset code: ' + codeElement?.value)
-        // TODO: signInReset(codeElement?.value)
+        reset(codeElement?.value)
         break
       case 'resend':
-        // TODO: send code to email
+        resend(emailElement?.value)
         break
       case 'forget':
         // shows forget mode of auth-modal
-        // warn({ body: t('Passwords are not equal'), kind: 'error' })
+        if(pass2Element?.value !== passElement?.value) setError(t('Passwords are not equal'))
+        else forget(passElement?.value)
         break
       default:
         console.log('[auth] unknown auth mode', mode())
     }
   }
+
+  // hiding itself if finished
   createEffect(() => {
     if (auth.authorized && state.modal === 'auth') {
       console.log('[auth] success, hiding modal')
@@ -143,7 +177,11 @@ export default (props: { code?: string; mode?: string }) => {
           </p>
         </div>
       </div>
-      <form class='col-sm-6 auth' onSubmit={(ev) => ev.preventDefault()}>
+      <Form
+        initialValues={initial()}
+        validation={validation()}
+        onSubmit={async (form) => {console.log(form.values)}}
+        >
         <div class='auth__inner'>
           <h4>{titles[mode()]}</h4>
 
@@ -161,21 +199,20 @@ export default (props: { code?: string; mode?: string }) => {
           </div>
           <div class={`auth-info`}>
             <ul>
-              <For each={formValidations()}>
-                {(w: string) => (<li class='warn'>{w}</li>)}
-              </For>
+              <li class='warn'>{error()}</li>
             </ul>
           </div>
 
           <Show when={false && mode() === 'sign-up'}>
-            <input autocomplete='username' ref={usernameElement} type='text' placeholder={t('Username')} />
+            <input name='username' autocomplete='username' ref={usernameElement} type='text' placeholder={t('Username')} />
           </Show>
           <Show when={mode() !== 'reset' && mode() !== 'password'}>
-            <input autocomplete='email' ref={emailElement} type='text' placeholder={t('Email')} />
+            <input name='email' autocomplete='email' ref={emailElement} type='text' placeholder={t('Email')} />
           </Show>
 
-          <Show when={mode() === 'sign-up' || mode() === 'sign-in'}>
+          <Show when={mode() === 'sign-up' || mode() === 'sign-in' || mode() === 'password'}>
             <input
+              name='password'
               autocomplete='current-password'
               ref={passElement}
               type='password'
@@ -183,13 +220,11 @@ export default (props: { code?: string; mode?: string }) => {
             />
           </Show>
           <Show when={mode() === 'reset'}>
-            <input ref={codeElement} value={props.code} type='text' placeholder={t('Reset code')} />
+            <input name='resetcode' ref={codeElement} value={props.code} type='text' placeholder={t('Reset code')} />
           </Show>
-          <Show when={mode() === 'password'}>
-            <input ref={passElement} type='password' placeholder={t('New password')} />
-          </Show>
+          
           <Show when={mode() === 'password' || mode() === 'sign-up'}>
-            <input ref={pass2Element} type='password' placeholder={t('Password again')} autocomplete="" />
+            <input name='password2' ref={pass2Element} type='password' placeholder={t('Password again')} autocomplete="" />
           </Show>
           <div>
             <button class='submitbtn' disabled={auth.handshaking} onClick={localAuth}>
@@ -248,7 +283,7 @@ export default (props: { code?: string; mode?: string }) => {
             </div>
           </div>
         </div>
-      </form>
+      </Form>
     </div>
   )
 }
