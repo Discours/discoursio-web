@@ -1,4 +1,4 @@
-import { Component, Show } from 'solid-js'
+import { Component, createMemo, Show } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -17,16 +17,24 @@ export const ArticlePage: Component = () => {
     topicsLoading: boolean
     comments?: Comment[]
   }>()
-
+  if(!data.article) 
   useRouteReadyState()
-
+  const article = createMemo(() => {
+    if (!data.loading) return data?.article
+    else {
+      ['article', 'image', 'video', 'prose', 'music'].forEach(layout => {
+        const r = import('../../content/'+ layout + '/' + data.slug + '.mdx')
+        if(r) return r
+      }) 
+    }
+  })
   return (
     <div class='shout'>
       <PageLoadingBar active={data.loading && data.topicsLoading}/>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
-        when={!data.loading && Boolean(data.article)}>
-        <FullArticle article={data.article} comments={data.comments} />
+        when={!!article()}>
+        <FullArticle article={article()} comments={data.comments || []} />
       </Show>
     </div>
   )
