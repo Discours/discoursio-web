@@ -1,0 +1,9 @@
+.loadingbar {
+  position: absolute;
+  z-index: 50;
+  width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  top: 0;
+  height: 6px;
+}

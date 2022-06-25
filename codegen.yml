@@ -1,16 +1,15 @@
 overwrite: true
 schema:
-    - 'http://localhost:8080/graphql'
+  - 'https://newapi.discours.io'
 generates:
-    src/graphql/codegen.ts:
-        plugins:
-            - 'typescript'
-            - 'typescript-operations'
-            - 'graphql-codegen-svelte-apollo'
-        clientPath: 'src/graphql/client'
-        asyncQuery: true
-        scalars:
-            DateTime: string
+  src/graphql/types.gen.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-urql'
+      - 'urql-introspection'
+    clientPath: 'src/graphql/client'
+    asyncQuery: true
 hooks:
-    afterAllFileWrite:
-        - prettier --write
+  afterAllFileWrite:
+    - prettier --ignore-path .gitignore --write --plugin-search-dir=. src/graphql/types.gen.ts

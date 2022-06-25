@@ -1,4 +1,4 @@
-image: node:14
+image: node:16
 stages:
   - prebuild
   - build
@@ -11,7 +11,7 @@ lint:
     - yarn validate
 build:
   only:
-    - develop
+    - dev
     - master
   stage: build
   before_script:

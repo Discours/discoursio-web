@@ -1,8 +1,76 @@
+[0.3.0]
+[+] markup is simpler
+[+] really use mdx
+[+] really use i18n
+[+] refactored queries
+[+] final routing
+
+[0.2.1]
+[+] custom store
+[+] playwright
+[+] mdx
+
+[0.2.0]
+[-] sveltekit
+[-] graphql-request
+[+] migrated to solid
+[+] urql
+[+] graphql caching results
+
+[0.1.0]
+[+] husky, lint-staged
+[+] components refactoring
+[+] 'static' pages fixes
+[+] ShoutFeed's reusable components
+[+] render order revised
+
+[0.0.9]
+[+] lots of visual changes for demo
+[+] cookie-based subscriptions
+[+] prerender fix
+[+] refactor queries
+[+] caching topics with localStorage
+[+] added some 'static' routes
+
+[0.0.8]
+[+] isolated editor codebase
+[+] sveo
+[+] SSG first
+[+] svelte-kit caching fixes
+[+] isolated MD component
+[-] code cleanup
+[-] /auth route
+[-] top nav changes
+
+[0.0.7]
+[+] nav refactoring /[what] /@[who]
+[+] /reset/[code], /reset/password
+[+] modal auth dialog
+[+] Topic.pic field
+[+] internal svelte prerender
+[+] GET_SHOUTS, TOP_SHOUTS_BY_RATING, GET_TOPICS, GET_COMMUNITIES via caching json trick
+[~] User.username -> User.name
+
+[0.0.6]
+[-] organization, org_id
+[+] community entity
+[+] mainpage markup
+[+] topics filter navigation
+[+] monor schema fixes
+[-] gitea.js api
+[-] postcss with plugins
+[-] bootstrap
+[+] windicss
+[+] async sveltekit-styled queries
+[+] login basic markup
+
 [0.0.5]
-[-] removed svelte-apollo due bug
+[+] migrate to sveltekit
+[-] removed apollo due bug
 [-] removed custom prerender code
-[-] removed husky pre-push hook
 [+] stylelint enabled
+[+] precompiler windows support
+[+] precompiler separated
 
 [0.0.4]
 

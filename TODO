@@ -1,0 +1,10 @@
+[html/css]
+- pages/*.scss should be removed with components' styles
+- fix components/LoadingBar
+- /search markup and styles
+- /community markup and styles
+- fix /feed
+- /feed/settings markup and styles
+
+[*]
+- SSR / SSG

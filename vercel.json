@@ -1,0 +1,18 @@
+{
+  "headers": [
+    {
+      "source": "/auth/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/graphql", "destination": "https://newapi.discours.io" },
+    {"source": "/@:slug*", "destination": "/author/:slug*" },
+    {"source": "/-:slug*", "destination": "/topic/:slug*" }
+    ]
+}

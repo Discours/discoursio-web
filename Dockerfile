@@ -1,7 +1,9 @@
 from node:alpine
+
+EXPOSE 3000
+run apk add git
 workdir /usr/app
 copy ./ /usr/app
 run yarn
-run yarn sb:install
-expose 6006
-cmd ["yarn", "sb:start"]
+run yarn build
+cmd yarn preview -- --host 0.0.0.0

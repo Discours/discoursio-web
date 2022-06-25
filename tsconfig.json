@@ -1,18 +1,31 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": false,
-    "resolveJsonModule": true,
-    "lib": ["dom", "esnext", "webworker"],
+    "target": "ES2022",
+    "module": "ESNext",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "declaration": true,
     "moduleResolution": "node",
-    "target": "esnext",
-    "types": ["svelte", "node"]
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "newLine": "lf",
+    "sourceMap": true,
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client", "solid-mdx/types", "vite-plugin-pwa/client"],
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"]
   },
-  "extends": "./node_modules/@tsconfig/svelte/tsconfig.json",
-  "include": ["src/**/*"],
-  "exclude": ["node_modules/*", "public/*"]
+  "include": [
+    "./src/**/*",
+    "vite.config.ts",
+    "./scripts",
+    "src/types.d.ts",
+    "./e2e/*.ts",
+    "src/pages/.tsx"
+  ],
+  "exclude": ["node_modules/"]
 }
