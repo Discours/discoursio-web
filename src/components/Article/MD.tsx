@@ -11,7 +11,7 @@ const mit = MD({
   typographer: true
 })
 mit.use(mdmark)
-mit.use(mdcustom)
+mdcustom(mit, 'significant', { marker: '==' })
 mit.use(mdfig, {
   dataType: false, // <figure data-type="image">
   figcaption: true // <figcaption>alternative text</figcaption>
