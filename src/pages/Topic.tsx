@@ -20,16 +20,12 @@ export const BlogTopic: Component = () => {
     lang: string
     page: number
     size: number
+    authors: Partial<User>[]
     articles: Partial<Shout>[]
     topics?: Topic[]
     topicsLoading?: boolean
   }>()
 
-  let authors = createMemo<Partial<User>[]>(() => {
-    let authorset = new Set([] as Partial<User>[])
-    data.articles?.forEach((a) => a.authors?.forEach((u) => authorset.add(u)))
-    return Array.from(authorset)
-  })
   const topic = createMemo<Topic>(() => data.topics?.find((tpc: Topic) => tpc.slug === data.slug) as Topic)
   const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
   const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
@@ -45,13 +41,9 @@ export const BlogTopic: Component = () => {
   })
   const title = createMemo(() => {
     const m = mode()
-
     if (m === 'fresh') return t('Top recent')
-
     if (m === 'popular') return t('Top rated')
-
     if (m === 'discuss') return t('Top discussed')
-
     return t('Top viewed')
   })
 
@@ -114,7 +106,7 @@ export const BlogTopic: Component = () => {
           <Show when={!data.loading && Boolean(data.articles)}>
             <Beside
               title={t('Topic is supported by')}
-              values={authors().slice(0, 5)}
+              values={data.authors.slice(0, 5)}
               beside={data.articles[0]}
               wrapper={'author'}
             />

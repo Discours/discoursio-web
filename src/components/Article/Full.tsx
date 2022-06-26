@@ -25,7 +25,7 @@ export default (props: ArticleProps) => {
   const [, { follow, unfollow }] = useZine()
   const [, { showModal }] = useStore()
   const subscribed = createMemo(() => info?.userSubscribedTopics?.includes(props.article?.slug || ''))
-  const mainTopic = () => (props.article?.topics?.find((topic) => topic?.slug === props.article?.mainTopic)?.title as string).replace(' ', '&nbsp;')
+  const mainTopic = () => (props.article?.topics?.find((topic) => topic?.slug === props.article?.mainTopic)?.title || '').replace(' ', '&nbsp;')
   const canEdit = () => !!(props.article?.authors?.find((a: Partial<User>) => a.slug === user?.slug)) // FIXME
   const getCommentLevel = (c: Comment, level = 0) => {
     if (c && c.replyTo && level < deepest) {

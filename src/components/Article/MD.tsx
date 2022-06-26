@@ -23,7 +23,7 @@ export default (props: { body: string }) => {
   const [rendered, setRendered] = createSignal('')
 
   createEffect(() => {
-    let body = props.body.startsWith('<') ? props.body : mit.render(props.body)
+    let body = (props.body || '').startsWith('<') ? props.body : mit.render(props.body)
     setRendered(body)
   })
 
