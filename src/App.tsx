@@ -15,7 +15,7 @@ export const App = () => {
   const Routes = useRoutes(routes)
   preventSmoothScrollOnTabbing()
   const [authState, {}] = useAuth()
-  const client = createMemo(() => (!authState.authorized) ? 
+  const client = createMemo(() => (!authState.authorized) ?
       createClient({ url: baseUrl }) : createClient(createOptions(authState.token)))
   return (
     <Router>
@@ -25,13 +25,13 @@ export const App = () => {
             <ZineStoreProvider client={client()}>
               <Header />
               {/* two div wrappers to make page animation work and performant */}
-              <div id='main-content'>
+              <main class='main-content'>
                 {/* <TransitionRoutes> */}
                 <Suspense>
                   <Routes />
                 </Suspense>
                 {/* </TransitionRoutes> */}
-              </div>
+              </main>
               <Footer />
             </ZineStoreProvider>
           </AuthStoreProvider>

@@ -50,7 +50,7 @@ export const BlogTopic: Component = () => {
   useRouteReadyState()
 
   return (
-    <div class='container'>
+    <div class='topic-page container'>
       <Show when={!data.topicsLoading || !data.loading}>
         <Show when={!data.topicsLoading && Boolean(topic()?.slug)}>
           <TopicFull topic={topic() as Topic} />
@@ -86,18 +86,19 @@ export const BlogTopic: Component = () => {
               <span class='mode-switcher__control'>{t('All posts')}</span>
             </div>
           </div>
-          <div class='floor floor--important'>
-            <div class='container'>
-              <div class='row'>
-                <h3 class='col-12'>{title()}</h3>
-                <For each={selected()}>
-                  {(a: Partial<Shout>) => (
-                    <div class='col-md-6'>
-                      <ArticleCard article={a} />
-                    </div>
-                  )}
-                </For>
-              </div>
+        </div>
+
+        <div class='row floor floor--important'>
+          <div class='container'>
+            <div class='row'>
+              <h3 class='col-12'>{title()}</h3>
+              <For each={selected()}>
+                {(a: Partial<Shout>) => (
+                  <div class='col-md-6'>
+                    <ArticleCard article={a} />
+                  </div>
+                )}
+              </For>
             </div>
           </div>
         </div>

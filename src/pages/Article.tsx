@@ -29,7 +29,7 @@ export const ArticlePage: Component = () => {
     else if (slug()) return import('../../content/' + slug() + '.mdx')
   })
   return (
-    <div class='shout'>
+    <div class='article-page'>
       <PageLoadingBar active={data.loading && data.topicsLoading}/>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}

@@ -1,63 +1,36 @@
-.view-switcher {
-  font-weight: bold;
-  list-style: none;
-  margin: 0 0 1.5em;
-  padding: 0;
-
-  li {
-    display: inline-block;
-    margin-right: 1em;
+.all-topics-page {
+  .page-header,
+  .group h2 {
+    @include media-breakpoint-down(sm) {
+      margin-left: 1.3rem;
+    }
   }
 
-  a {
-    border-bottom: 2px solid #fff;
-  }
+  .group {
+    font-weight: bold;
+    margin: 3em 0 9.6rem;
 
-  .selected {
-    a {
-      border-color: #000;
-      color: #000;
-      cursor: default;
+    @include media-breakpoint-down(sm) {
+      margin-bottom: 6.4rem;
+    }
 
-      &:hover {
-        background: none;
+    h2 {
+      margin-bottom: 3.2rem;
+      text-transform: capitalize;
+
+      @include media-breakpoint-down(sm) {
+        margin-bottom: 1.6rem;
+      }
+    }
+
+    .topic {
+      @include media-breakpoint-down(md) {
+        margin-top: 1.6rem;
       }
     }
   }
-}
 
-.view-switcher,
-.page-header,
-.group h2 {
-  @include media-breakpoint-down(sm) {
-    margin-left: 1.3rem;
+  .container {
+    width: auto;
   }
-}
-
-.group {
-  font-weight: bold;
-  margin-bottom: 9.6rem;
-
-  @include media-breakpoint-down(sm) {
-    margin-bottom: 6.4rem;
-  }
-
-  h2 {
-    margin-bottom: 3.2rem;
-    text-transform: capitalize;
-
-    @include media-breakpoint-down(sm) {
-      margin-bottom: 1.6rem;
-    }
-  }
-
-  .topic {
-    @include media-breakpoint-down(md) {
-      margin-top: 1.6rem;
-    }
-  }
-}
-
-.container {
-  width: auto;
 }

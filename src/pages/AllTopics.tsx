@@ -64,7 +64,7 @@ export default () => {
   useRouteReadyState()
 
   return (
-    <>
+    <div class="all-topics-page">
       <PageLoadingBar active={data.topicsLoading} />
       <Show when={!data.topicsLoading}>
         <div class="wide-container">
@@ -139,6 +139,6 @@ export default () => {
           </div>
         </div>
       </Show>
-    </>
+    </div>
   )
 }

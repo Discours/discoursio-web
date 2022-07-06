@@ -285,8 +285,14 @@ figcaption {
   @include font-size(2.2rem);
   font-weight: bold;
   list-style: none;
-  margin: 0 0 1.5em;
+  margin: 0;
   padding: 0;
+
+  .all-topics-page & {
+    @include media-breakpoint-down(sm) {
+      margin-left: 1.3rem;
+    }
+  }
 
   li {
     display: inline-block;
@@ -304,24 +310,25 @@ figcaption {
     padding: 0;
   }
 
+  a {
+    border-bottom: 2px solid #fff;
+  }
+
   .selected {
     button {
       border-color: #000;
       color: #000;
       cursor: default;
     }
-  }
-}
 
-.article-card__title {
-  a {
-    background: transparent;
-    color: #000;
-    transition: background-color 0.2s;
+    a {
+      border-color: #000;
+      color: #000;
+      cursor: default;
 
-    &:hover {
-      background: #000;
-      color: #fff;
+      &:hover {
+        background: none;
+      }
     }
   }
 }
@@ -351,14 +358,12 @@ figcaption {
   }
 
   .all-materials,
-  .article-card__title,
   .shout-card__title {
     a {
       color: #fff;
     }
   }
 
-  .article__topic,
   .shout__topic,
   .shout__author {
     a {
@@ -413,7 +418,7 @@ figcaption {
   min-height: 100%;
 }
 
-#main-content {
+.main-content {
   flex: 1 100%;
   transition: all 1s ease;
 }
@@ -443,4 +448,15 @@ figcaption {
   justify-content: center;
   align-items: center;
   height: 420px;
+}
+
+.mode-switcher {
+  @include font-size(1.5rem);
+  text-align: right;
+}
+
+.mode-switcher__control {
+  border-bottom: 1px dotted;
+  cursor: pointer;
+  font-weight: bold;
 }
