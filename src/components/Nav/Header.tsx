@@ -1,5 +1,5 @@
 import { For, Show, createSignal, onMount, createMemo } from 'solid-js'
-import { Link, NavLink } from 'solid-app-router'
+import { NavLink } from 'solid-app-router'
 import './Header.scss'
 import { useStore } from '../../store'
 import { useAuth } from '../../store/auth'
@@ -78,7 +78,7 @@ export default () => {
           <div class='usernav'>
             <div class='usercontrol col'>
               <div class='usercontrol__item'>
-                <a href={''} onClick={authState.authorized ? toggleWarnings : openModal}>
+                <a href='#auth' onClick={authState.authorized ? toggleWarnings : openModal}>
                   <div>
                     <Icon name='bell-white' counter={authState.authorized ? getWarns().length : 1} />
                   </div>
@@ -95,9 +95,9 @@ export default () => {
                 when={authorized()}
                 fallback={
                   <div class='usercontrol__item loginbtn'>
-                    <Link href='#' onClick={openModal}>
+                    <a href='#auth' onClick={openModal}>
                       {t('enter')}
-                    </Link>
+                    </a>
                   </div>
                 }
               >

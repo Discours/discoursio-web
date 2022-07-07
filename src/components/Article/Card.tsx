@@ -122,13 +122,13 @@ export default (props: CardProps) => {
             <div class="shout-card__details-content">
               <div class="shout-card__details-item rating">
                 <button class="rating__control">&minus;</button>
-                <span class="rating__value">{props.article.stat.ratings}</span>
+                <span class="rating__value">{props.article.stat?.ratings}</span>
                 <button class="rating__control">+</button>
               </div>
 
               <div class="shout-card__details-item shout-card__comments">
                 <Icon name="comment"/>
-                {props.article.stat.comments}
+                {props.article.stat?.comments}
               </div>
 
               <div class="shout-card__details-item">
@@ -140,7 +140,7 @@ export default (props: CardProps) => {
               </div>
             </div>
 
-            <button class="button--light shout-card__edit-control">{t('Help to edit')}</button>
+            <button class="button--light shout-card__edit-control">{t('Collaborate')}</button>
           </section>
         </Show>
       </div>

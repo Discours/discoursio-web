@@ -1,7 +1,7 @@
 import MD from 'markdown-it'
 import mdfig from 'markdown-it-implicit-figures'
 import mdmark from 'markdown-it-mark'
-import mdcustom from 'markdown-it-container'
+import mdc from 'markdown-it-container'
 import mdlinks from 'markdown-it-replace-link'
 import { createSignal, createEffect } from 'solid-js'
 
@@ -11,8 +11,8 @@ const mit = MD({
   typographer: true
 })
 mit.use(mdmark)
-mdcustom(mit, 'significant', { marker: '==**' }) // сноска
-mdcustom(mit, 'mark', { marker: '==' }) // выделение
+mdc(mit, 'tooltip', { marker: '///' }) // tooltip
+mdc(mit, 'mark', { marker: '==' }) // выделение
 mit.use(mdfig, {
   dataType: false, // <figure data-type="image">
   figcaption: true // <figcaption>alternative text</figcaption>
@@ -23,8 +23,8 @@ export default (props: { body: string }) => {
   const [rendered, setRendered] = createSignal('')
 
   createEffect(() => {
-    let body = (props.body || '').startsWith('<') ? props.body : mit.render(props.body)
-    setRendered(body)
+    const pb = props.body
+    setRendered(pb?.startsWith('<') ? pb : mit.render(pb))
   })
 
   return <div innerHTML={rendered()}></div>

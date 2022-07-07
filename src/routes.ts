@@ -22,7 +22,7 @@ export const routes: RouteDefinition[] = [
     data: ArticleData
   },
   {
-    path: '/:layout/:topic/:slug',
+    path: '/:layout/:topic/:slug', // backwards compatibility
     component: lazy(() => import('./pages/Article')),
     data: ArticleData
   },

@@ -13,9 +13,11 @@ test('basic login test', async ({ page, context, browser }) => {
 
   // go to home
   await page.goto(`${host}`)
+  
+  console.log(`try to show auth modal`)
+  await page.waitForURL(`${host}`)
+  await page.click('a[href="#auth"]')
 
-  console.log(`redirect to login page`)
-  await page.waitForURL(`${host}/login`)
 
   console.log('testing wrong password')
   await page.fill('input[name="username"]', 'kody')

@@ -24,9 +24,16 @@ export const ArticlePage: Component = () => {
     }
   })
   useRouteReadyState()
-  const article = createMemo(() => {
-    if (!data.loading) return data?.article
-    else if (slug()) return import('../../content/' + slug() + '.mdx')
+  const [article,setArticle] = createSignal()
+  createEffect(() => {
+    if (!data.loading) setArticle(data?.article)
+    else if (slug()) {
+      try { import('../../content/' + slug() + '.mdx').then(v => {
+        console.debug(v)
+        const a = { ...v.default}
+        setArticle(a as Partial<Shout>)
+      }) } catch(e) { console.error(e) }
+    }
   })
   return (
     <div class='shout'>

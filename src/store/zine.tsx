@@ -1,7 +1,7 @@
 import { useLocation } from 'solid-app-router'
 import { createContext, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { createMutation, createQuery, OperationResult, TypedDocumentNode } from 'solid-urql'
+import { OperationResult } from 'solid-urql'
 import articlesForAuthors from '../graphql/q/articles-for-authors'
 import articlesForTopics from '../graphql/q/articles-for-topics'
 import articlesRecentPublished from '../graphql/q/articles-recent-published'
@@ -19,7 +19,8 @@ import commentCreate from '../graphql/q/comment-create'
 import commentUpdate from '../graphql/q/comment-update'
 import commentDestroy from '../graphql/q/comment-destroy'
 interface ZineStore {
-  page?: number
+  readonly loading: boolean
+  page: number
   size?: number
   articles: Partial<Shout>[]
   authors: Partial<User>[]
@@ -37,47 +38,50 @@ const moreQueries: { [key: string]: any } = {
 
 export const ZineStoreProvider = (props: any) => {
   const [promiseQuery, promiseMutation] = usePromiseQuery(props.client)
-  const [loading, setLoading] = createSignal(false)
+  const [, setLoading] = createSignal(false)
   const [, actions] = useStore()
   const location = useLocation()
   const [zine, setZine] = createStore({
     page: 1,
     size: 50,
     articles: [] as Partial<Shout>, // byDate
-    authors: [] as Partial<User>[]
-  })
+    authors: [] as Partial<User>[] // byName
+  } as ZineStore)
 
   // if ?page=
-  if (location.query.page) setZine((zine) => {
-    zine.page = parseInt(location.query.page || '1')
-    return zine
-  })
+  if (location.query.page) {
+    setZine({ ...zine, page: parseInt(location.query.page || '1') })
+  }
 
   // if ?size=
-  if (location.query.size) setZine((zine) => {
-    zine.size = parseInt(location.query.size || '50')
-  })
+  if (location.query.size) {
+    setZine({ ...zine, size: parseInt(location.query.size || '50') })
+  }
 
   const zineActions = {
-    addPost: (data: Partial<Shout>) => {
-      promiseMutation(articleCreate, { ...data })
-        .then((articleCreateResult: OperationResult) => {
-          const { data, error } = articleCreateResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+    addPost: (shout: Partial<Shout>) => {
+      setLoading(true)
+      promiseMutation(articleCreate, { ...shout })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent articles dataset here
           }
+          setLoading(false)
         })
     },
-    updatePost: (data: Partial<Shout>) => {
+    updatePost: (shout: Partial<Shout>) => {
       setLoading(true)
-      promiseMutation(articleUpdate, { ...data })
-        .then((articleUpdateResult: OperationResult) => {
-          const { data, error } = articleUpdateResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+      promiseMutation(articleUpdate, { ...shout })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent articles dataset here
           }
           setLoading(false)
@@ -86,11 +90,12 @@ export const ZineStoreProvider = (props: any) => {
     deletePost: (slug: string) => {
       setLoading(true)
       promiseMutation(articleDestroy, { slug })
-        .then((articleDestroyResult: OperationResult) => {
-          const { data, error } = articleDestroyResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent articles dataset here
           }
           setLoading(false)
@@ -100,11 +105,12 @@ export const ZineStoreProvider = (props: any) => {
     addComment: (slug: string, comment: Partial<Comment>) => {
       setLoading(true)
       promiseMutation(commentCreate, { slug, comment })
-        .then((commentCreateResult: OperationResult) => {
-          const { data, error } = commentCreateResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent comments dataset here
           }
           setLoading(false)
@@ -113,11 +119,12 @@ export const ZineStoreProvider = (props: any) => {
     updateComment: (slug: string, comment: Partial<Comment>) => {
       setLoading(true)
       promiseMutation(commentUpdate, { slug, comment })
-        .then((commentUpdateResult: OperationResult) => {
-          const { data, error } = commentUpdateResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent comments dataset here
           }
           setLoading(false)
@@ -126,11 +133,12 @@ export const ZineStoreProvider = (props: any) => {
     deleteComment: (slug: string, commentId: string) => {
       setLoading(true)
       promiseMutation(commentDestroy,{ slug, commentId })
-        .then((commentDestroyResult: OperationResult) => {
-          const { data, error } = commentDestroyResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent comments dataset here
           }
           setLoading(false)
@@ -140,11 +148,12 @@ export const ZineStoreProvider = (props: any) => {
     follow: async (slug: string, what: string) => {
       console.log(`[zine] follow ${slug} from ${what}`)
       promiseMutation(followQuery,{ slug, what })
-        .then((followQueryResult: OperationResult) => {
-          const { data, error } = followQueryResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent comments dataset here
           }
           setLoading(false)
@@ -153,12 +162,13 @@ export const ZineStoreProvider = (props: any) => {
 
     unfollow: async (slug: string, what: string) => {
       console.log(`[zine] unfollow ${slug} from ${what}`)
-      promiseMutation(unfollowQuery,{ slug, what })
-        .then((unfollowQueryResult: OperationResult) => {
-          const { data, error } = unfollowQueryResult
-          if(error) actions.warn({ body: error.message, kind: 'warn' })
+      promiseMutation(unfollowQuery, { slug, what })
+        .then(({ data, error}: OperationResult) => {
+          const value: any = Object.values(data).pop()
+          if(error) actions.warn({ body: error.message, kind: 'error' })
+          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
           else {
-            console.debug(data)
+            console.debug(value)
             // TODO: update recent comments dataset here
           }
           setLoading(false)
@@ -167,20 +177,18 @@ export const ZineStoreProvider = (props: any) => {
 
     more: () => {
       Object.keys(moreQueries).forEach((what: string) => {
-        const query = moreQueries[what]
         if (location.pathname.startsWith(`/${what}`)) {
           console.log(`[zine] more articles from ${what}`)
           setLoading(true)
+          const query = moreQueries[what]
           const slug = location.pathname.replace(`/${what}/`, '').replace('/', '')
           let variables = { page: zine.page + 1, size: zine.size, [what]: slug }
           promiseQuery(query, variables)
             .then(({data, error}: OperationResult) => {
-                if(error) actions.warn({ kind: 'error', body: error.message })
-                else {
-                  const d = Object.values(data)[0]
-                  console.debug(d)
-                  // TODO: update recent articles
-                }
+              const value: any = Object.values(data)[0]
+              if(error) actions.warn({ kind: 'error', body: error.message })
+              if(value?.error) actions.warn({ kind: 'warn', body: value?.error})
+              else Promise.resolve(value)
               setLoading(false)
             })
         }

@@ -25,7 +25,8 @@
     "./scripts",
     "src/types.d.ts",
     "./e2e/*.ts",
-    "src/pages/.tsx"
+    "src/pages/.tsx",
+    "content/*.mdx"
   ],
   "exclude": ["node_modules/"]
 }

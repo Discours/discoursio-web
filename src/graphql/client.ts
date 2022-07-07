@@ -15,7 +15,7 @@ import { cache } from './cache'
 //   initialState: isClient ? (window as any).__URQL_DATA__ : undefined
 // })
 
-export const baseUrl = 'https://newapi.discours.io'
+export const baseUrl = 'http://localhost:8000'
 export const createOptions = (token?: string): ClientOptions => {
   console.info('[graphql] client is running', (token? ' authenticated':''))
   return {

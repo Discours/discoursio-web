@@ -3,13 +3,15 @@ import SolidJS from 'vite-plugin-solid'
 import pluginTSConfigPaths from 'vite-tsconfig-paths'
 import pluginCompression from 'vite-plugin-compression'
 import SolidSVG from 'vite-plugin-solid-svg'
-// import ssr from 'vite-plugin-ssr/plugin'
+import ssrPlugin from 'vite-plugin-ssr/plugin'
 import manifest from './public/manifest.json'
 import mdx from '@mdx-js/rollup'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 
-const pwaEnabled = false
+const dev = process.env.NODE_ENV !== 'production'
+const ssr = process.argv.includes('ssr')
+const pwaEnabled = process.argv.includes('pwa')
 const pwaOptions = {
   registerType: 'autoUpdate',
   // Warning: don't add sitemap.xml yet:
@@ -56,8 +58,7 @@ const pwaOptions = {
     ]
   }
 }
-const dev = process.env.NODE_ENV !== 'production'
-const ssr = process.argv.includes('ssr')
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -70,6 +71,7 @@ export default defineConfig({
       enforce: 'pre'
     },
     SolidJS({ extensions: ['.md', '.mdx'], dev, ssr }),
+    ssrPlugin(),
     pluginTSConfigPaths(),
     pluginCompression({ algorithm: 'brotliCompress' }),
     SolidSVG(),
@@ -88,10 +90,15 @@ export default defineConfig({
   },
   build: {
     assetsInlineLimit: 0,
-    cssCodeSplit: false,
+    cssCodeSplit: true,
     polyfillDynamicImport: false,
     target: 'esnext',
-    rollupOptions: ssr ? { input: './src/ssr.tsx' } : dev ? { index: './src/debug.tsx' } : {}
+    rollupOptions: {
+      input: (ssr ? 'src/ssr.tsx' : 
+        (dev ? 'src/main.tsx' /* TODO: debug.tsx */ : 'src/main.tsx')
+      ),
+      external: ['solid-social']
+    },
   },
   resolve: {
     alias: {

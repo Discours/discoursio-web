@@ -7,16 +7,18 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.json",
-    "tsconfigRootDir": "./"
+    "tsconfigRootDir": "./",
+    "extraFileExtensions": [".mdx"]
   },
-  "plugins": ["import", "solid", "@typescript-eslint"],
+  "plugins": ["import", "solid", "@typescript-eslint", "mdx"],
   "extends": [
     "prettier",
     "stylelint",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:solid/typescript"
+    "plugin:solid/typescript",
+    "plugin:mdx/recommended"
   ],
   "rules": {
     "node/no-unsupported-features/es-syntax": 0,
@@ -38,6 +40,7 @@
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-empty-pattern": ["warn"],
-    "@typescript-eslint/no-empty-function": ["warn"]
+    "@typescript-eslint/no-empty-function": ["warn"],
+    "padding-line-between-statements": "off"
   }
 }

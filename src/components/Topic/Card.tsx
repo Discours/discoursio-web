@@ -60,7 +60,7 @@ export default (props: TopicProps) => {
                 <span class='topic-details__item' classList={{ compact: props.compact }}>
                 {props.topic.topicStat?.shouts + ' ' + t('post') + plural(
                     props.topic.topicStat?.shouts || 0,
-                    locale() === 'ru' ? ['й', 'я', 'и'] : ['s', '', 's']
+                    locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                   )}
                 </span>
                 <span class='topic-details__item' classList={{ compact: props.compact }}>
