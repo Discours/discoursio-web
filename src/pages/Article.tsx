@@ -36,7 +36,7 @@ export const ArticlePage: Component = () => {
     }
   })
   return (
-    <div class='shout'>
+    <div class='article-page'>
       <PageLoadingBar active={data.loading && data.topicsLoading}/>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}

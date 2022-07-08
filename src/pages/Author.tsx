@@ -56,7 +56,7 @@ export const BlogAuthor: Component = () => {
   })
   useRouteReadyState()
   return (
-    <div class='container'>
+    <div class='container author-page'>
       <Show when={!data.authorLoading}>
         <AuthorFull author={author() as Partial<User>} />
         <div class='row group__controls'>

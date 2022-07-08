@@ -396,6 +396,7 @@
   height: 1.1em;
   line-height: 0;
   @include font-size(3rem);
+  padding: 0;
   width: 1.1em;
 
   &:hover {
