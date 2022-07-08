@@ -13,13 +13,13 @@ import Beside from '../components/Article/Beside'
 import RowShort from '../components/Article/RowShort'
 import Slider from '../components/Article/Slider'
 import Group from '../components/Article/Group'
-import PageLoadingBar from '../components/LoadingBar'
 import { useI18n } from '@solid-primitives/i18n'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
 import { byComments, byViews } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
+import LoadingBar from 'solid-top-loading-bar'
 
 export const Home: Component = () => {
   const [t] = useI18n()
@@ -100,10 +100,16 @@ export const Home: Component = () => {
   })
 
   useRouteReadyState()
-
+  const [progress,setProgress] = createSignal(0)
   return (
     <main class='home'>
-      <PageLoadingBar active={!loaded()} />
+      <Show when={loaded()}>
+        <LoadingBar
+          color="#f11946"
+          progress={progress()}
+          onLoaderFinished={() => setProgress(0)}
+        />
+      </Show>
       <Show when={loaded()}>
         <Show when={!data.topicsLoading}><NavTopics topics={someTopics()} /></Show>
         <Row5 articles={data.recentPublished.slice(0, 5)} />

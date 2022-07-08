@@ -5,9 +5,9 @@ import './AllTopics.scss'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import PageLoadingBar from '../components/LoadingBar'
 import { byShouts, byViews } from '../utils/sortby'
 import { useAuth } from '../store/auth'
+import LoadingBar from 'solid-top-loading-bar'
 
 export default () => {
   const [{ info }, {}] = useAuth()
@@ -62,10 +62,16 @@ export default () => {
   }
 
   useRouteReadyState()
-
+  const [progress,setProgress] = createSignal(0)
   return (
     <div class="all-topics-page">
-      <PageLoadingBar active={data.topicsLoading} />
+      <Show when={data.topicsLoading}>
+        <LoadingBar
+          color="#f11946"
+          progress={progress()}
+          onLoaderFinished={() => setProgress(0)}
+        />
+      </Show>
       <Show when={!data.topicsLoading}>
         <div class="wide-container">
           <div class='shift-content'>

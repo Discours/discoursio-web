@@ -1,14 +1,15 @@
-import { Component, createEffect, createMemo, createSignal, Show } from 'solid-js'
+import { Component, createEffect, createSignal, Show } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { Comment, Shout, Topic } from '../graphql/types.gen'
 import './Article.scss'
 import FullArticle from '../components/Article/Full'
-import PageLoadingBar from '../components/LoadingBar'
+import LoadingBar from 'solid-top-loading-bar'
 
 export const ArticlePage: Component = () => {
   const [t] = useI18n()
+  const [progress, setProgress] = createSignal(0)
   const data = useRouteData<{
     loading: boolean
     slug: string
@@ -37,7 +38,13 @@ export const ArticlePage: Component = () => {
   })
   return (
     <div class='article-page'>
-      <PageLoadingBar active={data.loading && data.topicsLoading}/>
+      <Show when={data.loading && data.topicsLoading}>
+        <LoadingBar
+          color="#f11946"
+          progress={progress()}
+          onLoaderFinished={() => setProgress(0)}
+        />
+      </Show>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
         when={!!article()}>
