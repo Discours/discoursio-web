@@ -1,4 +1,4 @@
-import { Component, createMemo, Show } from 'solid-js'
+import { Component, createEffect, createMemo, createSignal, Show } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -17,24 +17,31 @@ export const ArticlePage: Component = () => {
     topicsLoading: boolean
     comments?: Comment[]
   }>()
-  if(!data.article) 
+  const [ slug, setSlug ] = createSignal('')
+  createEffect(() => {
+    if(!data?.article) {
+      setSlug(window.location.pathname.replace('/',''))
+    }
+  })
   useRouteReadyState()
-  const article = createMemo(() => {
-    if (!data.loading) return data?.article
-    else {
-      ['article', 'image', 'video', 'prose', 'music'].forEach(layout => {
-        const r = import('../../content/'+ layout + '/' + data.slug + '.mdx')
-        if(r) return r
-      }) 
+  const [article,setArticle] = createSignal()
+  createEffect(() => {
+    if (!data.loading) setArticle(data?.article)
+    else if (slug()) {
+      try { import('../../content/' + slug() + '.mdx').then(v => {
+        console.debug(v)
+        const a = { ...v.default}
+        setArticle(a as Partial<Shout>)
+      }) } catch(e) { console.error(e) }
     }
   })
   return (
-    <div class='shout'>
+    <div class='article-page'>
       <PageLoadingBar active={data.loading && data.topicsLoading}/>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
         when={!!article()}>
-        <FullArticle article={article()} comments={data.comments || []} />
+        <FullArticle article={article() as Partial<Shout>} comments={data.comments || []} />
       </Show>
     </div>
   )

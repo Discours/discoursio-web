@@ -3,18 +3,17 @@ import {
   dedupExchange,
   fetchExchange,
   // RequestPolicy,
-  ssrExchange
+  // ssrExchange
 } from '@urql/core'
 import { devtoolsExchange } from '@urql/devtools'
 import { cache } from './cache'
 // import authExchanges from './auth'
-
-const isClient = typeof window !== 'undefined'
+// const isClient = typeof window !== 'undefined'
 // The `ssrExchange` must be initialized with `isClient` and `initialState`
-const ssrCache = ssrExchange({
-  isClient,
-  initialState: isClient ? (window as any).__URQL_DATA__ : undefined
-})
+// const ssrCache = ssrExchange({
+//   isClient,
+//   initialState: isClient ? (window as any).__URQL_DATA__ : undefined
+// })
 
 export const baseUrl = 'https://newapi.discours.io'
 export const createOptions = (token?: string): ClientOptions => {
@@ -34,6 +33,6 @@ export const createOptions = (token?: string): ClientOptions => {
       }
       return { headers }
     },
-    exchanges: [devtoolsExchange, dedupExchange, cache, ssrCache, fetchExchange]
+    exchanges: [devtoolsExchange, dedupExchange, cache, /* ssrCache, */ fetchExchange]
   }
 }

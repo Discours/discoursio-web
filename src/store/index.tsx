@@ -78,7 +78,7 @@ export function StoreProvider(props: { children: any }) {
     getWarns: () => state.warnings,
     warn: (w: Warning) => setState((s) => {
       s.warnings.push(w)
-      setState(s)
+      return s
     }),
     seen: (index: number) => {
       let w: Warning = state.warnings[index]

@@ -47,7 +47,7 @@ const Feed: Component = () => {
 
   return (
     <>
-      <div class="container">
+      <div class="container feed">
         <div class="row">
           <div class="col-md-3 feed-navigation">
             <ul>

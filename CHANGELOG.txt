@@ -1,3 +1,7 @@
+[0.3.1]
+[+] promisisified stores
+[+] prerender based on mdx
+
 [0.3.0]
 [+] markup is simpler
 [+] really use mdx

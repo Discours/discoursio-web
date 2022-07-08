@@ -1,5 +1,6 @@
 .user-details {
   margin-bottom: 4.4rem;
+  padding: 0;
 
   .author__name {
     @include font-size(3.4rem);
@@ -22,7 +23,6 @@
 
   .circlewrap .userpic {
     font-size: 2em;
-    height: 20px;
     line-height: 168px;
     width: 100%;
   }
@@ -63,15 +63,17 @@
   }
 }
 
-.view-switcher {
-  @include font-size(1.5rem);
+.author-page {
+  .view-switcher {
+    @include font-size(1.5rem);
 
-  button {
-    font-size: 100%;
+    button {
+      font-size: 100%;
+    }
   }
-}
 
-.group__controls {
-  margin-bottom: 2em !important;
-  margin-top: 0 !important;
+  .group__controls {
+    margin-bottom: 2em !important;
+    margin-top: 0 !important;
+  }
 }
