@@ -9,12 +9,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "destination": "/ssr/$1"
-    }
   ]
 }

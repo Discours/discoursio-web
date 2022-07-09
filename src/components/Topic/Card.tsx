@@ -7,7 +7,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import { useZine } from '../../store/zine'
 
 interface TopicProps {
-  topic: Topic
+  topic: Partial<Topic>
   compact?: boolean
   subscribed?: boolean
   shortDescription?: boolean,

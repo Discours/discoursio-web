@@ -1,4 +1,4 @@
-import { Component, For, createSignal, Show, createMemo } from 'solid-js'
+import { For, createSignal, Show, createMemo, createEffect } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
@@ -11,33 +11,31 @@ import ArticleCard from '../components/Article/Card'
 import './Topic.scss'
 import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
 import TopicFull from '../components/Topic/Full'
+import { ZineState } from '../store/zine'
 
-export const BlogTopic: Component = () => {
+export const TopicPage = () => {
   const [t] = useI18n()
-  const data = useRouteData<{
-    loading: boolean
-    slug: string
-    lang: string
-    page: number
-    size: number
-    authors: Partial<User>[]
-    articles: Partial<Shout>[]
-    topics?: Topic[]
-    topicsLoading?: boolean
-  }>()
-
-  const topic = createMemo<Topic>(() => data.topics?.find((tpc: Topic) => tpc.slug === data.slug) as Topic)
-  const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
-  const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
-  const topCommented = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byComments))
-  const recentPublished = createMemo(() => Array.from(data.articles || []).sort(byCreated))
+  const data = useRouteData<ZineState>()
+  const topic = createMemo<Partial<Topic>>(() => (data.topics || {})[data.args?.slug || ''])
   const [mode, setMode] = createSignal('fresh')
-  const selected = createMemo(() => {
+  const [sortedArticles, setSortedArticles] = createSignal<Partial<Shout>[]>([])
+  const [topicAuthors, setTopicAuthors] = createSignal<Partial<User>[]>([])
+  createEffect(() => {
+    if (data.stage > 1) {
+      setSortedArticles((Object.values((data.articles || {} ) as Partial<Shout>[]))
+        .filter( (a: Partial<Shout>) => !!a.topics?.filter( (t: any) => t.slug === topic().slug ) )
+        .sort(byCreated)
+      )
+    } else if (data.stage > 2) {
+      setTopicAuthors(( Object.values(data.authors || {}) as Partial<User>[] ).sort(byRating))
+    }
+  })
+  createEffect(() => {
     const m = mode()
-    if (m === 'fresh') return recentPublished()
-    if (m === 'popular') return topRated()
-    if (m === 'discuss') return topCommented()
-    return topViewed()
+    if (m === 'fresh') setSortedArticles((sortedArticles()).sort(byCreated))
+    if (m === 'popular') setSortedArticles((sortedArticles()).sort(byRating))
+    if (m === 'discuss') setSortedArticles((sortedArticles()).sort(byComments))
+    else setSortedArticles((sortedArticles()).sort(byViews))
   })
   const title = createMemo(() => {
     const m = mode()
@@ -51,8 +49,8 @@ export const BlogTopic: Component = () => {
 
   return (
     <div class='topic-page container'>
-      <Show when={!data.topicsLoading || !data.loading}>
-        <Show when={!data.topicsLoading && Boolean(topic()?.slug)}>
+      <Show when={data.stage}>
+        <Show when={Boolean(topic()?.slug)}>
           <TopicFull topic={topic() as Topic} />
         </Show>
         <div class='row group__controls'>
@@ -92,7 +90,7 @@ export const BlogTopic: Component = () => {
           <div class='container'>
             <div class='row'>
               <h3 class='col-12'>{title()}</h3>
-              <For each={selected()}>
+              <For each={sortedArticles().slice(0,6)}>
                 {(a: Partial<Shout>) => (
                   <div class='col-md-6'>
                     <ArticleCard article={a} />
@@ -104,17 +102,18 @@ export const BlogTopic: Component = () => {
         </div>
 
         <div class='row'>
-          <Show when={!data.loading && Boolean(data.articles)}>
+          <Show when={data.stage && sortedArticles().length > 5}>
             <Beside
               title={t('Topic is supported by')}
-              values={data.authors.slice(0, 5)}
-              beside={data.articles[0]}
+              values={topicAuthors()}
+              beside={sortedArticles()[6]}
               wrapper={'author'}
             />
-            <Row3 articles={data.articles.slice(1, 4)} />
-            <Row2 articles={data.articles.slice(4, 6)} />
-            <Row3 articles={data.articles.slice(10, 13)} />
-            <Row3 articles={data.articles.slice(13, 16)} />
+            <Row3 articles={sortedArticles().slice(6, 9)} />
+            <Row2 articles={sortedArticles().slice(9, 11)} />
+            <Row3 articles={sortedArticles().slice(11, 14)} />
+            <Row3 articles={sortedArticles().slice(14, 17)} />
+            <Row3 articles={sortedArticles().slice(17, 20)} />
           </Show>
         </div>
       </Show>
@@ -122,4 +121,4 @@ export const BlogTopic: Component = () => {
   )
 }
 
-export default BlogTopic
+export default TopicPage

@@ -25,7 +25,7 @@ export type AuthResult = {
 
 export type Comment = {
   __typename?: 'Comment'
-  author: User
+  createdBy: User
   body: Scalars['String']
   createdAt: Scalars['DateTime']
   deletedAt?: Maybe<Scalars['DateTime']>

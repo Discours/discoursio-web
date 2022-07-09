@@ -9,7 +9,7 @@ import { AuthStoreProvider, useAuth } from './store/auth'
 import { preventSmoothScrollOnTabbing } from './utils'
 import { createClient, Provider as GraphqlProvider } from 'solid-urql'
 import { baseUrl, createOptions } from './graphql/client'
-import { ZineStoreProvider } from './store/zine'
+import { ZineStateProvider } from './store/zine'
 
 export const App = () => {
   const Routes = useRoutes(routes)
@@ -22,7 +22,7 @@ export const App = () => {
       <GraphqlProvider value={client()}>
         <CommonStoreProvider>
           <AuthStoreProvider client={client()}>
-            <ZineStoreProvider client={client()}>
+            <ZineStateProvider client={client()}>
               <Header />
               {/* two div wrappers to make page animation work and performant */}
               <main class='main-content'>
@@ -33,7 +33,7 @@ export const App = () => {
                 {/* </TransitionRoutes> */}
               </main>
               <Footer />
-            </ZineStoreProvider>
+            </ZineStateProvider>
           </AuthStoreProvider>
         </CommonStoreProvider>
       </GraphqlProvider>

@@ -1,202 +1,176 @@
-import { useLocation } from 'solid-app-router'
-import { createContext, createSignal, useContext } from 'solid-js'
+
+import { createContext, createEffect, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { OperationResult } from 'solid-urql'
-import articlesForAuthors from '../graphql/q/articles-for-authors'
-import articlesForTopics from '../graphql/q/articles-for-topics'
+import { RouteDataFuncArgs, useLocation } from 'solid-app-router'
+import { useClient, Client } from 'solid-urql'
+import { useI18n } from '@solid-primitives/i18n'
+import { Shout, User } from '../graphql/types.gen'
+import { useAuth } from './auth'
+import { usePromiseQuery } from '../utils/promiseQuery'
+import { byViews } from '../utils/sortby'
+// all zine queries
+import topicsAll from '../graphql/q/topics-all'
 import articlesRecentPublished from '../graphql/q/articles-recent-published'
 import articlesRecentAll from '../graphql/q/articles-recent-all'
+import articlesForAuthors from '../graphql/q/articles-for-authors'
+import articlesForTopics from '../graphql/q/articles-for-topics'
 import articlesForCommunities from '../graphql/q/articles-for-communities'
+import articlesTopMonth from '../graphql/q/articles-top-month'
+import articlesTopRated from '../graphql/q/articles-top-rated'
 import articleCreate from '../graphql/q/article-create'
 import followQuery from '../graphql/q/follow'
 import unfollowQuery from '../graphql/q/unfollow'
-import { Shout, User } from '../graphql/types.gen'
-import { useStore } from './index'
-import { usePromiseQuery } from '../utils/promiseQuery'
 import articleUpdate from '../graphql/q/article-update'
 import articleDestroy from '../graphql/q/article-destroy'
 import commentCreate from '../graphql/q/comment-create'
 import commentUpdate from '../graphql/q/comment-update'
 import commentDestroy from '../graphql/q/comment-destroy'
-interface ZineStore {
-  readonly loading: boolean
-  page: number
-  size?: number
-  articles: Partial<Shout>[]
-  authors: Partial<User>[]
-}
-const ZineContext = createContext<[ZineStore, any]>([{} as ZineStore, {}])
-const ZineProvider = ZineContext.Provider
+import authorsBySlugs from '../graphql/q/authors-by-slugs'
+import articleBySlug from '../graphql/q/article-by-slug'
+import { handleUpdate, loadcounter, cache, setCache } from './_data'
 
-const moreQueries: { [key: string]: any } = {
-  author: articlesForAuthors,
-  topic: articlesForTopics,
-  feed: articlesRecentAll,
-  community: articlesForCommunities,
-  '': articlesRecentPublished
-}
 
-export const ZineStoreProvider = (props: any) => {
-  const [promiseQuery, promiseMutation] = usePromiseQuery(props.client)
-  const [, setLoading] = createSignal(false)
-  const [, actions] = useStore()
+// RouteData Preload
+export interface ZineState {
+  args?: { slug?: string; page?: number; size?: number, by?: string, subpath?: string }
+  readonly stage: number
+  [queryname: string]: any
+}
+const START = 1
+
+// RouteDataFunc
+export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const location = useLocation()
-  const [zine, setZine] = createStore({
-    page: 1,
-    size: 50,
-    articles: [] as Partial<Shout>, // byDate
-    authors: [] as Partial<User>[] // byName
-  } as ZineStore)
+  const [, { locale }] = useI18n()
+  const [{ info }, { }] = useAuth()
+  const client: Client = !!props.client ? props.client : useClient()
+  const [promiseQuery,] = usePromiseQuery(client)
+  const size = props.params?.size || 10
+  const page = props.params?.page || START
+  const lang = props.params?.lang || locale()
+  const slug: string = location.pathname.split('/').filter(Boolean)[-1] || ''
+  const subpath: string = location.pathname.split('/').filter(Boolean)[-2] || ''
 
-  // if ?page=
-  if (location.query.page) {
-    setZine({ ...zine, page: parseInt(location.query.page || '1') })
-  }
+  // STAGE 1 preload non conditional
 
-  // if ?size=
-  if (location.query.size) {
-    setZine({ ...zine, size: parseInt(location.query.size || '50') })
-  }
-
-  const zineActions = {
-    addPost: (shout: Partial<Shout>) => {
-      setLoading(true)
-      promiseMutation(articleCreate, { ...shout })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent articles dataset here
-          }
-          setLoading(false)
-        })
-    },
-    updatePost: (shout: Partial<Shout>) => {
-      setLoading(true)
-      promiseMutation(articleUpdate, { ...shout })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent articles dataset here
-          }
-          setLoading(false)
-        })
-    },
-    deletePost: (slug: string) => {
-      setLoading(true)
-      promiseMutation(articleDestroy, { slug })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent articles dataset here
-          }
-          setLoading(false)
-        })
-    },
-
-    addComment: (slug: string, comment: Partial<Comment>) => {
-      setLoading(true)
-      promiseMutation(commentCreate, { slug, comment })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent comments dataset here
-          }
-          setLoading(false)
-        })
-    },
-    updateComment: (slug: string, comment: Partial<Comment>) => {
-      setLoading(true)
-      promiseMutation(commentUpdate, { slug, comment })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent comments dataset here
-          }
-          setLoading(false)
-        })
-    },
-    deleteComment: (slug: string, commentId: string) => {
-      setLoading(true)
-      promiseMutation(commentDestroy,{ slug, commentId })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent comments dataset here
-          }
-          setLoading(false)
-        })
-    },
-
-    follow: async (slug: string, what: string) => {
-      console.log(`[zine] follow ${slug} from ${what}`)
-      promiseMutation(followQuery,{ slug, what })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent comments dataset here
-          }
-          setLoading(false)
-        })
-    },
-
-    unfollow: async (slug: string, what: string) => {
-      console.log(`[zine] unfollow ${slug} from ${what}`)
-      promiseMutation(unfollowQuery, { slug, what })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error) actions.warn({ body: error.message, kind: 'error' })
-          if(value?.error) actions.warn({ body: value?.error, kind: 'warn' })
-          else {
-            console.debug(value)
-            // TODO: update recent comments dataset here
-          }
-          setLoading(false)
-        })
-    },
-
-    more: () => {
-      Object.keys(moreQueries).forEach((what: string) => {
-        if (location.pathname.startsWith(`/${what}`)) {
-          console.log(`[zine] more articles from ${what}`)
-          setLoading(true)
-          const query = moreQueries[what]
-          const slug = location.pathname.replace(`/${what}/`, '').replace('/', '')
-          let variables = { page: zine.page + 1, size: zine.size, [what]: slug }
-          promiseQuery(query, variables)
-            .then(({data, error}: OperationResult) => {
-              const value: any = Object.values(data)[0]
-              if(error) actions.warn({ kind: 'error', body: error.message })
-              if(value?.error) actions.warn({ kind: 'warn', body: value?.error})
-              else Promise.resolve(value)
-              setLoading(false)
-            })
-        }
-      })
+  const stage1 = () => {
+    if ('topicsBySlugs' in cache()) return
+    else {
+      setCache({ 'topicsBySlugs': {} })
+      console.log(`[zine] topicsBySlugs`)
+      promiseQuery(topicsAll).then(handleUpdate).then(stage2)
+      // TODO: promiseQuery(communityAll).then(handleUpdate)
     }
   }
 
-  return <ZineProvider value={[zine as unknown as ZineStore, zineActions]} children={props.children} />
+  // STAGE 2 after topics loaded
+
+  const stage2 = () => {
+    if (slug === '' && subpath === '') {
+      // homepage: recent published and tops
+      console.log('[zine] recentPublished')
+      promiseQuery(articlesRecentPublished, { page, size: 50 }).then(handleUpdate).then(stage3)
+      promiseQuery(articlesTopMonth, { page: START, size: 10 }).then(handleUpdate)
+      promiseQuery(articlesTopRated, { page: START, size: 10 }).then(handleUpdate)
+
+    } else if (slug === 'feed' || subpath === 'feed') {
+      // feed: all recent and subscribed
+      console.log('[zine] recentAll')
+      // TODO: tune loading sequence for authorized subscribist
+      promiseQuery(articlesRecentAll, { page, size: 50 }).then(handleUpdate).then(stage3)
+      if (info?.userSubscribedAuthors) promiseQuery(articlesForAuthors, { page, size, slugs: info?.userSubscribedAuthors }).then(handleUpdate)
+      if (info?.userSubscribedTopics) promiseQuery(articlesForTopics, { page, size, slugs: info?.userSubscribedTopics }).then(handleUpdate)
+      if (info?.userSubscribedCommunities) promiseQuery(articlesForCommunities, { page, size, communities: info?.userSubscribedCommunities }).then(handleUpdate)
+
+    } else if (slug.startsWith('@')) {
+      // author's page
+      const slg = slug.substring(1)
+      console.log(`[zine] @${slg} is author`)
+      console.log('[zine] shoutsByAuthors')
+      // TODO: in future check first if it is not a community slug
+      if (subpath === 'author' || subpath === 'a') {
+        promiseQuery(articlesForAuthors, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
+
+      } else if (slug.startsWith(':')) {
+        // topics's page
+        const slg = slug.substring(1)
+        console.log(`[zine] :${slg} is topic`)
+        console.log('[zine] shoutsByTopics')
+        if (subpath === 'topic' || subpath === 't') {
+          promiseQuery(articlesForTopics, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
+
+        }
+      } else {
+        console.log('[zine] getShoutBySlug ' + slug)
+        if (cache().getShoutBySlug?.slug === slug) return
+        setCache(c => ({ ...c, 'getShoutBySlug': { slug } }))
+        promiseQuery(articleBySlug, { slug }).then(handleUpdate).then(stage3)
+      }
+    }
+  }
+
+  // STAGE 3 after articles loaded
+
+  const stage3 = () => {
+    console.log(`[zine] getUsersBySlugs`)
+    setCache(c => ({ ...c, 'getUsersBySlugs': {} }))
+    let slugs: string[] = []
+    Object.values(cache()?.articles as { [slug: string]: Partial<Shout> })
+      .forEach((a: Partial<Shout>) => a.authors?.forEach(
+        (a: Partial<User>) => {
+          if (!((a?.slug as string) in slugs)) slugs.push(a?.slug || '')
+        }))
+    promiseQuery(authorsBySlugs, { slugs }).then(handleUpdate)
+  }
+
+  onMount(stage1) // start loading sequence
+
+  const zineState = {
+    get params() {
+      return { ...props.params, slug, size, page, subpath, lang }
+    },
+    get topics() {
+      return cache()['topics'] || {}
+    },
+    get topicslist() {
+      return Object.values(cache().topics || {}).sort(byViews) || []
+    },
+    get authors() {
+      return cache()['authors'] || {}
+    },
+    get communities() {
+      return cache()['communities'] || {}
+    },
+    get articles() {
+      return cache()['articles'] || {}
+    },
+    get stage() {
+      return loadcounter() || 0
+    }
+  } as ZineState
+  return zineState
+}
+
+// Store Provider
+
+const ZineContext = createContext<[ZineState, any]>([{} as ZineState, {}])
+const ZineProvider = ZineContext.Provider
+
+export const ZineStateProvider = (props: any): any => {
+  const client: Client = !!props.client ? props.client : useClient()
+  const [, promiseMutation] = usePromiseQuery(client)
+  const zineState = ZineStateHandler(props)
+  const zineActions = {
+    addPost: (shout: Partial<Shout>) => promiseMutation(articleCreate, { ...shout }).then(handleUpdate),
+    updatePost: (shout: Partial<Shout>) => promiseMutation(articleUpdate, { ...shout }).then(handleUpdate),
+    deletePost: (slug: string) => promiseMutation(articleDestroy, { slug }).then(handleUpdate),
+    addComment: (comment: Partial<Comment>) => promiseMutation(commentCreate, { ...comment }).then(handleUpdate),
+    updateComment: (comment: Partial<Comment>) => promiseMutation(commentUpdate, { ...comment }).then(handleUpdate),
+    deleteComment: (cid: string) => promiseMutation(commentDestroy, { commentId: cid }).then(handleUpdate),
+    follow: (slug: string) => promiseMutation(followQuery, { slug }).then(handleUpdate),
+    unfollow: (slug: string) => promiseMutation(unfollowQuery, { slug }).then(handleUpdate)
+  }
+  return <ZineProvider value={createStore(zineState, zineActions as any)} children={props?.children} />
 }
 
 export function useZine() {

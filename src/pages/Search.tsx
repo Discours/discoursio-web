@@ -1,19 +1,11 @@
 import { useI18n } from "@solid-primitives/i18n";
-import { RouteDataFunc, useRouteData } from "solid-app-router";
+import { useRouteData } from "solid-app-router";
+import { ZineState } from "../store/zine";
 import './Search.scss';
-
-interface SearchRouteData {
-  [key: string]: any
-}
-
-const SearchData: RouteDataFunc = (): SearchRouteData => {
-  // TODO: implement search data preprocessing
-  return {}
-}
 
 export default () => {
   const [t] = useI18n()
-  const data = useRouteData<SearchRouteData>()
+  const data = useRouteData<ZineState>()
 
   return (
     <div class="search-page wide-container">

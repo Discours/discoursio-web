@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For, Show } from 'solid-js'
+import { createSignal, For, Show } from 'solid-js'
 import { Topic } from '../graphql/types.gen'
 import TopicCard from '../components/Topic/Card'
 import './AllTopics.scss'
@@ -8,19 +8,16 @@ import { useRouteReadyState } from '../utils/routeReadyState'
 import PageLoadingBar from '../components/LoadingBar'
 import { byShouts, byViews } from '../utils/sortby'
 import { useAuth } from '../store/auth'
+import { ZineState } from '../store/zine'
 
 export default () => {
   const [{ info }, {}] = useAuth()
   const [t] = useI18n()
-  const data = useRouteData<{
-    topics: Topic[]
-    topicsLoading: boolean
-    by: 'views' | 'shouts' | 'alphabet'
-  }>()
-  const [mode, setMode] = createSignal(data.by || 'views')
-  const [sortedTopics, setSortedTopics] = createSignal<Topic[]>((data.topics || []).sort(byViews))
+  const data = useRouteData<ZineState>()
+  const [mode, setMode] = createSignal(data.args?.by || 'views')
+  const [sortedTopics, setSortedTopics] = createSignal<Partial<Topic>[]>(data?.topicslist as Partial<Topic>[])
   const [sortedKeys, setSortedKeys] = createSignal<string[]>([])
-  let topicsGroupedByAlphabet: { [key: string]: Topic[] } = {}
+  let topicsGroupedByAlphabet: { [key: string]: Partial<Topic>[] } = {}
   const groupBy = (arr: any[]) => {
     let f = null
 
@@ -43,10 +40,6 @@ export default () => {
     )
   }
 
-  createEffect(() => {
-    setSortedTopics(Array.from(data.topics || []).sort(byViews))
-  })
-
   const sortAbc = () => {
     setMode('alphabet')
     topicsGroupedByAlphabet = groupBy(sortedTopics() as any[])
@@ -54,19 +47,19 @@ export default () => {
   }
   const sortShouts = () => {
     setMode('shouts')
-    setSortedTopics(Array.from(data.topics || []).sort(byShouts))
+    setSortedTopics(data.topicslist?.sort(byShouts) as Partial<Topic>[])
   }
   const sortViews = () => {
     setMode('views')
-    setSortedTopics(Array.from(data.topics || []).sort(byViews))
+    setSortedTopics(data.topicslist?.sort(byViews) as Partial<Topic>[])
   }
 
   useRouteReadyState()
 
   return (
     <div class="all-topics-page">
-      <PageLoadingBar active={data.topicsLoading} />
-      <Show when={!data.topicsLoading}>
+      <PageLoadingBar active={!data.loadcounter} />
+      <Show when={data.loadcounter}>
         <div class="wide-container">
           <div class='shift-content'>
             <div class='row'>
@@ -99,7 +92,7 @@ export default () => {
                   fallback={() => (
                     <div class='stats'>
                       <For each={sortedTopics()}>
-                        {(topic: Topic) => (
+                        {(topic: Partial<Topic>) => (
                           <TopicCard
                             topic={topic}
                             compact={false}

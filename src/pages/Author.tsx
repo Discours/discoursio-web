@@ -1,58 +1,55 @@
-import { Component, Show, For, createMemo, createSignal } from 'solid-js'
+import { Component, Show, createMemo, createSignal, createEffect } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-// import { useAppContext } from '../AppContext'
-import { Community, Shout, Topic, User } from '../graphql/types.gen'
+import { Shout, Topic, User } from '../graphql/types.gen'
 import Row2 from '../components/Article/Row2'
 import Row3 from '../components/Article/Row3'
 import Beside from '../components/Article/Beside'
-import ArticleCard from '../components/Article/Card'
 import AuthorFull from '../components/Author/Full'
-import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
+import { byCreated, byRating, byViews } from '../utils/sortby'
 import './Topic.scss'
+import { ZineState } from '../store/zine'
 
-// FIXME
-export const BlogAuthor: Component = () => {
+export const AuthorPage: Component = () => {
   const [t] = useI18n()
-  const data = useRouteData<{
-    authorLoading: boolean
-    params: { [key: string]: string }
-    author: Partial<User>
-    communities?: { [id: string]: Partial<Community> }
-    articles: Partial<Shout>[]
-    articlesLoading?: boolean
-    topics: Topic[]
-    topicsLoading: boolean
-  }>()
+  const data = useRouteData<ZineState>()
   const author = createMemo<Partial<User>>(() => data.author as Partial<User>)
-  const authorTopics = createMemo<Topic[]>(() => {
-    let r = [] as Topic[]
-    data.articles?.forEach((a: Partial<Shout>) => {
-      a.topics?.forEach((topic) => {
-        if (!r.find((t) => t.slug === topic?.slug)) r.push(topic as Topic)
+
+  const [authorTopics, setAuthorTopics] = createSignal<Partial<Topic>[]>([])
+  createEffect(() => {
+    if(authorTopics() === [] && data['shoutsByAuthors'].length > 0) {
+      let r = [] as Topic[]
+      data['shoutsByAuthors'].forEach((a: Partial<Shout>) => {
+        a.topics?.forEach((topic) => {
+          if (!r.find((t) => t.slug === topic?.slug)) r.push(topic as Topic)
+        })
       })
-    })
-    return r
+      setAuthorTopics(r)
+    }
   })
-  const topRated = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byRating))
-  const topViewed = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byViews))
-  const topCommented = createMemo<Partial<Shout>[]>(() => Array.from(data.articles || []).sort(byComments))
-  const recentPublished = createMemo(() => Array.from(data.articles || []).sort(byCreated))
-  const [mode, setMode] = createSignal('fresh')
-  const selected = createMemo(() => {
-    const m = mode()
-    if (m === 'fresh') return recentPublished()
-    if (m === 'popular') return topRated()
-    if (m === 'discuss') return topCommented()
-    return topViewed()
+  const [mode,setMode] = createSignal('fresh')
+  const articles = createMemo<Partial<Shout>[]>(() => {
+    let r = [] as Partial<Shout>[]
+    switch(mode()) {
+      case 'rating':
+        r = Object.values(data.articles||{}).sort(byRating)  as Partial<Shout>[]
+      case 'comments':
+        r = Object.values(data.articles||{}).sort(byRating) as Partial<Shout>[]
+      case 'views':
+        r = Object.values(data.articles||{}).sort(byViews) as Partial<Shout>[]
+      case 'created':
+      default:
+        r = Object.values(data.articles||{}).sort(byCreated) as Partial<Shout>[]
+    }
+    return r
   })
   const title = createMemo(() => {
     const m = mode()
-    if (m === 'fresh') return t('Top recent')
-    if (m === 'popular') return t('Top rated')
-    if (m === 'discuss') return t('Top discussed')
-    return t('Top viewed')
+    if (m === 'views') return t('Top viewed')
+    if (m === 'rating') return t('Top rated')
+    if (m === 'comments') return t('Top discussed')
+    return t('Top recent')
   })
   useRouteReadyState()
   return (
@@ -62,12 +59,12 @@ export const BlogAuthor: Component = () => {
         <div class='row group__controls'>
           <div class='col-md-8'>
             <ul class='view-switcher'>
-              <li classList={{ selected: mode() === 'fresh' }}>
+              <li classList={{ selected: mode() === 'created' }}>
                 <button type='button' onClick={() => setMode('fresh')}>
                   {t('Recent')}
                 </button>
               </li>
-              <li classList={{ selected: mode() === 'popular' }}>
+              <li classList={{ selected: mode() === 'rating' }}>
                 <button type='button' onClick={() => setMode('popular')}>
                   {t('Popular')}
                 </button>
@@ -77,7 +74,7 @@ export const BlogAuthor: Component = () => {
                   {t('Views')}
                 </button>
               </li>
-              <li classList={{ selected: mode() === 'discuss' }}>
+              <li classList={{ selected: mode() === 'comments' }}>
                 <button type='button' onClick={() => setMode('discuss')}>
                   {t('Discussing')}
                 </button>
@@ -93,45 +90,27 @@ export const BlogAuthor: Component = () => {
         </div>
 
         <div class='floor'>
+          <h3 class='col-12'>{title()}</h3>
           <div class='row'>
-            <h3 class='col-12'>{title()}</h3>
-            <For each={selected()}>
-              {(a: Partial<Shout>, index) => (
-                <>
-                  <Show when={selected().length > 3 && index() % 5 < 2 || selected().length < 3}>
-                    <div class='col-md-6'>
-                      <ArticleCard article={a} settings={{noauthor: true}}/>
-                    </div>
-                  </Show>
-                  <Show when={selected().length = 3 || index() % 5 > 1}>
-                    <div class='col-md-4'>
-                      <ArticleCard article={a} settings={{noauthor: true}}/>
-                    </div>
-                  </Show>
-                </>
-              )}
-            </For>
+            <Show when={articles()?.length > 0}>
+              <Beside
+                title={t('Topics which supported by author')}
+                values={authorTopics()?.slice(0, 5)}
+                beside={articles()[0]}
+                wrapper={'topic'}
+                topicShortDescription={true}
+              />
+              <Row3 articles={articles().slice(1, 4)} />
+              <Row2 articles={articles().slice(4, 6)} />
+              <Row3 articles={articles().slice(10, 13)} />
+              <Row3 articles={articles().slice(13, 16)} />
+            </Show>
           </div>
         </div>
 
-        <div class='row'>
-          <Show when={!data.articlesLoading && Boolean(data.articles)}>
-            <Beside
-              title={t('Topics which supported by author')}
-              values={authorTopics()?.slice(0, 5)}
-              beside={data.articles[0]}
-              wrapper={'topic'}
-              topicShortDescription={true}
-            />
-            <Row3 articles={data.articles.slice(1, 4)} />
-            <Row2 articles={data.articles.slice(4, 6)} />
-            <Row3 articles={data.articles.slice(10, 13)} />
-            <Row3 articles={data.articles.slice(13, 16)} />
-          </Show>
-        </div>
       </Show>
     </div>
   )
 }
 
-export default BlogAuthor
+export default AuthorPage

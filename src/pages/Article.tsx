@@ -1,4 +1,4 @@
-import { Component, createEffect, createMemo, createSignal, Show } from 'solid-js'
+import { Component, createEffect, createSignal, Show } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'

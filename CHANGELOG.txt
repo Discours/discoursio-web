@@ -1,6 +1,7 @@
 [0.3.1]
 [+] promisisified stores
 [+] prerender based on mdx
+[+] hybryd zine state manager
 
 [0.3.0]
 [+] markup is simpler

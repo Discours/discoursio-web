@@ -1,45 +1,40 @@
 import { lazy } from 'solid-js'
 import { RouteDefinition } from 'solid-app-router'
-
-import { ArticleData } from './pages/Article.data'
-import { AuthorData } from './pages/Author.data'
-import { TopicData } from './pages/Topic.data'
-import { HomeData } from './pages/Home.data'
-import { AllTopicsData } from './pages/AllTopics.data'
-import { FeedData } from './pages/Feed.data'
+import { ZineStateHandler } from './store/zine'
+// import { CollabStateManager } from './store/collab'
 import { InboxData } from './pages/Inbox.data'
-import { CommunityData } from './pages/Community.data'
+
 
 export const routes: RouteDefinition[] = [
   {
     path: '/',
     component: lazy(() => import('./pages/Home')),
-    data: HomeData
+    data: ZineStateHandler
   },
   {
-    path: '/:slug',
+    path: ['/:slug', '/expo/image/:topic/:slug', '/:layout/:topic/:slug'],
     component: lazy(() => import('./pages/Article')),
-    data: ArticleData
+    data: ZineStateHandler
   },
   {
-    path: '/:layout/:topic/:slug', // backwards compatibility
-    component: lazy(() => import('./pages/Article')),
-    data: ArticleData
-  },
-  {
-    path: '/author/:slug',
+    path: ['/author/:slug', '/a/:slug', '/@:slug'],
     component: lazy(() => import('./pages/Author')),
-    data: AuthorData
+    data: ZineStateHandler
+  },
+  {
+    path: ['/topic/:slug', '/t/:slug', '/\::slug', '/+:slug'],
+    component: lazy(() => import('./pages/Topic')),
+    data: ZineStateHandler
   },
   {
     path: '/feed',
     component: lazy(() => import('./pages/Feed')),
-    data: FeedData
+    data: ZineStateHandler
   },
   {
-    path: '/inbox',
-    component: lazy(() => import('./pages/Inbox')),
-    data: InboxData
+    path: '/topics',
+    component: lazy(() => import('./pages/AllTopics')),
+    data: ZineStateHandler
   },
   {
     path: '/feed/settings',
@@ -48,23 +43,23 @@ export const routes: RouteDefinition[] = [
   },
   {
     path: '/create',
-    component: lazy(() => import('./pages/Create'))
-    // TODO: data: EditorData,
+    component: lazy(() => import('./pages/Create')),
+    // data: CollabStateManager
   },
   {
-    path: '/topics',
-    component: lazy(() => import('./pages/AllTopics')),
-    data: AllTopicsData
-  },
-  {
-    path: '/topic/:slug',
-    component: lazy(() => import('./pages/Topic')),
-    data: TopicData
+    path: '/search',
+    component: lazy(() => import('./pages/Search')),
+    data: ZineStateHandler // experimental
   },
   {
     path: '/community',
     component: lazy(() => import('./pages/Community')),
-    data: CommunityData
+    data: ZineStateHandler
+  },
+  {
+    path: '/inbox',
+    component: lazy(() => import('./pages/Inbox')),
+    data: InboxData
   },
   {
     path: '/about/manifest',
@@ -97,10 +92,6 @@ export const routes: RouteDefinition[] = [
   {
     path: '/about/thanks',
     component: lazy(() => import('./pages/about/thanks'))
-  },
-  {
-    path: '/search',
-    component: lazy(() => import('./pages/Search'))
   },
   {
     path: '/*all',
