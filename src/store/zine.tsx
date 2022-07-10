@@ -1,5 +1,5 @@
 
-import { createContext, createEffect, onMount, useContext } from 'solid-js'
+import { createContext, onMount, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { RouteDataFuncArgs, useLocation } from 'solid-app-router'
 import { useClient, Client } from 'solid-urql'
@@ -28,6 +28,7 @@ import commentDestroy from '../graphql/q/comment-destroy'
 import authorsBySlugs from '../graphql/q/authors-by-slugs'
 import articleBySlug from '../graphql/q/article-by-slug'
 import { handleUpdate, loadcounter, cache, setCache } from './_data'
+import articleComments from '../graphql/q/article-comments'
 
 
 // RouteData Preload
@@ -104,7 +105,8 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
         console.log('[zine] getShoutBySlug ' + slug)
         if (cache().getShoutBySlug?.slug === slug) return
         setCache(c => ({ ...c, 'getShoutBySlug': { slug } }))
-        promiseQuery(articleBySlug, { slug }).then(handleUpdate).then(stage3)
+        promiseQuery(articleBySlug, { slug }).then(handleUpdate)
+        promiseQuery(articleComments, { slug }).then(stage3)
       }
     }
   }

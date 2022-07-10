@@ -1,4 +1,4 @@
-import { createSignal, For, Show } from 'solid-js'
+import { createEffect, createSignal, For, Show } from 'solid-js'
 import { Topic } from '../graphql/types.gen'
 import TopicCard from '../components/Topic/Card'
 import './AllTopics.scss'
@@ -15,30 +15,34 @@ export default () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
   const [mode, setMode] = createSignal(data.args?.by || 'views')
-  const [sortedTopics, setSortedTopics] = createSignal<Partial<Topic>[]>(data?.topicslist as Partial<Topic>[])
+  const [sortedTopics, setSortedTopics] = createSignal<Partial<Topic>[]>(data['topicsBySlugs'] || [])
   const [sortedKeys, setSortedKeys] = createSignal<string[]>([])
   let topicsGroupedByAlphabet: { [key: string]: Partial<Topic>[] } = {}
+  
   const groupBy = (arr: any[]) => {
     let f = null
-
     return arr.reduce(
       (acc, tt) => {
         let c = tt.title.slice(0, 1)
-
         if (/[a-zA-Z0-9]/.test(c)) {
           c = 'A-Z'
         } else if (!acc[c]) {
           f = c
           acc[f] = []
         }
-
         acc[c].push(tt)
-
         return acc
       },
       { 'A-Z': [] }
     )
   }
+
+  createEffect(() => {
+    if(sortedTopics() === [] && data['topicsBySlugs'] && data['topicsBySlugs'].length > 0) {
+      console.log('[AllTopics] set sortedTopics')
+      setSortedTopics(data['topicsBySlugs'].sort(byShouts))
+    }
+  })
 
   const sortAbc = () => {
     setMode('alphabet')
