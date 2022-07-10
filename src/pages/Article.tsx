@@ -5,7 +5,7 @@ import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout } from '../graphql/types.gen'
 import './Article.scss'
 import FullArticle from '../components/Article/Full'
-import PageLoadingBar from '../components/LoadingBar'
+// import LoadingBar from 'solid-top-loading-bar'
 import { ZineState } from '../store/zine'
 
 export const ArticlePage: Component = () => {
@@ -25,7 +25,6 @@ export const ArticlePage: Component = () => {
   })
   return (
     <div class='article-page'>
-      <PageLoadingBar active={data.loading && data.topicsLoading}/>
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
         when={!!article()}>

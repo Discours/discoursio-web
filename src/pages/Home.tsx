@@ -19,7 +19,7 @@ import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
 import { byComments, byViews } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
-import LoadingBar from '../components/LoadingBar'
+import LoadingBar from 'solid-top-loading-bar'
 
 export const Home = () => {
   const [t] = useI18n()
@@ -103,10 +103,10 @@ export const Home = () => {
   })
 
   useRouteReadyState()
-
+  const [progress,setProgress] = createSignal(0)
   return (
     <main class='home'>
-      <LoadingBar active={ data.stage < 2} />
+      <LoadingBar />
       <Show when={data['recentPublished']?.length > 0}>
         <NavTopics topics={someTopics()} />
         <Row5 articles={data['recentPublished'].slice(0, 5) as []} />
