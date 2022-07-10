@@ -1,11 +1,21 @@
+import { Show, For, createSignal, createEffect } from 'solid-js'
 import { useI18n } from "@solid-primitives/i18n";
 import { useRouteData } from "solid-app-router";
 import { ZineState } from "../store/zine";
 import './Search.scss';
+import {Shout} from "../graphql/types.gen";
+import ArticleCard from "../components/Article/Card";
 
 export default () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
+  const [articles, setArticles] = createSignal<Partial<Shout>[]>([])
+
+  createEffect(() => {
+    if (data.articles) {
+      setArticles(data.articles.slice(0, 3));
+    }
+  });
 
   return (
     <div class="search-page wide-container">
@@ -34,6 +44,14 @@ export default () => {
 
       <div class="floor">
         <div class="row">
+          <Show when={articles()}>
+            <For each={articles() as Partial<Shout>[]}>
+              {(a: Partial<Shout>) => (
+                <ArticleCard article={a} settings={{isFeedMode: true}} />
+              )}
+            </For>
+          </Show>
+
           <div class="col-md-3">
             <section class="shout-card ">
               <div class="shout-card__cover-container">
