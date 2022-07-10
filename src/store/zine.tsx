@@ -33,7 +33,7 @@ import articleComments from '../graphql/q/article-comments'
 
 // RouteData Preload
 export interface ZineState {
-  args?: { slug?: string; page?: number; size?: number, by?: string, subpath?: string }
+  args?: { [key:string]: string }
   readonly stage: number
   [queryname: string]: any
 }
