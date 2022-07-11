@@ -21,11 +21,11 @@ export default () => {
       case 'relevance':
       case '':
       default:
-        let sorted = (Object.values(data.articles as { [slug:string]: Partial<Shout> })||[]).sort(byRating) 
+        let sorted = (Object.values(data.articles as { [slug:string]: Partial<Shout> })||[]).sort(byRating)
         // TODO: byRelevance
         if (q().length > 3) return sorted.filter(
-            (a) => 
-              a.title?.toLowerCase().includes(q().toLowerCase()) || 
+            (a) =>
+              a.title?.toLowerCase().includes(q().toLowerCase()) ||
               a.body?.toLowerCase().includes(q().toLowerCase())
             )
         else return sorted
@@ -40,7 +40,7 @@ export default () => {
   }
   return (
     <div class="search-page wide-container">
-      <form action="search" class="search-form row">
+      <form action="/search" class="search-form row">
         <div class="col-sm-9">
           <input type="search" name="q" onChange={handleQueryChange} placeholder="Введите текст..."/>
         </div>
@@ -61,33 +61,33 @@ export default () => {
         </li>
       </ul>
 
-      <h3>Публикации</h3>
+      <Show when={q()?.length > 3}>
+        <Show when={articles()}>
+          <h3>Публикации</h3>
 
-      <div class="floor">
-        <Show when={q()?.length > 3}>
+          <div class="floor">
+            <div class="row">
+              <For each={articles() as Partial<Shout>[]}>
+                {(a: Partial<Shout>) => (
+                  <div class="col-md-3">
+                    <ArticleCard article={a}/>
+                  </div>
+                )}
+              </For>
 
-        <div class="row">
-
-          <For each={articles() as Partial<Shout>[]}>
-            {(a: Partial<Shout>) => (
-              <ArticleCard article={a} settings={{isFeedMode: true}} />
-            )}
-          </For>
-
-          <div class="col-md-3">
-            <a href="#" class="search__show-more">
-              <span class="search__show-more-inner">Смотреть все</span>
-            </a>
+              <div class="col-md-3">
+                <a href="#" class="search__show-more">
+                  <span class="search__show-more-inner">Смотреть все</span>
+                </a>
+              </div>
+            </div>
           </div>
-
-        </div>
-
         </Show>
-      </div>
 
-      <h3>Темы</h3>
+        <h3>Темы</h3>
 
-      <h3>Авторы</h3>
+        <h3>Авторы</h3>
+      </Show>
 
     </div>
   )
