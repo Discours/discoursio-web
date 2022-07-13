@@ -1,9 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query TopicsAllQuery {
-    topicsAll {
-      _id: slug
+  query TopicsByCommunityQuery ($community: String!) {
+    topicsByCommunity(community: $community) {
       title
       body
       slug

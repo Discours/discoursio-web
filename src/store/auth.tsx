@@ -58,7 +58,7 @@ export const AuthStoreProvider = (props: any) => {
     }
   }
   onMount(() => {
-    console.log('[store] listening localStorage changes')
+    console.log('[auth] listening localStorage changes')
     window.addEventListener('storage', listenStorage)
   })
   onCleanup(() => {

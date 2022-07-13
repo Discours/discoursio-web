@@ -5,7 +5,8 @@ import { useStore } from "./index"
   
 // translate from backender's language
 const entities: { [key:string]: string } = {
-    'topicsBySlugs': 'topics',
+    'topicsAll': 'topics',
+    'topicsBySlugs': 'topics', // deprecated
     'authorsBySlugs': 'authors',
     'authorsByTopics': 'authors',
     'communitiesBySlugs': 'communities',
@@ -25,14 +26,16 @@ const [, actions] = useStore()
 export const [cache, setCache] = createSignal<{ [key:string]: any}>({})
 export const [loadcounter, setLoadCounter] = createSignal(0)
 export const handleUpdate = ({ data, error }: OperationResult) => {
-    const key = Object.keys(data).pop() as string
-    const entity = entities[key]
-    const value: any = Object.values(data).pop() // get list by first key of dict
+    if (typeof actions.warn !== 'function') return
     if (error) actions.warn({ body: error.message, kind: 'error' })
-    if (value?.error) actions.warn({ body: value?.error, kind: 'warn' })
     else {
+      const [key, value] = Object.entries(data)[0]
+      const entity = entities[key]
+      const qerror = (value as any)?.error
+      if (qerror) actions.warn({ body: qerror, kind: 'warn' })
+      else {
         setCache((s) => {
-          const l = value || []
+          const l = (value as any[]) || []
           let d: { [key: string]: any } = {}
           if (l && l.length > 0) {
             console.log(`[_cache] ${loadcounter()}: updating ${entity}`)
@@ -45,5 +48,6 @@ export const handleUpdate = ({ data, error }: OperationResult) => {
           }
           return s
         })
+      }
     }
 }

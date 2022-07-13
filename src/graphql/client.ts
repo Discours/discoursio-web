@@ -15,11 +15,14 @@ import { cache } from './cache'
 //   initialState: isClient ? (window as any).__URQL_DATA__ : undefined
 // })
 
-export const baseUrl = 'https://newapi.discours.io'
+export const baseUrl = 
+  window && (window.location.hostname === 'localhost') ? 
+    'http://localhost:8000' : 'https://newapi.discours.io'
+
 export const createOptions = (token?: string): ClientOptions => {
   console.info('[graphql] client is running', (token? ' authenticated':''))
   return {
-    url: `${baseUrl}`,
+    url: baseUrl,
     requestPolicy: 'cache-and-network',
     fetchOptions: () => {
       let headers: any = {} // credentials: 'include'

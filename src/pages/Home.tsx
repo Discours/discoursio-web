@@ -1,4 +1,4 @@
-import { createEffect, createSignal, Show, Suspense } from 'solid-js'
+import { createEffect, createMemo, createSignal, Show, Suspense } from 'solid-js'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import Banner from '../components/Discours/Banner'
@@ -35,79 +35,68 @@ export const Home = () => {
   const [byTopic, setByTopic] = createSignal({} as { [topic:string]: Partial<Shout>[] })
 
   createEffect(() => {
-    if (data['topMonth'] && data['topMonth'].length > 0) {
-      console.log('[home] postprocessing top month')
-      const tm = data['topMonth']
-      // top authors and topics
-      let tt = new Set([] as Topic[])
-      let ta = new Set([] as Partial<User>[])
-      tm.forEach((s: Partial<Shout>) => {
-        tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
-        ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
-      })
-      setTopViewed(tm.sort(byViews).slice(0, 5))
-      setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
-      setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
-      console.log('[home] top month authors and topics are ready')
-    }
-  })
-
-  createEffect(() => {
-    if (data['recentPublished'] && data['recentPublished'].length > 0) {
-      console.log('[home] postprocessing published')
-      // get shouts lists by
-      let bl: { [key: string]: Partial<Shout>[] } = {}
-      let bt: { [key: string]: Partial<Shout>[] } = {}
-
-      data['recentPublished'].forEach((s: Partial<Shout>) => {
-        // by topic
-        s.topics?.forEach((tpc: Maybe<Topic>) => {
-          if (!bt[tpc?.slug || '']) bt[tpc?.slug || ''] = []
-          bt[tpc?.slug as string].push(s)
+    if('topTopics' in data
+      && 'recentPublished' in data
+      && 'topOveral' in data
+      // && data['recentPublished'].length > 0
+      ) {
+        console.log('[home] preparing data views')
+        const tm = data['topMonth']
+        // top authors and topics
+        let tt = new Set([] as Topic[])
+        let ta = new Set([] as Partial<User>[])
+        tm.forEach((s: Partial<Shout>) => {
+          tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
+          ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
         })
-        // by layout
-        const l = s.layout || 'article'
-        if (!bl[l]) bl[l] = []
-        bl[l].push(s)
-      })
-      setByLayout(bl)
-      setByTopic(bt)
-      // set top commented
-      setTopCommented(data['recentPublished'].sort(byComments).slice(0, 3))
-      console.log('[home] grouped by layout and by topic and top commented are ready')
-    }
-  })
+        setTopViewed(tm.sort(byViews).slice(0, 5))
+        setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
+        setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
+        console.log('[home] top month authors and topics are ready')
 
-  createEffect(() => {
-    if(Object.keys(byLayout()).length > 0) {
-      console.log('[home] picking random layout')
-      // random layout pick
-      const ok = Object.keys(byLayout).filter((l) => l !== 'article')
-      const layout = shuffle(ok)[0]
-      setSomeLayout(byLayout()[layout])
-      setSelectedLayout(layout)
-      console.log(`[ready] '${layout}' layout picked`)
-    }
-  })
+        // get shouts lists by
+        let bl: { [key: string]: Partial<Shout>[] } = {}
+        let bt: { [key: string]: Partial<Shout>[] } = {}
 
-  createEffect(() => {
-    if(Object.keys(byTopic()).length > 0) {
-      console.log('[home] picking random topics')
-      // random topics for navbar
-      setSomeTopics((_) => {
-        const nv = Array.from(Object.entries(byTopic())).filter(([, v], _i) => (v as Partial<Topic>[]).length > 4)
-        console.log(`[ready] topics navbar data prepared`)
-        return nv.map((f) => (data.topics || {})[f[0]]).slice(0, 12)
-      })
-    }
-  })
+        data['recentPublished'].forEach((s: Partial<Shout>) => {
+          // by topic
+          s.topics?.forEach((tpc: Maybe<Topic>) => {
+            if (!bt[tpc?.slug || '']) bt[tpc?.slug || ''] = []
+            bt[tpc?.slug as string].push(s)
+          })
+          // by layout
+          const l = s.layout || 'article'
+          if (!bl[l]) bl[l] = []
+          bl[l].push(s)
+        })
+        setByLayout(bl)
+        setByTopic(bt)
+        // set top commented
+        setTopCommented(data['recentPublished'].sort(byComments).slice(0, 3))
+        console.log('[home] grouped by layout and by topic and top commented are ready')
+
+        // random layout pick
+        const ok = Object.keys(byLayout).filter((l) => l !== 'article')
+        const layout = shuffle(ok)[0]
+        setSomeLayout(byLayout()[layout])
+        setSelectedLayout(layout)
+        console.log(`[ready] '${layout}' layout picked`)
+        console.log('[home] picking random topics')
+        // random topics for navbar
+        setSomeTopics((_) => {
+          const nv = Array.from(Object.entries(byTopic())).filter(([, v], _i) => (v as Partial<Topic>[]).length > 4)
+          console.log(`[ready] topics navbar data prepared`)
+          return nv.map((f) => (data.topics || {})[f[0]]).slice(0, 12)
+        })
+      }
+    }, [data])
 
   useRouteReadyState()
-  const [progress,setProgress] = createSignal(0)
+  const progress = createMemo(() => data.loadcounter/5)
   return (
-    <main class='home'>
-      <LoadingBar />
-      <Show when={data['recentPublished']?.length > 0}>
+    <main class="home">
+      <LoadingBar progress={progress()} />
+      <Show when={!data.loading}>
         <NavTopics topics={someTopics()} />
         <Row5 articles={data['recentPublished'].slice(0, 5) as []} />
         <Hero />

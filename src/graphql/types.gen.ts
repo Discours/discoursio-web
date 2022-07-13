@@ -279,7 +279,7 @@ export type Query = {
   topViewed: Array<Maybe<Shout>>
   topicsByAuthor: Array<Maybe<Topic>>
   topicsByCommunity: Array<Maybe<Topic>>
-  topicsBySlugs: Array<Maybe<Topic>>
+  topicsAll: Array<Maybe<Topic>>
   userComments: Array<Maybe<Comment>>
   userSubscribedTopics: Array<Maybe<Scalars['String']>>
   userSubscribers: Array<Maybe<User>>
@@ -393,7 +393,7 @@ export type QueryTopicsByCommunityArgs = {
   community: Scalars['String']
 }
 
-export type QueryTopicsBySlugsArgs = {
+export type QueryTopicsAllArgs = {
   slugs?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
 }
 
@@ -542,7 +542,7 @@ export type Topic = {
   pic?: Maybe<Scalars['String']>
   slug: Scalars['String']
   title?: Maybe<Scalars['String']>
-  topicStat?: Maybe<TopicStat>
+  stat?: Maybe<TopicStat>
 }
 
 export type TopicInput = {
@@ -2583,7 +2583,7 @@ export default {
             ]
           },
           {
-            name: 'topicsBySlugs',
+            name: 'topicsAll',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -3439,7 +3439,7 @@ export default {
             args: []
           },
           {
-            name: 'topicStat',
+            name: 'stat',
             type: {
               kind: 'OBJECT',
               name: 'TopicStat',

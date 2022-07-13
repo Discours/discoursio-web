@@ -32,8 +32,8 @@ export const byComments = (a: any, b: any) => {
 }
 
 export const byShouts = (a: any, b: any) => {
-  const x = (a?.topicStat || a?.stat)?.shouts as number
-  const y = (b?.topicStat || b?.stat)?.shouts as number
+  const x = a?.stat?.shouts as number
+  const y = b?.stat?.shouts as number
 
   if (x > y) return -1
 
@@ -54,8 +54,8 @@ export const byRating = (a: any, b: any) => {
 }
 
 export const byViews = (a: any, b: any) => {
-  const x = (a?.topicStat || a?.stat)?.views as number
-  const y = (b?.topicStat || b?.stat)?.views as number
+  const x = (a?.stat || a?.stat)?.views as number
+  const y = (b?.stat || b?.stat)?.views as number
 
   if (x > y) return -1
 

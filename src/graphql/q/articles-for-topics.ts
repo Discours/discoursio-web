@@ -17,7 +17,7 @@ export default gql`
         title
         body
         pic
-        topicStat {
+        stat {
           _id: views
           shouts
           authors
