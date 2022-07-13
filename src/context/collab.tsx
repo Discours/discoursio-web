@@ -1,6 +1,5 @@
 import { createContext, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
-import { useStore } from './index'
 import { Client, useClient } from 'solid-urql'
 import { Proposal } from '../graphql/types.gen'
 import { RouteDataFuncArgs } from 'solid-app-router'
@@ -28,9 +27,9 @@ export const CollabStateHandler = (props: RouteDataFuncArgs | any): any => {
 const CollabContext = createContext()
 const CollabProvider = CollabContext.Provider
 
-// Context Provider
-export default (props: { client: Client, children: any }) => {
-  const [ , promiseMutation ] = usePromiseQuery(props.client)
+export const CollabStateProvider = (props: any): any => {
+  const client: Client = !!props.client ? props.client : useClient()
+  const [, promiseMutation] = usePromiseQuery(client)
   const collabState = CollabStateHandler(props)
   const collabActions = {
     inviteAuthor: (author: string, shout: string) => promiseMutation(inviteAuthorQuery, { shout, author }).then(handleUpdate),

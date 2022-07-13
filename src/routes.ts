@@ -1,8 +1,8 @@
 import { lazy } from 'solid-js'
 import { RouteDefinition } from 'solid-app-router'
 import { ZineStateHandler } from './context/zine'
-// import { CollabStateManager } from './store/collab'
-import { InboxData } from './pages/Inbox.data'
+import { CollabStateHandler } from './context/collab'
+import { InboxStateHandler } from './context/inbox'
 
 
 export const routes: RouteDefinition[] = [
@@ -38,13 +38,12 @@ export const routes: RouteDefinition[] = [
   },
   {
     path: '/feed/settings',
-    component: lazy(() => import('./pages/FeedSettings')),
-    // data: FeedData
+    component: lazy(() => import('./pages/FeedSettings'))
   },
   {
     path: '/create',
     component: lazy(() => import('./pages/Create')),
-    // data: CollabStateManager
+    data: CollabStateHandler
   },
   {
     path: '/search',
@@ -59,8 +58,10 @@ export const routes: RouteDefinition[] = [
   {
     path: '/inbox',
     component: lazy(() => import('./pages/Inbox')),
-    data: InboxData
+    data: InboxStateHandler
   },
+
+  // static pages, aka 'about'
   {
     path: '/about/manifest',
     component: lazy(() => import('./pages/about/manifest.mdx'))
