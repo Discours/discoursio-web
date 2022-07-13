@@ -1,5 +1,5 @@
 import { Title, Meta } from 'solid-meta'
-import './manifest.scss'
+import '../../styles/manifest.scss'
 
 export default () => {
   return (

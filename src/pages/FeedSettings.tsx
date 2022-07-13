@@ -2,31 +2,36 @@ import { useI18n } from "@solid-primitives/i18n"
 import {createMemo, createSignal} from "solid-js"
 import {useRouteData} from "solid-app-router";
 import {ZineState} from "../store/zine"
-import './FeedSettings.scss'
+import '../styles/FeedSettings.scss'
 
 const FeedSettings = () => {
   const [t] = useI18n()
-  // TODO: implement feed settings page
-
   const data = useRouteData<ZineState>()
-  // const [mode, setMode] = createSignal(data.args?.by || 'topics')
+  const [mode, setMode] = createSignal(data.args?.by || 'topics')
 
+  const articles = createMemo(() => {
+    switch(mode()) {
+      case 'topics':
+      default:
+        return {}
+    }
+  })
   return (
     <div class="container">
       <h1>{t('Feed settings')}</h1>
 
       <ul class="view-switcher">
         <li class="selected">
-          <a href="?by=topics" onClick={() => setMode('topics')}>темы</a>
+          <a href="?by=topics" onClick={() => setMode('topics')}>{t('topics')}</a>
         </li>
         <li>
-          <a href="?by=collections" onClick={() => setMode('collections')}>коллекции</a>
+          <a href="?by=collections" onClick={() => setMode('collections')}>{t('collections')}</a>
         </li>
         <li>
-          <a href="?by=authors" onClick={() => setMode('authors')}>авторы</a>
+          <a href="?by=authors" onClick={() => setMode('authors')}>{t('authors')}</a>
         </li>
         <li>
-          <a href="?by=actions" onClick={() => setMode('actions')}>действия</a>
+          <a href="?by=actions" onClick={() => setMode('actions')}>{t('actions')}</a>
         </li>
       </ul>
 

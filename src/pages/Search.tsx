@@ -2,7 +2,7 @@ import { Show, For, createSignal, createMemo } from 'solid-js'
 import { useI18n } from "@solid-primitives/i18n";
 import { useRouteData } from "solid-app-router";
 import { ZineState } from "../store/zine";
-import './Search.scss';
+import '../styles/Search.scss';
 import {Shout} from "../graphql/types.gen";
 import ArticleCard from "../components/Article/Card";
 import { byRating } from '../utils/sortby';
@@ -45,7 +45,7 @@ export default () => {
           <input type="search" name="q" onChange={handleQueryChange} placeholder="Введите текст..."/>
         </div>
         <div class="col-sm-3">
-          <button class="button" type="submit" onClick={handleSubmit}>Найти</button>
+          <button class="button" type="submit" onClick={handleSubmit}>{t('Search')}</button>
         </div>
       </form>
 

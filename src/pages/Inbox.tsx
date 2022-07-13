@@ -1,7 +1,7 @@
 import {Link} from 'solid-app-router'
 import UserCard from '../components/Author/Card'
 import Icon from '../components/Nav/Icon'
-import './Inbox.scss'
+import '../styles/Inbox.scss'
 
 export default () => {
   return (<div class="messages container">

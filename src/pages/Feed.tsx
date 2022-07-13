@@ -3,7 +3,7 @@ import { NavLink, useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout, Topic, User, Comment } from '../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
-import './Feed.scss'
+import '../styles/Feed.scss'
 import Icon from "../components/Nav/Icon";
 import { useAuth } from '../store/auth'
 import { byRating, byShouts, byViews } from '../utils/sortby'

@@ -2,7 +2,7 @@ import { Component } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
 import Icon from '../components/Nav/Icon'
-import './404.css'
+import '../styles/404.css'
 
 const FourOhFour: Component<any> = () => {
   const [t] = useI18n()

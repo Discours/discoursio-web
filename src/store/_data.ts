@@ -6,7 +6,7 @@ import { useStore } from "./index"
 // translate from backender's language
 const entities: { [key:string]: string } = {
     'topicsAll': 'topics',
-    'topicsBySlugs': 'topics', // deprecated
+    //'topicsBySlugs': 'topics', // deprecated
     'authorsBySlugs': 'authors',
     'authorsByTopics': 'authors',
     'communitiesBySlugs': 'communities',

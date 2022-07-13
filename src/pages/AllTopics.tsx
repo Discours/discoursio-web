@@ -1,7 +1,7 @@
 import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import { Topic } from '../graphql/types.gen'
 import TopicCard from '../components/Topic/Card'
-import './AllTopics.scss'
+import '../styles/AllTopics.scss'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'

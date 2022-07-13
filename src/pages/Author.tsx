@@ -8,7 +8,7 @@ import Row3 from '../components/Article/Row3'
 import Beside from '../components/Article/Beside'
 import AuthorFull from '../components/Author/Full'
 import { byCreated, byRating, byViews } from '../utils/sortby'
-import './Topic.scss'
+import '../styles/Topic.scss'
 import { ZineState } from '../store/zine'
 
 export const AuthorPage: Component = () => {
