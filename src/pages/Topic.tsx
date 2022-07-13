@@ -11,7 +11,7 @@ import ArticleCard from '../components/Article/Card'
 import '../styles/Topic.scss'
 import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
 import TopicFull from '../components/Topic/Full'
-import { ZineState } from '../store/zine'
+import { ZineState } from '../context/zine'
 
 export const TopicPage = () => {
   const [t] = useI18n()

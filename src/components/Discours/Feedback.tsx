@@ -1,5 +1,5 @@
 import { useI18n } from '@solid-primitives/i18n'
-import { useStore } from '../../store'
+import { useStore } from '../../context'
 
 export default () => {
   const action = '/user/feedback'

@@ -6,10 +6,10 @@ import ArticleComment from './Comment'
 import AuthorCard from '../Author/Card'
 import { createMemo, For, Show } from 'solid-js'
 import { Comment, Rating, Shout, Topic, User } from '../../graphql/types.gen'
-import { useZine } from '../../store/zine'
-import { useStore } from '../../store'
+import { useZine } from '../../context/zine'
+import { useStore } from '../../context'
 import { useI18n } from '@solid-primitives/i18n'
-import { useAuth } from '../../store/auth'
+import { useAuth } from '../../context/auth'
 import { Link } from 'solid-app-router'
 
 const deepest = 6
@@ -132,7 +132,7 @@ export default (props: ArticleProps) => {
               <ArticleComment
                 comment={comment}
                 level={getCommentLevel(comment)}
-                canEdit={comment.author.slug === user?.slug}
+                canEdit={comment.createdBy?.slug === user?.slug}
               />
             )}
           </For>

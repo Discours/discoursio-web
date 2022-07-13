@@ -1,4 +1,4 @@
-import { useStore } from '../../store'
+import { useStore } from '../../context'
 
 export default (props: { name: string; children: any }) => {
   const [, { showModal }] = useStore()

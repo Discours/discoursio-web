@@ -9,7 +9,7 @@ import Beside from '../components/Article/Beside'
 import AuthorFull from '../components/Author/Full'
 import { byCreated, byRating, byViews } from '../utils/sortby'
 import '../styles/Topic.scss'
-import { ZineState } from '../store/zine'
+import { ZineState } from '../context/zine'
 
 export const AuthorPage: Component = () => {
   const [t] = useI18n()

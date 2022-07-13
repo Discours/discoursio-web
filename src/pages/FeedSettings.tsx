@@ -1,7 +1,7 @@
 import { useI18n } from "@solid-primitives/i18n"
 import {createMemo, createSignal} from "solid-js"
 import {useRouteData} from "solid-app-router";
-import {ZineState} from "../store/zine"
+import {ZineState} from "../context/zine"
 import '../styles/FeedSettings.scss'
 
 const FeedSettings = () => {

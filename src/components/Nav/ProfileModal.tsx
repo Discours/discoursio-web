@@ -3,8 +3,8 @@ import { Link } from 'solid-app-router'
 import { For } from 'solid-js/web'
 import AuthorCard from '../Author/Card'
 import { User } from '../../graphql/types.gen'
-import { useStore } from '../../store'
-import { useAuth } from '../../store/auth'
+import { useStore } from '../../context'
+import { useAuth } from '../../context/auth'
 
 export default () => {
   const [t] = useI18n()

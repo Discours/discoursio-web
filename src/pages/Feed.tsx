@@ -5,11 +5,11 @@ import { Shout, Topic, User, Comment } from '../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
 import '../styles/Feed.scss'
 import Icon from "../components/Nav/Icon";
-import { useAuth } from '../store/auth'
+import { useAuth } from '../context/auth'
 import { byRating, byShouts, byViews } from '../utils/sortby'
 import TopicCard from "../components/Topic/Card";
 import ArticleCard from "../components/Article/Card";
-import { ZineState } from '../store/zine'
+import { ZineState } from '../context/zine'
 import MD from '../components/Article/MD'
 
 const Feed: Component = () => {

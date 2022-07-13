@@ -1,6 +1,6 @@
 import { lazy } from 'solid-js'
 import { RouteDefinition } from 'solid-app-router'
-import { ZineStateHandler } from './store/zine'
+import { ZineStateHandler } from './context/zine'
 // import { CollabStateManager } from './store/collab'
 import { InboxData } from './pages/Inbox.data'
 

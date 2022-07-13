@@ -1,7 +1,7 @@
 import { Show, For, createSignal, createMemo } from 'solid-js'
 import { useI18n } from "@solid-primitives/i18n";
 import { useRouteData } from "solid-app-router";
-import { ZineState } from "../store/zine";
+import { ZineState } from "../context/zine";
 import '../styles/Search.scss';
 import {Shout} from "../graphql/types.gen";
 import ArticleCard from "../components/Article/Card";

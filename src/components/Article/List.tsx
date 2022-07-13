@@ -6,7 +6,7 @@ import { shuffle } from '../../utils'
 import { createMemo, createSignal, JSX } from 'solid-js'
 import { Shout } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
-import { useZine } from '../../store/zine'
+import { useZine } from '../../context/zine'
 import './List.scss'
 
 export const Block6 = (props: { articles: Partial<Shout>[] }) => {

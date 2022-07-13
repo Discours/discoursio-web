@@ -6,7 +6,7 @@ import { Shout } from '../graphql/types.gen'
 import '../styles/Article.scss'
 import FullArticle from '../components/Article/Full'
 // import LoadingBar from 'solid-top-loading-bar'
-import { ZineState } from '../store/zine'
+import { ZineState } from '../context/zine'
 
 export const ArticlePage: Component = () => {
   const [t] = useI18n()

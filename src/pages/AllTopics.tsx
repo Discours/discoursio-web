@@ -6,8 +6,8 @@ import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
 import { byShouts, byViews } from '../utils/sortby'
-import { useAuth } from '../store/auth'
-import { ZineState } from '../store/zine'
+import { useAuth } from '../context/auth'
+import { ZineState } from '../context/zine'
 import LoadingBar from 'solid-top-loading-bar'
 
 export default () => {

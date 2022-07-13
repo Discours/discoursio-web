@@ -4,12 +4,12 @@ import { useRoutes, Router } from 'solid-app-router'
 import { routes } from './routes'
 import Header from './components/Nav/Header'
 import Footer from './components/Discours/Footer'
-import { StoreProvider as CommonStoreProvider } from './store/index'
-import { AuthStoreProvider, useAuth } from './store/auth'
+import { StoreProvider as CommonStoreProvider } from './context/index'
+import { AuthStoreProvider, useAuth } from './context/auth'
 import { preventSmoothScrollOnTabbing } from './utils'
 import { createClient, Provider as GraphqlProvider } from 'solid-urql'
 import { baseUrl, createOptions } from './graphql/client'
-import { ZineStateProvider } from './store/zine'
+import { ZineStateProvider } from './context/zine'
 
 export const App = () => {
   const Routes = useRoutes(routes)

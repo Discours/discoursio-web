@@ -4,7 +4,7 @@ import './Card.scss'
 import { createResource, createSignal } from 'solid-js'
 import { Topic } from '../../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
-import { useZine } from '../../store/zine'
+import { useZine } from '../../context/zine'
 
 interface TopicProps {
   topic: Partial<Topic>

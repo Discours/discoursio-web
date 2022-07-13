@@ -7,8 +7,8 @@ import { User } from '../../graphql/types.gen'
 import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
 import { Comment as Point } from '../../graphql/types.gen'
-import { useStore } from '../../store'
-import { useZine } from '../../store/zine'
+import { useStore } from '../../context'
+import { useZine } from '../../context/zine'
 
 export default (props: { level: number; comment: Partial<Point>; canEdit: boolean }) => {
   const [{}, { deleteComment }] = useZine()
@@ -26,7 +26,7 @@ export default (props: { level: number; comment: Partial<Point>; canEdit: boolea
       <Show when={!!comment()}>
         <div class='shout-controls'>
           <div class='shout-author'>
-            <AuthorCard author={comment()?.author as Partial<User>} hideDescription={true} hideFollow={true} />
+            <AuthorCard author={comment()?.createdBy as Partial<User>} hideDescription={true} hideFollow={true} />
           </div>
           <div class='shout-date'>{comment()?.createdAt}</div>
           {/* <div class="shout-rating">{comment.rating}</div> */}

@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'solid-app-router'
 import { createSignal, onMount } from 'solid-js'
 import { User } from '../../graphql/types.gen'
-import { useAuth } from '../../store/auth'
+import { useAuth } from '../../context/auth'
 import Userpic from '../Author/Userpic'
 import Icon from './Icon'
 import './Private.scss'

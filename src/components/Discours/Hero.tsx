@@ -1,6 +1,6 @@
 import { useI18n } from '@solid-primitives/i18n'
 import { NavLink } from 'solid-app-router'
-import { useStore } from '../../store'
+import { useStore } from '../../context'
 import './Hero.scss'
 
 export default () => {

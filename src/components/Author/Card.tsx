@@ -3,12 +3,11 @@ import { User } from '../../graphql/types.gen'
 import Userpic from './Userpic'
 import Icon from '../Nav/Icon'
 import './Card.scss'
-import { useZine } from '../../store/zine'
-import { NavLink } from 'solid-app-router'
+import { useZine } from '../../context/zine'
 import { useI18n } from '@solid-primitives/i18n'
 import { createMemo } from 'solid-js'
 import { translit } from '../../utils/ru2en'
-import { useAuth } from '../../store/auth'
+import { useAuth } from '../../context/auth'
 
 interface AuthorCardProps {
   compact?: boolean

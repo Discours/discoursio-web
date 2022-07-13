@@ -1,5 +1,5 @@
 import { For, Portal, Show } from 'solid-js/web'
-import { useStore, Warning } from '../../store'
+import { useStore, Warning } from '../../context'
 export default () => {
   const [state] = useStore()
   const notSeen = () => state.warnings?.filter((n: Warning) => !n.seen)
