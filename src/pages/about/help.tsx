@@ -2,7 +2,7 @@ import { createSignal, onMount } from 'solid-js'
 import Modal from '../../components/Nav/Modal'
 import { Title, Meta } from 'solid-meta'
 import '../../styles/help.scss'
-import { useStore } from '../../store/index'
+import { useStore } from '../../context'
 
 export default () => {
   const once = ''

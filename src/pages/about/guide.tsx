@@ -1,6 +1,6 @@
 import { Title, Meta } from 'solid-meta'
 import { Show } from 'solid-js/web'
-import { useAuth } from '../../store/auth'
+import { useAuth } from '../../context/auth'
 
 export default () => {
   const [{ token }] = useAuth()
