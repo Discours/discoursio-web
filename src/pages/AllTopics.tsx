@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, For, Show } from 'solid-js'
+import { createEffect, createMemo, createSignal, For, onMount, Show } from 'solid-js'
 import { Topic } from '../graphql/types.gen'
 import TopicCard from '../components/Topic/Card'
 import '../styles/AllTopics.scss'
@@ -9,6 +9,7 @@ import { byShouts, byViews } from '../utils/sortby'
 import { useAuth } from '../context/auth'
 import { ZineState } from '../context/zine'
 import LoadingBar from 'solid-top-loading-bar'
+import { loading } from '../context/_api'
 
 export default () => {
   const [{ info }, {}] = useAuth()
@@ -16,7 +17,7 @@ export default () => {
   const data = useRouteData<ZineState>()
   const [mode, setMode] = createSignal(data.args?.by || 'views')
   const [sortedTopics, setSortedTopics] = createSignal<Partial<Topic>[]>(data['topicsAll'] || [])
-  const [sortedKeys, setSortedKeys] = createSignal<string[]>([])
+  const [sortedKeys, setSortedKeys] = createSignal<string[]>()
   let topicsGroupedByAlphabet: { [key: string]: Partial<Topic>[] } = {}
   
   const groupBy = (arr: any[]) => {
@@ -57,13 +58,13 @@ export default () => {
     setMode('views')
     setSortedTopics(data.topicslist?.sort(byViews) as Partial<Topic>[])
   }
-
+  createEffect(() => sortViews(), [data.topicslist])
+  const progress = createMemo(() => data.stage/5)
   useRouteReadyState()
-  const progress = createMemo(() => data.loadcounter/5)
   return (
     <div class="all-topics-page">
       <LoadingBar progress={progress()} />
-      <Show when={data.loadcounter}>
+      <Show when={!loading()}>
         <div class="wide-container">
           <div class='shift-content'>
             <div class='row'>

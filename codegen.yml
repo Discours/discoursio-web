@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - 'https://newapi.discours.io'
+  - '../discours-backend/schema.graphql'
 generates:
   src/graphql/types.gen.ts:
     plugins:

@@ -2,7 +2,7 @@
 import { createContext, createSignal, useContext, onMount, onCleanup, createEffect } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import mySession from '../graphql/q/auth-session'
-import { OperationResult } from 'solid-urql'
+import { useClient, Client } from 'solid-urql'
 import signUpMutation from '../graphql/q/auth-register'
 import signOutQuery from '../graphql/q/auth-logout'
 import { CurrentUserInfo, User } from '../graphql/types.gen'
@@ -12,8 +12,9 @@ import resetPassword from '../graphql/q/auth-reset'
 import resendCode from '../graphql/q/auth-resend'
 import { useStore } from './index'
 import { usePromiseQuery } from '../utils/promiseQuery'
+import { handleUpdate, cache, loading, setLoading } from './_api'
 
-interface AuthStore {
+interface AuthState {
   readonly authorized?: boolean
   readonly handshaking?: boolean
   token?: string
@@ -21,14 +22,16 @@ interface AuthStore {
   info?: CurrentUserInfo
 }
 
-const AuthContext = createContext<[AuthStore, any]>([{} as AuthStore, {}])
+const AuthContext = createContext<[AuthState, any]>([{} as AuthState, {}])
 const AuthProvider = AuthContext.Provider
 
 export const AuthStoreProvider = (props: any) => {
+  const client: Client = !!props.client ? props.client : useClient()
+  const [promiseQuery, promiseMutation] = usePromiseQuery(client)
   const [loggedIn, setLoggedIn] = createSignal(false)
-  const [loading, setLoading] = createSignal(false)
   const [, actions] = useStore()
-  const [state, setState] = createStore({
+
+  const [authState, setState] = createStore({
     get authorized() {
       return loggedIn()
     },
@@ -42,13 +45,14 @@ export const AuthStoreProvider = (props: any) => {
 
   const listenStorage = (ev: StorageEvent) => {
     if (ev.storageArea === window.localStorage) {
+      console.log('[auth] localStorage event ', ev)
       // token update
       const tkn = window.localStorage.getItem('token')
       if (tkn) {
-        if(state.token !== tkn) {
+        if(authState.token !== tkn) {
           setState((curState) => {
             curState.token = tkn
-            return state
+            return authState
           }) // store setter
           console.log('[auth] token was updated from localStorage')
         } else {
@@ -57,35 +61,17 @@ export const AuthStoreProvider = (props: any) => {
       }
     }
   }
-  onMount(() => {
-    console.log('[auth] listening localStorage changes')
-    window.addEventListener('storage', listenStorage)
-  })
-  onCleanup(() => {
-    window.removeEventListener('storage', listenStorage, false)
-  })
+  onMount(() => window.addEventListener('storage', listenStorage))
+  onCleanup(() =>  window.removeEventListener('storage', listenStorage, false))
 
-  // graphql client promisified
-  const [promiseQuery, promiseMutation] = usePromiseQuery(props.client)
-
-  createEffect(() => {
-    if(state.token && (!state.user || !loggedIn())) {
-      console.log('[auth] getting user session by token', state.token)
+  createEffect(()=>{
+    if(authState.token && !loggedIn()) {
+      console.log('[auth] getCurrentUser was cached')
       setLoading(true)
-      promiseQuery(mySession, { token: state.token })
-        .then(({ data, error}: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if(error || value?.error) {
-            actions.warn({ body: error?.message || value?.error, kind: 'warn' })
-            setLoggedIn(false)
-          } else {
-            console.debug(value)
-            setState({ ...state, ...data.getCurrentUser })
-            actions.resetWarns()
-            setLoggedIn(true)
-          }
-          setLoading(false)
-        })
+      promiseQuery(mySession, { token: authState.token })
+        .then(handleUpdate)
+        .then(() => setLoggedIn(true))
+        .catch(() => setLoggedIn(false))
     }
   })
 
@@ -95,19 +81,9 @@ export const AuthStoreProvider = (props: any) => {
       if(!loggedIn()) {
         setLoading(true)
         promiseQuery(signIn, { email, password })
-          .then(({ data, error }: OperationResult) => {
-            const value: any = Object.values(data).pop()
-            if(error || value?.error) {
-              actions.warn({ body: error?.message || value?.error, kind: 'warn' })
-              setLoggedIn(false)
-            } else {
-              console.debug(value)
-              setState({ ...state, ...data.signIn })
-              actions.resetWarns()
-              setLoggedIn(true)
-            }
-            setLoading(false)
-          })
+          .then(handleUpdate)
+          .then(() => setLoggedIn(true))
+          .catch(() => setLoggedIn(false))
       }
     },
     signUp: (email: string, password: string, username?: string) => {
@@ -115,70 +91,35 @@ export const AuthStoreProvider = (props: any) => {
       if(!loggedIn()) {
         setLoading(true)
         promiseMutation(signUpMutation, { email, password, username })
-          .then(({ data, error}: OperationResult) => {
-            const value: any = Object.values(data).pop()
-            if(error || value?.error) {
-              actions.warn({ body: error?.message || value?.error, kind: 'warn' })
-              setLoggedIn(false)
-            } else {
-              console.debug(value)
-              setState({ ...state, ...data.registerUser })
-              actions.resetWarns()
-              setLoggedIn(true)
-            }
-            setLoading(false)
-          })
+          .then(handleUpdate)
+          .then(() => setLoggedIn(true))
+          .catch(() => setLoggedIn(false))
       }
     },
     signOut: () => {
       console.log(`[auth] sign out`)
-      setLoading(true)
       if (loggedIn()) {
         promiseQuery(signOutQuery)
-          .then(({ data, error }: OperationResult) => {
-            const value: any = Object.values(data).pop()
-            if (error || value?.error) actions.warn({ body: error?.message || value?.error, kind: 'warn'})
-            else setLoggedIn(false)
-            setLoading(false)
-          })
+          .then(() => setLoggedIn(false))
       }
     },
     forget: async (email: string) => {
       console.log(`[auth] forget ${email}`)
-      setLoading(true)
       promiseQuery(forgetPassword, { email })
-        .then(({ data, error }: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if (error || value?.error) actions.warn({ body: error?.message || value?.error, kind: 'warn' })
-          setLoading(false)
-        })
+        .then(handleUpdate)
     },
     reset: (code: string) => {
       console.log(`[auth] reset ${code}`)
-      setLoading(true)
       promiseQuery(resetPassword, { code })
-        .then((resetResult: OperationResult) => {
-          const { error, data } = resetResult
-          if (error) actions.warn({body: error.message, kind: 'warn'})
-          if (data?.reset?.error) actions.warn({ body: data.error, kind: 'warn' })
-          setLoading(false)
-        })
+        .then(handleUpdate)
     },
     resend: (email: string) => {
       console.log(`[auth] resend ${email}`)
-      setLoading(true)
       promiseQuery(resendCode, { email })
-        .then(({ data, error }: OperationResult) => {
-          const value: any = Object.values(data).pop()
-          if (error || value?.error) actions.warn({ body: error?.message || value?.error, kind: 'warn' })
-          else {
-            console.log('[auth] code resended successfully')
-          }
-          setLoading(false)
-        })
+        .then(handleUpdate)
     }
   }
-  return <AuthProvider value={[state as unknown as AuthStore, authActions]} children={props.children} />
+  return <AuthProvider value={createStore(authState, authActions as any)} children={props.children} />
 }
 
 export function useAuth() {

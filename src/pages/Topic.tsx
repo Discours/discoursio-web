@@ -23,7 +23,7 @@ export const TopicPage = () => {
   createEffect(() => {
     if (data.stage > 1) {
       setSortedArticles((Object.values((data.articles || {} ) as Partial<Shout>[]))
-        .filter( (a: Partial<Shout>) => !!a.topics?.filter( (t: any) => t.slug === topic().slug ) )
+        .filter( (a: Partial<Shout>) => !!a.topics?.filter( (t: any) => t.slug === topic() ) )
         .sort(byCreated)
       )
     } else if (data.stage > 2) {

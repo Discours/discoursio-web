@@ -10,18 +10,21 @@ import proposalUpdateQuery from '../graphql/q/proposal-update'
 import proposalDestroyQuery from '../graphql/q/proposal-destroy'
 import inviteAuthorQuery from '../graphql/q/collab-invite'
 import removeAuthorQuery from '../graphql/q/collab-remove'
-import { handleUpdate } from './_data'
+import { handleUpdate, loading } from './_api'
+
+export interface CollabState {
+  readonly loading: boolean
+}
 
 // RouteDataFunc
 export const CollabStateHandler = (props: RouteDataFuncArgs | any): any => {
   const [{ info }, {}] = useAuth()
-  const [loading, setLoading] = createSignal(false)
   const collabState = {
     get loading() {
       return loading()
     }
   }
-  return collabState as any
+  return collabState as CollabState
 }
 
 const CollabContext = createContext()
@@ -39,7 +42,7 @@ export const CollabStateProvider = (props: any): any => {
     deleteProposal: (proposal: Proposal) => promiseMutation(proposalDestroyQuery, { proposal }).then(handleUpdate),
   }
 
-  return <CollabProvider value={createStore([collabState as any, collabActions])} children={props.children} />
+  return <CollabProvider value={createStore([collabState as CollabState, collabActions])} children={props.children} />
 }
 
 export function useCollab() {

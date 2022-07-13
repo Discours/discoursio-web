@@ -8,7 +8,7 @@ import { Shout, User } from '../graphql/types.gen'
 import { useAuth } from './auth'
 import { usePromiseQuery } from '../utils/promiseQuery'
 import { byViews } from '../utils/sortby'
-import { handleUpdate, loadcounter, cache, setCache } from './_data'
+import { handleUpdate, loadcounter, cache, setCache, loading, setLoading } from './_api'
 // all zine queries
 import topicsByCommunity from '../graphql/q/topics-by-community'
 import articlesRecentPublished from '../graphql/q/articles-recent-published'
@@ -56,9 +56,10 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
 
   const stage1 = () => {
     setStage(1)
-    console.log('[zine] stage 1/3 preloading')
     if ('topicsByCommunity' in cache()) return
     else {
+      console.log('[zine] stage 1/3 preloading')
+      setLoading(true)
       setCache({ 'topicsByCommunity': [] })
       console.log(`[zine] topicsByCommunity`)
       promiseQuery(topicsByCommunity, { community: 'discours' }).then(handleUpdate).then(stage2)
@@ -71,6 +72,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const stage2 = () => {
     setStage(2)
     console.log('[zine] stage 2/3 preloading')
+    setLoading(true)
     if (slug === '' && subpath === '') {
       // homepage: recent published and tops
       console.log('[zine] recentPublished')
@@ -120,6 +122,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const stage3 = () => setStage(3)
   createEffect(() => {
     if(articles()?.length > 0 && stage() === 3) {
+      setLoading(true)
       console.log(`[zine] stage 3/3 preloading: getUsersBySlugs`)
       setCache(c => ({ ...c, 'getUsersBySlugs': [] }))
       let slugs: string[] = []
@@ -135,7 +138,6 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     }
   })
 
-  const [loading, setLoading] = createSignal(true)
   onMount(stage1) // start loading sequence
 
   const zineState = {

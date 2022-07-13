@@ -1,0 +1,409 @@
+scalar DateTime
+
+################################### Payload
+
+type Result {
+  error: String
+}
+
+type CurrentUserInfo {
+  totalUnreadMessages:         Int
+  userSubscribedTopics:        [String]!
+  userSubscribedAuthors:       [String]!
+  userSubscribedCommunities:   [String]!
+  userSubscribedShoutComments: [String]!
+}
+
+type AuthResult {
+  error: String
+  token: String
+  user: User
+  info: CurrentUserInfo
+}
+
+type UserResult {
+  error: String
+  user: User
+  info: CurrentUserInfo
+}
+
+input ShoutInput {
+  slug: String!
+  body: String!
+  community: String!
+  mainTopic: String
+  topic_slugs: [String]
+  title: String
+  subtitle: String
+  versionOf: String
+  visibleForRoles: [String] # role ids are strings
+  visibleForUsers: [Int]
+}
+
+input ProfileInput {
+  name: String
+  userpic: String
+  links: [String]
+  bio: String
+}
+
+input CommunityInput {
+  title: String!
+  desc: String
+  pic: String
+}
+
+type ShoutResult {
+  error: String
+  shout: Shout
+}
+
+type ShoutsResult {
+  error: String
+  shouts: [Shout]
+}
+
+type CommentResult {
+  error: String
+  comment: Comment
+}
+
+input TopicInput {
+  slug: String!
+  title: String
+  body: String
+  pic: String
+  children: [String]
+  community: String!
+}
+
+type TopicResult {
+  error: String
+  topic: Topic
+}
+
+enum CommentStatus {
+  NEW
+  UPDATED
+  UPDATED_RATING
+  DELETED
+}
+
+type CommentUpdatedResult {
+  error: String
+  status: CommentStatus
+  comment: Comment
+}
+
+enum SubscriptionType {
+  TOPIC
+  AUTHOR
+  COMMUNITY
+  COMMENTS
+}
+
+################################### Mutation
+
+type Mutation {
+  # auth
+  confirmEmail(token: String!): AuthResult!
+  registerUser(email: String!, password: String): AuthResult!
+  requestPasswordUpdate(email: String!): Result!
+  updatePassword(password: String!, token: String!): Result!
+  # requestEmailConfirmation: User!
+
+  # shout
+  createShout(input: ShoutInput!): ShoutResult!
+  updateShout(input: ShoutInput!): ShoutResult!
+  deleteShout(slug: String!): Result!
+  rateShout(slug: String!, value: Int!): Result!
+  viewShout(slug: String!): Result!
+
+  # user profile
+  rateUser(slug: String!, value: Int!): Result!
+  # updateOnlineStatus: Result!
+  updateProfile(profile: ProfileInput!): Result!
+
+  # topics
+  createTopic(input: TopicInput!): TopicResult!
+  updateTopic(input: TopicInput!): TopicResult!
+
+  # comments
+  createComment(body: String!, shout: String!, replyTo: Int): CommentResult!
+  updateComment(id: Int!, body: String!): CommentResult!
+  deleteComment(id: Int!): Result!
+  rateComment(id: Int!, value: Int!): Result!
+
+  # community
+  createCommunity(community: CommunityInput!): Community!
+  updateCommunity(community: CommunityInput!): Community!
+  deleteCommunity(slug: String!): Result!
+
+  # collab
+  inviteAuthor(author: String!, shout: String!): Result!
+  removeAuthor(author: String!, shout: String!): Result!
+  
+  # proposal
+  createProposal(body: String!, range: String): Proposal!
+  updateProposal(body: String!, range: String): Proposal!
+  acceptProposal(id: Int!): Result!
+  declineProposal(id: Int!): Result!
+  disableProposal(id: Int!): Result!
+  deleteProposal(id: Int!): Result!
+  rateProposal(id: Int!): Result!
+
+  subscribe(what: SubscriptionType!, slug: String!): Result!
+  unsubscribe(what: SubscriptionType!, slug: String!): Result!
+}
+
+################################### Query
+
+type Query {
+
+  # auth
+  isEmailUsed(email: String!): Boolean!
+  signIn(email: String!, password: String): AuthResult!
+  signOut: Result!
+  forget(email: String!): Result!
+  requestPasswordReset(email: String!): Result!
+  updatePassword(password: String!, token: String!): Result!
+
+  # profiles
+  getCurrentUser: UserResult!
+  getUsersBySlugs(slugs: [String]!): [User]!
+  getUserRoles(slug: String!): [Role]!
+
+  # shouts
+  getShoutBySlug(slug: String!): Shout!
+  shoutsByTopics(slugs: [String]!, page: Int!, size: Int!): [Shout]!
+  shoutsByAuthors(slugs: [String]!, page: Int!, size: Int!): [Shout]!
+  shoutsByCommunities(slugs: [String]!, page: Int!, size: Int!): [Shout]!
+  shoutsRatedByUser(page: Int!, size: Int!): ShoutsResult!
+  shoutsReviewed(page: Int!, size: Int!): [Shout]!
+  userUnpublishedShouts(page: Int!, size: Int!): ShoutsResult!
+  recentCommented(page: Int!, size: Int!): [Shout]!
+
+  # comments
+  getShoutComments(slug: String!): [Comment]!
+  getAllComments: [Comment]! // top10
+  userComments(slug: String!, page: Int!, size: Int!): [Comment]!
+
+  # collab
+  getShoutProposals(slug: String!): [Proposal]!
+  createProposal(body: String!, range: String): Proposal!
+  updateProposal(body: String!, range: String): Proposal!
+  destroyProposal(id: Int!): Result!
+  inviteAuthor(slug: String!, author: String!): Result!
+  removeAuthor(slug: String!, author: String!): Result!
+
+  # mainpage
+  topViewed(page: Int!, size: Int!): [Shout]!
+  topMonth(page: Int!, size: Int!): [Shout]!
+  topOverall(page: Int!, size: Int!): [Shout]!
+  recentPublished(page: Int!, size: Int!): [Shout]!
+  
+  # feed
+  recentAll(page: Int!, size: Int!): [Shout]!
+
+  # topics
+  topicsAll(page: Int!, size: Int!): [Topic]!
+  topicsByCommunity(community: String!): [Topic]!
+  topicsByAuthor(author: String!): [Topic]!
+
+  # communities
+  getCommunity(slug: String): Community!
+  getCommunities: [Community]!
+  # TODO: getCommunityMembers(slug: String!): [User]!
+}
+
+############################################ Subscription
+
+type Subscription {
+  onlineUpdated: [User!]!
+  shoutUpdated: Shout!
+  userUpdated: User!
+  commentUpdated(shout: String!): CommentUpdatedResult!
+}
+
+############################################ Entities
+
+type Resource {
+  id: Int!
+  name: String!
+}
+
+type Operation {
+  id: Int!
+  name: String!
+}
+
+type Permission {
+  operation_id: Int!
+  resource_id: Int!
+}
+
+type Role {
+  id: Int!
+  name: String!
+  community: String!
+  desc: String
+  permissions: [Permission!]!
+}
+
+type Rating {
+  rater: String!
+  value: Int!
+}
+
+type Notification {
+  kind: String! # unique primary key
+  template: String!
+  variables: [String]
+}
+
+type UserNotification {
+  id: Int! # primary key
+  user: Int!
+  kind: String! # NotificationTemplate.name
+  values: [String]
+}
+
+type User {
+  id: Int!
+  username: String! # to login, ex. email
+  createdAt: DateTime!
+  slug: String!
+  name: String # to display
+  email: String
+  password: String
+  oauth: String # provider:token
+  userpic: String
+  links: [String]
+  emailConfirmed: Boolean # should contain all emails too
+  muted: Boolean
+  updatedAt: DateTime
+  wasOnlineAt: DateTime
+  ratings: [Rating]
+  bio: String
+  notifications: [Int]
+  communities: [Int] # user participating communities
+  oid: String
+}
+
+type Comment {
+  id: Int!
+  createdBy: User!
+  body: String!
+  replyTo: Comment!
+  createdAt: DateTime!
+  updatedAt: DateTime
+  shout: Shout!
+  deletedAt: DateTime
+  deletedBy: User
+  ratings: [CommentRating]
+  views: Int
+  oid: String
+  old_thread: String
+}
+type CommentRating {
+  id: Int!
+  comment_id: Int!
+  createdBy: String!
+  createdAt: DateTime!
+  value: Int!
+}
+
+# is publication
+type Shout {
+  id: Int!
+  slug: String!
+  body: String!
+  createdAt: DateTime!
+  authors: [User!]!
+  ratings: [Rating]
+  community: String
+  cover: String
+  layout: String
+  draft: Boolean
+  versionOf: Shout # translations and adaptations
+  visibleFor: [User]
+  topics: [Topic]
+  mainTopic: String
+  title: String
+  subtitle: String
+  updatedAt: DateTime
+  updatedBy: User
+  deletedAt: DateTime
+  deletedBy: User
+  publishedBy: User
+  publishedAt: DateTime
+  stat: ShoutStat
+}
+
+type ShoutStat {
+  views: Int!
+  comments: Int!
+  ratings: Int!
+}
+
+type Community {
+  slug: String!
+  name: String!
+  desc: String
+  pic: String!
+  createdAt: DateTime!
+  createdBy: User!
+}
+
+type TopicStat {
+  shouts: Int!
+  views: Int!
+  subscriptions: Int!
+  authors: Int!
+}
+
+type Topic {
+  slug: String! # ID
+  title: String
+  body: String
+  pic: String
+  parents: [String] # NOTE: topic can have parent topics
+  children: [String] # and children
+  community: String!
+  stat: TopicStat
+  oid: String
+}
+
+enum ProposalStatus {
+  NEW
+  UPDATED
+  UPDATED_RATING
+  ACCEPTED
+  DECLINED
+  DISABLED
+  DELETED
+}
+
+type Proposal {
+  shout: String!
+  range: String # full / 0:2340
+  body: String!
+  createdAt: DateTime!
+  createdBy: String!
+  updatedAt: DateTime
+  acceptedAt: DateTime
+  acceptedBy: Int
+  declinedAt: DateTime
+  declinedBy: Int
+  disabledAt: DateTime
+  disabledBy: Int
+}
+
+type Token {
+  createdAt: DateTime!
+  expiresAt: DateTime
+  id: Int!
+  ownerId: Int!
+  usedAt: DateTime
+  value: String!
+}

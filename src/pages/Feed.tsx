@@ -126,7 +126,7 @@ const Feed: Component = () => {
                 {(c: Partial<Comment>) => (
                   <div class="comment">
                     <div class="comment__content">
-                      <div class="comment__text">
+                      <div class="comment__text" id={"comment-" + c.id}>
                         <MD body={c.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt\
                         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\
                         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in\
@@ -139,8 +139,8 @@ const Feed: Component = () => {
                       <a href={'@' + c.createdBy}>{(data.authors||{})[c.createdBy?.slug || ''].name || 'anonymous'}</a>
                       <div class="comment__article">
                         <Icon name="reply-arrow"/>
-                        <a href="#">
-                          Убийство Сэмюэля Пати и радикальный ислам в Европе
+                        <a href={'#' + c.replyTo}>
+                          { data['comments'].get(c.shout)?.title || 'Lorem ipsum titled' }
                         </a>
                       </div>
                     </div>

@@ -96,9 +96,9 @@ export const Home = () => {
   return (
     <main class="home">
       <LoadingBar progress={progress()} />
-      <Show when={!data.loading}>
+      <Show when={!data.loading && 'recentPublished' in data}>
         <NavTopics topics={someTopics()} />
-        <Row5 articles={data['recentPublished'].slice(0, 5) as []} />
+        <Row5 articles={data['recentPublished']?.slice(0, 5) as []} />
         <Hero />
         <Beside
           beside={data['recentPublished'].slice(5, 6)[0] as Partial<Shout>}
