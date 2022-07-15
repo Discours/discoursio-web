@@ -16,7 +16,7 @@ import { cache } from './cache'
 // })
 
 export const baseUrl = 
-  window && (window.location.hostname === 'localhost') ? 
+  window && (window.location.hostname === 'localhost') && (window.location.port === '5000') ? 
     'http://localhost:8000' : 'https://newapi.discours.io'
 
 export const createOptions = (token?: string): ClientOptions => {

@@ -20,6 +20,7 @@ import { shuffle } from '../utils'
 import { byComments, byViews } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
 import LoadingBar from 'solid-top-loading-bar'
+import { loaded } from '../context/_api'
 
 export const Home = () => {
   const [t] = useI18n()
@@ -35,14 +36,11 @@ export const Home = () => {
   const [byTopic, setByTopic] = createSignal({} as { [topic:string]: Partial<Shout>[] })
 
   createEffect(() => {
-    if('topTopics' in data
-      && 'recentPublished' in data
-      && 'topOveral' in data
-      // && data['recentPublished'].length > 0
-      ) {
-        console.log('[home] preparing data views')
-        const tm = data['topMonth']
+    if('topMonth' in loaded()) {
+        console.log('[home] preparing top month authors and topics')
+        console.debug(data)
         // top authors and topics
+        let tm = data.topMonth
         let tt = new Set([] as Topic[])
         let ta = new Set([] as Partial<User>[])
         tm.forEach((s: Partial<Shout>) => {
@@ -53,7 +51,14 @@ export const Home = () => {
         setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
         setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
         console.log('[home] top month authors and topics are ready')
+      } else {
+        console.debug('[home] data change', data)
+      }
+    }, [data])
 
+    createEffect(() => {
+      if('recentPublished' in loaded()) {
+        console.log('[home] preparing published articles...')
         // get shouts lists by
         let bl: { [key: string]: Partial<Shout>[] } = {}
         let bt: { [key: string]: Partial<Shout>[] } = {}
@@ -74,9 +79,13 @@ export const Home = () => {
         // set top commented
         setTopCommented(data['recentPublished'].sort(byComments).slice(0, 3))
         console.log('[home] grouped by layout and by topic and top commented are ready')
+      }
+    }, [data])
 
+    createEffect(() => {
+      if(Object.keys(byLayout()).length > 0) {
         // random layout pick
-        const ok = Object.keys(byLayout).filter((l) => l !== 'article')
+        const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
         const layout = shuffle(ok)[0]
         setSomeLayout(byLayout()[layout])
         setSelectedLayout(layout)

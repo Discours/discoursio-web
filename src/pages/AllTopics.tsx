@@ -9,7 +9,7 @@ import { byShouts, byViews } from '../utils/sortby'
 import { useAuth } from '../context/auth'
 import { ZineState } from '../context/zine'
 import LoadingBar from 'solid-top-loading-bar'
-import { loading } from '../context/_api'
+import { loaded, loading } from '../context/_api'
 
 export default () => {
   const [{ info }, {}] = useAuth()
@@ -58,12 +58,11 @@ export default () => {
     setMode('views')
     setSortedTopics(data.topicslist?.sort(byViews) as Partial<Topic>[])
   }
-  createEffect(() => sortViews(), [data.topicslist])
-  const progress = createMemo(() => data.stage/5)
+  createEffect(sortViews, [data.topicslist])
   useRouteReadyState()
   return (
     <div class="all-topics-page">
-      <LoadingBar progress={progress()} />
+      <LoadingBar color='black' progress={loaded().length > 0 ? 100 : 0} />
       <Show when={!loading()}>
         <div class="wide-container">
           <div class='shift-content'>

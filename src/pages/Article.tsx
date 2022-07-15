@@ -7,6 +7,7 @@ import '../styles/Article.scss'
 import FullArticle from '../components/Article/Full'
 // import LoadingBar from 'solid-top-loading-bar'
 import { ZineState } from '../context/zine'
+import { loaded } from '../context/_api'
 
 export const ArticlePage: Component = () => {
   const [t] = useI18n()
@@ -14,7 +15,7 @@ export const ArticlePage: Component = () => {
   useRouteReadyState()
   const [article,setArticle] = createSignal()
   createEffect(() => {
-    if (data.stage > 0) setArticle(data?.articles[data.args?.slug || ''])
+    if (loaded().length > 1) setArticle(data?.articles[data.args?.slug || ''])
     else if (data.args?.slug) {
       try { import('../../content/' + data.args.slug + '.mdx').then(v => {
         console.debug(v)

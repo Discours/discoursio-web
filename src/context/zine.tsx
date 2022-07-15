@@ -34,7 +34,7 @@ import articleComments from '../graphql/q/article-comments'
 // RouteData Preload
 export interface ZineState {
   args?: { [key:string]: string }
-  readonly stage: number
+  readonly stage?: number
   [queryname: string]: any
 }
 const START = 1
@@ -49,8 +49,8 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const size = props.params?.size || 10
   const page = props.params?.page || START
   const lang = props.params?.lang || locale()
-  const slug: string = location.pathname.split('/').filter(Boolean)[-1] || ''
-  const subpath: string = location.pathname.split('/').filter(Boolean)[-2] || ''
+  const slug = createMemo(() => location.pathname.split('/').filter(Boolean)[-1] || '')
+  const subpath = createMemo(() => location.pathname.split('/').filter(Boolean)[-2] || '')
   const [stage, setStage] = createSignal(0)
   // STAGE 1 preload non conditional
 
@@ -73,14 +73,15 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     setStage(2)
     console.log('[zine] stage 2/3 preloading')
     setLoading(true)
-    if (slug === '' && subpath === '') {
+    const [sl, sp] = [slug(), subpath()]
+    if (window.location.pathname === '' || window.location.pathname === '/') {
       // homepage: recent published and tops
       console.log('[zine] recentPublished')
       promiseQuery(articlesTopMonth, { page: START, size: 10 }).then(handleUpdate)
       promiseQuery(articlesTopRated, { page: START, size: 10 }).then(handleUpdate)
       promiseQuery(articlesRecentPublished, { page, size: 50 }).then(handleUpdate).then(stage3)
 
-    } else if (slug === 'feed' || subpath === 'feed') {
+    } else if (sl === 'feed' || sp === 'feed') {
       // feed: all recent and subscribed
       console.log('[zine] recentAll')
       // TODO: tune loading sequence for authorized subscribist
@@ -89,30 +90,30 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
       if (info?.userSubscribedTopics) promiseQuery(articlesForTopics, { page, size, slugs: info?.userSubscribedTopics }).then(handleUpdate)
       if (info?.userSubscribedCommunities) promiseQuery(articlesForCommunities, { page, size, communities: info?.userSubscribedCommunities }).then(handleUpdate)
 
-    } else if (slug.startsWith('@')) {
+    } else if (sl.startsWith('@')) {
       // author's page
-      const slg = slug.substring(1)
+      const slg = sl.substring(1)
       console.log(`[zine] @${slg} is author`)
       console.log('[zine] shoutsByAuthors')
       // TODO: in future check first if it is not a community slug
-      if (subpath === 'author' || subpath === 'a') {
+      if (sp === 'author' || sp === 'a') {
         promiseQuery(articlesForAuthors, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
 
-      } else if (slug.startsWith(':')) {
+      } else if (sl.startsWith(':')) {
         // topics's page
-        const slg = slug.substring(1)
+        const slg = sl.substring(1)
         console.log(`[zine] :${slg} is topic`)
         console.log('[zine] shoutsByTopics')
-        if (subpath === 'topic' || subpath === 't') {
+        if (sp === 'topic' || sp === 't') {
           promiseQuery(articlesForTopics, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
 
         }
       } else {
-        console.log('[zine] getShoutBySlug ' + slug)
-        if (cache().getShoutBySlug?.slug === slug) return
-        setCache(c => ({ ...c, 'getShoutBySlug': { slug } }))
-        promiseQuery(articleBySlug, { slug }).then(handleUpdate)
-        promiseQuery(articleComments, { slug }).then(handleUpdate).then(stage3)
+        console.log('[zine] getShoutBySlug ' + sl)
+        if (cache().getShoutBySlug?.slug === sl) return
+        setCache(c => ({ ...c, 'getShoutBySlug': { slug: sl } }))
+        promiseQuery(articleBySlug, { slug: sl }).then(handleUpdate)
+        promiseQuery(articleComments, { slug: sl }).then(handleUpdate).then(stage3)
       }
     }
   }

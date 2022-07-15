@@ -12,6 +12,7 @@ import '../styles/Topic.scss'
 import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
 import TopicFull from '../components/Topic/Full'
 import { ZineState } from '../context/zine'
+import { loaded } from '../context/_api'
 
 export const TopicPage = () => {
   const [t] = useI18n()
@@ -20,16 +21,22 @@ export const TopicPage = () => {
   const [mode, setMode] = createSignal('fresh')
   const [sortedArticles, setSortedArticles] = createSignal<Partial<Shout>[]>([])
   const [topicAuthors, setTopicAuthors] = createSignal<Partial<User>[]>([])
+  
   createEffect(() => {
-    if (data.stage > 1) {
+    if ('topicsByCommunity' in loaded()) {
       setSortedArticles((Object.values((data.articles || {} ) as Partial<Shout>[]))
         .filter( (a: Partial<Shout>) => !!a.topics?.filter( (t: any) => t.slug === topic() ) )
         .sort(byCreated)
       )
-    } else if (data.stage > 2) {
+    } 
+  })
+
+  createEffect(() => {
+    if ('usersByTopic' in loaded()) {
       setTopicAuthors(( Object.values(data.authors || {}) as Partial<User>[] ).sort(byRating))
     }
   })
+
   createEffect(() => {
     const m = mode()
     if (m === 'fresh') setSortedArticles((sortedArticles()).sort(byCreated))
@@ -37,6 +44,7 @@ export const TopicPage = () => {
     if (m === 'discuss') setSortedArticles((sortedArticles()).sort(byComments))
     else setSortedArticles((sortedArticles()).sort(byViews))
   })
+
   const title = createMemo(() => {
     const m = mode()
     if (m === 'fresh') return t('Top recent')

@@ -11,24 +11,30 @@ import TopicCard from "../components/Topic/Card";
 import ArticleCard from "../components/Article/Card";
 import { ZineState } from '../context/zine'
 import MD from '../components/Article/MD'
+import LoadingBar from 'solid-top-loading-bar'
+import { loaded } from '../context/_api'
 
 const Feed: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
   const [auth, { info }] = useAuth()
   const [mode, setMode] = createSignal(data.args?.by || 'views')
-  const topTopics = createMemo(() => (data.topicslist||[]).sort(byShouts).slice(0, 5))
+  const topTopics = createMemo(() => (data.topicslist || []).sort(byShouts).slice(0, 5))
   const articles = createMemo(() => {
-    switch(mode()){
+    switch (mode()) {
       case 'rating':
-        return Object.values(data.articles||{}).sort(byRating)
+        return Object.values(data.articles || {}).sort(byRating)
       case 'comments':
-        return Object.values(data.articles||{}).sort(byRating)
+        return Object.values(data.articles || {}).sort(byRating)
       case 'views':
       default:
-        return Object.values(data.articles||{}).sort(byViews)
+        return Object.values(data.articles || {}).sort(byViews)
     }
   })
+
+  // TODO: query userCommentedShouts / info.totalUnreadComments
+  // TODO: query userCollaboratedShouts / info.totalUnreadProposals
+  // TODO: query userRatexpected / info.totalUnratedShouts
 
   const topicIsReaded = (topic: string) => {
     // TODO: topic is readed method
@@ -43,6 +49,7 @@ const Feed: Component = () => {
 
   return (
     <>
+      <LoadingBar color='black' progress={loaded().length > 0 ? 100 : 0} />
       <div class="container feed">
         <div class="row">
           <div class="col-md-3 feed-navigation">
@@ -55,14 +62,14 @@ const Feed: Component = () => {
               <li><a href="#">Подписки на форуме</a></li>
             </ul>
             <ul>
-              <li><a href="#"><strong>Мои подписки</strong></a></li>
+              <li><a href="/feed?by=subscribed"><strong>{t('My subscriptions')}</strong></a></li>
               <For each={info?.userSubscribedAuthors as Partial<User>[]}>
                 {(author: Partial<User>) => (
                   <li>
                     <a
                       href={`/author/${author.slug}`}
                       classList={{ unread: authorIsReaded(author.slug as string) }}>
-                      {author.name}
+                      <small>@{author.slug}</small>{author.name}
                     </a>
                   </li>
                 )}
@@ -95,7 +102,7 @@ const Feed: Component = () => {
 
             <p class="settings">
               <NavLink href="/feed/settings"><strong>{t('Feed settings')}</strong></NavLink>
-              <Icon name="settings"/>
+              <Icon name="settings" />
             </p>
           </div>
 
@@ -112,7 +119,7 @@ const Feed: Component = () => {
             <Show when={!data.feedLoading && Boolean(articles())}>
               <For each={articles() as Partial<Shout>[]}>
                 {(a: Partial<Shout>) => (
-                  <ArticleCard article={a} settings={{isFeedMode: true}} />
+                  <ArticleCard article={a} settings={{ isFeedMode: true }} />
                 )}
               </For>
             </Show>
@@ -122,37 +129,37 @@ const Feed: Component = () => {
             <h4>{t('Comments')}</h4>
             <Show when={data['commentsAll']?.length > 0}>
               <section class="comments">
-              <For each={data['commentsAll']}>
-                {(c: Partial<Comment>) => (
-                  <div class="comment">
-                    <div class="comment__content">
-                      <div class="comment__text" id={"comment-" + c.id}>
-                        <MD body={c.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt\
+                <For each={data['commentsAll']}>
+                  {(c: Partial<Comment>) => (
+                    <div class="comment">
+                      <div class="comment__content">
+                        <div class="comment__text" id={"comment-" + c.id}>
+                          <MD body={c.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt\
                         ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\
                         laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in\
                         voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\
                         cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} />
+                        </div>
+                        <div class="comment__author-image" />
                       </div>
-                      <div class="comment__author-image" />
-                    </div>
-                    <div class="comment__details">
-                      <a href={'@' + c.createdBy}>{(data.authors||{})[c.createdBy?.slug || ''].name || 'anonymous'}</a>
-                      <div class="comment__article">
-                        <Icon name="reply-arrow"/>
-                        <a href={'#' + c.replyTo}>
-                          { data['comments'].get(c.shout)?.title || 'Lorem ipsum titled' }
-                        </a>
+                      <div class="comment__details">
+                        <a href={'@' + c.createdBy}>{(data.authors || {})[c.createdBy?.slug || ''].name || 'anonymous'}</a>
+                        <div class="comment__article">
+                          <Icon name="reply-arrow" />
+                          <a href={'#' + c.replyTo}>
+                            {data['comments'].get(c.shout)?.title || 'Lorem ipsum titled'}
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </For>
+                  )}
+                </For>
               </section>
             </Show>
 
             <For each={Array.from(topTopics()) as Partial<Topic>[]}>
               {(value: Partial<Shout | User | Topic>) => (
-              <TopicCard topic={value as Topic} subscribeButtonBottom={true} />
+                <TopicCard topic={value as Topic} subscribeButtonBottom={true} />
               )}
             </For>
           </aside>
