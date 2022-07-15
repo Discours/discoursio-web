@@ -20,7 +20,7 @@ import { shuffle } from '../utils'
 import { byComments, byViews } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
 import LoadingBar from 'solid-top-loading-bar'
-import { loaded } from '../context/_api'
+import { cache, loaded } from '../context/_api'
 
 export const Home = () => {
   const [t] = useI18n()
@@ -36,11 +36,8 @@ export const Home = () => {
   const [byTopic, setByTopic] = createSignal({} as { [topic:string]: Partial<Shout>[] })
 
   createEffect(() => {
-    if('topMonth' in loaded()) {
-        console.log('[home] preparing top month authors and topics')
-        console.debug(data)
-        // top authors and topics
-        let tm = data.topMonth
+    if( loaded()?.includes('topMonth') && topTopics().length === 0 && cache()['topMonth']?.length > 0) {
+        let tm: Partial<Shout>[] = cache()['topMonth']
         let tt = new Set([] as Topic[])
         let ta = new Set([] as Partial<User>[])
         tm.forEach((s: Partial<Shout>) => {
@@ -51,19 +48,16 @@ export const Home = () => {
         setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
         setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
         console.log('[home] top month authors and topics are ready')
-      } else {
-        console.debug('[home] data change', data)
       }
-    }, [data])
+    }, [loaded()])
 
     createEffect(() => {
-      if('recentPublished' in loaded()) {
+      if(loaded()?.includes('recentPublished') && Object.keys(byTopic()).length === 0 && cache()['recentPublished']?.length > 0) {
         console.log('[home] preparing published articles...')
         // get shouts lists by
         let bl: { [key: string]: Partial<Shout>[] } = {}
         let bt: { [key: string]: Partial<Shout>[] } = {}
-
-        data['recentPublished'].forEach((s: Partial<Shout>) => {
+        cache()['recentPublished'].forEach((s: Partial<Shout>) => {
           // by topic
           s.topics?.forEach((tpc: Maybe<Topic>) => {
             if (!bt[tpc?.slug || '']) bt[tpc?.slug || ''] = []
@@ -77,56 +71,58 @@ export const Home = () => {
         setByLayout(bl)
         setByTopic(bt)
         // set top commented
-        setTopCommented(data['recentPublished'].sort(byComments).slice(0, 3))
-        console.log('[home] grouped by layout and by topic and top commented are ready')
+        setTopCommented(cache()['recentPublished'].sort(byComments).slice(0, 3))
+        console.log('[home] some grouped articles are ready')
       }
-    }, [data])
+    }, [loaded()])
 
     createEffect(() => {
-      if(Object.keys(byLayout()).length > 0) {
+      if(Object.keys(byLayout()).length > 0 && someTopics().length === 0) {
         // random layout pick
         const ok = Object.keys(byLayout()).filter((l) => l !== 'article')
         const layout = shuffle(ok)[0]
         setSomeLayout(byLayout()[layout])
         setSelectedLayout(layout)
-        console.log(`[ready] '${layout}' layout picked`)
-        console.log('[home] picking random topics')
+        console.log(`[home] <${layout}> layout picked`)
+        console.log('[home] picking some random topics')
         // random topics for navbar
         setSomeTopics((_) => {
           const nv = Array.from(Object.entries(byTopic())).filter(([, v], _i) => (v as Partial<Topic>[]).length > 4)
-          console.log(`[ready] topics navbar data prepared`)
-          return nv.map((f) => (data.topics || {})[f[0]]).slice(0, 12)
+          const ttt = nv.map((f) => (data['topics'] || {})[f[0]]).slice(0, 12)
+          console.log(`[home] topics navbar data ready`, ttt)
+          return ttt
         })
       }
-    }, [data])
+    }, [byLayout()])
 
   useRouteReadyState()
-  const progress = createMemo(() => data.loadcounter/5)
+  const progress = createMemo(() => loaded().length/4)
+  const articles = createMemo(() => cache()['recentPublished'])
   return (
     <main class="home">
       <LoadingBar progress={progress()} />
-      <Show when={!data.loading && 'recentPublished' in data}>
+      <Show when={!data.loading && articles()}>
         <NavTopics topics={someTopics()} />
-        <Row5 articles={data['recentPublished']?.slice(0, 5) as []} />
+        <Row5 articles={articles().slice(0, 5) as []} />
         <Hero />
         <Beside
-          beside={data['recentPublished'].slice(5, 6)[0] as Partial<Shout>}
+          beside={articles().slice(5, 6)[0] as Partial<Shout>}
           title={t('Top viewed')}
           values={topViewed()}
           wrapper={'top-article'}
         />
-        <Row3 articles={data['recentPublished'].slice(6, 9) as []} />
+        <Row3 articles={articles().slice(6, 9) as []} />
         <Beside
-          beside={data['recentPublished'].slice(9, 10)[0] as Partial<Shout>}
+          beside={articles().slice(9, 10)[0] as Partial<Shout>}
           title={t('Top authors')}
           values={topAuthors()}
           wrapper={'author'}
         />
-        <Slider title={t('Top month articles')} articles={data['recentPublished'].slice(10, 18) as []} />
-        <Row2 articles={data['recentPublished'].slice(18, 20) as []} />
-        <RowShort articles={data['recentPublished'].slice(20, 24) as []} />
-        <Row1 article={data['recentPublished'].slice(24, 25)[0] as Partial<Shout>} />
-        <Row3 articles={data['recentPublished'].slice(25, 28) as []} />
+        <Slider title={t('Top month articles')} articles={articles().slice(10, 18) as []} />
+        <Row2 articles={articles().slice(18, 20) as []} />
+        <RowShort articles={articles().slice(20, 24) as []} />
+        <Row1 article={articles().slice(24, 25)[0] as Partial<Shout>} />
+        <Row3 articles={articles().slice(25, 28) as []} />
 
         <Row3 articles={topCommented()} header={<h2>{t('Top commented')}</h2>} />
         <Group
@@ -137,18 +133,18 @@ export const Home = () => {
             </div>
           }
         />
-        <Slider title={t('Favorite')} articles={data['recentPublished'].slice(28, 30) as []} />
+        <Slider title={t('Favorite')} articles={articles().slice(28, 30) as []} />
 
         <Suspense>
           <Beside
-            beside={data['recentPublished'].slice(30, 31)[0] as Partial<Shout>}
+            beside={articles().slice(30, 31)[0] as Partial<Shout>}
             title={t('Top topics')}
             values={topTopics()}
             wrapper={'topic'}
             isTopicCompact={true}
           />
         </Suspense>
-        <Row3 articles={data['recentPublished'].slice(31, 34) as []} />
+        <Row3 articles={articles().slice(31, 34) as []} />
         <Banner />
       </Show>
     </main>

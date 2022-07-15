@@ -8,7 +8,7 @@ import { Shout, User } from '../graphql/types.gen'
 import { useAuth } from './auth'
 import { usePromiseQuery } from '../utils/promiseQuery'
 import { byViews } from '../utils/sortby'
-import { handleUpdate, loadcounter, cache, setCache, loading, setLoading } from './_api'
+import { handleUpdate, loadcounter, cache, setCache, loading, setLoading, loaded } from './_api'
 // all zine queries
 import topicsByCommunity from '../graphql/q/topics-by-community'
 import articlesRecentPublished from '../graphql/q/articles-recent-published'
@@ -34,12 +34,12 @@ import articleComments from '../graphql/q/article-comments'
 // RouteData Preload
 export interface ZineState {
   args?: { [key:string]: string }
-  readonly stage?: number
+  readonly loading?: boolean
   [queryname: string]: any
 }
 const START = 1
 
-// RouteDataFunc
+// RouteDataFunc as state initiliazer
 export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const location = useLocation()
   const [, { locale }] = useI18n()
@@ -58,7 +58,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     setStage(1)
     if ('topicsByCommunity' in cache()) return
     else {
-      console.log('[zine] stage 1/3 preloading')
+      // console.log('[zine] stage 1/3 preloading')
       setLoading(true)
       setCache({ 'topicsByCommunity': [] })
       console.log(`[zine] topicsByCommunity`)
@@ -71,19 +71,17 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
 
   const stage2 = () => {
     setStage(2)
-    console.log('[zine] stage 2/3 preloading')
+    // console.log('[zine] stage 2/3 preloading')
     setLoading(true)
     const [sl, sp] = [slug(), subpath()]
     if (window.location.pathname === '' || window.location.pathname === '/') {
       // homepage: recent published and tops
-      console.log('[zine] recentPublished')
       promiseQuery(articlesTopMonth, { page: START, size: 10 }).then(handleUpdate)
       promiseQuery(articlesTopRated, { page: START, size: 10 }).then(handleUpdate)
       promiseQuery(articlesRecentPublished, { page, size: 50 }).then(handleUpdate).then(stage3)
 
     } else if (sl === 'feed' || sp === 'feed') {
       // feed: all recent and subscribed
-      console.log('[zine] recentAll')
       // TODO: tune loading sequence for authorized subscribist
       promiseQuery(articlesRecentAll, { page, size: 50 }).then(handleUpdate).then(stage3)
       if (info?.userSubscribedAuthors) promiseQuery(articlesForAuthors, { page, size, slugs: info?.userSubscribedAuthors }).then(handleUpdate)
@@ -93,8 +91,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     } else if (sl.startsWith('@')) {
       // author's page
       const slg = sl.substring(1)
-      console.log(`[zine] @${slg} is author`)
-      console.log('[zine] shoutsByAuthors')
+      console.log(`[zine] @${slg}`)
       // TODO: in future check first if it is not a community slug
       if (sp === 'author' || sp === 'a') {
         promiseQuery(articlesForAuthors, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
@@ -103,13 +100,12 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
         // topics's page
         const slg = sl.substring(1)
         console.log(`[zine] :${slg} is topic`)
-        console.log('[zine] shoutsByTopics')
         if (sp === 'topic' || sp === 't') {
           promiseQuery(articlesForTopics, { page, size, slugs: [slg,] }).then(handleUpdate).then(stage3)
 
         }
       } else {
-        console.log('[zine] getShoutBySlug ' + sl)
+        console.log('[zine] * ' + sl)
         if (cache().getShoutBySlug?.slug === sl) return
         setCache(c => ({ ...c, 'getShoutBySlug': { slug: sl } }))
         promiseQuery(articleBySlug, { slug: sl }).then(handleUpdate)
@@ -119,23 +115,22 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   }
 
   // STAGE 3 after articles loaded
-  const articles = createMemo(() => cache().articles)
+  const articles = createMemo(() => cache()['articles'])
   const stage3 = () => setStage(3)
+
   createEffect(() => {
     if(articles()?.length > 0 && stage() === 3) {
       setLoading(true)
-      console.log(`[zine] stage 3/3 preloading: getUsersBySlugs`)
+      // console.log(`[zine] stage 3/3 preloading: getUsersBySlugs`)
       setCache(c => ({ ...c, 'getUsersBySlugs': [] }))
       let slugs: string[] = []
       articles().forEach((a: Partial<Shout>) => a.authors?.forEach(
           (a: Partial<User>) => {
             if (!((a?.slug as string) in slugs)) slugs.push(a?.slug || '')
           }))
-      promiseQuery(authorsBySlugs, { slugs }).then(handleUpdate)
-        .then(() => { 
-          console.log('[zine] finished preloading')
-          setLoading(false) 
-        })
+      promiseQuery(authorsBySlugs, { slugs })
+        .then(handleUpdate)
+        .then(() => setLoading(false))
     }
   })
 
@@ -158,13 +153,10 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
       return cache()['communities'] || {}
     },
     get articles() {
-      return cache()['articles'] || {}
-    },
-    get stage() {
-      return loadcounter() || 0
+      return articles() || []
     },
     get loading() {
-      return loading()
+      return loaded()?.length === 0
     }
   } as ZineState
   return zineState
@@ -175,7 +167,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
 const ZineContext = createContext<[ZineState, any]>([{} as ZineState, {}])
 const ZineProvider = ZineContext.Provider
 
-export const ZineStateProvider = (props: any): any => {
+export const ZineStateProvider = (props: any): any => { // store { state actions } provider
   const client: Client = !!props.client ? props.client : useClient()
   const [, promiseMutation] = usePromiseQuery(client)
   const zineState = ZineStateHandler(props)

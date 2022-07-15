@@ -31,7 +31,7 @@ const entities: { [key:string]: string } = {
 const [, actions] = useStore()
 export const [loaded, setLoaded] = createSignal<string[]>([])
 export const [loading, setLoading] = createSignal(false)
-export const [cache, setCache] = createSignal<{ [key:string]: any}>({})
+export const [cache, setCache] = createSignal<{ [key:string]: any }>({})
 export const [loadcounter, setLoadCounter] = createSignal(0)
 export const handleUpdate = ({ data, error }: OperationResult) => {
     if (error && typeof actions.warn === 'function') actions.warn({ body: error.message, kind: 'error' })
@@ -44,19 +44,20 @@ export const handleUpdate = ({ data, error }: OperationResult) => {
       else {
         setCache((s) => {
           const l = (value as any[]) || []
-          let d: { [query: string]: any } = {}
+          let up: { [key: string]: any } = {}
           if (l?.length > 0) {
-            console.log(`[api] call №${loadcounter()+1}`)
+            let d: { [k:string]: any} = {}
             l.forEach((item: any) => { if(item?.slug) d[item.slug] = item })
-            console.log(`[api] ${l.length} ${entity} from ${query} have been preloaded`)
+            up = { 
+              [entity]: { ...s[entity], ...d }, // dict updating
+              [query]: l // list overwriting
+            }
             setLoadCounter(loadcounter() + 1)
-            s[entity] = { ...s[entity], ...d }
-            s[query] = value || s[query] || []
             setLoaded([ ...loaded(), query] as any)
-            console.debug(loaded())
-            console.debug(s)
+            console.log(`[api] call №${loadcounter()}: ${query}, got ${l.length} ${entity}`)
+            console.debug('[api] cached: ', loaded())
           }
-          return s
+          return { ...s, ...up }
         })
       }
       setLoading(false)
