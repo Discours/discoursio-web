@@ -10,11 +10,32 @@ import AuthorFull from '../components/Author/Full'
 import { byCreated, byRating, byViews } from '../utils/sortby'
 import '../styles/Topic.scss'
 import { ZineState } from '../context/zine'
+import { usePromiseQuery } from '../utils/promiseQuery'
+import { useClient } from 'solid-urql'
+import authorsBySlugs from '../graphql/q/authors-by-slugs'
+import { handleUpdate } from '../context/_api'
 
 export const AuthorPage: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
-  const author = createMemo<Partial<User>>(() => data.author as Partial<User>)
+  console.debug(data)
+  const slug = createMemo<string>(() => data.params?.slug || '')
+  const [promiseQuery, ] = usePromiseQuery(useClient())
+  const [author, setAuthor] = createSignal<Partial<User>>()
+  createEffect(() => {
+    if(!author() && slug()) {
+      if(Object.keys(data.authors || {}).length > 0) {
+        const a = data['authors'] ? data['authors'][slug()] : null
+        if (!!a) {
+          setAuthor(a)
+          return
+        }
+      }
+      if(slug()) promiseQuery(authorsBySlugs, { slugs: [slug(), ] })
+        .then(handleUpdate)
+        .then(() => setAuthor(data['authors'][slug()]))
+    }
+  })
 
   const [authorTopics, setAuthorTopics] = createSignal<Partial<Topic>[]>([])
   createEffect(() => {
@@ -34,10 +55,13 @@ export const AuthorPage: Component = () => {
     switch(mode()) {
       case 'rating':
         r = Object.values(data.articles||{}).sort(byRating)  as Partial<Shout>[]
+        break
       case 'comments':
         r = Object.values(data.articles||{}).sort(byRating) as Partial<Shout>[]
+        break
       case 'views':
         r = Object.values(data.articles||{}).sort(byViews) as Partial<Shout>[]
+        break
       case 'created':
       default:
         r = Object.values(data.articles||{}).sort(byCreated) as Partial<Shout>[]
@@ -54,7 +78,7 @@ export const AuthorPage: Component = () => {
   useRouteReadyState()
   return (
     <div class='container author-page'>
-      <Show when={!data.authorLoading}>
+      <Show when={'getUsersBySlugs' in data} fallback={<div class="center">{t('Loading')}</div>}>
         <AuthorFull author={author() as Partial<User>} />
         <div class='row group__controls'>
           <div class='col-md-8'>

@@ -143,7 +143,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
 
   const zineState = {
     get params() {
-      return { ...props.params, slug, size, page, subpath, lang }
+      return { ...props.params, slug: slug(), size, page, subpath: subpath(), lang }
     },
     get topics() {
       return cache()['topics'] || {}
