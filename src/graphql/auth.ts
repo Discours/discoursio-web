@@ -60,7 +60,7 @@ const addAuthToOperation = (a: any) => {
 }
 
 const getAuth = async (a: any) => {
-  const { authState, mutate } = a
+  const { authState, /* mutate */ } = a
 
   if (!authState) {
     const token = localStorage.getItem('token')

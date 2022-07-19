@@ -18,8 +18,11 @@ import { handleUpdate } from '../context/_api'
 export const AuthorPage: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
-  console.debug(data)
-  const slug = createMemo<string>(() => data.params?.slug || '')
+  const slug = createMemo<string>(() => {
+    let slug = data.params?.slug
+    if(data.params?.slug.startsWith('@'))  slug = slug.replace('@','')
+    return slug
+  })
   const [promiseQuery, ] = usePromiseQuery(useClient())
   const [author, setAuthor] = createSignal<Partial<User>>()
   createEffect(() => {

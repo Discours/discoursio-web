@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, For, onMount, Show } from 'solid-js'
+import { createEffect, createSignal, For, Show } from 'solid-js'
 import { Topic } from '../graphql/types.gen'
 import TopicCard from '../components/Topic/Card'
 import '../styles/AllTopics.scss'
@@ -101,8 +101,8 @@ export default () => {
                             topic={topic}
                             compact={false}
                             subscribed={
-                              info?.userSubscribedTopics &&
-                              info?.userSubscribedTopics.includes(topic.slug || '')
+                              info?.topics &&
+                              info?.topics.includes(topic.slug || '')
                             }
                           />
                         )}

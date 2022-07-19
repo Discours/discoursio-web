@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import legacy from '@vitejs/plugin-legacy'
+// import legacy from '@vitejs/plugin-legacy'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import solid from 'vite-plugin-solid'
 import mdx from '@mdx-js/rollup'
@@ -23,7 +23,7 @@ export default defineConfig({
     } as any,
     solid({ extensions: ['.md', '.mdx'], dev }),
     tsconfigPaths(),
-    legacy({  targets: ['defaults', 'not IE 11'] }),
+    // legacy({  targets: ['defaults', 'not IE 11'] }),
     pwaEnabled && VitePWA(pwaOptions)
   ],
   css: {
@@ -38,6 +38,7 @@ export default defineConfig({
   },
   build: {
     assetsInlineLimit: 0,
+    chunkSizeWarningLimit: 777,
     cssCodeSplit: true,
     target: 'esnext',
     commonjsOptions: { include: [] },

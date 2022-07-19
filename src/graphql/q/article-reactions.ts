@@ -1,8 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query GetShoutComments($shout: String!) {
-    getShoutComments(slug: $shout) {
+  query getShoutReactions($shout: String!) {
+    getShoutReactions(slug: $shout) {
       id
       body
       createdAt
@@ -14,11 +14,8 @@ export default gql`
       }
       updatedAt
       replyTo
-      ratings {
-        _id: createdBy
-        value
-        createdBy
-      }
+      kind
+      range
     }
   }
 `

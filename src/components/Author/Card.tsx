@@ -21,7 +21,7 @@ export default (props: AuthorCardProps) => {
   const [{}, { follow, unfollow }] = useZine()
   const [{ user, info }] = useAuth()
   const subscribed = createMemo(
-    () => !!info?.userSubscribedAuthors?.filter((u) => u === props.author.slug).pop()
+    () => !!info?.authors?.filter((u) => u === props.author.slug).pop()
   )
   const canFollow = createMemo(() => !props.hideFollow && user?.slug !== props.author.slug)
   const bio = createMemo(() => props.author.bio || t('Our regular contributor'))

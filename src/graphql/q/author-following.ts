@@ -1,8 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query UserSubscriptionsQuery($slug: String!) {
-    userSubscriptions(slug: $slug) {
+  query UserFollowingQuery($slug: String!) {
+    userFollowing(slug: $slug) {
       _id: slug
       slug
       name

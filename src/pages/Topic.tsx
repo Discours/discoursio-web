@@ -17,11 +17,18 @@ import { loaded } from '../context/_api'
 export const TopicPage = () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
-  const topic = createMemo<Partial<Topic>>(() => (data.topics || {})[data.args?.slug || ''])
   const [mode, setMode] = createSignal('fresh')
   const [sortedArticles, setSortedArticles] = createSignal<Partial<Shout>[]>([])
   const [topicAuthors, setTopicAuthors] = createSignal<Partial<User>[]>([])
+
+  const slug = createMemo<string>(() => {
+    let slug = data.params?.slug
+    if(data.params?.slug.startsWith(':'))  slug = slug.replace(':','')
+    return slug
+  })
   
+  const topic = createMemo<Partial<Topic>>(() => (data.topics || {})[slug()])
+
   createEffect(() => {
     if ('topicsByCommunity' in loaded()) {
       setSortedArticles((Object.values((data.articles || {} ) as Partial<Shout>[]))
@@ -58,7 +65,7 @@ export const TopicPage = () => {
   return (
     <div class='topic-page container'>
       <Show when={data.stage}>
-        <Show when={Boolean(topic()?.slug)}>
+        <Show when={slug()}>
           <TopicFull topic={topic() as Topic} />
         </Show>
         <div class='row group__controls'>

@@ -22,14 +22,13 @@ export default gql`
         slug
         userpic
       }
-      community
+     # community
       mainTopic
       publishedAt
       stat {
         _id: views
         views
-        comments
-        ratings
+        reacted
       }
     }
   }

@@ -10,7 +10,7 @@ export default (props: { topic: Topic }) => {
   const [t] = useI18n()
   const [, { follow, unfollow }] = useZine()
   const [{ info }] = useAuth()
-  const subscribed = createMemo(() => info?.userSubscribedTopics?.includes(props.topic.slug))
+  const subscribed = createMemo(() => info?.topics?.includes(props.topic.slug))
   return (
     <div class='topic-full container'>
       <div class='row'>

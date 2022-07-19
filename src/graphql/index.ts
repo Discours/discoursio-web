@@ -14,21 +14,21 @@ import articlesForTopics from './q/articles-for-topics'
 import articlesForAuthors from './q/articles-for-authors'
 // article
 import articleBySlug from './q/article-by-slug'
-import articleComments from './q/article-comments'
+import articleComments from './q/article-reactions'
 import articleCreate from './q/article-create'
 import articleUpdate from './q/article-update'
 // author
 import authorBySlug from './q/authors-by-slugs'
-import authorComments from './q/author-comments'
+import authorComments from './q/author-reactions'
 import authorRoles from './q/author-roles'
-import authorSubscribers from './q/author-subscribers'
-import authorSubscriptions from './q/author-subscriptions'
+import authorFollowers from './q/author-followers'
+import authorFollowing from './q/author-following'
 // topics
 import topicsAll from './q/topics-all'
 // comment
-import commentCreate from './q/comment-create'
-import commentUpdate from './q/comment-update'
-import commentDestroy from './q/comment-destroy'
+import commentCreate from './q/reaction-create'
+import commentUpdate from './q/reaction-update'
+import commentDestroy from './q/reaction-destroy'
 
 export default {
   recentPublished,
@@ -44,8 +44,8 @@ export default {
   authorBySlug,
   authorComments,
   authorRoles,
-  authorSubscribers,
-  authorSubscriptions,
+  authorFollowers,
+  authorFollowing,
   articleBySlug,
   articleComments,
   articleCreate,

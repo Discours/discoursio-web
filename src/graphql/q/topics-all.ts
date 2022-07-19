@@ -10,13 +10,13 @@ export default gql`
       pic
       parents
       children
-      community
+      # community
       stat {
         _id: views
         shouts
         authors
         views
-        subscriptions
+        followers
       }
     }
   }

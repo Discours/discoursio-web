@@ -1,17 +1,15 @@
 import { gql } from 'solid-urql'
 
-// WARNING: need Auth header
-
 export default gql`
-  query ShoutsCommentedByUserQuery($slug: String!, $page: Int!, $size: Int!) {
-    shoutsCommentedByUser(slug: String!, page: Int!, size: Int!) {
+  query ShoutsBySessionQuery($page: Int!, $size: Int!) {
+    shoutsForFeed(page: $page, size: $size) {
       _id: slug
       title
       subtitle
       layout
       slug
       cover
-      community
+      # community
       mainTopic
       topics {
         _id: slug
@@ -19,6 +17,13 @@ export default gql`
         title
         body
         pic
+        stat {
+          _id: views
+          shouts
+          authors
+          views
+          followers
+        }
       }
       authors {
         _id: slug
@@ -30,8 +35,7 @@ export default gql`
       stat {
         _id: views
         views
-        comments
-        ratings
+        reacted
       }
     }
   }

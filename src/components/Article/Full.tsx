@@ -5,7 +5,7 @@ import Icon from '../Nav/Icon'
 import ArticleComment from './Comment'
 import AuthorCard from '../Author/Card'
 import { createMemo, For, Show } from 'solid-js'
-import { Comment, Rating, Shout, Topic, User } from '../../graphql/types.gen'
+import { Reaction, ReactionKind, Shout, Topic, User } from '../../graphql/types.gen'
 import { useZine } from '../../context/zine'
 import { useStore } from '../../context'
 import { useI18n } from '@solid-primitives/i18n'
@@ -16,7 +16,7 @@ const deepest = 6
 
 interface ArticleProps {
   article: Partial<Shout>
-  comments?: Comment[]
+  reactions?: Partial<Reaction>[]
 }
 
 export default (props: ArticleProps) => {
@@ -24,10 +24,10 @@ export default (props: ArticleProps) => {
   const [{ user, token, info }] = useAuth()
   const [, { follow, unfollow }] = useZine()
   const [, { showModal }] = useStore()
-  const subscribed = createMemo(() => info?.userSubscribedTopics?.includes(props.article?.slug || ''))
+  const subscribed = createMemo(() => info?.topics?.includes(props.article?.slug || ''))
   const mainTopic = () => (props.article?.topics?.find((topic) => topic?.slug === props.article?.mainTopic)?.title || '').replace(' ', '&nbsp;')
   const canEdit = () => !!(props.article?.authors?.find((a: Partial<User>) => a.slug === user?.slug)) // FIXME
-  const getCommentLevel = (c: Comment, level = 0) => {
+  const getCommentLevel = (c: Reaction, level = 0) => {
     if (c && c.replyTo && level < deepest) {
       level += 1
       return 0 // FIXME: getCommentLevel(commentsById[c.replyTo], level)
@@ -69,9 +69,10 @@ export default (props: ArticleProps) => {
       <div class='col-md-8 shift-content'>
         <div class='shout-stats'>
           <div class='shout-stats__item shout-stats__item--likes'>
-            <Icon name='like' />
-            {props.article?.ratings?.reduce((acc, curr) => acc + (curr as Rating).value, 0)}
-            <Icon name='like' />
+            <Icon name='like' counter={props.reactions?.filter(r => r.kind == ReactionKind.Agree).length} />
+            <Icon name='dislike' counter={props.reactions?.filter(r => r.kind == ReactionKind.Disagree).length} />
+            <Icon name='proof' counter={props.reactions?.filter(r => r.kind == ReactionKind.Proof).length} />
+            <Icon name='proof_against' counter={props.reactions?.filter(r => r.kind == ReactionKind.ProofAgainst).length} />
           </div>
           <div class='shout-stats__item'>
             <Icon name='view' />
@@ -122,17 +123,17 @@ export default (props: ArticleProps) => {
           </For>
         </div>
 
-        <Show when={props.comments?.length}>
+        <Show when={props.reactions?.length}>
           <h2>
-            {t('Comments')} {props.comments?.length.toString() || ''}
+            {t('Comments')} {props.reactions?.length.toString() || ''}
           </h2>
 
-          <For each={props.comments}>
-            {(comment: Comment) => (
+          <For each={props.reactions?.filter(r => r.body) as []}>
+            {(reaction: Reaction) => (
               <ArticleComment
-                comment={comment}
-                level={getCommentLevel(comment)}
-                canEdit={comment.createdBy?.slug === user?.slug}
+                comment={reaction}
+                level={getCommentLevel(reaction)}
+                canEdit={reaction.createdBy?.slug === user?.slug}
               />
             )}
           </For>

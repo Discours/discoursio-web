@@ -8,7 +8,7 @@ export default gql`
       error
       comment {
         id
-        author
+        createdBy
         body
         createdAt
         updatedAt

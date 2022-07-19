@@ -1,5 +1,4 @@
-/* eslint no-use-before-define: 0 */
-// import gql from 'graphql-tag'
+import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -23,52 +22,6 @@ export type AuthResult = {
   user?: Maybe<User>
 }
 
-export type Comment = {
-  __typename?: 'Comment'
-  body: Scalars['String']
-  createdAt: Scalars['DateTime']
-  createdBy: User
-  deletedAt?: Maybe<Scalars['DateTime']>
-  deletedBy?: Maybe<User>
-  id: Scalars['Int']
-  oid?: Maybe<Scalars['String']>
-  old_thread?: Maybe<Scalars['String']>
-  ratings?: Maybe<Array<Maybe<CommentRating>>>
-  replyTo: Comment
-  shout: Shout
-  updatedAt?: Maybe<Scalars['DateTime']>
-  views?: Maybe<Scalars['Int']>
-}
-
-export type CommentRating = {
-  __typename?: 'CommentRating'
-  comment_id: Scalars['Int']
-  createdAt: Scalars['DateTime']
-  createdBy: Scalars['String']
-  id: Scalars['Int']
-  value: Scalars['Int']
-}
-
-export type CommentResult = {
-  __typename?: 'CommentResult'
-  comment?: Maybe<Comment>
-  error?: Maybe<Scalars['String']>
-}
-
-export enum CommentStatus {
-  Deleted = 'DELETED',
-  New = 'NEW',
-  Updated = 'UPDATED',
-  UpdatedRating = 'UPDATED_RATING'
-}
-
-export type CommentUpdatedResult = {
-  __typename?: 'CommentUpdatedResult'
-  comment?: Maybe<Comment>
-  error?: Maybe<Scalars['String']>
-  status?: Maybe<CommentStatus>
-}
-
 export type Community = {
   __typename?: 'Community'
   createdAt: Scalars['DateTime']
@@ -87,69 +40,58 @@ export type CommunityInput = {
 
 export type CurrentUserInfo = {
   __typename?: 'CurrentUserInfo'
-  totalUnreadMessages?: Maybe<Scalars['Int']>
-  userSubscribedAuthors: Array<Maybe<Scalars['String']>>
-  userSubscribedCommunities: Array<Maybe<Scalars['String']>>
-  userSubscribedShoutComments: Array<Maybe<Scalars['String']>>
-  userSubscribedTopics: Array<Maybe<Scalars['String']>>
+  authors: Array<Maybe<Scalars['String']>>
+  communities: Array<Maybe<Scalars['String']>>
+  inbox?: Maybe<Scalars['Int']>
+  reactions: Array<Maybe<Scalars['String']>>
+  topics: Array<Maybe<Scalars['String']>>
+}
+
+export enum FollowingEntity {
+  Author = 'AUTHOR',
+  Community = 'COMMUNITY',
+  Reactions = 'REACTIONS',
+  Topic = 'TOPIC'
 }
 
 export type Mutation = {
   __typename?: 'Mutation'
-  acceptProposal: Result
   confirmEmail: AuthResult
-  createComment: CommentResult
   createCommunity: Community
-  createProposal: Proposal
+  createReaction: ReactionResult
   createShout: ShoutResult
   createTopic: TopicResult
-  declineProposal: Result
-  deleteComment: Result
   deleteCommunity: Result
-  deleteProposal: Result
+  deleteReaction: Result
   deleteShout: Result
-  disableProposal: Result
+  follow: Result
   inviteAuthor: Result
-  rateComment: Result
-  rateProposal: Result
+  rateReaction: Result
   rateShout: Result
   rateUser: Result
   registerUser: AuthResult
   removeAuthor: Result
   requestPasswordUpdate: Result
-  subscribe: Result
-  unsubscribe: Result
-  updateComment: CommentResult
+  unfollow: Result
   updateCommunity: Community
   updatePassword: Result
   updateProfile: Result
-  updateProposal: Proposal
+  updateReaction: ReactionResult
   updateShout: ShoutResult
   updateTopic: TopicResult
   viewShout: Result
-}
-
-export type MutationAcceptProposalArgs = {
-  id: Scalars['Int']
 }
 
 export type MutationConfirmEmailArgs = {
   token: Scalars['String']
 }
 
-export type MutationCreateCommentArgs = {
-  body: Scalars['String']
-  replyTo?: InputMaybe<Scalars['Int']>
-  shout: Scalars['String']
-}
-
 export type MutationCreateCommunityArgs = {
   community: CommunityInput
 }
 
-export type MutationCreateProposalArgs = {
-  body: Scalars['String']
-  range?: InputMaybe<Scalars['String']>
+export type MutationCreateReactionArgs = {
+  input: ReactionInput
 }
 
 export type MutationCreateShoutArgs = {
@@ -160,19 +102,11 @@ export type MutationCreateTopicArgs = {
   input: TopicInput
 }
 
-export type MutationDeclineProposalArgs = {
-  id: Scalars['Int']
-}
-
-export type MutationDeleteCommentArgs = {
-  id: Scalars['Int']
-}
-
 export type MutationDeleteCommunityArgs = {
   slug: Scalars['String']
 }
 
-export type MutationDeleteProposalArgs = {
+export type MutationDeleteReactionArgs = {
   id: Scalars['Int']
 }
 
@@ -180,8 +114,9 @@ export type MutationDeleteShoutArgs = {
   slug: Scalars['String']
 }
 
-export type MutationDisableProposalArgs = {
-  id: Scalars['Int']
+export type MutationFollowArgs = {
+  slug: Scalars['String']
+  what: FollowingEntity
 }
 
 export type MutationInviteAuthorArgs = {
@@ -189,13 +124,9 @@ export type MutationInviteAuthorArgs = {
   shout: Scalars['String']
 }
 
-export type MutationRateCommentArgs = {
+export type MutationRateReactionArgs = {
   id: Scalars['Int']
   value: Scalars['Int']
-}
-
-export type MutationRateProposalArgs = {
-  id: Scalars['Int']
 }
 
 export type MutationRateShoutArgs = {
@@ -222,19 +153,9 @@ export type MutationRequestPasswordUpdateArgs = {
   email: Scalars['String']
 }
 
-export type MutationSubscribeArgs = {
+export type MutationUnfollowArgs = {
   slug: Scalars['String']
-  what: SubscriptionType
-}
-
-export type MutationUnsubscribeArgs = {
-  slug: Scalars['String']
-  what: SubscriptionType
-}
-
-export type MutationUpdateCommentArgs = {
-  body: Scalars['String']
-  id: Scalars['Int']
+  what: FollowingEntity
 }
 
 export type MutationUpdateCommunityArgs = {
@@ -250,9 +171,9 @@ export type MutationUpdateProfileArgs = {
   profile: ProfileInput
 }
 
-export type MutationUpdateProposalArgs = {
+export type MutationUpdateReactionArgs = {
   body: Scalars['String']
-  range?: InputMaybe<Scalars['String']>
+  id: Scalars['Int']
 }
 
 export type MutationUpdateShoutArgs = {
@@ -293,58 +214,31 @@ export type ProfileInput = {
   userpic?: InputMaybe<Scalars['String']>
 }
 
-export type Proposal = {
-  __typename?: 'Proposal'
-  acceptedAt?: Maybe<Scalars['DateTime']>
-  acceptedBy?: Maybe<Scalars['Int']>
-  body: Scalars['String']
-  createdAt: Scalars['DateTime']
-  createdBy: Scalars['String']
-  declinedAt?: Maybe<Scalars['DateTime']>
-  declinedBy?: Maybe<Scalars['Int']>
-  disabledAt?: Maybe<Scalars['DateTime']>
-  disabledBy?: Maybe<Scalars['Int']>
-  range?: Maybe<Scalars['String']>
-  shout: Scalars['String']
-  updatedAt?: Maybe<Scalars['DateTime']>
-}
-
-export enum ProposalStatus {
-  Accepted = 'ACCEPTED',
-  Declined = 'DECLINED',
-  Deleted = 'DELETED',
-  Disabled = 'DISABLED',
-  New = 'NEW',
-  Updated = 'UPDATED',
-  UpdatedRating = 'UPDATED_RATING'
-}
-
 export type Query = {
   __typename?: 'Query'
-  createProposal: Proposal
-  destroyProposal: Result
   forget: Result
-  getAllComments: Array<Maybe<Comment>>
   getCommunities: Array<Maybe<Community>>
   getCommunity: Community
   getCurrentUser: UserResult
   getShoutBySlug: Shout
-  getShoutComments: Array<Maybe<Comment>>
-  getShoutProposals: Array<Maybe<Proposal>>
+  getShoutReactions: Array<Maybe<Reaction>>
   getUserRoles: Array<Maybe<Role>>
   getUsersBySlugs: Array<Maybe<User>>
   inviteAuthor: Result
   isEmailUsed: Scalars['Boolean']
+  myShoutCandidates: ShoutsResult
+  reactionsAll: Array<Maybe<Reaction>>
   recentAll: Array<Maybe<Shout>>
-  recentCommented: Array<Maybe<Shout>>
   recentPublished: Array<Maybe<Shout>>
+  recentReacted: Array<Maybe<Shout>>
   removeAuthor: Result
   requestPasswordReset: Result
   shoutsByAuthors: Array<Maybe<Shout>>
   shoutsByCommunities: Array<Maybe<Shout>>
   shoutsByTopics: Array<Maybe<Shout>>
-  shoutsCommentedByUser: ShoutsResult
+  shoutsForFeed: Array<Maybe<Shout>>
   shoutsRatedByUser: ShoutsResult
+  shoutsReactedByUser: ShoutsResult
   shoutsReviewed: Array<Maybe<Shout>>
   signIn: AuthResult
   signOut: Result
@@ -355,21 +249,11 @@ export type Query = {
   topicsByAuthor: Array<Maybe<Topic>>
   topicsByCommunity: Array<Maybe<Topic>>
   updatePassword: Result
-  updateProposal: Proposal
-  userComments: Array<Maybe<Comment>>
-  userSubscribedAuthors: Array<Maybe<Scalars['String']>>
-  userSubscribedTopics: Array<Maybe<Scalars['String']>>
-  userSubscribers: Array<Maybe<Scalars['String']>>
-  userUnpublishedShouts: ShoutsResult
-}
-
-export type QueryCreateProposalArgs = {
-  body: Scalars['String']
-  range?: InputMaybe<Scalars['String']>
-}
-
-export type QueryDestroyProposalArgs = {
-  id: Scalars['Int']
+  userFollowedAuthors: Array<Maybe<User>>
+  userFollowedCommunities: Array<Maybe<Community>>
+  userFollowedTopics: Array<Maybe<Topic>>
+  userFollowers: Array<Maybe<User>>
+  userReactions: Array<Maybe<Reaction>>
 }
 
 export type QueryForgetArgs = {
@@ -384,11 +268,7 @@ export type QueryGetShoutBySlugArgs = {
   slug: Scalars['String']
 }
 
-export type QueryGetShoutCommentsArgs = {
-  slug: Scalars['String']
-}
-
-export type QueryGetShoutProposalsArgs = {
+export type QueryGetShoutReactionsArgs = {
   slug: Scalars['String']
 }
 
@@ -409,17 +289,27 @@ export type QueryIsEmailUsedArgs = {
   email: Scalars['String']
 }
 
+export type QueryMyShoutCandidatesArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+}
+
+export type QueryReactionsAllArgs = {
+  page?: InputMaybe<Scalars['Int']>
+  size?: InputMaybe<Scalars['Int']>
+}
+
 export type QueryRecentAllArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
 
-export type QueryRecentCommentedArgs = {
+export type QueryRecentPublishedArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
 
-export type QueryRecentPublishedArgs = {
+export type QueryRecentReactedArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
@@ -451,12 +341,17 @@ export type QueryShoutsByTopicsArgs = {
   slugs: Array<InputMaybe<Scalars['String']>>
 }
 
-export type QueryShoutsCommentedByUserArgs = {
+export type QueryShoutsForFeedArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
 
 export type QueryShoutsRatedByUserArgs = {
+  page: Scalars['Int']
+  size: Scalars['Int']
+}
+
+export type QueryShoutsReactedByUserArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
 }
@@ -504,38 +399,93 @@ export type QueryUpdatePasswordArgs = {
   token: Scalars['String']
 }
 
-export type QueryUpdateProposalArgs = {
-  body: Scalars['String']
-  range?: InputMaybe<Scalars['String']>
+export type QueryUserFollowedAuthorsArgs = {
+  slug: Scalars['String']
 }
 
-export type QueryUserCommentsArgs = {
+export type QueryUserFollowedCommunitiesArgs = {
+  slug: Scalars['String']
+}
+
+export type QueryUserFollowedTopicsArgs = {
+  slug: Scalars['String']
+}
+
+export type QueryUserFollowersArgs = {
+  slug: Scalars['String']
+}
+
+export type QueryUserReactionsArgs = {
   page: Scalars['Int']
   size: Scalars['Int']
   slug: Scalars['String']
-}
-
-export type QueryUserSubscribedAuthorsArgs = {
-  slug: Scalars['String']
-}
-
-export type QueryUserSubscribedTopicsArgs = {
-  slug: Scalars['String']
-}
-
-export type QueryUserSubscribersArgs = {
-  slug: Scalars['String']
-}
-
-export type QueryUserUnpublishedShoutsArgs = {
-  page: Scalars['Int']
-  size: Scalars['Int']
 }
 
 export type Rating = {
   __typename?: 'Rating'
   rater: Scalars['String']
   value: Scalars['Int']
+}
+
+export type Reaction = {
+  __typename?: 'Reaction'
+  body?: Maybe<Scalars['String']>
+  createdAt: Scalars['DateTime']
+  createdBy: User
+  deletedAt?: Maybe<Scalars['DateTime']>
+  deletedBy?: Maybe<User>
+  id: Scalars['Int']
+  kind: ReactionKind
+  old_id?: Maybe<Scalars['String']>
+  old_thread?: Maybe<Scalars['String']>
+  range?: Maybe<Scalars['String']>
+  replyTo?: Maybe<Reaction>
+  shout: Shout
+  updatedAt?: Maybe<Scalars['DateTime']>
+  views?: Maybe<Scalars['Int']>
+}
+
+export type ReactionInput = {
+  body?: InputMaybe<Scalars['String']>
+  kind: Scalars['Int']
+  range?: InputMaybe<Scalars['String']>
+  replyTo?: InputMaybe<Scalars['Int']>
+  shout: Scalars['String']
+}
+
+export enum ReactionKind {
+  Accept = 'ACCEPT',
+  Agree = 'AGREE',
+  AskProof = 'ASK_PROOF',
+  Comment = 'COMMENT',
+  Decline = 'DECLINE',
+  Disagree = 'DISAGREE',
+  Proof = 'PROOF',
+  ProofAgainst = 'PROOF_AGAINST',
+  Propose = 'PROPOSE',
+  Qoute = 'QOUTE',
+  Question = 'QUESTION'
+}
+
+export type ReactionResult = {
+  __typename?: 'ReactionResult'
+  error?: Maybe<Scalars['String']>
+  reaction?: Maybe<Reaction>
+}
+
+export enum ReactionStatus {
+  Changed = 'CHANGED',
+  Deleted = 'DELETED',
+  Explained = 'EXPLAINED',
+  New = 'NEW',
+  Updated = 'UPDATED'
+}
+
+export type ReactionUpdatedResult = {
+  __typename?: 'ReactionUpdatedResult'
+  error?: Maybe<Scalars['String']>
+  reaction?: Maybe<Reaction>
+  status?: Maybe<ReactionStatus>
 }
 
 export type Resource = {
@@ -573,7 +523,6 @@ export type Shout = {
   mainTopic?: Maybe<Scalars['String']>
   publishedAt?: Maybe<Scalars['DateTime']>
   publishedBy?: Maybe<User>
-  ratings?: Maybe<Array<Maybe<Rating>>>
   slug: Scalars['String']
   stat?: Maybe<ShoutStat>
   subtitle?: Maybe<Scalars['String']>
@@ -606,8 +555,7 @@ export type ShoutResult = {
 
 export type ShoutStat = {
   __typename?: 'ShoutStat'
-  comments: Scalars['Int']
-  ratings: Scalars['Int']
+  reacted: Scalars['Int']
   views: Scalars['Int']
 }
 
@@ -619,21 +567,14 @@ export type ShoutsResult = {
 
 export type Subscription = {
   __typename?: 'Subscription'
-  commentUpdated: CommentUpdatedResult
   onlineUpdated: Array<User>
+  reactionUpdated: ReactionUpdatedResult
   shoutUpdated: Shout
   userUpdated: User
 }
 
-export type SubscriptionCommentUpdatedArgs = {
+export type SubscriptionReactionUpdatedArgs = {
   shout: Scalars['String']
-}
-
-export enum SubscriptionType {
-  Author = 'AUTHOR',
-  Comments = 'COMMENTS',
-  Community = 'COMMUNITY',
-  Topic = 'TOPIC'
 }
 
 export type Token = {
@@ -650,7 +591,7 @@ export type Topic = {
   __typename?: 'Topic'
   body?: Maybe<Scalars['String']>
   children?: Maybe<Array<Maybe<Scalars['String']>>>
-  community: Scalars['String']
+  community: Community
   oid?: Maybe<Scalars['String']>
   parents?: Maybe<Array<Maybe<Scalars['String']>>>
   pic?: Maybe<Scalars['String']>
@@ -663,6 +604,7 @@ export type TopicInput = {
   body?: InputMaybe<Scalars['String']>
   children?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   community: Scalars['String']
+  parents?: InputMaybe<Array<InputMaybe<Scalars['String']>>>
   pic?: InputMaybe<Scalars['String']>
   slug: Scalars['String']
   title?: InputMaybe<Scalars['String']>
@@ -677,8 +619,8 @@ export type TopicResult = {
 export type TopicStat = {
   __typename?: 'TopicStat'
   authors: Scalars['Int']
+  followers: Scalars['Int']
   shouts: Scalars['Int']
-  subscriptions: Scalars['Int']
   views: Scalars['Int']
 }
 
@@ -776,261 +718,6 @@ export default {
       },
       {
         kind: 'OBJECT',
-        name: 'Comment',
-        fields: [
-          {
-            name: 'body',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdAt',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdBy',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'User',
-                ofType: null
-              }
-            },
-            args: []
-          },
-          {
-            name: 'deletedAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'deletedBy',
-            type: {
-              kind: 'OBJECT',
-              name: 'User',
-              ofType: null
-            },
-            args: []
-          },
-          {
-            name: 'id',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'oid',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'old_thread',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'ratings',
-            type: {
-              kind: 'LIST',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'CommentRating',
-                ofType: null
-              }
-            },
-            args: []
-          },
-          {
-            name: 'replyTo',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Comment',
-                ofType: null
-              }
-            },
-            args: []
-          },
-          {
-            name: 'shout',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Shout',
-                ofType: null
-              }
-            },
-            args: []
-          },
-          {
-            name: 'updatedAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'views',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          }
-        ],
-        interfaces: []
-      },
-      {
-        kind: 'OBJECT',
-        name: 'CommentRating',
-        fields: [
-          {
-            name: 'comment_id',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdAt',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdBy',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'id',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'value',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          }
-        ],
-        interfaces: []
-      },
-      {
-        kind: 'OBJECT',
-        name: 'CommentResult',
-        fields: [
-          {
-            name: 'comment',
-            type: {
-              kind: 'OBJECT',
-              name: 'Comment',
-              ofType: null
-            },
-            args: []
-          },
-          {
-            name: 'error',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          }
-        ],
-        interfaces: []
-      },
-      {
-        kind: 'OBJECT',
-        name: 'CommentUpdatedResult',
-        fields: [
-          {
-            name: 'comment',
-            type: {
-              kind: 'OBJECT',
-              name: 'Comment',
-              ofType: null
-            },
-            args: []
-          },
-          {
-            name: 'error',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'status',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          }
-        ],
-        interfaces: []
-      },
-      {
-        kind: 'OBJECT',
         name: 'Community',
         fields: [
           {
@@ -1105,7 +792,35 @@ export default {
         name: 'CurrentUserInfo',
         fields: [
           {
-            name: 'totalUnreadMessages',
+            name: 'authors',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
+              }
+            },
+            args: []
+          },
+          {
+            name: 'communities',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
+              }
+            },
+            args: []
+          },
+          {
+            name: 'inbox',
             type: {
               kind: 'SCALAR',
               name: 'Any'
@@ -1113,7 +828,7 @@ export default {
             args: []
           },
           {
-            name: 'userSubscribedAuthors',
+            name: 'reactions',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1127,35 +842,7 @@ export default {
             args: []
           },
           {
-            name: 'userSubscribedCommunities',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            },
-            args: []
-          },
-          {
-            name: 'userSubscribedShoutComments',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            },
-            args: []
-          },
-          {
-            name: 'userSubscribedTopics',
+            name: 'topics',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1176,29 +863,6 @@ export default {
         name: 'Mutation',
         fields: [
           {
-            name: 'acceptProposal',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'id',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
             name: 'confirmEmail',
             type: {
               kind: 'NON_NULL',
@@ -1211,46 +875,6 @@ export default {
             args: [
               {
                 name: 'token',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'createComment',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'CommentResult',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'body',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'replyTo',
-                type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              },
-              {
-                name: 'shout',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -1285,31 +909,24 @@ export default {
             ]
           },
           {
-            name: 'createProposal',
+            name: 'createReaction',
             type: {
               kind: 'NON_NULL',
               ofType: {
                 kind: 'OBJECT',
-                name: 'Proposal',
+                name: 'ReactionResult',
                 ofType: null
               }
             },
             args: [
               {
-                name: 'body',
+                name: 'input',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
                     kind: 'SCALAR',
                     name: 'Any'
                   }
-                }
-              },
-              {
-                name: 'range',
-                type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
                 }
               }
             ]
@@ -1361,52 +978,6 @@ export default {
             ]
           },
           {
-            name: 'declineProposal',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'id',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'deleteComment',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'id',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
             name: 'deleteCommunity',
             type: {
               kind: 'NON_NULL',
@@ -1430,7 +1001,7 @@ export default {
             ]
           },
           {
-            name: 'deleteProposal',
+            name: 'deleteReaction',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1476,7 +1047,7 @@ export default {
             ]
           },
           {
-            name: 'disableProposal',
+            name: 'follow',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1487,7 +1058,17 @@ export default {
             },
             args: [
               {
-                name: 'id',
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'what',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -1532,7 +1113,7 @@ export default {
             ]
           },
           {
-            name: 'rateComment',
+            name: 'rateReaction',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1554,29 +1135,6 @@ export default {
               },
               {
                 name: 'value',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'rateProposal',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'id',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -1740,7 +1298,7 @@ export default {
             ]
           },
           {
-            name: 'subscribe',
+            name: 'unfollow',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -1762,72 +1320,6 @@ export default {
               },
               {
                 name: 'what',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'unsubscribe',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'what',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'updateComment',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'CommentResult',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'body',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'id',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -1918,12 +1410,12 @@ export default {
             ]
           },
           {
-            name: 'updateProposal',
+            name: 'updateReaction',
             type: {
               kind: 'NON_NULL',
               ofType: {
                 kind: 'OBJECT',
-                name: 'Proposal',
+                name: 'ReactionResult',
                 ofType: null
               }
             },
@@ -1939,10 +1431,13 @@ export default {
                 }
               },
               {
-                name: 'range',
+                name: 'id',
                 type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
                 }
               }
             ]
@@ -2119,176 +1614,8 @@ export default {
       },
       {
         kind: 'OBJECT',
-        name: 'Proposal',
-        fields: [
-          {
-            name: 'acceptedAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'acceptedBy',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'body',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdAt',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'createdBy',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'declinedAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'declinedBy',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'disabledAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'disabledBy',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'range',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          },
-          {
-            name: 'shout',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'updatedAt',
-            type: {
-              kind: 'SCALAR',
-              name: 'Any'
-            },
-            args: []
-          }
-        ],
-        interfaces: []
-      },
-      {
-        kind: 'OBJECT',
         name: 'Query',
         fields: [
-          {
-            name: 'createProposal',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Proposal',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'body',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'range',
-                type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            ]
-          },
-          {
-            name: 'destroyProposal',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Result',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'id',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
           {
             name: 'forget',
             type: {
@@ -2311,21 +1638,6 @@ export default {
                 }
               }
             ]
-          },
-          {
-            name: 'getAllComments',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'OBJECT',
-                  name: 'Comment',
-                  ofType: null
-                }
-              }
-            },
-            args: []
           },
           {
             name: 'getCommunities',
@@ -2398,40 +1710,14 @@ export default {
             ]
           },
           {
-            name: 'getShoutComments',
+            name: 'getShoutReactions',
             type: {
               kind: 'NON_NULL',
               ofType: {
                 kind: 'LIST',
                 ofType: {
                   kind: 'OBJECT',
-                  name: 'Comment',
-                  ofType: null
-                }
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'getShoutProposals',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'OBJECT',
-                  name: 'Proposal',
+                  name: 'Reaction',
                   ofType: null
                 }
               }
@@ -2560,6 +1846,69 @@ export default {
             ]
           },
           {
+            name: 'myShoutCandidates',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'ShoutsResult',
+                ofType: null
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'reactionsAll',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Reaction',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'SCALAR',
+                  name: 'Any'
+                }
+              }
+            ]
+          },
+          {
             name: 'recentAll',
             type: {
               kind: 'NON_NULL',
@@ -2596,7 +1945,7 @@ export default {
             ]
           },
           {
-            name: 'recentCommented',
+            name: 'recentPublished',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2632,7 +1981,7 @@ export default {
             ]
           },
           {
-            name: 'recentPublished',
+            name: 'recentReacted',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2871,7 +2220,43 @@ export default {
             ]
           },
           {
-            name: 'shoutsCommentedByUser',
+            name: 'shoutsForFeed',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Shout',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'page',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              },
+              {
+                name: 'size',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'shoutsRatedByUser',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -2904,7 +2289,7 @@ export default {
             ]
           },
           {
-            name: 'shoutsRatedByUser',
+            name: 'shoutsReactedByUser',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -3244,18 +2629,21 @@ export default {
             ]
           },
           {
-            name: 'updateProposal',
+            name: 'userFollowedAuthors',
             type: {
               kind: 'NON_NULL',
               ofType: {
-                kind: 'OBJECT',
-                name: 'Proposal',
-                ofType: null
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'User',
+                  ofType: null
+                }
               }
             },
             args: [
               {
-                name: 'body',
+                name: 'slug',
                 type: {
                   kind: 'NON_NULL',
                   ofType: {
@@ -3263,25 +2651,96 @@ export default {
                     name: 'Any'
                   }
                 }
-              },
-              {
-                name: 'range',
-                type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
               }
             ]
           },
           {
-            name: 'userComments',
+            name: 'userFollowedCommunities',
             type: {
               kind: 'NON_NULL',
               ofType: {
                 kind: 'LIST',
                 ofType: {
                   kind: 'OBJECT',
-                  name: 'Comment',
+                  name: 'Community',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'userFollowedTopics',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Topic',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'userFollowers',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'User',
+                  ofType: null
+                }
+              }
+            },
+            args: [
+              {
+                name: 'slug',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
+          },
+          {
+            name: 'userReactions',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'Reaction',
                   ofType: null
                 }
               }
@@ -3318,114 +2777,6 @@ export default {
                 }
               }
             ]
-          },
-          {
-            name: 'userSubscribedAuthors',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'userSubscribedTopics',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'userSubscribers',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'LIST',
-                ofType: {
-                  kind: 'SCALAR',
-                  name: 'Any'
-                }
-              }
-            },
-            args: [
-              {
-                name: 'slug',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
-            name: 'userUnpublishedShouts',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'ShoutsResult',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'page',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              },
-              {
-                name: 'size',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
           }
         ],
         interfaces: []
@@ -3453,6 +2804,200 @@ export default {
                 kind: 'SCALAR',
                 name: 'Any'
               }
+            },
+            args: []
+          }
+        ],
+        interfaces: []
+      },
+      {
+        kind: 'OBJECT',
+        name: 'Reaction',
+        fields: [
+          {
+            name: 'body',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'createdAt',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any'
+              }
+            },
+            args: []
+          },
+          {
+            name: 'createdBy',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'User',
+                ofType: null
+              }
+            },
+            args: []
+          },
+          {
+            name: 'deletedAt',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'deletedBy',
+            type: {
+              kind: 'OBJECT',
+              name: 'User',
+              ofType: null
+            },
+            args: []
+          },
+          {
+            name: 'id',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any'
+              }
+            },
+            args: []
+          },
+          {
+            name: 'kind',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'SCALAR',
+                name: 'Any'
+              }
+            },
+            args: []
+          },
+          {
+            name: 'old_id',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'old_thread',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'range',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'replyTo',
+            type: {
+              kind: 'OBJECT',
+              name: 'Reaction',
+              ofType: null
+            },
+            args: []
+          },
+          {
+            name: 'shout',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'Shout',
+                ofType: null
+              }
+            },
+            args: []
+          },
+          {
+            name: 'updatedAt',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'views',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          }
+        ],
+        interfaces: []
+      },
+      {
+        kind: 'OBJECT',
+        name: 'ReactionResult',
+        fields: [
+          {
+            name: 'error',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'reaction',
+            type: {
+              kind: 'OBJECT',
+              name: 'Reaction',
+              ofType: null
+            },
+            args: []
+          }
+        ],
+        interfaces: []
+      },
+      {
+        kind: 'OBJECT',
+        name: 'ReactionUpdatedResult',
+        fields: [
+          {
+            name: 'error',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
+            },
+            args: []
+          },
+          {
+            name: 'reaction',
+            type: {
+              kind: 'OBJECT',
+              name: 'Reaction',
+              ofType: null
+            },
+            args: []
+          },
+          {
+            name: 'status',
+            type: {
+              kind: 'SCALAR',
+              name: 'Any'
             },
             args: []
           }
@@ -3699,18 +3244,6 @@ export default {
             args: []
           },
           {
-            name: 'ratings',
-            type: {
-              kind: 'LIST',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'Rating',
-                ofType: null
-              }
-            },
-            args: []
-          },
-          {
             name: 'slug',
             type: {
               kind: 'NON_NULL',
@@ -3828,18 +3361,7 @@ export default {
         name: 'ShoutStat',
         fields: [
           {
-            name: 'comments',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
-              }
-            },
-            args: []
-          },
-          {
-            name: 'ratings',
+            name: 'reacted',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -3895,29 +3417,6 @@ export default {
         name: 'Subscription',
         fields: [
           {
-            name: 'commentUpdated',
-            type: {
-              kind: 'NON_NULL',
-              ofType: {
-                kind: 'OBJECT',
-                name: 'CommentUpdatedResult',
-                ofType: null
-              }
-            },
-            args: [
-              {
-                name: 'shout',
-                type: {
-                  kind: 'NON_NULL',
-                  ofType: {
-                    kind: 'SCALAR',
-                    name: 'Any'
-                  }
-                }
-              }
-            ]
-          },
-          {
             name: 'onlineUpdated',
             type: {
               kind: 'NON_NULL',
@@ -3934,6 +3433,29 @@ export default {
               }
             },
             args: []
+          },
+          {
+            name: 'reactionUpdated',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'OBJECT',
+                name: 'ReactionUpdatedResult',
+                ofType: null
+              }
+            },
+            args: [
+              {
+                name: 'shout',
+                type: {
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
+                }
+              }
+            ]
           },
           {
             name: 'shoutUpdated',
@@ -4057,8 +3579,9 @@ export default {
             type: {
               kind: 'NON_NULL',
               ofType: {
-                kind: 'SCALAR',
-                name: 'Any'
+                kind: 'OBJECT',
+                name: 'Community',
+                ofType: null
               }
             },
             args: []
@@ -4161,7 +3684,7 @@ export default {
             args: []
           },
           {
-            name: 'shouts',
+            name: 'followers',
             type: {
               kind: 'NON_NULL',
               ofType: {
@@ -4172,7 +3695,7 @@ export default {
             args: []
           },
           {
-            name: 'subscriptions',
+            name: 'shouts',
             type: {
               kind: 'NON_NULL',
               ofType: {

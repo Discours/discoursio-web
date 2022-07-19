@@ -9,7 +9,7 @@ export default gql`
       layout
       slug
       cover
-      community
+      # community
       mainTopic
       topics {
         _id: slug
@@ -28,8 +28,7 @@ export default gql`
       stat {
         _id: views
         views
-        comments
-        ratings
+        reacted
       }
     }
   }

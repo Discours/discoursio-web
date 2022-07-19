@@ -12,11 +12,10 @@ export default () => {
         <div class='col-lg-10 offset-lg-1 col-xl-8 offset-xl-2'>
           <h4>{t('Horizontal collaborative journalistic platform')}</h4>
           <p>
-            Дискурс - это интеллектуальная среда, веб-пространство и инструменты, которые позволяют авторам
-            сотрудничать с читателями и объединяться для совместного создания публикаций и медиа-проектов.
+            {t('Discours is an intellectual environment, a web space and tools that allows authors to collaborate with readers and come together to co-create publications and media projects')}.
             <br />
             <em>
-              Мы убеждены, один голос хорошо, а много - лучше. Самые потрясающиe истории мы создаём вместе.
+              {t('We are convinced that one voice is good, but many is better. We create the most amazing stories together')}.
             </em>
           </p>
           <div class='about-discours__actions'>

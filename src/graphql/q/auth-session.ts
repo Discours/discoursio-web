@@ -14,10 +14,10 @@ export default gql`
         userpic
         links
       }
-      totalUnreadMessages
-      userSubscribedTopics
-      userSubscribedAuthors
-      userSubscribedCommunities
+      inbox
+      topics
+      authors
+      communities
     }
   }
 `

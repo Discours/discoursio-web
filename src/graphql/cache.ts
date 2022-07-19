@@ -1,9 +1,11 @@
-import { cacheExchange } from '@urql/exchange-graphcache'
-import authorsForArticles from './q/articles-for-authors'
+import { cacheExchange, CacheExchangeOpts } from '@urql/exchange-graphcache'
+// import authorsForArticles from './q/articles-for-authors'
 
 // TODO: implement smart caching logix
 
 export const cache = cacheExchange({
+  resolvers: {},
+  // shouldResolveFields: false,
   updates: {
     Mutation: {
       /*
@@ -53,4 +55,4 @@ export const cache = cacheExchange({
       */
     }
   }
-})
+} as Partial<CacheExchangeOpts>)

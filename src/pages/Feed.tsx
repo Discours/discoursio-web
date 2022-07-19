@@ -1,7 +1,7 @@
-import { Component, createMemo, createSignal, For, Show } from 'solid-js'
+import { Component, createEffect, createMemo, createSignal, For, Show } from 'solid-js'
 import { NavLink, useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { Shout, Topic, User, Comment } from '../graphql/types.gen'
+import { Shout, Topic, User, Reaction } from '../graphql/types.gen'
 import { useI18n } from '@solid-primitives/i18n'
 import '../styles/Feed.scss'
 import Icon from "../components/Nav/Icon";
@@ -12,12 +12,16 @@ import ArticleCard from "../components/Article/Card";
 import { ZineState } from '../context/zine'
 import MD from '../components/Article/MD'
 import LoadingBar from 'solid-top-loading-bar'
-import { loaded } from '../context/_api'
+import { cache, handleUpdate, loaded } from '../context/_api'
+import { usePromiseQuery } from '../utils/promiseQuery'
+import { useClient } from 'solid-urql'
+import reactionsAll from '../graphql/q/reactions-all'
 
 const Feed: Component = () => {
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
   const [auth, { info }] = useAuth()
+  const [promiseQuery, ] = usePromiseQuery(useClient())
   const [mode, setMode] = createSignal(data.args?.by || 'views')
   const topTopics = createMemo(() => (data.topicslist || []).sort(byShouts).slice(0, 5))
   const articles = createMemo(() => {
@@ -45,6 +49,15 @@ const Feed: Component = () => {
     return false
   }
 
+  // recent comments
+  const [comments ,setComments] = createSignal<Partial<Comment>[]>([])
+
+  createEffect(() => {
+    if(comments().length === 0) promiseQuery(reactionsAll, { page: 1, size: 5 })
+      .then(handleUpdate)
+      .then(() => setComments(cache()['reactionsAll']))
+  })
+
   useRouteReadyState()
 
   return (
@@ -62,8 +75,10 @@ const Feed: Component = () => {
               <li><a href="#">Подписки на форуме</a></li>
             </ul>
             <ul>
-              <li><a href="/feed?by=subscribed"><strong>{t('My subscriptions')}</strong></a></li>
-              <For each={info?.userSubscribedAuthors as Partial<User>[]}>
+              <li>
+                <a href="/feed?by=subscribed"><strong>{t('My subscriptions')}</strong></a>
+              </li>
+              <For each={info?.authors as Partial<User>[]}>
                 {(author: Partial<User>) => (
                   <li>
                     <a
@@ -74,11 +89,8 @@ const Feed: Component = () => {
                   </li>
                 )}
               </For>
-              <li><a href="#">Eto_ya sam</a></li>
-              <li><a href="#" class="unread">Технопарк sam</a></li>
-              <li><a href="#" class="unread">Надежда Фролова</a></li>
 
-              <For each={info?.userSubscribedTopics as string[]}>
+              <For each={info?.topics as string[]}>
                 {(topic: string) => (
                   <li>
                     <a
@@ -89,15 +101,6 @@ const Feed: Component = () => {
                   </li>
                 )}
               </For>
-              <li><a href="#">#Лучшее</a></li>
-              <li><a href="#">#Реклама</a></li>
-              <li><a href="#" class="unread">#Искусство</a></li>
-              <li><a href="#" class="unread"><strong>#Общество</strong></a></li>
-              <li><a href="#">#Личный опыт</a></li>
-              <li><a href="#">#Наука</a></li>
-              <li><a href="#">#Философия</a></li>
-              <li><a href="#">#Интервью</a></li>
-              <li><a href="#">#Нетленки</a></li>
             </ul>
 
             <p class="settings">
@@ -126,42 +129,46 @@ const Feed: Component = () => {
           </div>
 
           <aside class="col-md-3">
-            <h4>{t('Comments')}</h4>
-            <Show when={data['commentsAll']?.length > 0}>
-              <section class="comments">
-                <For each={data['commentsAll']}>
-                  {(c: Partial<Comment>) => (
-                    <div class="comment">
-                      <div class="comment__content">
-                        <div class="comment__text" id={"comment-" + c.id}>
-                          <MD body={c.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt\
-                        ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in\
-                        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\
-                        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} />
-                        </div>
-                        <div class="comment__author-image" />
+            <section class="feed-comments">
+              <h4>{t('Comments')}</h4>
+              <For each={comments() as Reaction[]}>
+                {(c: Partial<Reaction>) => (
+                  <div class="comment">
+                    <div class="comment__content">
+                      <div class="comment__text" id={"comment-" + (c?.id || '')}>
+                        <MD body={c?.body || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt\
+                      ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco\
+                      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in\
+                      voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat\
+                      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} />
                       </div>
-                      <div class="comment__details">
-                        <a href={'@' + c.createdBy}>{(data.authors || {})[c.createdBy?.slug || ''].name || 'anonymous'}</a>
-                        <div class="comment__article">
-                          <Icon name="reply-arrow" />
-                          <a href={'#' + c.replyTo}>
-                            {data['comments'].get(c.shout)?.title || 'Lorem ipsum titled'}
-                          </a>
-                        </div>
+                      <div class="comment__author-image">
+                        <img src={cache()['authors'][c?.createdBy?.slug||'noname'].userpic} />
                       </div>
                     </div>
+                    <div class="comment__details">
+                      <a href={`@${c?.createdBy}`}>{cache()['authors'][c?.createdBy?.slug||'noname'].name || 'anonymous'}</a>
+                      <div class="comment__article">
+                      <Icon name="reply-arrow" />
+                        <a href={`#${c?.id}`}>
+                        {cache()['articles'].get(c?.replyTo)?.title || 'Lorem ipsum titled'}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </For>
+            </section>
+            <Show when={cache()['topicsByCommunity']?.length > 0}>
+              <section class="feed-topics">
+                <h4>{t('Topics')}</h4>
+                <For each={Array.from(topTopics()) as Partial<Topic>[]}>
+                  {(value: Partial<Topic>) => (
+                    <TopicCard topic={value as Topic} subscribeButtonBottom={true} />
                   )}
                 </For>
               </section>
             </Show>
-
-            <For each={Array.from(topTopics()) as Partial<Topic>[]}>
-              {(value: Partial<Shout | User | Topic>) => (
-                <TopicCard topic={value as Topic} subscribeButtonBottom={true} />
-              )}
-            </For>
           </aside>
         </div>
       </div>

@@ -18,18 +18,18 @@ export default (props: TopicProps) => {
   // console.debug(props.topic)
   const [t, { locale }] = useI18n()
   const [subscribed, setSubscribed] = createSignal<boolean>(props.subscribed as boolean)
-  // const [subscribers, setSubscribers] = createSignal<number>(props.topic.stat?.subscriptions as number || 0)
+  // const [subscribers, setSubscribers] = createSignal<number>(props.topic.stat?.followers as number || 0)
   const [, { follow, unfollow }] = useZine()
   const [body] = createResource(props.topic?.body, () => props.topic?.body)
   const subscribe = ( really = true ) => {
     if (really) {
       follow('topic', props.topic.slug)
       setSubscribed(true)
-      // setSubscribers(props.topic.stat?.subscriptions as number + 1)
+      // setSubscribers(props.topic.stat?.followers as number + 1)
     } else {
       unfollow('topic', props.topic.slug)
       setSubscribed(false)
-      // setSubscribers(props.topic.stat?.subscriptions as number - 1)
+      // setSubscribers(props.topic.stat?.followers as number - 1)
     }
   }
   return (

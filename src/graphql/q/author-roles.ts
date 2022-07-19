@@ -5,7 +5,7 @@ export default gql`
     getUserRoles(slug: $slug) {
       id
       name
-      community
+      # community
       desc
       permissions {
         operation_id

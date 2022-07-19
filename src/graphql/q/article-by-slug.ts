@@ -9,7 +9,7 @@ export default gql`
       subtitle
       layout
       cover
-      community
+      # community
       body
       authors {
         id
@@ -28,14 +28,10 @@ export default gql`
       createdAt
       updatedAt
       publishedAt
-      ratings {
-        _id: rater
-        value
-        rater
-      }
       stat {
         _id: views
         views
+        reacted
       }
     }
   }
