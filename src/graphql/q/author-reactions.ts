@@ -7,7 +7,7 @@ export default gql`
       body
       createdAt
       updatedAt
-      replyTo
+      replyTo { id, createdBy { slug, usepric, name }, body, kind }
       kind
       range
     }

@@ -10,7 +10,7 @@ export default gql`
             createdAt
             updatedAt
             shout { slug, title }
-            replyTo { id, cratedBy { slug, usepric, name }, replyTo, kind }
+            replyTo { id, createdBy { slug, usepric, name }, body, kind }
       }
     }
 `

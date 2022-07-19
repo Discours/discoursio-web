@@ -8,7 +8,7 @@ export default async function handler(req, res) {
       to: 'welcome@discours.io',
       from: contact + ' <robot@discours.io>',
       subject: `Feedback: ${contact}`,
-      body: message
+      html: message
     }).compile()
     mail.build((err, mail) => {
       if (err) res.status(400).json(err)

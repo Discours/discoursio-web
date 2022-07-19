@@ -13,7 +13,7 @@ export default gql`
         userpic
       }
       updatedAt
-      replyTo
+      replyTo { id }
       kind
       range
     }

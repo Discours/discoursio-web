@@ -3,16 +3,18 @@ import { gql } from 'solid-urql'
 // TODO: sync with backend
 
 export default gql`
-  mutation CommentMutation($comment: Comment!) {
-    createComment(comment: $comment) {
+  mutation ReactionMutation($reaction: ReactionInput!) {
+    createReaction(reaction: $reaction) {
       error
-      comment {
+      reaction {
         id
-        createdBy
+        createdBy { slug, name, userpic }
         body
+        kind
+        range
         createdAt
         shout
-        replyTo
+        replyTo { id, createdBy { slug, usepric, name }, body, kind }
       }
     }
   }
