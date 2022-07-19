@@ -1,19 +1,24 @@
 {
-    "headers": [
-      {
-        "source": "/auth/(.*)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "/((?!api/.*).*)",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "builds": [
+    { "src": "package.json", "use": "@vercel/node" },
+    { "src": "api/package.json", "use": "@vercel/node" },
+    { "src": "api/*.py", "use": "@vercel/python" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/api/newsletter", "dest": "/api/newsletter.js" },
+    { "src": "/api/feedback", "dest": "/api/feedback.js" },
+    { "src": "/api/upload", "dest": "/api/upload.js" }
+  ],
+  "headers": [
+    {
+      "source": "/auth/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }
+      ]
+    }
+  ]
+}
