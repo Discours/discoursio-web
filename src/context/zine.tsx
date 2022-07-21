@@ -85,7 +85,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a' || subpath() === '/author' ) {
       promiseQuery(authorsBySlugs, { slugs: [ slug(), ], lang })
         .then(handleUpdate)
-        .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),] }))
+        .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),], page, size }))
         .then(handleUpdate)
         .then(stage3)
     // topic page

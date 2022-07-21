@@ -8,23 +8,20 @@ import FullArticle from '../components/Article/Full'
 // import LoadingBar from 'solid-top-loading-bar'
 import { ZineState } from '../context/zine'
 import { cache, handleUpdate } from '../context/_api'
-import { AuthorPage } from './Author'
-import { TopicPage } from './Topic'
 import { usePromiseQuery } from '../utils/promiseQuery'
 import { useClient } from 'solid-urql'
 import shoutBySlug from '../graphql/q/article-by-slug'
 
 export const ArticlePage: Component = () => {
   const data = useRouteData<ZineState>()
+  console.debug('[article] data', data)
   const [promiseQuery, ] = usePromiseQuery(useClient())
-  if (data.params?.slug?.startsWith('@')) return <AuthorPage />
-  else if (data.params?.slug?.startsWith(':')) return <TopicPage />
   const [t] = useI18n()
   useRouteReadyState()
   const slug = createMemo(() => data.params?.slug)
   const [article,setArticle] = createSignal<Partial<Shout>>()
   createEffect(() => {
-    if(slug() && 'articles' in cache()) {
+    if(slug() && 'articles' in cache() && !article()) {
       console.log('[article] loading... ', slug())
       promiseQuery(shoutBySlug, { slug: slug() })
         .then(handleUpdate)

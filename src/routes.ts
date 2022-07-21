@@ -3,7 +3,7 @@ import { RouteDefinition } from 'solid-app-router'
 import { ZineStateHandler } from './context/zine'
 import { CollabStateHandler } from './context/collab'
 import { InboxStateHandler } from './context/inbox'
-import About, { AboutStateHandler } from './pages/about/index'
+import { AboutStateHandler } from './pages/about/index'
 
 
 export const routes: RouteDefinition[] = [
@@ -18,12 +18,12 @@ export const routes: RouteDefinition[] = [
     data: ZineStateHandler
   },
   {
-    path: ['/author/:slug', '/a/:slug', '/@:slug'],
+    path: ['/author/:slug', '/a/:slug'],
     component: lazy(() => import('./pages/Author')),
     data: ZineStateHandler
   },
   {
-    path: ['/topic/:slug', '/t/:slug', '/\::slug', '/+:slug'],
+    path: ['/topic/:slug', '/t/:slug'],
     component: lazy(() => import('./pages/Topic')),
     data: ZineStateHandler
   },
@@ -64,7 +64,13 @@ export const routes: RouteDefinition[] = [
 
   {
     path: '/about/:slug',
-    component: lazy(() => About()),
+    component: lazy(() => {
+      let r
+      const p = "/pages/about/[slug]"
+      try { r = import(p)||import(p+".mdx")}
+      catch (e) { r = import(p+".mdx") }
+      return r
+    }),
     data: AboutStateHandler
   },
   {
