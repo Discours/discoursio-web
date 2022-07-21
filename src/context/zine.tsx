@@ -115,11 +115,13 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
           .then(stage3)
     // article page
     } else if (!subpath() && slug()) {
-      promiseQuery(articleBySlug, { slug: slug(), lang })
+      promiseQuery(articleBySlug, { slug: slug() })
         .then(handleUpdate)
         .then(() => promiseQuery(reactionsByShout, { slug: slug() }))
         .then(handleUpdate)
         .then(stage3)
+    } else if (subpath() === 'about') {
+      console.log('[about]', slug())
     } else {
       console.error('[zine] stage2: no recognized slug or subpath', slug(), subpath())
     }

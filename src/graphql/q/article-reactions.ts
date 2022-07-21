@@ -6,7 +6,7 @@ export default gql`
       id
       body
       createdAt
-      author {
+      createdBy {
         _id: slug
         name
         slug

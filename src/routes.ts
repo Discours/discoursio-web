@@ -3,7 +3,6 @@ import { RouteDefinition } from 'solid-app-router'
 import { ZineStateHandler } from './context/zine'
 import { CollabStateHandler } from './context/collab'
 import { InboxStateHandler } from './context/inbox'
-import { AboutStateHandler } from './pages/about/index'
 
 
 export const routes: RouteDefinition[] = [
@@ -13,9 +12,32 @@ export const routes: RouteDefinition[] = [
     data: ZineStateHandler
   },
   {
-    path: ['/:slug', '/expo/image/:topic/:slug', '/:layout/:topic/:slug'],
-    component: lazy(() => import('./pages/Article')),
-    data: ZineStateHandler
+    path: '/about/projects',
+    component: lazy(() => import('./pages/about/projects.mdx'))
+  },
+  {
+    path: '/about/manifest',
+    component: lazy(() => import('./pages/about/manifest.mdx'))
+  },
+  {
+    path: '/about/guide',
+    component: lazy(() => import('./pages/about/guide'))
+  },
+  {
+    path: '/about/help',
+    component: lazy(() => import('./pages/about/help'))
+  },
+  {
+    path: '/about/partners',
+    component: lazy(() => import('./pages/about/partners.mdx'))
+  },
+  {
+    path: '/about/terms-of-use',
+    component: lazy(() => import('./pages/about/terms-of-use'))
+  },
+  {
+    path: '/about/thanks',
+    component: lazy(() => import('./pages/about/thanks'))
   },
   {
     path: ['/author/:slug', '/a/:slug'],
@@ -61,17 +83,10 @@ export const routes: RouteDefinition[] = [
     component: lazy(() => import('./pages/Inbox')),
     data: InboxStateHandler
   },
-
   {
-    path: '/about/:slug',
-    component: lazy(() => {
-      let r
-      const p = "/pages/about/[slug]"
-      try { r = import(p)||import(p+".mdx")}
-      catch (e) { r = import(p+".mdx") }
-      return r
-    }),
-    data: AboutStateHandler
+    path: ['/:slug', '/expo/image/:topic/:slug', '/:layout/:topic/:slug'],
+    component: lazy(() => import('./pages/Article')),
+    data: ZineStateHandler
   },
   {
     path: '/*all',
