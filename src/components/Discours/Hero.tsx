@@ -15,7 +15,7 @@ export default () => {
             {t('Discours is an intellectual environment, a web space and tools that allows authors to collaborate with readers and come together to co-create publications and media projects')}.
             <br />
             <em>
-              {t('We are convinced that one voice is good, but many is better. We create the most amazing stories together')}.
+              {t('We are convinced that one voice is good, but many is better') + '. ' + t('We create the most amazing stories together')}.
             </em>
           </p>
           <div class='about-discours__actions'>
