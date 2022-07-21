@@ -78,7 +78,7 @@ export const AuthorPage: Component = () => {
   useRouteReadyState()
   return (
     <div class='container author-page'>
-      <Show when={'getUsersBySlugs' in data} fallback={<div class="center">{t('Loading')}</div>}>
+      <Show when={author()} fallback={<div class="center">{t('Loading')}</div>}>
         <AuthorFull author={author() as Partial<User>} />
         <div class='row group__controls'>
           <div class='col-md-8'>

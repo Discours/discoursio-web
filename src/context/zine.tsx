@@ -90,7 +90,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
         .then(stage3)
     // topic page
     } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't' || subpath() === '/topics' ) {
-      promiseQuery(articlesForTopics, { topics: [ slug(), ], lang, size, page })
+      promiseQuery(articlesForTopics, { slugs: [ slug(), ], lang, size, page })
         .then(handleUpdate)
         .then(stage3)
     // feed page

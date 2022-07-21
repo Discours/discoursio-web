@@ -65,10 +65,8 @@ export const TopicPage = () => {
 
   return (
     <div class='topic-page container'>
-      <Show when={data.stage}>
-        <Show when={slug()}>
-          <TopicFull topic={topic() as Topic} />
-        </Show>
+      <Show when={!data.loading}>
+        <TopicFull topic={topic() as Topic} />
         <div class='row group__controls'>
           <div class='col-md-8'>
             <ul class='view-switcher'>
