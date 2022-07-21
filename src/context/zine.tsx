@@ -83,24 +83,24 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     setStage(2)
     // author page
     if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a' || subpath() === '/author' ) {
-      promiseQuery(authorsBySlugs, { slugs: [ slug(), ], lang })
+      promiseQuery(authorsBySlugs, { slugs: [ slug(), ] })
         .then(handleUpdate)
         .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),], page, size }))
         .then(handleUpdate)
         .then(stage3)
     // topic page
     } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't' || subpath() === '/topics' ) {
-      promiseQuery(articlesForTopics, { slugs: [ slug(), ], lang, size, page })
+      promiseQuery(articlesForTopics, { slugs: [ slug(), ], size, page })
         .then(handleUpdate)
         .then(stage3)
     // feed page
     } else if (slug() === 'feed' || subpath() === 'feed' || subpath() === '/feed' || slug() === '/feed') {
       if (auth.authorized) {
-        promiseQuery(articlesForFeed, { lang, size, page })
+        promiseQuery(articlesForFeed, { size, page })
           .then(handleUpdate)
           .then(stage3)
       } else {
-        promiseQuery(articlesRecentAll, { lang, size, page })
+        promiseQuery(articlesRecentAll, { size, page })
           .then(handleUpdate)
           .then(stage3)
       }
