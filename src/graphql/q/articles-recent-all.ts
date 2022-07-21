@@ -26,8 +26,8 @@ export default gql`
       mainTopic
       publishedAt
       stat {
-        _id: views
-        views
+        _id: viewed
+        viewed
         reacted
       }
     }

@@ -69,10 +69,10 @@ export default (props: TopicProps) => {
                       locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                     )}
                 </span>
-                <Show when={!props.subscribeButtonBottom}>
+                <Show when={false && !props.subscribeButtonBottom}>
                   <span class='topic-details__item'>
-                    {props.topic.stat?.views + ' ' + t('view') + plural(
-                      props.topic.stat?.views || 0,
+                    {props.topic.stat?.viewed + ' ' + t('view') + plural(
+                      props.topic.stat?.viewed || 0,
                       locale() === 'ru' ? ['ов', '', 'а'] : ['s', '', 's']
                     )}
                   </span>

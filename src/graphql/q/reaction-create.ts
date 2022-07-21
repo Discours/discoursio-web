@@ -14,7 +14,7 @@ export default gql`
         range
         createdAt
         shout
-        replyTo { id, createdBy { slug, usepric, name }, body, kind }
+        replyTo { id, createdBy { slug, userpic, name }, body, kind }
       }
     }
   }

@@ -3,6 +3,7 @@ import { RouteDefinition } from 'solid-app-router'
 import { ZineStateHandler } from './context/zine'
 import { CollabStateHandler } from './context/collab'
 import { InboxStateHandler } from './context/inbox'
+import About, { AboutStateHandler } from './pages/about/index'
 
 
 export const routes: RouteDefinition[] = [
@@ -61,38 +62,10 @@ export const routes: RouteDefinition[] = [
     data: InboxStateHandler
   },
 
-  // static pages, aka 'about'
   {
-    path: '/about/manifest',
-    component: lazy(() => import('./pages/about/manifest.mdx'))
-  },
-  {
-    path: '/about/dogma',
-    component: lazy(() => import('./pages/about/dogma.mdx'))
-  },
-  {
-    path: '/about/guide',
-    component: lazy(() => import('./pages/about/guide'))
-  },
-  {
-    path: '/about/help',
-    component: lazy(() => import('./pages/about/help'))
-  },
-  {
-    path: '/about/partners',
-    component: lazy(() => import('./pages/about/partners.mdx'))
-  },
-  {
-    path: '/about/projects',
-    component: lazy(() => import('./pages/about/projects.mdx'))
-  },
-  {
-    path: '/about/terms-of-use',
-    component: lazy(() => import('./pages/about/terms-of-use'))
-  },
-  {
-    path: '/about/thanks',
-    component: lazy(() => import('./pages/about/thanks'))
+    path: '/about/:slug',
+    component: lazy(() => About()),
+    data: AboutStateHandler
   },
   {
     path: '/*all',

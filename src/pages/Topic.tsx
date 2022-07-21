@@ -9,7 +9,7 @@ import Beside from '../components/Article/Beside'
 // import Row1 from '../components/Article/Row1'
 import ArticleCard from '../components/Article/Card'
 import '../styles/Topic.scss'
-import { byComments, byCreated, byRating, byViews } from '../utils/sortby'
+import { byReacted, byCreated, byRating, byViewed } from '../utils/sortby'
 import TopicFull from '../components/Topic/Full'
 import { ZineState } from '../context/zine'
 import { loaded } from '../context/_api'
@@ -40,23 +40,24 @@ export const TopicPage = () => {
 
   createEffect(() => {
     if ('usersByTopic' in loaded()) {
-      setTopicAuthors(( Object.values(data.authors || {}) as Partial<User>[] ).sort(byRating))
+      setTopicAuthors(( Object.values(data.authors || {}) as Partial<User>[] ).sort(byRating)) // works with User!
     }
   })
 
   createEffect(() => {
     const m = mode()
     if (m === 'fresh') setSortedArticles((sortedArticles()).sort(byCreated))
-    if (m === 'popular') setSortedArticles((sortedArticles()).sort(byRating))
-    if (m === 'discuss') setSortedArticles((sortedArticles()).sort(byComments))
-    else setSortedArticles((sortedArticles()).sort(byViews))
+    // TODO: diffrent kinds reactions counters
+    // if (m === 'popular') setSortedArticles((sortedArticles()).sort(byRating))
+    if (m === 'reacted') setSortedArticles((sortedArticles()).sort(byReacted))
+    else setSortedArticles((sortedArticles()).sort(byViewed))
   })
 
   const title = createMemo(() => {
     const m = mode()
     if (m === 'fresh') return t('Top recent')
-    if (m === 'popular') return t('Top rated')
-    if (m === 'discuss') return t('Top discussed')
+    // if (m === 'popular') return t('Top rated')
+    if (m === 'reacted') return t('Top discussed')
     return t('Top viewed')
   })
 

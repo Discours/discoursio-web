@@ -18,10 +18,10 @@ export default gql`
         body
         pic
         stat {
-          _id: views
+          _id: viewed
           shouts
           authors
-          views
+          viewed
           followers
         }
       }
@@ -33,8 +33,8 @@ export default gql`
       }
       publishedAt
       stat {
-        _id: views
-        views
+        _id: viewed
+        viewed
         reacted
       }
     }

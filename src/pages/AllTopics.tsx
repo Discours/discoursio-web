@@ -5,7 +5,7 @@ import '../styles/AllTopics.scss'
 import { useI18n } from '@solid-primitives/i18n'
 import { useRouteData } from 'solid-app-router'
 import { useRouteReadyState } from '../utils/routeReadyState'
-import { byShouts, byViews } from '../utils/sortby'
+import { byShouts, byAuthors } from '../utils/sortby'
 import { useAuth } from '../context/auth'
 import { ZineState } from '../context/zine'
 import LoadingBar from 'solid-top-loading-bar'
@@ -15,7 +15,7 @@ export default () => {
   const [{ info }, {}] = useAuth()
   const [t] = useI18n()
   const data = useRouteData<ZineState>()
-  const [mode, setMode] = createSignal(data.args?.by || 'views')
+  const [mode, setMode] = createSignal(data.args?.by || 'shouts')
   const [sortedTopics, setSortedTopics] = createSignal<Partial<Topic>[]>(data['topicsAll'] || [])
   const [sortedKeys, setSortedKeys] = createSignal<string[]>()
   let topicsGroupedByAlphabet: { [key: string]: Partial<Topic>[] } = {}
@@ -54,11 +54,17 @@ export default () => {
     setMode('shouts')
     setSortedTopics(data.topicslist?.sort(byShouts) as Partial<Topic>[])
   }
+  /*
   const sortViews = () => {
     setMode('views')
-    setSortedTopics(data.topicslist?.sort(byViews) as Partial<Topic>[])
+    setSortedTopics(data.topicslist?.sort(byViewed) as Partial<Topic>[])
   }
-  createEffect(sortViews, [data.topicslist])
+  */
+  const sortAuthors = () => {
+    setMode('authors')
+    setSortedTopics(data.topicslist?.sort(byAuthors) as Partial<Topic>[])
+  }
+  createEffect(sortShouts, [data.topicslist])
   useRouteReadyState()
   return (
     <div class="all-topics-page">
@@ -75,14 +81,14 @@ export default () => {
             <div class='row'>
               <div class='col'>
                 <ul class='view-switcher'>
-                  <li classList={{selected: mode() === 'views'}}>
-                    <a href='/topics?by=views' onClick={() => sortViews()}>
-                      {t('By views')}
-                    </a>
-                  </li>
                   <li classList={{selected: mode() === 'shouts'}}>
                     <a href='/topics?by=shouts' onClick={() => sortShouts()}>
                       {t('By shouts')}
+                    </a>
+                  </li>
+                  <li classList={{selected: mode() === 'authors'}}>
+                    <a href='/topics?by=authors' onClick={() => sortAuthors()}>
+                      {t('By authors')}
                     </a>
                   </li>
                   <li classList={{selected: mode() === 'alphabet'}}>

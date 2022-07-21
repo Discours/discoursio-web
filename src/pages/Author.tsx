@@ -7,7 +7,7 @@ import Row2 from '../components/Article/Row2'
 import Row3 from '../components/Article/Row3'
 import Beside from '../components/Article/Beside'
 import AuthorFull from '../components/Author/Full'
-import { byCreated, byRating, byViews } from '../utils/sortby'
+import { byCreated, byReacted, byViewed } from '../utils/sortby'
 import '../styles/Topic.scss'
 import { ZineState } from '../context/zine'
 import { usePromiseQuery } from '../utils/promiseQuery'
@@ -56,14 +56,11 @@ export const AuthorPage: Component = () => {
   const articles = createMemo<Partial<Shout>[]>(() => {
     let r = [] as Partial<Shout>[]
     switch(mode()) {
-      case 'rating':
-        r = Object.values(data.articles||{}).sort(byRating)  as Partial<Shout>[]
+      case 'reacted':
+        r = Object.values(data.articles||{}).sort(byReacted) as Partial<Shout>[]
         break
-      case 'comments':
-        r = Object.values(data.articles||{}).sort(byRating) as Partial<Shout>[]
-        break
-      case 'views':
-        r = Object.values(data.articles||{}).sort(byViews) as Partial<Shout>[]
+      case 'viewed':
+        r = Object.values(data.articles||{}).sort(byViewed) as Partial<Shout>[]
         break
       case 'created':
       default:

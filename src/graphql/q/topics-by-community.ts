@@ -11,10 +11,10 @@ export default gql`
       children
       # community
       stat {
-        _id: views
+        _id: shouts
         shouts
         authors
-        views
+        # viewed
         followers
       }
     }

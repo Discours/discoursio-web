@@ -28,7 +28,7 @@ const createEditorState = (
   const reconfigure = text instanceof EditorState && prevText?.schema
   let schemaSpec = { nodes: {} }
   let nodeViews = {}
-  let plugins: Plugin<any, any>[] = []
+  let plugins: Plugin<any>[] = []
 
   for (const extension of extensions) {
     if (extension.schema) {

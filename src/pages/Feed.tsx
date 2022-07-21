@@ -6,7 +6,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import '../styles/Feed.scss'
 import Icon from "../components/Nav/Icon";
 import { useAuth } from '../context/auth'
-import { byRating, byShouts, byViews } from '../utils/sortby'
+import { byReacted, byShouts, byViewed } from '../utils/sortby'
 import TopicCard from "../components/Topic/Card";
 import ArticleCard from "../components/Article/Card";
 import { ZineState } from '../context/zine'
@@ -25,15 +25,15 @@ const Feed: Component = () => {
   const [mode, setMode] = createSignal(data.args?.by || 'views')
   const topTopics = createMemo(() => (data.topicslist || []).sort(byShouts).slice(0, 5))
   const articles = createMemo(() => {
+    let by = byViewed
     switch (mode()) {
-      case 'rating':
-        return Object.values(data.articles || {}).sort(byRating)
-      case 'comments':
-        return Object.values(data.articles || {}).sort(byRating)
-      case 'views':
+      case 'reacted':
+        by = byReacted
+      case 'viewed':
       default:
-        return Object.values(data.articles || {}).sort(byViews)
+        by = byViewed
     }
+    return Object.values(data.articles || {}).sort(by)
   })
 
   // TODO: query userCommentedShouts / info.totalUnreadComments
@@ -50,12 +50,12 @@ const Feed: Component = () => {
   }
 
   // recent comments
-  const [comments ,setComments] = createSignal<Partial<Comment>[]>([])
+  const [reactions, setReactions] = createSignal<Partial<Reaction>[]>([])
 
   createEffect(() => {
-    if(comments().length === 0) promiseQuery(reactionsAll, { page: 1, size: 5 })
+    if(reactions()?.length === 0) promiseQuery(reactionsAll, { page: 1, size: 5 })
       .then(handleUpdate)
-      .then(() => setComments(cache()['reactionsAll']))
+      .then(() => setReactions(cache()['reactionsAll']))
   })
 
   useRouteReadyState()
@@ -131,7 +131,7 @@ const Feed: Component = () => {
           <aside class="col-md-3">
             <section class="feed-comments">
               <h4>{t('Comments')}</h4>
-              <For each={comments() as Reaction[]}>
+              <For each={reactions() as Reaction[]}>
                 {(c: Partial<Reaction>) => (
                   <div class="comment">
                     <div class="comment__content">
@@ -143,15 +143,15 @@ const Feed: Component = () => {
                       cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'} />
                       </div>
                       <div class="comment__author-image">
-                        <img src={cache()['authors'][c?.createdBy?.slug||'noname'].userpic} />
+                        <img src={c?.createdBy?.userpic ||''} />
                       </div>
                     </div>
                     <div class="comment__details">
-                      <a href={`@${c?.createdBy}`}>{cache()['authors'][c?.createdBy?.slug||'noname'].name || 'anonymous'}</a>
+                      <a href={`@${c?.createdBy?.slug}`}>{(c?.createdBy||{ name: 'anonymous' }).name}</a>
                       <div class="comment__article">
                       <Icon name="reply-arrow" />
                         <a href={`#${c?.id}`}>
-                        {cache()['articles'].get(c?.replyTo)?.title || 'Lorem ipsum titled'}
+                        {(c?.shout||{title:'Lorem ipsum titled'}).title}
                         </a>
                       </div>
                     </div>

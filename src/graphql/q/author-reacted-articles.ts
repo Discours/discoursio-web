@@ -28,8 +28,8 @@ export default gql`
       }
       publishedAt
       stat {
-        _id: views
-        views
+        _id: viewed
+        viewed
         reacted
       }
     }

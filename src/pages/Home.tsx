@@ -17,7 +17,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import { Maybe } from 'graphql/jsutils/Maybe'
 import { Shout, User, Topic } from '../graphql/types.gen'
 import { shuffle } from '../utils'
-import { byComments, byViews } from '../utils/sortby'
+import { byReacted, byViewed } from '../utils/sortby'
 import Icon from '../components/Nav/Icon'
 import LoadingBar from 'solid-top-loading-bar'
 import { cache, loaded } from '../context/_api'
@@ -44,8 +44,8 @@ export const Home = () => {
           tt = new Set(Array.from(tt).concat(s.topics as Topic[]))
           ta = new Set(Array.from(ta).concat(s.authors as Partial<User>[]))
         })
-        setTopViewed(tm.sort(byViews).slice(0, 5))
-        setTopTopics(Array.from(tt).sort(byViews).slice(0, 5))
+        setTopViewed(tm.sort(byViewed).slice(0, 5))
+        setTopTopics(Array.from(tt).sort(byViewed).slice(0, 5))
         setTopAuthors(Array.from(ta).slice(0, 5)) // TODO: author.stat
         console.log('[home] top month authors and topics are ready')
       }
@@ -71,7 +71,7 @@ export const Home = () => {
         setByLayout(bl)
         setByTopic(bt)
         // set top commented
-        setTopCommented(cache()['recentPublished'].sort(byComments).slice(0, 3))
+        setTopCommented(cache()['recentPublished'].sort(byReacted).slice(0, 3))
         console.log('[home] some grouped articles are ready')
       }
     }, [loaded()])

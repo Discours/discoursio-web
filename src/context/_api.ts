@@ -25,7 +25,10 @@ const entities: { [key: string]: string } = {
   resetPassword: 'user',
   confirmEmail: 'user',
   inviteAuthor: 'collabInvite',
-  removeAuthor: 'collabInvite'
+  removeAuthor: 'collabInvite',
+  reactionsAll: 'reactions',
+  reactionsByShout: 'reactions',
+  reactionsByAuthor: 'reactions'
 }
 
 const [, actions] = useStore()
@@ -35,8 +38,11 @@ export const [cache, setCache] = createSignal<{ [key: string]: any }>({})
 export const [loadcounter, setLoadCounter] = createSignal(0)
 export const handleUpdate = (r: OperationResult) => {
   const { data, error } = r
-  if (error && typeof actions.warn === 'function') actions.warn({ body: error.message, kind: 'error' })
-  else if (!!data) {
+  if (error) {
+    if(typeof actions.warn === 'function') actions.warn({ body: error.message, kind: 'error' })
+    console.error(error)
+    return
+  } else {
     const [query, value] = Object.entries(data)[0]
     const entity = entities[query]
     if (entity === undefined) console.error(query)
@@ -64,5 +70,5 @@ export const handleUpdate = (r: OperationResult) => {
       })
     }
     setLoading(false)
-  } else console.error(r)
+  }
 }

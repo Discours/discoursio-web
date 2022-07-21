@@ -1,5 +1,5 @@
 
-import { createContext, createEffect, createMemo, createSignal, onMount, useContext } from 'solid-js'
+import { createContext, createEffect, createMemo, createSignal, useContext } from 'solid-js'
 import { createStore } from 'solid-js/store'
 import { RouteDataFuncArgs, useLocation } from 'solid-app-router'
 import { useClient, Client } from 'solid-urql'
@@ -7,7 +7,7 @@ import { useI18n } from '@solid-primitives/i18n'
 import { Shout, User } from '../graphql/types.gen'
 import { useAuth } from './auth'
 import { usePromiseQuery } from '../utils/promiseQuery'
-import { byViews } from '../utils/sortby'
+import { byViewed } from '../utils/sortby'
 import { handleUpdate, cache, setCache, setLoading, loaded } from './_api'
 // all zine queries
 import topicsByCommunity from '../graphql/q/topics-by-community'
@@ -28,7 +28,7 @@ import commentUpdate from '../graphql/q/reaction-update'
 import commentDestroy from '../graphql/q/reaction-destroy'
 import authorsBySlugs from '../graphql/q/authors-by-slugs'
 import articleBySlug from '../graphql/q/article-by-slug'
-import articleComments from '../graphql/q/article-reactions'
+import reactionsByShout from '../graphql/q/article-reactions'
 
 
 // RouteData Preload
@@ -38,6 +38,8 @@ export interface ZineState {
   [queryname: string]: any
 }
 const START = 1
+
+
 
 // RouteDataFunc as state initiliazer
 export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
@@ -59,75 +61,70 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
       setSlug(ppp[ppp.length-1])
     }
   }, [location.pathname])
-
   const [stage, setStage] = createSignal(0)
-  createEffect(() => console.log(`[zine] loading stage ${stage()}/3`, cache()),[stage()])
+  createEffect(() => console.debug(`[zine] on ${stage()} stage`, cache()),[stage()])
   // STAGE 1 preload non conditional
   const stage1 = () => {
-    setStage(1)
-    if ('topicsByCommunity' in cache()) return
+    if (stage() === 1) setLoading(true)
     else {
-      setLoading(true)
-      setCache({ 'topicsByCommunity': [] })
-      promiseQuery(topicsByCommunity, { community: 'discours' })
-        .then(handleUpdate)
-        .then(stage2)
-    }
-  }
-
-  // STAGE 2 after topics loaded
-  const stage2 = () => {
-    setStage(2)
-    setLoading(true)
-    const [sl, sp] = [slug(), subpath()]
-    if (window.location.pathname === '' || window.location.pathname === '/') {
-      // homepage: recent published and tops
-      promiseQuery(articlesTopMonth, { page: START, size: 10 }).then(handleUpdate)
-      promiseQuery(articlesTopRated, { page: START, size: 10 }).then(handleUpdate)
-      promiseQuery(articlesRecentPublished, { page, size: 50 })
-        .then(handleUpdate)
-        .then(stage3)
-
-    } else if (sl === 'feed' || sp === 'feed') {
-      // feed: all user subscribed   
-      if (auth.authorized) promiseQuery(articlesForFeed, { page, size }).then(handleUpdate)
-      // TODO: tune loading sequence for authorized subscribist
-      promiseQuery(articlesRecentAll, { page, size: 50 })
-        .then(handleUpdate)
-        .then(stage3)
-   
-    } else if (sl.startsWith('@')) {
-      // author's page
-      const slg = sl.substring(1)
-      console.log(`[zine] @${slg}`)
-      // TODO: in future check first if it is not a community slug
-      if (sp === 'author' || sp === 'a') {
-        promiseQuery(articlesForAuthors, { page, size, slugs: [slg,] })
+      setStage(1)
+      if ('topicsByCommunity' in cache()) return
+      else {
+        setLoading(true)
+        setCache({ 'topicsByCommunity': [] })
+        promiseQuery(topicsByCommunity, { community: 'discours' })
           .then(handleUpdate)
-          .then(stage3)
-
-      } else if (sl.startsWith(':')) {
-        // topics's page
-        const slg = sl.substring(1)
-        console.log(`[zine] :${slg}`)
-        if (sp === 'topic' || sp === 't') {
-          promiseQuery(articlesForTopics, { page, size, slugs: [slg,] })
-            .then(handleUpdate)
-            .then(stage3)
-
-        }
-      } else {
-        console.log('[zine] * ' + sl)
-        if (cache().getShoutBySlug?.slug === sl) return
-        setCache(c => ({ ...c, 'getShoutBySlug': { slug: sl } }))
-        promiseQuery(articleBySlug, { slug: sl })
-          .then(handleUpdate)
-        promiseQuery(articleComments, { slug: sl })
-          .then(handleUpdate)
-          .then(stage3)
+          .then(stage2)
       }
     }
   }
+
+  const stage2 = () => {
+    setStage(2)
+    // author page
+    if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a' || subpath() === '/author' ) {
+      promiseQuery(authorsBySlugs, { slugs: [ slug(), ], lang })
+        .then(handleUpdate)
+        .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),] }))
+        .then(handleUpdate)
+        .then(stage3)
+    // topic page
+    } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't' || subpath() === '/topics' ) {
+      promiseQuery(articlesForTopics, { topics: [ slug(), ], lang, size, page })
+        .then(handleUpdate)
+        .then(stage3)
+    // feed page
+    } else if (slug() === 'feed' || subpath() === 'feed' || subpath() === '/feed' || slug() === '/feed') {
+      if (auth.authorized) {
+        promiseQuery(articlesForFeed, { lang, size, page })
+          .then(handleUpdate)
+          .then(stage3)
+      } else {
+        promiseQuery(articlesRecentAll, { lang, size, page })
+          .then(handleUpdate)
+          .then(stage3)
+      }
+    // home page
+    } else if (slug() === '' || slug() === '/') {
+        promiseQuery(articlesTopMonth, { page: START, size: 10 })
+          .then(handleUpdate)
+        promiseQuery(articlesTopRated, { page: START, size: 10 })
+          .then(handleUpdate)
+        promiseQuery(articlesRecentPublished, { page, size: 50 })
+          .then(handleUpdate)
+          .then(stage3)
+    // article page
+    } else if (!subpath() && slug()) {
+      promiseQuery(articleBySlug, { slug: slug(), lang })
+        .then(handleUpdate)
+        .then(() => promiseQuery(reactionsByShout, { slug: slug() }))
+        .then(handleUpdate)
+        .then(stage3)
+    } else {
+      console.error('[zine] stage2: no recognized slug or subpath', slug(), subpath())
+    }
+  }
+
 
   // STAGE 3 after articles loaded
   const articles = createMemo(() => cache()['articles'])
@@ -148,7 +145,10 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     }
   },[articles(), stage()])
 
-  onMount(stage1) // start loading sequence
+  createEffect(() => { 
+    console.debug('[zine] update', stage(), subpath(), slug())
+    if(stage() === 0) stage1()
+  }, [stage(), cache()]) // start loading sequence
 
   const zineState = {
     get params() {
@@ -158,7 +158,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
       return cache()['topics'] || {}
     },
     get topicslist() {
-      return Object.values(cache().topics || {}).sort(byViews) || []
+      return Object.values(cache()['topics'] || {}).sort(byViewed) || []
     },
     get authors() {
       return cache()['authors'] || {}

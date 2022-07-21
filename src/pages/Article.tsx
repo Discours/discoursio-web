@@ -39,7 +39,7 @@ export const ArticlePage: Component = () => {
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
         when={!!article()}>
-        <FullArticle article={article() as Partial<Shout>} comments={data['commentsBySh'] || []} />
+        <FullArticle article={article() as Partial<Shout>} reactions={cache()['reactionsByShout'] || []} />
       </Show>
     </div>
   )

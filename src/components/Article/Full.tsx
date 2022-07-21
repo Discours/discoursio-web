@@ -72,11 +72,11 @@ export default (props: ArticleProps) => {
             <Icon name='like' counter={props.reactions?.filter(r => r.kind == ReactionKind.Agree).length} />
             <Icon name='dislike' counter={props.reactions?.filter(r => r.kind == ReactionKind.Disagree).length} />
             <Icon name='proof' counter={props.reactions?.filter(r => r.kind == ReactionKind.Proof).length} />
-            <Icon name='proof_against' counter={props.reactions?.filter(r => r.kind == ReactionKind.ProofAgainst).length} />
+            <Icon name='disproof' counter={props.reactions?.filter(r => r.kind == ReactionKind.Disproof).length} />
           </div>
           <div class='shout-stats__item'>
             <Icon name='view' />
-            {props.article?.stat?.views}
+            {props.article?.stat?.viewed}
           </div>
           <div class='shout-stats__item'>
             <a
