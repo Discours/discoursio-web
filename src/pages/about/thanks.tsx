@@ -13,7 +13,7 @@ export default () => {
         <div class='container open-post margin-top-20px ng-scope'>
           <div class='row'>
             <div class='col-md-8 offset-md-2'>
-              <h1>Благодарности</h1>
+              <h1><span class='wrapped'>Благодарности</span></h1>
             </div>
             <div class='col-md-8 col-lg-6 offset-md-3'>
               {/*
