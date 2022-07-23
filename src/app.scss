@@ -27,6 +27,7 @@ html {
   height: 100%;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -144,6 +145,17 @@ a {
 
 ul {
   margin-bottom: 1.5em;
+}
+
+.nodash {
+  list-style: none;
+  margin: 0 0 1.5em;
+  padding: 0;
+
+  li {
+    margin: 0 0 0.5em;
+    padding: 0;
+  }
 }
 
 button {
@@ -458,4 +470,22 @@ figcaption {
   border-bottom: 1px dotted;
   cursor: pointer;
   font-weight: bold;
+}
+
+.content-index {
+  @include font-size(1.4rem);
+  margin-bottom: 2em;
+
+  @include media-breakpoint-up(md) {
+    position: sticky;
+    top: 2rem;
+  }
+
+  ul ul {
+    margin: 1em 0 0 1em;
+  }
+
+  li {
+    margin-bottom: 1em;
+  }
 }
