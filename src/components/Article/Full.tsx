@@ -24,6 +24,11 @@ export default (props: ArticleProps) => {
   const [{ user, token, info }] = useAuth()
   const [, { follow, unfollow }] = useZine()
   const [, { showModal }] = useStore()
+  const body = createMemo(() => {
+    const b = props.article.body 
+    console.log(b)
+    return b
+  })
   const subscribed = createMemo(() => info?.topics?.includes(props.article?.slug || ''))
   const mainTopic = () => (props.article?.topics?.find((topic) => topic?.slug === props.article?.mainTopic)?.title || '').replace(' ', '&nbsp;')
   const canEdit = () => !!(props.article?.authors?.find((a: Partial<User>) => a.slug === user?.slug)) // FIXME
@@ -62,7 +67,7 @@ export default (props: ArticleProps) => {
         </div>
 
         <div class='shout__body'>
-          <MD body={props.article.body as string} />
+          <MD>{body() || ''}</MD>
         </div>
       </article>
 

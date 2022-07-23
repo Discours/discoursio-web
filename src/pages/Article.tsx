@@ -14,7 +14,6 @@ import shoutBySlug from '../graphql/q/article-by-slug'
 
 export const ArticlePage: Component = () => {
   const data = useRouteData<ZineState>()
-  console.debug('[article] data', data)
   const [promiseQuery, ] = usePromiseQuery(useClient())
   const [t] = useI18n()
   useRouteReadyState()
@@ -26,8 +25,9 @@ export const ArticlePage: Component = () => {
       promiseQuery(shoutBySlug, { slug: slug() })
         .then(handleUpdate)
         .then(() => {
-          setArticle(cache()['articles'][slug()])
-          console.debug('[article] loaded', cache()['articles'][slug()])
+          const a = cache()['articles'][slug()]
+          setArticle(a)
+          console.debug('[article] loaded', a)
         })
     }
   }, [cache()])

@@ -4,6 +4,9 @@ import { VitePWA } from 'vite-plugin-pwa'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import solid from 'vite-plugin-solid'
 import mdx from '@mdx-js/rollup'
+import { remarkMdxToc } from 'remark-mdx-toc'
+import remarkGfm from 'remark-gfm'
+import remarkMdx from 'remark-mdx'
 import path from 'path'
 import pwaOptions from './vite.pwa.config'
 
@@ -18,6 +21,7 @@ export default defineConfig({
         jsx: true,
         jsxImportSource: 'solid-js',
         providerImportSource: 'solid-mdx',
+        remarkPlugins: [remarkMdxToc, remarkMdx, remarkGfm]
       }),
       enforce: 'pre'
     } as any,

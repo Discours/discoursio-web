@@ -6,7 +6,7 @@ import { Show } from 'solid-js/web'
 import { User } from '../../graphql/types.gen'
 import { createSignal } from 'solid-js'
 import { useI18n } from '@solid-primitives/i18n'
-import { Comment as Point } from '../../graphql/types.gen'
+import { Reaction as Point } from '../../graphql/types.gen'
 import { useStore } from '../../context'
 import { useZine } from '../../context/zine'
 
@@ -32,7 +32,7 @@ export default (props: { level: number; comment: Partial<Point>; canEdit: boolea
           {/* <div class="shout-rating">{comment.rating}</div> */}
         </div>
         <div class='shout-body' contenteditable={props.canEdit as boolean}>
-          <MD body={comment()?.body || ''} />
+          <MD>{comment()?.body || ''}</MD>
         </div>
         <div class='comment-controls'>
           <button class='comment-control comment-control--reply'>

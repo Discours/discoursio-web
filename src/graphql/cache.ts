@@ -1,7 +1,16 @@
-import { cacheExchange, CacheExchangeOpts } from '@urql/exchange-graphcache'
+import { cacheExchange, CacheExchangeOpts, Cache } from '@urql/exchange-graphcache'
+// import articlesRecentPublished from './q/articles-recent-published'
+// import { Shout } from './types.gen'
 // import authorsForArticles from './q/articles-for-authors'
 
 // TODO: implement smart caching logix
+
+
+const updateArticles = (_cache: Cache, data: any) => {
+  console.debug('updateArticles', data)
+  // TODO: update authors
+  // TODO: update reactions
+}
 
 export const cache = cacheExchange({
   resolvers: {},
@@ -55,4 +64,4 @@ export const cache = cacheExchange({
       */
     }
   }
-} as Partial<CacheExchangeOpts>)
+} as CacheExchangeOpts)

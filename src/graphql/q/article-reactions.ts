@@ -1,8 +1,8 @@
 import { gql } from 'solid-urql'
 
 export default gql`
-  query ReactionsByShoutQuery($shout: String!) {
-    reactionsByShout(slug: $shout) {
+  query ReactionsByShoutQuery($slug: String!) {
+    reactionsByShout(slug: $slug) {
       id
       body
       createdAt

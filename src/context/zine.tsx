@@ -52,7 +52,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const page = props.params?.page || START
   const lang = props.params?.lang || locale()
 
-  const [slug, setSlug] = createSignal(props.params?.slug)
+  const [slug, setSlug] = createSignal(props.params?.slug || '')
   const [subpath, setSubpath] = createSignal(location.pathname.split('/').filter(Boolean)[-2] || '')
   createEffect(() => {
     let ppp = location.pathname.split('/')
@@ -82,19 +82,19 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   const stage2 = () => {
     setStage(2)
     // author page
-    if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a' || subpath() === '/author' ) {
+    if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a') {
       promiseQuery(authorsBySlugs, { slugs: [ slug(), ] })
         .then(handleUpdate)
         .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),], page, size }))
         .then(handleUpdate)
         .then(stage3)
     // topic page
-    } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't' || subpath() === '/topics' ) {
+    } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't') {
       promiseQuery(articlesForTopics, { slugs: [ slug(), ], size, page })
         .then(handleUpdate)
         .then(stage3)
     // feed page
-    } else if (slug() === 'feed' || subpath() === 'feed' || subpath() === '/feed' || slug() === '/feed') {
+    } else if (slug() === 'feed' || subpath() === 'feed') {
       if (auth.authorized) {
         promiseQuery(articlesForFeed, { size, page })
           .then(handleUpdate)
@@ -105,7 +105,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
           .then(stage3)
       }
     // home page
-    } else if (slug() === '' || slug() === '/') {
+    } else if (slug() === '') {
         promiseQuery(articlesTopMonth, { page: START, size: 10 })
           .then(handleUpdate)
         promiseQuery(articlesTopRated, { page: START, size: 10 })
@@ -148,9 +148,8 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
   },[articles(), stage()])
 
   createEffect(() => { 
-    console.debug('[zine] update', stage(), subpath(), slug())
     if(stage() === 0) stage1()
-  }, [stage(), cache()]) // start loading sequence
+  }, [cache()]) // start loading sequence
 
   const zineState = {
     get params() {
