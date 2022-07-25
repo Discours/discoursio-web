@@ -19,7 +19,7 @@ export default defineConfig({
     { 
       ...mdx({
         jsx: true,
-        jsxImportSource: 'solid-js',
+        jsxImportSource: 'solid-jsx',
         providerImportSource: 'solid-mdx',
         remarkPlugins: [remarkMdxToc, remarkMdx, remarkGfm]
       }),

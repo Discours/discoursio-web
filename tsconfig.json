@@ -10,14 +10,18 @@
     "resolveJsonModule": true,
     "newLine": "lf",
     "sourceMap": true,
-    "jsxImportSource": "solid-js",
-    "types": ["vite/client", "solid-mdx/types", "vite-plugin-pwa/client"],
+    "jsxImportSource": "solid-jsx",
+    "types": ["vite/client", "solid-mdx/types", "solid-jsx/types", "vite-plugin-pwa/client"],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"]
+    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
+    "baseUrl": ".",
+    "paths": {
+      "$": ["src"]
+    }
   },
   "include": [
     "./src/**/*",

@@ -1,7 +1,7 @@
 import './Tooltip.scss'
-import { createSignal } from "solid-js"
+import { Component, createSignal } from "solid-js"
 
-export default (props: { children: any, link?: string }) => {
+export const Tooltip: Component = (props: any) => {
   const [isShown, setShowed] = createSignal(false)
   const show = () => setShowed(true)
   return (
@@ -15,3 +15,5 @@ export default (props: { children: any, link?: string }) => {
 
   )
 }
+
+export default Tooltip
