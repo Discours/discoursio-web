@@ -36,7 +36,7 @@
       width: 100%;
     }
 
-    @media (min-width: 800px) and(max-width: 991px) {
+    @media (min-width: 800px) and (max-width: 991px) {
       // top: 11em;
     }
   }
@@ -52,7 +52,7 @@
 .modalwrap__content {
   padding: $container-padding-x;
 
-  @media (min-width: 800px) and(max-width: 991px) {
+  @media (min-width: 800px) and (max-width: 991px) {
     padding: 10rem 6rem;
   }
 }

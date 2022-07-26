@@ -1,6 +1,9 @@
 .tooltip {
   position: relative;
-  display: inline-block;
+  display: inline-block;    
+  &.hidden {
+    transform: scale(0.1);
+  }
 }
 .tooltip-content {
     display: flex;
@@ -19,7 +22,5 @@
     transition: all 0.4s ease-in-out;
     transform: scale(1.1);
 
-    &.hidden {
-        transform: scale(0.1);
-    }
+
 }

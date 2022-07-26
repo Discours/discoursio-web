@@ -10,9 +10,6 @@ import { preventSmoothScrollOnTabbing } from './utils'
 import { createClient, Provider as GraphqlProvider } from 'solid-urql'
 import { baseUrl, createOptions } from './graphql/client'
 import { ZineStateProvider } from './context/zine'
-import { MDXProvider } from 'solid-jsx'
-import Tooltip from './components/Article/Tooltip'
-import { YouTube, Vimeo } from 'solid-social'
 
 export const App = () => {
   const Routes = useRoutes(routes)
@@ -31,9 +28,7 @@ export const App = () => {
               <main class='main-content'>
                 {/* <TransitionRoutes> */}
                 <Suspense>
-                  <MDXProvider components={{ Tooltip, Vimeo, YouTube}}>
                     <Routes />
-                  </MDXProvider>
                 </Suspense>
                 {/* </TransitionRoutes> */}
               </main>

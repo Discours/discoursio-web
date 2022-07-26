@@ -1,32 +1,21 @@
-import { defineConfig } from 'vite'
+import { defineConfig, UserConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 // import legacy from '@vitejs/plugin-legacy'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import path from 'path'
 import solid from 'vite-plugin-solid'
 import mdx from '@mdx-js/rollup'
-import { remarkMdxToc } from 'remark-mdx-toc'
-import remarkGfm from 'remark-gfm'
-import remarkMdx from 'remark-mdx'
-import path from 'path'
+import mdxOptions from './mdx.config'
 import pwaOptions from './vite.pwa.config'
 
 const dev = process.env.NODE_ENV !== 'production'
 // const ssr = process.argv.includes('ssr')
 const pwaEnabled = process.argv.includes('pwa')
-
 export default defineConfig({
   plugins: [
-    { 
-      ...mdx({
-        jsx: true,
-        jsxImportSource: 'solid-jsx',
-        providerImportSource: 'solid-mdx',
-        remarkPlugins: [remarkMdxToc, remarkMdx, remarkGfm]
-      }),
-      enforce: 'pre'
-    } as any,
     solid({ extensions: ['.md', '.mdx'], dev }),
     tsconfigPaths(),
+    { ...mdx(mdxOptions), enforce: 'pre' },
     // legacy({  targets: ['defaults', 'not IE 11'] }),
     pwaEnabled && VitePWA(pwaOptions)
   ],
@@ -37,7 +26,7 @@ export default defineConfig({
   },
   optimizeDeps: {
     disabled: false,
-    include: [],
+    include: ['solid-js/h/jsx-runtime'],
     exclude: []
   },
   build: {
@@ -49,8 +38,14 @@ export default defineConfig({
     rollupOptions: { external: ['solid-social'] }
   },
   resolve: {
-    alias: { $: path.resolve(__dirname, './src') },
+    alias: { 
+      $: path.resolve(__dirname, './src'),
+      '~bootstrap': path.resolve(__dirname, './node_modules/bootstrap')
+    },
     dedupe: ['solid-js', 'solid-mdx'],
     conditions: ['development', 'browser']
+  },
+  ssr: {
+    noExternal: ["solid-bootstrap"]
   }
-})
+} as UserConfig)

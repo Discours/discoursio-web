@@ -26,7 +26,7 @@ export default (props: ArticleProps) => {
   const [, { showModal }] = useStore()
   const body = createMemo(() => {
     const b = props.article.body 
-    console.log(b)
+    // console.log(b)
     return b
   })
   const subscribed = createMemo(() => info?.topics?.includes(props.article?.slug || ''))

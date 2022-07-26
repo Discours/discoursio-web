@@ -11,16 +11,29 @@
     "newLine": "lf",
     "sourceMap": true,
     "jsxImportSource": "solid-jsx",
-    "types": ["vite/client", "solid-mdx/types", "solid-jsx/types", "vite-plugin-pwa/client"],
+    "types": [
+      "node",
+      "@types/mdx",
+      "vite/client",
+      "solid-jsx/types",
+      "solid-mdx/types"
+    ],
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable", "WebWorker"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "WebWorker"
+    ],
     "baseUrl": ".",
     "paths": {
-      "$": ["src"]
+      "$": [
+        "src"
+      ]
     }
   },
   "include": [
@@ -32,5 +45,7 @@
     "src/pages/.tsx",
     "content/*.mdx"
   ],
-  "exclude": ["node_modules/"]
+  "exclude": [
+    "node_modules/"
+  ]
 }

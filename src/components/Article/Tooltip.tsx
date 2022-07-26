@@ -1,7 +1,7 @@
 import './Tooltip.scss'
-import { Component, createSignal } from "solid-js"
+import { createSignal } from "solid-js"
 
-export const Tooltip: Component = (props: any) => {
+export const Tooltip: (p:any) => any = (props: any) => {
   const [isShown, setShowed] = createSignal(false)
   const show = () => setShowed(true)
   return (

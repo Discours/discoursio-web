@@ -62,7 +62,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     }
   }, [location.pathname])
   const [stage, setStage] = createSignal(0)
-  createEffect(() => console.debug(`[zine] on ${stage()} stage`, cache()),[stage()])
+  // createEffect(() => console.debug(`[zine] on ${stage()} stage`, cache()),[stage()])
   // STAGE 1 preload non conditional
   const stage1 = () => {
     if (stage() === 1) setLoading(true)
