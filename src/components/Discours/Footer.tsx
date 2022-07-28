@@ -19,8 +19,8 @@ export default function DiscoursFooter() {
           slug: '/about/guide'
         },
         {
-          title: 'Knowledge base',
-          slug: 'https://discours.io/knowledge-base'
+          title: 'Dogma',
+          slug: '/about/dogma'
         },
         {
           title: 'Terms of use',

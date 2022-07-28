@@ -36,13 +36,13 @@ export default () => {
                 </Show>
 
                 <li>
-                  <a href="#editing">Как мы&nbsp;делаем тексты друг друга лучше</a>
+                  <a href="#editing">Как мы делаем тексты друг друга лучше</a>
                 </li>
                 <li>
                   <a href="#perks">Что сообщество дает авторам</a>
                 </li>
                 <li>
-                  <a href="#contacts">Как быть в&nbsp;курсе</a>
+                  <a href="#contacts">Как быть в курсе</a>
                 </li>
               </ul>
             </nav>

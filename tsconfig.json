@@ -11,7 +11,7 @@
     "newLine": "lf",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
-    "jsxImportSource": "solid-jsx",
+    "jsxImportSource": "solid-js",
     "isolatedModules": true,
     "types": [
       "node",

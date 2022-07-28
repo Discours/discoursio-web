@@ -14,11 +14,19 @@ export const routes: RouteDefinition[] = [
   },
   {
     path: '/about/projects',
-    component: lazy(() => import('./pages/about/projects.mdx'))
+    component: lazy(() => import('./pages/about/projects'))
   },
   {
     path: '/about/manifest',
-    component: lazy(() => import('./pages/about/manifest.mdx'))
+    component: lazy(() => import('./pages/about/manifest'))
+  },
+  {
+    path: '/about/partners',
+    component: lazy(() => import('./pages/about/partners'))
+  },
+  {
+    path: '/about/dogma',
+    component: lazy(() => import('./pages/about/dogma'))
   },
   {
     path: '/about/guide',
@@ -27,10 +35,6 @@ export const routes: RouteDefinition[] = [
   {
     path: '/about/help',
     component: lazy(() => import('./pages/about/help'))
-  },
-  {
-    path: '/about/partners',
-    component: lazy(() => import('./pages/about/partners.mdx'))
   },
   {
     path: '/about/terms-of-use',
