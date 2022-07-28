@@ -96,13 +96,19 @@ export default (props: CardProps) => {
           </For>
         </Show>
 
-        <div class='shout-card__title'>
-          <NavLink href={`/${props.article?.slug || ''}`}>{title()}</NavLink>
-        </div>
+        <div class="shout-card__titles-container">
+          <NavLink href={`/${props.article?.slug || ''}`}>
+            <div class='shout-card__title'>
+              <span class="shout-card__link-container">{title()}</span>
+            </div>
 
-        <Show when={!settings?.nosubtitle && subtitle()}>
-          <div class='shout-card__subtitle'>{subtitle()}</div>
-        </Show>
+            <Show when={!settings?.nosubtitle && subtitle()}>
+              <div class='shout-card__subtitle'>
+                <span class="shout-card__link-container">{subtitle()}</span>
+              </div>
+            </Show>
+          </NavLink>
+        </div>
 
         <Show when={!settings?.noauthor}>
           <div class='shout__author'>

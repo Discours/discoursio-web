@@ -26,6 +26,27 @@
   }
 }
 
+.shout-card__titles-container {
+  a {
+    &:before {
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    &:hover {
+      .shout-card__link-container {
+        background-color: #000;
+        color: #fff;
+      }
+    }
+  }
+}
+
 .shout-card__cover-container {
   position: relative;
 }
@@ -36,7 +57,6 @@
   overflow: hidden;
   padding-bottom: 56.2%;
   position: relative;
-  overflow: hidden;
 
   img {
     height: 100%;
@@ -45,14 +65,12 @@
     transform-origin: 50% 50%;
     transition: transform 1s ease-in-out;
     width: 100%;
-    transition: all .3s;
-
   }
+
   &:hover img {
     /* TODO: small zoom on hover */
     transform: scaleZ(1.1);
   }
-
 }
 
 .shout__topic,
@@ -79,19 +97,16 @@
 .shout-card__title {
   @include font-size(2.2rem);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.25;
   margin-bottom: 0.8rem;
+}
 
-  a {
-    &:before {
-      content: '';
-      height: 100%;
-      left: 0;
-      position: absolute;
-      top: 0;
-      width: 100%;
-      z-index: 1;
-    }
+.shout-card__title,
+.shout-card__subtitle {
+  &,
+  .shout-card__link-container {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
 }
 
@@ -99,8 +114,13 @@
   color: #696969;
   @include font-size(1.7rem);
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.3;
   margin-bottom: 0.8rem;
+}
+
+.shout-card__link-container {
+  position: relative;
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
 
 .shout-card.withcover {
@@ -253,6 +273,19 @@
       margin-right: 0.3em;
     }
   }
+
+  .shout-card__titles-container {
+    a {
+      color: #fff;
+
+      &:hover {
+        .shout-card__link-container {
+          background-color: #fff;
+          color: #000;
+        }
+      }
+    }
+  }
 }
 
 .shout-card--with-cover {
@@ -275,6 +308,17 @@
   .shout-card__title,
   .shout-card__subtitle {
     color: #fff !important;
+  }
+
+  .shout__author,
+  .shout-card__titles-container {
+    a:hover {
+      &,
+      .shout-card__link-container {
+        background-color: #fff;
+        color: #000 !important;
+      }
+    }
   }
 
   .shout-card__cover-container,
