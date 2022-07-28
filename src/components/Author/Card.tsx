@@ -11,7 +11,7 @@ import { useAuth } from '../../context/auth'
 
 interface AuthorCardProps {
   compact?: boolean
-  hideDescription?: boolean,
+  hideDescription?: boolean
   hideFollow?: boolean
   author: Partial<User>
 }

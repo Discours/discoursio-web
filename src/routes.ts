@@ -3,6 +3,7 @@ import { RouteDefinition } from 'solid-app-router'
 import { ZineStateHandler } from './context/zine'
 import { CollabStateHandler } from './context/collab'
 import { InboxStateHandler } from './context/inbox'
+import { AuthorsStateHandler } from './context/authors'
 
 
 export const routes: RouteDefinition[] = [
@@ -58,6 +59,11 @@ export const routes: RouteDefinition[] = [
     path: '/topics',
     component: lazy(() => import('./pages/AllTopics')),
     data: ZineStateHandler
+  },
+  {
+    path: '/authorslist',
+    component: lazy(() => import('./pages/AllAuthors')),
+    data: AuthorsStateHandler
   },
   {
     path: '/feed/settings',

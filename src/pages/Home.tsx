@@ -100,7 +100,7 @@ export const Home = () => {
   const articles = createMemo(() => cache()['recentPublished'])
   return (
     <main class="home">
-      <LoadingBar progress={progress()} />
+      <LoadingBar color='black' progress={progress()} />
       <Show when={!data.loading && articles()}>
         <NavTopics topics={someTopics()} />
         <Row5 articles={articles().slice(0, 5) as []} />

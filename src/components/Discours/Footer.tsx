@@ -64,7 +64,7 @@ export default function DiscoursFooter() {
       items: [
         {
           title: 'Authors',
-          slug: '/user/list'
+          slug: '/authorslist'
         },
         {
           title: 'Topics',

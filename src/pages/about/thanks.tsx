@@ -55,7 +55,7 @@ export default () => {
               <h3>Авторы</h3>
               <p>
                 Мы&nbsp;безмерно благодарны{' '}
-                <a href='/user/list' target='_blank' rel='noopener noreferrer'>
+                <a href='/authorslist' target='_blank' rel='noopener noreferrer'>
                   каждому автору
                 </a>{' '}
                 за&nbsp;участие и&nbsp;поддержку проекта. Сегодня, когда для большинства деньги стали целью

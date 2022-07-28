@@ -1,4 +1,4 @@
-// import gql from 'graphql-tag'
+import gql from 'graphql-tag'
 export type Maybe<T> = T | null
 export type InputMaybe<T> = Maybe<T>
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] }
@@ -220,6 +220,7 @@ export type ProfileInput = {
 
 export type Query = {
   __typename?: 'Query'
+  authorsAll: Array<Maybe<User>>
   forget: AuthResult
   getCommunities: Array<Maybe<Community>>
   getCommunity: Community
@@ -293,8 +294,8 @@ export type QueryMyCandidatesArgs = {
 }
 
 export type QueryReactionsAllArgs = {
-  page?: InputMaybe<Scalars['Int']>
-  size?: InputMaybe<Scalars['Int']>
+  page: Scalars['Int']
+  size: Scalars['Int']
 }
 
 export type QueryReactionsByAuthorArgs = {
@@ -449,14 +450,14 @@ export enum ReactionKind {
   Agree = 'AGREE',
   Ask = 'ASK',
   Comment = 'COMMENT',
-  Decline = 'DECLINE',
   Disagree = 'DISAGREE',
   Dislike = 'DISLIKE',
   Disproof = 'DISPROOF',
   Like = 'LIKE',
   Proof = 'PROOF',
   Propose = 'PROPOSE',
-  Qoute = 'QOUTE'
+  Quote = 'QUOTE',
+  Reject = 'REJECT'
 }
 
 export enum ReactionStatus {
@@ -1601,6 +1602,21 @@ export default {
         name: 'Query',
         fields: [
           {
+            name: 'authorsAll',
+            type: {
+              kind: 'NON_NULL',
+              ofType: {
+                kind: 'LIST',
+                ofType: {
+                  kind: 'OBJECT',
+                  name: 'User',
+                  ofType: null
+                }
+              }
+            },
+            args: []
+          },
+          {
             name: 'forget',
             type: {
               kind: 'NON_NULL',
@@ -1856,15 +1872,21 @@ export default {
               {
                 name: 'page',
                 type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
                 }
               },
               {
                 name: 'size',
                 type: {
-                  kind: 'SCALAR',
-                  name: 'Any'
+                  kind: 'NON_NULL',
+                  ofType: {
+                    kind: 'SCALAR',
+                    name: 'Any'
+                  }
                 }
               }
             ]

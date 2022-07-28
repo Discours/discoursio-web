@@ -10,13 +10,14 @@
     "resolveJsonModule": true,
     "newLine": "lf",
     "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
     "jsxImportSource": "solid-jsx",
+    "isolatedModules": true,
     "types": [
       "node",
       "@types/mdx",
       "vite/client",
-      "solid-jsx/types",
-      "solid-mdx/types"
+      "solid-jsx/types"
     ],
     "noUnusedLocals": true,
     "noUnusedParameters": true,

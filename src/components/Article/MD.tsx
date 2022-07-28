@@ -1,20 +1,11 @@
-
+import { MDXProvider } from 'solid-jsx'
+import { Tooltip } from 'src/components/Article/Tooltip'
+import { Vimeo, YouTube } from 'solid-social'
 import SolidMarkdown from 'solid-markdown'
-import { YouTube, Vimeo } from 'solid-social'
-import Tooltip from './Tooltip'
-import config from '../../../mdx.config'
-
 export default (props: any) => {
   return (
-    <SolidMarkdown
-      rehypePlugins={config.rehypePlugins}
-      remarkPlugins={config.remarkPlugins}
-      components={{
-        Tooltip,
-        YouTube,
-        Vimeo
-      } as any}>
-      {props.children}
-    </SolidMarkdown>
+    <MDXProvider components={{ Tooltip, Vimeo, YouTube }}>
+      <SolidMarkdown>{props.children}</SolidMarkdown>
+    </MDXProvider>
   )
 }

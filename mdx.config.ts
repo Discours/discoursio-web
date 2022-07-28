@@ -28,8 +28,9 @@ const rehypeAutolinkHeadingsOptions: RehypeAutolinkHeadingsOptions = {
 }
 
 export default {
+  jsx: true,
   useDynamicImport: true,
-  jsxImportSource: 'solid-jsx',
+  jsxImportSource: 'solid-jsx', // readme https://github.com/high1/solid-jsx
   providerImportSource: 'solid-mdx',
   development: process.env.NODE_ENV === 'development',
   remarkRehypeOptions: { allowDangerousHtml: true },

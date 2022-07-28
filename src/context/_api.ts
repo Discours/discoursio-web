@@ -9,6 +9,7 @@ const entities: { [key: string]: string } = {
   topicsByCommunity: 'topics', // deprecated
   authorsBySlugs: 'authors',
   authorsByTopics: 'authors',
+  authorsAll: 'authors',
   communitiesBySlugs: 'communities',
   shoutsBySlugs: 'articles',
   shoutsByAuthors: 'articles',
@@ -30,7 +31,8 @@ const entities: { [key: string]: string } = {
   reactionsAll: 'reactions',
   reactionsByShout: 'reactions',
   reactionsByAuthor: 'reactions',
-  getShoutBySlug: 'articles'
+  getShoutBySlug: 'articles',
+  
 }
 
 const [, actions] = useStore()

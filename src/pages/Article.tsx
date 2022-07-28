@@ -5,7 +5,7 @@ import { useRouteReadyState } from '../utils/routeReadyState'
 import { Shout } from '../graphql/types.gen'
 import '../styles/Article.scss'
 import FullArticle from '../components/Article/Full'
-// import LoadingBar from 'solid-top-loading-bar'
+import LoadingBar from 'solid-top-loading-bar'
 import { ZineState } from '../context/zine'
 import { cache, handleUpdate } from '../context/_api'
 import { usePromiseQuery } from '../utils/promiseQuery'
@@ -33,6 +33,7 @@ export const ArticlePage: Component = () => {
   }, [cache()])
   return (
     <div class='article-page'>
+      <LoadingBar color='black' />
       <Show
         fallback={<div class='center'>{t('Loading')}</div>}
         when={!!article()}>
