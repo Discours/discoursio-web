@@ -12,7 +12,8 @@ import { baseUrl, createOptions } from './graphql/client'
 import { ZineStateProvider } from './context/zine'
 import { MDXProvider } from 'solid-jsx'
 import { Tooltip } from 'src/components/Article/Tooltip'
-import { Vimeo, YouTube } from 'solid-social'
+import MusicPlayer from 'src/components/Article/MusicPlayer'
+import VideoPlayer from 'src/components/Article/VideoPlayer'
 
 export const App = () => {
   const Routes = useRoutes(routes)
@@ -31,7 +32,7 @@ export const App = () => {
               <main class='main-content'>
                 {/* <TransitionRoutes> */}
                 <Suspense>
-                  <MDXProvider components={{ Tooltip, Vimeo, YouTube }}>
+                  <MDXProvider components={{ Tooltip, MusicPlayer, VideoPlayer } as any}>
                     <Routes />
                   </MDXProvider>
                 </Suspense>
