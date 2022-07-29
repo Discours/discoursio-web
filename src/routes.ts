@@ -13,6 +13,11 @@ export const routes: RouteDefinition[] = [
     data: ZineStateHandler
   },
   {
+    path: '/authorslist',
+    component: lazy(() => import('./pages/AllAuthors')),
+    data: AuthorsStateHandler
+  },
+  {
     path: '/about/projects',
     component: lazy(() => import('./pages/about/projects'))
   },
@@ -63,11 +68,6 @@ export const routes: RouteDefinition[] = [
     path: '/topics',
     component: lazy(() => import('./pages/AllTopics')),
     data: ZineStateHandler
-  },
-  {
-    path: '/authorslist',
-    component: lazy(() => import('./pages/AllAuthors')),
-    data: AuthorsStateHandler
   },
   {
     path: '/feed/settings',

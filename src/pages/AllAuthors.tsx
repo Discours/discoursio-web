@@ -36,6 +36,8 @@ export default () => {
     )
   }
 
+  createEffect(() => console.log('[authors] got authors list', data), [data.authors])
+
   createEffect(() => {
     if(sortedAuthors() === [] && cache()['authorsAll'] && cache()['authorsAll'].length > 0) {
       console.log('[AllAuthors] set sortedAuthors')

@@ -31,6 +31,10 @@ import articleBySlug from '../graphql/q/article-by-slug'
 import reactionsByShout from '../graphql/q/article-reactions'
 
 
+const ROUTES = [
+  'topics', 'authorslist', 'feed', 'create', 'search', 'community'
+]
+
 // RouteData Preload
 export interface ZineState {
   args?: { [key:string]: string }
@@ -72,6 +76,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
       else {
         setLoading(true)
         setCache({ 'topicsByCommunity': [] })
+        console.log('[zine] loading all topics')
         promiseQuery(topicsByCommunity, { community: 'discours' })
           .then(handleUpdate)
           .then(stage2)
@@ -83,6 +88,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     setStage(2)
     // author page
     if( slug().startsWith('@') || subpath() === 'author' || subpath() === 'a') {
+      console.log('[zine] author context', slug())
       promiseQuery(authorsBySlugs, { slugs: [ slug(), ] })
         .then(handleUpdate)
         .then(() => promiseQuery(articlesForAuthors, { slugs: [slug(),], page, size }))
@@ -90,22 +96,26 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
         .then(stage3)
     // topic page
     } else if ( slug().startsWith(':') || subpath() === 'topic' || subpath() === 't') {
+      console.log('[zine] topic context: ', slug())
       promiseQuery(articlesForTopics, { slugs: [ slug(), ], size, page })
         .then(handleUpdate)
         .then(stage3)
     // feed page
     } else if (slug() === 'feed' || subpath() === 'feed') {
       if (auth.authorized) {
+      console.log('[zine] authorized feed context')
         promiseQuery(articlesForFeed, { size, page })
           .then(handleUpdate)
           .then(stage3)
       } else {
+        console.log('[zine] common feed context')
         promiseQuery(articlesRecentAll, { size, page })
           .then(handleUpdate)
           .then(stage3)
       }
     // home page
     } else if (slug() === '') {
+      console.log('[zine] homepage context')
         promiseQuery(articlesTopMonth, { page: START, size: 10 })
           .then(handleUpdate)
         promiseQuery(articlesTopRated, { page: START, size: 10 })
@@ -114,16 +124,15 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
           .then(handleUpdate)
           .then(stage3)
     // article page
-    } else if (!subpath() && slug()) {
+    } else if (!subpath() && slug() && !ROUTES.includes(slug())) {
+      console.log('[zine] article context', slug())
       promiseQuery(articleBySlug, { slug: slug() })
         .then(handleUpdate)
         .then(() => promiseQuery(reactionsByShout, { slug: slug() }))
         .then(handleUpdate)
         .then(stage3)
     } else if (subpath() === 'about') {
-      console.log('[about]', slug())
-    } else {
-      console.error('[zine] stage2: no recognized slug or subpath', slug(), subpath())
+      console.log('[zine] about: ', slug())
     }
   }
 
