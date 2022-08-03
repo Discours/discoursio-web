@@ -51,8 +51,10 @@ export const handleUpdate = (r: OperationResult) => {
     const entity = entities[query]
     if (entity === undefined) console.error(query)
     const qerror = (value as any)?.error
-    if (qerror && typeof actions.warn === 'function') actions?.warn({ body: qerror, kind: 'warn' })
-    else {
+    if (qerror && typeof actions.warn === 'function') {
+      actions?.warn({ body: qerror, kind: 'warn' })
+      console.log('[api] query error: ', qerror)
+    } else {
       setCache((s) => {
         let up: { [key: string]: any } = {}
         let d: { [k: string]: any } = {}
@@ -66,6 +68,10 @@ export const handleUpdate = (r: OperationResult) => {
           } else if ((value as Reaction).id) {
             d[(value as Reaction).id] = value as Reaction
             d = { ...s[entity], ...d }
+          } else if (typeof value === 'object' && value) {
+            console.error(`[api] ${entity} response: `, value)
+            s[query] = value
+            return s
           } else {
             console.error('[api] unknown entity format', value)
             return s
@@ -79,6 +85,7 @@ export const handleUpdate = (r: OperationResult) => {
         console.debug('[api] cached: ', loaded())
         return { ...s, ...up }
       })
+      console.log(cache())
     }
     setLoading(false)
   }

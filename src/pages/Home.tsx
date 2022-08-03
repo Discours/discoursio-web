@@ -89,7 +89,7 @@ export const Home = () => {
         setSomeTopics((_) => {
           const nv = Array.from(Object.entries(byTopic())).filter(([, v], _i) => (v as Partial<Topic>[]).length > 4)
           const ttt = nv.map((f) => (data['topics'] || {})[f[0]]).slice(0, 12)
-          console.log(`[home] topics navbar data ready`, ttt)
+          console.log(`[home] topics navbar data ready`)// , ttt)
           return ttt
         })
       }

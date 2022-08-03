@@ -20,11 +20,11 @@ export interface CollabState {
 export const CollabStateHandler = (props: RouteDataFuncArgs | any): any => {
   console.debug(props)
   // const [{ info }, {}] = useAuth()
-  const collabState = {
+  const [collabState, _setCollabState] = createStore({
     get loading() {
       return loading()
     }
-  }
+  })
   return collabState as CollabState
 }
 
@@ -43,7 +43,7 @@ export const CollabStateProvider = (props: any): any => {
     deleteProposal: (reaction_id: number) => promiseMutation(reactionDestroyQuery, { reaction_id }).then(handleUpdate),
   }
 
-  return <CollabProvider value={createStore([collabState as CollabState, collabActions])} children={props.children} />
+  return <CollabProvider value={[collabState, collabActions as any]} children={props.children} />
 }
 
 export function useCollab() {

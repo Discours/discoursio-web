@@ -12,6 +12,7 @@ import { usePromiseQuery } from '../../utils/promiseQuery'
 import signCheckQuery from '../../graphql/q/auth-check'
 import { Form } from 'solid-js-form'
 import * as Yup from 'yup'
+import { cache } from 'src/context/_api'
 
 type AuthMode = 'sign-in' | 'sign-up' | 'forget' | 'reset' | 'resend' | 'password'
 
@@ -20,9 +21,10 @@ export default (props: { code?: string; mode?: string }) => {
   const [mode, setMode] = createSignal<AuthMode>('sign-in')
   const [error, setError] = createSignal('')
   const [state, { hideModal }] = useStore()
-  const [auth, { signIn, signUp, forget, resend, reset }] = useAuth()
+  const [authState, auth] = useAuth()
   const [validation, setValidation] = createSignal({})
   const [initial, setInitial] = createSignal({})
+  createEffect(() => console.log(authState), authState)
 
   let emailElement: HTMLInputElement | undefined
   let pass2Element: HTMLInputElement | undefined
@@ -103,9 +105,14 @@ export default (props: { code?: string; mode?: string }) => {
       if (!data?.isEmailUsed && !register) setError(t('Email is unknown, please try to sign up'))
     })
 
+  createEffect(() => {
+    if(cache()['error']) setError(cache()['error'])
+  }, [cache()])
+
   // local auth handler
   const localAuth = async () => {
     console.log('[auth] native account processing')
+    // console.log(auth)
     // check email
     if (!isProperEmail(emailElement?.value || '')) {
       setError(t('Please check your email address'))
@@ -124,27 +131,27 @@ export default (props: { code?: string; mode?: string }) => {
     }
     switch (mode()) {
       case 'sign-in':
-        signIn(emailElement?.value, passElement?.value)
+        auth.signIn(emailElement?.value, passElement?.value)
         break
       case 'sign-up':
         if (pass2Element?.value !== passElement?.value)
           setError(t('Passwords are not equal'))
         else {
-          signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
+          auth.signUp(emailElement?.value, passElement?.value) //, usernameElement?.value)
         }
         break
       case 'reset':
         // send reset-code to login with email
         console.log('[auth] reset code: ' + codeElement?.value)
-        reset(codeElement?.value)
+        auth.reset(codeElement?.value)
         break
       case 'resend':
-        resend(emailElement?.value)
+        auth.resend(emailElement?.value)
         break
       case 'forget':
         // shows forget mode of auth-modal
         if(pass2Element?.value !== passElement?.value) setError(t('Passwords are not equal'))
-        else forget(passElement?.value)
+        else auth.forget(passElement?.value)
         break
       default:
         console.log('[auth] unknown auth mode', mode())

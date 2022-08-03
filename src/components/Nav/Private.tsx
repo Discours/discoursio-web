@@ -31,7 +31,7 @@ export default () => {
       <div class='usercontrol__item usercontrol__item--inbox'>
         <a href='/inbox'>
           <div classList={{ entered: resource() === '/inbox' }}>
-            <Icon name='inbox-white' counter={info?.totalUnreadMessages} />
+            <Icon name='inbox-white' counter={info?.inbox} />
           </div>
         </a>
       </div>

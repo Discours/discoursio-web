@@ -10,9 +10,8 @@ import signIn from '../graphql/q/auth-login'
 import forgetPassword from '../graphql/q/auth-forget'
 import resetPassword from '../graphql/q/auth-reset'
 import resendCode from '../graphql/q/auth-resend'
-import { useStore } from './index'
 import { usePromiseQuery } from '../utils/promiseQuery'
-import { handleUpdate, cache, loading, setLoading } from './_api'
+import { cache, handleUpdate, loading, setLoading } from './_api'
 
 interface AuthState {
   readonly authorized?: boolean
@@ -29,7 +28,6 @@ export const AuthStoreProvider = (props: any) => {
   const client: Client = !!props.client ? props.client : useClient()
   const [promiseQuery, promiseMutation] = usePromiseQuery(client)
   const [loggedIn, setLoggedIn] = createSignal(false)
-  const [, actions] = useStore()
 
   const [authState, setState] = createStore({
     get authorized() {
@@ -83,7 +81,10 @@ export const AuthStoreProvider = (props: any) => {
         promiseQuery(signIn, { email, password })
           .then(handleUpdate)
           .then(() => setLoggedIn(true))
-          .catch(() => setLoggedIn(false))
+          .catch(() => {
+            console.log('[auth] signIn failed', cache()['signIn'])
+            setLoggedIn(false)
+          })
       }
     },
     signUp: (email: string, password: string, username?: string) => {
@@ -119,7 +120,7 @@ export const AuthStoreProvider = (props: any) => {
         .then(handleUpdate)
     }
   }
-  return <AuthProvider value={createStore(authState, authActions as any)} children={props.children} />
+  return <AuthProvider value={[authState, authActions as any]} children={props.children} />
 }
 
 export function useAuth() {

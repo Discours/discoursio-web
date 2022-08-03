@@ -160,7 +160,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     if(stage() === 0) stage1()
   }, [cache()]) // start loading sequence
 
-  const zineState = {
+  const [zineState, _setZineState] = createStore({
     get params() {
       return { ...props.params, slug: slug(), size, page, subpath: subpath(), lang }
     },
@@ -182,7 +182,7 @@ export const ZineStateHandler = (props: RouteDataFuncArgs | any): any => {
     get loading() {
       return loaded()?.length === 0
     }
-  } as ZineState
+  } as ZineState)
   return zineState
 }
 
@@ -205,7 +205,7 @@ export const ZineStateProvider = (props: any): any => { // store { state actions
     follow: (slug: string) => promiseMutation(followQuery, { slug }).then(handleUpdate),
     unfollow: (slug: string) => promiseMutation(unfollowQuery, { slug }).then(handleUpdate)
   }
-  return <ZineProvider value={createStore(zineState, zineActions as any)} children={props?.children} />
+  return <ZineProvider value={[zineState, zineActions as any]} children={props?.children} />
 }
 
 export function useZine() {

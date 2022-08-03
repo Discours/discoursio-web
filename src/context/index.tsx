@@ -110,7 +110,7 @@ export function StoreProvider(props: { children: any }) {
   }
 
   return  (
-    <Provider value={[state,actions]}>
+    <Provider value={[state, actions]}>
       <I18nContext.Provider value={i18n}>
         <Title>{t('global.title', {}, 'discours.io')}</Title>
         <Meta name='lang' content={locale()} />
