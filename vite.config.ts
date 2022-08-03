@@ -35,7 +35,7 @@ export default defineConfig({
     cssCodeSplit: true,
     target: 'esnext',
     commonjsOptions: { include: [] },
-    rollupOptions: { external: ['solid-social'] }
+    rollupOptions: { external: [] }
   },
   resolve: {
     alias: { 
